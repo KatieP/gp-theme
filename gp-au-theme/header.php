@@ -31,6 +31,11 @@ $template_url = get_bloginfo('template_url');
 			window.google_analytics_uacct = "UA-2619469-9";
 		</script>
 		
+		<!--[if lte IE 8]>
+	      	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	      	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
+		
 		<title><?php
         /*
          * Print the <title> tag based on what is being viewed.
@@ -224,8 +229,7 @@ $template_url = get_bloginfo('template_url');
 							<li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
 							<li class="auth-account-options">	
 								<a href="<?php echo $post_author_url; ?>" title="Your profile">Your Profile</a> 
-								<!-- <a href="<?php #echo $post_author_url; ?>edit" title="Edit account">Edit Account</a> //-->
-								<a href="http://www.thegreenpages.com.au/wp-admin" title="Edit account">Edit Account</a>
+								<a href="/wp-admin" title="Edit account">Edit Account</a>
 								<a href="/about/help" title="Help">Help</a>
 								<a href="<?php echo wp_logout_url("/"); ?>" title="Logout">Logout</a>
 							</li>
