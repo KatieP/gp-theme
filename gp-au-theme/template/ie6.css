@@ -1,0 +1,51 @@
+.icon-listcheck, .icon-add, .icon-mail, .icon-book, .icon-star {background: url(../template/map-icons.gif) no-repeat;}
+.contact-address, .contact-phone, .contact-email, .contact-skype  {background: url(../template/map-footercontact.gif) no-repeat;}
+.icon-subscribe {background: url(../template/map-largeicons.gif) no-repeat;}
+.arrow-previous, .arrow-next  {background: url(../template/map-postarrows.gif) no-repeat;}
+.followus-facebook, .followus-twitter, .followus-digg, .followus-1, .followus-2, .followus-3, .followus-flickr, .followus-rss, .followus-youtube {background: url(../template/m$
+.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini {background: url(../template/map-comments.gif) no-repeat;}
+.comment-background {background: url(../template/bg-comments.gif) repeat-x;}
+#sponsorcategorybreaker {background: url(../template/dirpanelarrow.gif) no-repeat;}
+
+#subscriber-button {height:25px;width:94px;}
+#subscriber-field {height:23px;width:154px;}
+#subscriber-email {height:22px;width:142;position:relative; float:right;}
+
+#search-field {height:23px;width:194px;}
+#search-field input {height:21px;}
+
+#auth-youraccount {width:100px;display:block;}
+#auth-youraccount a {display: block;width:100px;}
+#auth-youraccount .bullet {float:left; display:inline;}
+
+#header-nav a {display:inline;padding: 4px 19px 4px 19px;}
+
+
+#dir-l1 ul li {border: 1px solid #f2f2f2;margin:0;}
+#dir-l1 ul li a:hover {text-decoration:underline;background-color: #f2f2f2;}
+
+#content .comment-mini {background-position: 0px -26px;}
+
+.followus-facebook {background-position: 0px 0px;}
+.followus-twitter {background-position: -33px 0px;}
+.followus-digg {background-position: -66px 0px;}
+.followus-1 {background-position: 0px -33px;}
+.followus-2 {background-position: -33px -33px;}
+.followus-3 {background-position: -66px -33px;}
+.followus-flickr {background-position: 0px -66px;}
+.followus-rss {background-position: -33px -66px;}
+.followus-youtube {background-position: -66px -66px;}
+
+.contact-address {background-position: 0px 0px;}
+.contact-phone {background-position: -14px 0px;}
+.contact-email {background-position: -28px 0px;}
+.contact-skype {background-position: -42px 0px;}
+
+#nav-shadow li img.shadow {}
+#nav-shadow li {margin: 8px 3px 0 3px;}
+
+#content ul.categorieslistmain li {width:134px;margin-left:0px;}
+
+#footer-contact .contact-address, #footer-contact .contact-phone, #footer-contact .contact-email, #footer-contact .contact-skype {margin: 4px 2px 4px 2px;}
+#footer-contact .title {margin: 0 5px 0 0;}
+#footer-contact a {height:24px;}

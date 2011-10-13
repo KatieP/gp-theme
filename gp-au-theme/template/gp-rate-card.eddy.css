@@ -1,0 +1,350 @@
+@charset "UTF-8";
+
+/**************************
+There's bound to be some unnecessary stuff in here that can be removed when we have time
+**************************/
+
+	a.rate-card-button{
+			display: block;
+			float: left;
+			color: white;
+			text-decoration:none;
+			background-color: rgb(97,194,1);
+			text-align:center;
+			border-radius: 10px;
+			padding: 15px;
+			margin: 0px 8px;
+			width: 97px;
+			height: 70px;
+		} 
+		
+		a.rate-card-button>span{
+			display: block;
+		}
+		
+		a.rate-card-button>span:first-child{
+			font-weight:bold;
+			font-size:16px;
+			margin-bottom: 8px;
+		}
+		
+		a.rate-card-button>span:last-child{
+			display: block;
+			font-size: 13px;
+		}
+		
+		#rate-card-cover {
+			margin-top: 110px;
+			margin-left: 44px;
+		}
+
+		
+		#rate-card-directory {
+			margin-top: 110px;
+		}
+		
+		#rate-card-directory-page {
+			float: center;
+		}
+		
+		#rate-card-cover, #rate-card-display, #rate-card-email, #rate-card-display, #rate-card-directory-page, #rate-card-directory {
+			float: center;
+		}
+		
+		.rate-card-image {
+			float: right;
+		}
+				
+		.book-now-button {
+			height: 25px;
+			line-height: 25px;
+			color: #fff;
+			font-size: 13px;
+			font-weight: 500;
+				-moz-border-radius: 2px;
+				-webkit-border-radius: 2px;
+			border-radius: 2px;
+			overflow: hidden;
+			text-align: center;
+			margin: 0 0 0 6px;
+			background-color: #61C201;
+			float: left;
+			width: 104px;
+			position: relative;
+			text-decoration:none;
+		}
+		
+		.book-now-button input {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+			height: 25px;
+			width: 104px;
+			cursor: pointer;
+			border: 0;
+			background-color: transparent;
+			text-decoration:none;
+		}
+		
+
+		
+		.book-now {
+			color: white;
+			text-decoration:none;
+		}
+		
+		.book-now hover {
+			color: white;
+			text-decoration:none;
+		}
+		
+/***************************
+***************************/
+
+body {
+	background-color: #fff;
+	font-family: Helvetica;
+	line-height: 1.5em;
+	font-size: 13px;
+	color: #666;
+	padding:20px;
+}
+
+a {
+	color: #01aed8;
+	text-decoration: none;
+}
+
+a:hover {
+	/**color: #01aed8;
+	text-decoration: none;**/
+}
+
+article, aside, dialog, figure, footer, header, hgroup, menu, nav, section, time {
+	display: block;
+}
+
+/***************************
+***************************/
+
+/** CONTENT AREA **/
+
+#content {
+	letter-spacing: 0;
+	line-height: 18px;
+	font-size: 12px;
+	padding:0;
+}
+
+#content h1, #content h1 a, #content h2, #content h2 a {
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0 0 30px 0;
+}
+
+#content h1, #content h2 {
+	margin: 0 0 10px 0;
+	line-height: 24px;
+}
+
+#content h1.loop-title {
+	margin-top: 0;
+}
+
+#content h3 {
+	font-size: 14px;
+	font-weight: 600;
+	margin: 20px 0 15px 0;
+}
+
+#content h4 {
+	font-size: 12px;
+	font-weight: 600;
+	margin: 20px 0 0 0;
+}
+
+#content h1 a, #content h2 a {
+	color: #717171;
+}
+
+#content h1 a:hover, #content h2 a:hover {
+	color: #aaa;
+}
+
+#content em, #content i {
+	font-style: italic;
+}
+
+#content u {
+	text-decoration: underline;
+}
+
+#content strong, #content b {
+	font-weight: bold;
+}
+
+#content p, #content a {
+		font-size: 12px;
+}
+
+#content a:hover {
+	text-decoration: underline; 
+}
+
+#content p, #content ul, #content ol, #content img {
+margin-top: 16px;
+}
+
+#content ul li, #content ol li {
+	list-style-type: disc;
+	list-style-position: inside;
+	margin-left: 20px;
+	padding-left: 20px;
+	text-indent: -20px;
+}
+
+#content ol li {
+	list-style-type: decimal;
+}
+
+#content blockquote {
+	margin: 16px 16px 0 16px;
+	font-style: italic;
+	font-family: Times;
+}
+
+#content blockquote p {
+	font-size: 16px;
+}
+
+.aligncenter, dl.aligncenter {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#content .wp-caption-text {
+	text-align:center;
+	font-size: 10px;
+	margin:0;
+}
+#content .wp-caption {
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+#content .green {
+	color: #61c201;
+}
+
+#content .blue {
+	color: #01aed8;
+}
+
+#content .withbr p {
+	margin: 0 0 15px 0;	
+}
+
+#content .email {
+	color: #000;
+}
+
+#content address {
+	padding: 8px 20px 8px 20px;
+	margin: 0 10px 0 10px;
+	border: 1px solid #ddd;
+	background-color: #eee;
+	display: inline-block;
+	color: #666;
+	font-size: 12px;
+	min-width: 160px;
+}
+
+/***************************
+***************************/
+
+#content .col, #content .colA, #content .colB, #content .colC, #content .col1, #content .col2 {float:left;display:block;}
+#content .uneven-Xcol .col {margin: 0 20px 0 0;}
+#content .even-2col .colA, #content .even-2col .colB {width: 215px;}
+#content .even-2col .colA {margin: 0 38px 0 0;}
+#content .even-3col .colA, #content .even-3col .colB, #content .even-3col .colC {width: 130px;}
+#content .even-3col .colA, #content .even-3col .colB {margin: 0 38px 0 0;}
+
+#content .product-2col .col1 {width: 300px;}
+#content .product-2col .col2 {width: 118px; margin: 0 0 0 50px;}
+
+/***************************
+***************************/
+
+/** BODY **/
+	
+	#col1, #col2, #col3 {
+		float: left;
+	}
+	
+	/** COLUMN 1 **/
+	
+	#col1 {
+		width: 126px;
+		margin-right: 38px;
+	}
+	
+	#col1 .title {
+		display: block;
+		color: #fff;
+		height: 25px;
+		line-height: 25px;
+		overflow: hidden;
+		padding: 0 8px 0 8px;
+			-moz-border-radius: 2px;
+			-webkit-border-radius: 2px;
+		border-radius: 2px;
+		text-transform: capitalize;
+	}
+
+	
+	/** COLUMN 3 **/
+
+	#col3 {
+		width: 300px;
+		float: right;
+	}
+	
+	#col3 .title {
+		display: block;
+		text-transform: capitalize;
+		font-size: 17px;
+		font-weight: 600;
+		padding: 0 2px 0 2px;
+	}
+	
+		/** 2 COLUMN SETTING **/
+		
+		#col3.set2col {
+			display: none;
+		}
+
+
+	/** COLUMN 2 **/
+
+		#col2 {
+			overflow: hidden;
+		}
+
+		/** 2 COLUMN SETTING **/
+		
+		#col2.set2col {
+			width: 806px;
+			margin-right: 0px;
+		}
+		
+		/** CONTENT **/
+		
+		#content {
+			
+		}
+
+
+/***************************
+***************************/
