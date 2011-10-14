@@ -2545,6 +2545,18 @@ padding: 2px;
 margin: 0;
 }
 
+#content #post-filter input[type="button"] {
+display: inline;
+float: right;
+margin: 0px 0px 0 10px;
+padding: 0 10px 0 10px;
+line-height: 17px;
+height: 18px;
+color: grey;
+background-color: #F2F2F2;
+border: 1px solid #CCC;
+}
+
 /** SPECIAL PAGE - CONTENT PARTNERS **/
 
 #content .contentpartnerslist a {

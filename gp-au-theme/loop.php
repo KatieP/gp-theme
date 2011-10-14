@@ -458,6 +458,11 @@ function search_index() {
 }
 
 function news_index() {
+	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
+		echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_news"><input type="button" value="Post a news story" /></a></span><div class="clear"></div></div>';
+	} else {
+		echo '<div id="post-filter"><span class="right"><a href="/get-involved/become-a-content-partner/"><input type="button" value="Post a news story" /></a></span><div class="clear"></div></div>';
+	}
 	default_index();
 }
 
@@ -495,7 +500,7 @@ function events_index() {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	#please fix this and make it accessable to non js users
-	echo '<div id="post-filter"><span class="right">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option>';
+	echo '<div id="post-filter"><div><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_events"><input type="button" value="Post an event" /></a></span></div><span class="right">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option>';
 	foreach ($states_au as $state) {
 		if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
   		echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
@@ -547,6 +552,8 @@ function jobs_index() {
 function competitions_index() {
 	global $wpdb;
 	global $post;
+	
+	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_competitions"><input type="button" value="Post a competition" /></a></span><div class="clear"></div></div>';
 	
 	$epochtime = strtotime('now');
     
@@ -603,10 +610,12 @@ function people_index() {
 }
 
 function advertorial_index() {
+	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a new stuff story" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
 
 function ngocampaign_index() {
+	echo '<div id="post-filter"><span class="right"><a href="wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a campaign" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
 
