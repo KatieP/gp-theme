@@ -2545,6 +2545,7 @@ padding: 2px;
 margin: 0;
 }
 
+/** Button that links front end category pages to create new post backend admin pages **/
 #content #post-filter input[type="button"] {
 display: inline;
 float: right;

@@ -458,6 +458,8 @@ function search_index() {
 }
 
 function news_index() {
+	# Button links front end news category pages to create new news post backend admin page
+	# if contributor is logged in links to create new news page, otherwise links to Content Partner info page
 	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
 		echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_news"><input type="button" value="Post a news story" /></a></span><div class="clear"></div></div>';
 	} else {
@@ -500,6 +502,7 @@ function events_index() {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	#please fix this and make it accessable to non js users
+	# Button links front end event category pages to create new event post backend admin pages
 	echo '<div id="post-filter"><div><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_events"><input type="button" value="Post an event" /></a></span></div><span class="right">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option>';
 	foreach ($states_au as $state) {
 		if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
@@ -553,6 +556,7 @@ function competitions_index() {
 	global $wpdb;
 	global $post;
 	
+	# Button links front end competition category pages to create new competition post backend admin page
 	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_competitions"><input type="button" value="Post a competition" /></a></span><div class="clear"></div></div>';
 	
 	$epochtime = strtotime('now');
@@ -610,11 +614,13 @@ function people_index() {
 }
 
 function advertorial_index() {
+	# Button links front end new stuff category pages to create new advertorial post backend admin pages
 	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a new stuff story" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
 
 function ngocampaign_index() {
+	# Button links front end category pages to create new post backend admin pages
 	echo '<div id="post-filter"><span class="right"><a href="wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a campaign" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
