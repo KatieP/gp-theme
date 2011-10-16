@@ -205,8 +205,6 @@ function add_jquery_data() {
 		});
 	</script>
 		<?php } ?>
-			
-	<script src="../wp-content/themes/greenpages/template/textareacounter.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		var info;
 		$(document).ready(function(){
@@ -273,10 +271,6 @@ function add_jquery_data() {
 	</script>
 	<?php } 
 	if (get_post_type() == 'gp_events' || get_post_type() == 'gp_competitions') { ?>
-	<link rel="stylesheet" href="../wp-content/themes/greenpages/template/jquery-ui-1.8.9.custom.css" type="text/css" media="all" />
-	<script src="../wp-content/themes/greenpages/template/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
-    <script src="../wp-content/themes/greenpages/template/jquery.ui.datepicker.min.js" type="text/javascript"></script>
-    <script src="../wp-content/themes/greenpages/template/pubforce-admin.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function($) {
 			$(".tfdate").datepicker({
@@ -337,67 +331,7 @@ function add_jquery_data() {
 	<?php } 
 	}
 }
-
 add_filter('admin_head', 'add_jquery_data');
-
-add_action('init', 'gp_enqueue_scripts');
-function gp_enqueue_scripts() {
-	if(!is_admin()){
-		wp_register_script('pirobox-extended', get_bloginfo('template_url') . '/template/pirobox_extended/js/pirobox_extended.js');
-	    wp_enqueue_script('pirobox-extended');
-		
-		if ($current_user->subscription["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
-			wp_register_script('boxy', get_bloginfo('template_url') . '/template/jquery.boxy.js');
-	   		wp_enqueue_script('boxy');	
-		}
-		
-	    wp_register_script('account-menu', get_bloginfo('template_url') . '/template/account-menu.js');
-	    wp_enqueue_script('account-menu');
-	    
-	    wp_register_script('directory-menu', get_bloginfo('template_url') . '/template/directory-menu.js');
-	    wp_enqueue_script('directory-menu');
-	    
-	    wp_register_script('followus-nav', get_bloginfo('template_url') . '/template/followus-nav.js');
-	    wp_enqueue_script('followus-nav');
-	    
-	    wp_register_script('like', get_bloginfo('template_url') . '/template/like.js');
-	    wp_enqueue_script('like');
-	    
-	    wp_register_script('footer', get_bloginfo('template_url') . '/template/footer.js');
-	    wp_enqueue_script('footer');
-	}
-} 
-
-add_action('init', 'gp_enqueue_styles');
-function gp_enqueue_styles() {
-	if(!is_admin()){
-		wp_register_style('template-info', get_bloginfo('template_url') . '/template/style.css');
-    	wp_enqueue_style('template-info');
-		
-		wp_register_style('reset', get_bloginfo('template_url') . '/template/reset.css');
-    	wp_enqueue_style('reset');
-		
-		wp_register_style('generic', get_bloginfo('template_url') . '/template/generic.css');
-    	wp_enqueue_style('generic');
-    	
-		if ($current_user->subscription["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
-			wp_register_style('boxy', get_bloginfo('template_url') . '/template/boxy.css');
-    		wp_enqueue_style('boxy');
-		}
-		
-		wp_register_style('pirobox-style', get_bloginfo('template_url') . '/template/pirobox_extended/css_pirobox/style_2/style.css');
-    	wp_enqueue_style('pirobox-style');
-    	
-    	wp_register_style('pirobox-css', get_bloginfo('template_url') . '/template/pirobox_extended/css/css.css');
-    	wp_enqueue_style('pirobox-css');
-    	
-    	wp_register_style('pirobox-default', get_bloginfo('template_url') . '/template/pirobox_extended/content/css/default.css');
-    	wp_enqueue_style('pirobox-default');
-		
-		wp_register_style('pirobox-stylesheet', get_bloginfo('template_url') . '/template/pirobox_extended/css/sansation/stylesheet.css');
-    	wp_enqueue_style('pirobox-stylesheet');
-	}
-}
 
 add_action('wp_head', 'gp_after_scripts');
 function gp_after_scripts() {
