@@ -58,7 +58,7 @@
 				<nav id="lyb">
 					<a href="<?php echo get_permalink(472); ?>">
 						<span class="title">List your business</span>
-						<span class="content">30 days contract free</span>
+						<span class="content">Free 30 day trial</span>
 					</a>
 				</nav>
 				<nav id="advertisewus">

@@ -621,7 +621,7 @@ function advertorial_index() {
 
 function ngocampaign_index() {
 	# Button links front end category pages to create new post backend admin pages
-	echo '<div id="post-filter"><span class="right"><a href="wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a campaign" /></a></span><div class="clear"></div></div>';
+	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a campaign" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
 
