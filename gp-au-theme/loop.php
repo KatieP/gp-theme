@@ -127,6 +127,39 @@ if ( function_exists($set_template) ) {
 
 /*** TEMPLATE COMPONENT FUNCTIONS ***/
 
+function theme_singlecreate_post() {
+	?> <div id="post-filter"><span class="right"> <?php 
+	
+	# Button links front end pages to appropriate create new post backend admin pages
+	
+	switch (get_post_type()) {
+		case 'gp_news':
+			# if contributor is logged in links to create new news page, otherwise links to Content Partner info page
+			if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
+				echo '<a href="/wp-admin/post-new.php?post_type=gp_news"><input type="button" value="Post a News Story" /></a>';
+			} else {
+				echo '<a href="/get-involved/become-a-content-partner/"><input type="button" value="Post a News Story" /></a>';
+			}
+			break;
+		case 'gp_ngocampaign':
+			echo '<a href="/wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a Campaign" />';
+			break;
+		case 'gp_advertorial':
+			echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a New Stuff Story" /></a>';
+			break;
+		case 'gp_competitions':
+			echo '<a href="/wp-admin/post-new.php?post_type=gp_competitions"><input type="button" value="Post a Competition" /></a>';
+			break;
+		case 'gp_events':
+			echo '<a href="/wp-admin/post-new.php?post_type=gp_events"><input type="button" value="Post an Event" /></a>';
+			break;
+		case 'gp_people':
+			echo '<a href="/get-involved/become-a-member/"><input type="button" value="Create a Profile" /></a>';
+			break;
+	}
+	?> </span><div class="clear"></div></div> <?php 
+}
+
 function theme_singletitle() {
 	global $wp_query;
 	global $post;
@@ -174,16 +207,16 @@ function theme_single_contributor_donate_join_bar(){
 		
 		?>
 		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
-			  <div id="post-donate-join-bar">
-			  	<?php
-			  	theme_contributors_donate($donate_url);
-				theme_contributors_join($join_url);
-				theme_contributors_letter($letter_url);
-				theme_contributors_petition($petition_url);
-				theme_contributors_volunteer($volunteer_url);
-				?>			
-			  <div>
-			  <div class="clear"></div>
+		<div id="post-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url);
+			theme_contributors_join($join_url);
+			theme_contributors_letter($letter_url);
+			theme_contributors_petition($petition_url);
+			theme_contributors_volunteer($volunteer_url);
+			?>			
+		</div>
+		<div class="clear"></div>
 		<?php		
 	}
 }
@@ -225,6 +258,10 @@ function theme_singlecomments() {
 		echo '<a name="comments"></a>';
 		comments_template( '', true );
 	}
+}
+
+function theme_indexcreate_post() {
+	theme_singlecreate_post();
 }
 
 function theme_indextitle() {
@@ -486,13 +523,6 @@ function search_index() {
 }
 
 function news_index() {
-	# Button links front end news category pages to create new news post backend admin page
-	# if contributor is logged in links to create new news page, otherwise links to Content Partner info page
-	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
-		echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_news"><input type="button" value="Post a news story" /></a></span><div class="clear"></div></div>';
-	} else {
-		echo '<div id="post-filter"><span class="right"><a href="/get-involved/become-a-content-partner/"><input type="button" value="Post a news story" /></a></span><div class="clear"></div></div>';
-	}
 	default_index();
 }
 
@@ -500,6 +530,8 @@ function events_index() {
 	global $wpdb;
 	global $post;
 
+	theme_indexcreate_post();
+	
 	$epochtime = strtotime('now');
 	$states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
     if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
@@ -584,9 +616,8 @@ function competitions_index() {
 	global $wpdb;
 	global $post;
 	
-	# Button links front end competition category pages to create new competition post backend admin page
-	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_competitions"><input type="button" value="Post a competition" /></a></span><div class="clear"></div></div>';
-	
+	theme_indexcreate_post();
+		
 	$epochtime = strtotime('now');
     
     $querytotal = "SELECT COUNT(*) as count FROM $wpdb->posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_competitions_enddate' left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_competitions_startdate' WHERE post_status='publish' AND post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . ";";
@@ -642,14 +673,10 @@ function people_index() {
 }
 
 function advertorial_index() {
-	# Button links front end new stuff category pages to create new advertorial post backend admin pages
-	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a new stuff story" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
 
 function ngocampaign_index() {
-	# Button links front end category pages to create new post backend admin pages
-	echo '<div id="post-filter"><span class="right"><a href="/wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a campaign" /></a></span><div class="clear"></div></div>';
 	default_index();
 }
 
