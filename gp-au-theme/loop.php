@@ -374,6 +374,8 @@ function home_index() {
 	global $wpdb;
 	global $post;
 	
+	theme_indexcreate_post();
+	
 	$epochtime = strtotime('now');
 	
 	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
