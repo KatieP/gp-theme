@@ -617,6 +617,11 @@ function my_show_extra_profile_fields( $user ) {
 	if ( get_user_role( array($rolecontributor, 'administrator') ) ) {
 		$contributors_blurb = get_the_author_meta( 'contributors_blurb', $user->ID );
 		$contributors_posttagline = get_the_author_meta( 'contributors_posttagline', $user->ID );
+		$contributors_donate_url = get_the_author_meta( 'contributors_donate_url', $user->ID );
+		$contributors_join_url = get_the_author_meta( 'contributors_join_url', $user->ID );
+		$contributors_letter_url = get_the_author_meta( 'contributors_letter_url', $user->ID );
+		$contributors_petition_url = get_the_author_meta( 'contributors_petition_url', $user->ID );
+		$contributors_volunteer_url = get_the_author_meta( 'contributors_volunteer_url', $user->ID );
 		echo ('
 		<h3>Contributor\'s Profile</h3>
 		
@@ -631,6 +636,36 @@ function my_show_extra_profile_fields( $user ) {
 				<td><input type="text" maxlenght="255" name="contributors_posttagline" id="contributors_posttagline" class="regular-text" value="' . $contributors_posttagline . '" /><br />
 				<span class="description">In a couple sentences tell visitors a little about your organisation. Visible at end of each post you create.</span></td>
 			</tr>
+			<tr>
+				<th><label for="contributors_donate_url">Contributors Donation Link</label></th>
+				<td><input type="text" maxlength="255" name="contributors_donate_url" id="contributors_donate_url" class="regular-text" value="' . $contributors_donate_url . '" /><br />
+				<span class="description">Enter the url you use to accept donations and a \'Donate\' button will be visible on each 
+				post you create and your profile page!</span></td>
+			</tr>
+			<tr>
+				<th><label for="contributors_join_url">Contributors Join Link</label></th>
+				<td><input type="text" maxlength="255" name="contributors_join_url" id="contributors_join_url" class="regular-text" value="' . $contributors_join_url . '" /><br />
+				<span class="description">Enter the url you use to sign up new members and a \'Join\' button 
+				will be visible on each post you create and your profile page!</span></td>
+			</tr>
+			<tr>
+				<th><label for="contributors_letter_url">Contributors Send a Letter Link</label></th>
+				<td><input type="text" maxlength="255" name="contributors_letter_url" id="contributors_letter_url" class="regular-text" value="' . $contributors_letter_url . '" /><br />
+				<span class="description">Enter the url you use to encourage sending a letter to a 
+				decision maker and a \'Send Letter\' button will be visible on each post you create and your profile page!</span></td>
+			</tr>
+			<tr>
+				<th><label for="contributors_petition_url">Contributors Sign a Petition Link</label></th>
+				<td><input type="text" maxlength="255" name="contributors_petition_url" id="contributors_petition_url" class="regular-text" value="' . $contributors_petition_url . '" /><br />
+				<span class="description">Enter the url you use to encourage signing a petition 
+				and a \'Sign a petition\' button will be visible on each post you create and your profile page!</span></td>
+			</tr>
+			<tr>
+				<th><label for="contributors_volunteer_url">Contributors Volunteer Link</label></th>
+				<td><input type="text" maxlength="255" name="contributors_volunteer_url" id="contributors_volunteer_url" class="regular-text" value="' . $contributors_volunteer_url . '" /><br />
+				<span class="description">Enter the url you use to sign up volunteers and a \'Volunteer\' button 
+				will be visible on each post you create and your profile page!</span></td>
+			</tr>	
 		</table>
 		');
 	}
@@ -824,6 +859,11 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'editors_blurb', $_POST['editors_blurb'] );
 	update_usermeta($user_id, 'contributors_blurb', $_POST['contributors_blurb'] );
 	update_usermeta($user_id, 'contributors_posttagline', $_POST['contributors_posttagline'] );
+	update_usermeta($user_id, 'contributors_donate_url', $_POST['contributors_donate_url'] );
+	update_usermeta($user_id, 'contributors_join_url', $_POST['contributors_join_url'] );
+	update_usermeta($user_id, 'contributors_letter_url', $_POST['contributors_letter_url'] );
+	update_usermeta($user_id, 'contributors_petition_url', $_POST['contributors_petition_url'] );
+	update_usermeta($user_id, 'contributors_volunteer_url', $_POST['contributors_volunteer_url'] );	
 	update_usermeta($user_id, 'notification', $notification_post );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/

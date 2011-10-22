@@ -161,6 +161,33 @@ function theme_singlepagination() {
 	/* wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); */
 }
 
+function theme_single_contributor_donate_join_bar(){
+	if (get_post_type() != "page") { 
+		global $post;
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
+			  <div id="post-donate-join-bar">
+			  	<?php
+			  	theme_contributors_donate($donate_url);
+				theme_contributors_join($join_url);
+				theme_contributors_letter($letter_url);
+				theme_contributors_petition($petition_url);
+				theme_contributors_volunteer($volunteer_url);
+				?>			
+			  <div>
+			  <div class="clear"></div>
+		<?php		
+	}
+}
+
 function theme_singlesocialbar() {
 	if (get_post_type() != "page") { 
 		global $post;
@@ -287,6 +314,7 @@ function default_single() {
 			}
 			the_content();
 			theme_singlepagination();
+			theme_single_contributor_donate_join_bar();
 			theme_singlesocialbar();
 			theme_singlecomments();
 		echo '</article>';
@@ -1035,6 +1063,42 @@ function theme_contributorsblurb($profile_author) {
 		echo '<p>' . nl2br($profile_author->contributors_blurb) . '</p>';
 	}
 }
+
+/********************************************************************************/
+
+/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
+
+function theme_contributors_donate($donate_url) {
+	if ( !empty($donate_url) ) {
+		echo '<span><a href="'.$donate_url.'"><input type="button" id="donate" value="Donate" /></a></span>';
+	}
+}
+
+function theme_contributors_join($join_url) {
+	if ( !empty($join_url) ) {
+		echo '<span><a href="'.$join_url.'"><input type="button" id="join" value="Join" /></a></span>';
+	}
+}
+
+function theme_contributors_letter($letter_url) {
+	if ( !empty($letter_url) ) {
+		echo '<span><a href="'.$letter_url.'"><input type="button" id="letter" value="Send Letter" /></a></span>';
+	}
+}
+
+function theme_contributors_petition($petition_url) {
+	if ( !empty($petition_url) ) {
+		echo '<span><a href="'.$petition_url.'"><input type="button" id="petition" value="Sign Petition" /></a></span>';
+	}
+}
+
+function theme_contributors_volunteer($volunteer_url) {
+	if ( !empty($volunteer_url) ) {
+		echo '<span><a href="'.$volunteer_url.'"><input type="button" id="volunteer" value="Volunteer" /></a></span>';
+	}
+}
+
+/********************************************************************************/
 
 function theme_editorsblurb($profile_author) {
 	if ( !empty($profile_author->editors_blurb) ) {

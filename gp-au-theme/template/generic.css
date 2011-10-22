@@ -2558,6 +2558,46 @@ background-color: #F2F2F2;
 border: 1px solid #CCC;
 }
 
+/** CONTRIBUTOR DONATE | JOIN BAR / CONTENT PARTNER DONATE | JOIN | SIGN LETTER | VOLUNTEER BUTTONS **/
+
+#post-donate-join-bar {
+	margin-top: 30px;
+	margin-bottom: 80px;
+}
+
+#post-donate-join-bar input[type="button"] {
+	padding: 0 4px 0 4px;
+	overflow: hidden;
+	float: left;
+	height: 20px;
+	display: inline;
+	margin: 0px 0px 0px 10px;
+	line-height: 17px;
+	color: white;
+	border: 1px solid #CCC;
+	width: 80px;
+}
+
+#post-donate-join-bar #donate {
+	background-color: #EBA006;
+}	 
+
+#post-donate-join-bar #join {
+	background-color: #FC0D6B;
+}	 
+
+#post-donate-join-bar #letter {
+	background-color: #00AED7;
+}
+
+#post-donate-join-bar #petition {
+	background-color: #B5E2FD;
+}
+
+#post-donate-join-bar #volunteer {
+	background-color: #61C201;
+}
+
 /** SPECIAL PAGE - CONTENT PARTNERS **/
 
 #content .contentpartnerslist a {
