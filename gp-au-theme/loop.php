@@ -1157,6 +1157,33 @@ function theme_contributorsblurb($profile_author) {
 
 /** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
 
+function theme_profile_contributor_donate_join_bar($profile_author){
+	if (get_post_type() != "page") { 
+		global $post;
+		
+		$post_author = $profile_author;
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<h3>Would you like to help <?php echo $post_author->display_name ?> change the world?</h3>	 
+		<div id="post-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url);
+			theme_contributors_join($join_url);
+			theme_contributors_letter($letter_url);
+			theme_contributors_petition($petition_url);
+			theme_contributors_volunteer($volunteer_url);
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php				
+	}
+}
+
 function theme_contributors_donate($donate_url) {
 	if ( !empty($donate_url) ) {
 		echo '<span><a href="'.$donate_url.'"><input type="button" id="donate" value="Donate" /></a></span>';
@@ -1360,6 +1387,7 @@ function editor_index($profile_author) {
 	echo '</div><div class="clear"></div>';
 	theme_editorsblurb($profile_author);
 	#echo '<div class="clear"></div>';
+	theme_profile_contributor_donate_join_bar($profile_author);	
 	theme_authorposts($profile_author); 
 	echo '<div class="clear"></div>';
 }
