@@ -1432,6 +1432,7 @@ function contributor_index($profile_author) {
 		theme_authorseen($profile_author);
 		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
+	theme_profile_contributor_donate_join_bar($profile_author);		
 	theme_contributorsblurb($profile_author);
 	echo '<div class="clear"></div>';
 	theme_authorposts($profile_author); 
