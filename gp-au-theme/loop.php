@@ -1198,7 +1198,7 @@ function theme_contributors_join($join_url) {
 
 function theme_contributors_letter($letter_url) {
 	if ( !empty($letter_url) ) {
-		echo '<span><a href="'.$letter_url.'"><input type="button" id="letter" value="Send Email" /></a></span>';
+		echo '<span><a href="'.$letter_url.'"><input type="button" id="letter" value="Send Letter" /></a></span>';
 	}
 }
 

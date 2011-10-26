@@ -649,10 +649,10 @@ function my_show_extra_profile_fields( $user ) {
 				will be visible on each post you create and your profile page!</span></td>
 			</tr>
 			<tr>
-				<th><label for="contributors_letter_url">Contributors Send an Email Link</label></th>
+				<th><label for="contributors_letter_url">Contributors Send a Letter Link</label></th>
 				<td><input type="text" maxlength="255" name="contributors_letter_url" id="contributors_letter_url" class="regular-text" value="' . $contributors_letter_url . '" /><br />
-				<span class="description">Enter the url you use to encourage sending an email to a 
-				decision maker and a \'Send Email\' button will be visible on each post you create and your profile page!</span></td>
+				<span class="description">Enter the url you use to encourage sending a letter to a 
+				decision maker and a \'Send Letter\' button will be visible on each post you create and your profile page!</span></td>
 			</tr>
 			<tr>
 				<th><label for="contributors_petition_url">Contributors Sign a Petition Link</label></th>
