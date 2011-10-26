@@ -1,5 +1,7 @@
 <?php
 
+require(dirname(__FILE__) . '/email-functions.php');
+
 /*
  * TIPS:
  * http://wordpress.stackexchange.com/questions/1567/best-collection-of-code-for-your-functions-php-file

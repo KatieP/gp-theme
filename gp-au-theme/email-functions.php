@@ -1,5 +1,18 @@
 <?php
-require( dirname(__FILE__) . '/wp-load.php' );
+//require( dirname(__FILE__) . '/wp-load.php' );
+
+function do_this_in_a_minute() {
+  if(mail("scmelton@gmail.com", 
+          "test wp cron", 
+          "hello, I'm a test!")) {
+    echo("<p>Message successfully sent.</p>");
+  } else {
+    echo("<p>Message delivery failed!</p>");
+  }
+}
+add_action('send_email_cron_test_event', 'do_this_in_a_minute');
+
+wp_schedule_single_event(time()+5, 'send_email_cron_test_event');
 
 function send_user_impressions_reminder_email ($post_id) {
   //do database queries
