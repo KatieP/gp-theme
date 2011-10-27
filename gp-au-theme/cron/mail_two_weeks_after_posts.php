@@ -97,7 +97,7 @@ function email_post($row) {
 	
  	$to = "katiepatrickgp@gmail.com";
 	//$to = $email;
-  $bcc = "katiepatrickgp@gmail.com";
+  $bcc = "katiepatrickgp@gmail.com, scmelton@gmail.com, eddy.respondek@gmail.com, jessebrowne78@gmail.com";
 	$subject="Report: Your post from " . $date . " has gotten a bunch of visitors!";
 	$body = '<table width="600px" style="font-size: 15px; font-family: helvetica, arial, tahoma; margin: 5px; background-color: rgb(255,255,255);">';
 	$body .= '	<tr><td align="center">';
