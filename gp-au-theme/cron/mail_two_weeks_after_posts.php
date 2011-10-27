@@ -15,7 +15,7 @@ $result = mysql_query("SELECT wp_posts.post_name AS post_url
 , post_type AS type
 FROM wp_posts 
 JOIN wp_users ON wp_posts.post_author = wp_users.ID
-WHERE date(post_date) >= date(date_sub(now(), INTERVAL 2 WEEK))
+WHERE date(post_date) == date(date_sub(now(), INTERVAL 2 WEEK))
 AND post_type like 'gp_%'
 AND post_status = 'publish'");
 while ($row = mysql_fetch_assoc($result)) {
@@ -95,9 +95,9 @@ function email_post($row) {
 
   // Send the email
 	
- 	$to = "katie.patrick@thegreenpages.com.au";
-  $bcc = "scmelton@gmail.com";
+ 	$to = "katiepatrickgp@gmail.com";
 	//$to = $email;
+  $bcc = "katiepatrickgp@gmail.com";
 	$subject="Report: Your post from " . $date . " has gotten a bunch of visitors!";
 	$body = '<table width="600px" style="font-size: 15px; font-family: helvetica, arial, tahoma; margin: 5px; background-color: rgb(255,255,255);">';
 	$body .= '	<tr><td align="center">';
@@ -123,5 +123,3 @@ function email_post($row) {
 	
 	echo "<br><br>====================<br><br>To $email:<br><br>$body";
 }
-
-
