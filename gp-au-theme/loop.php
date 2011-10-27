@@ -589,11 +589,9 @@ function news_index() {
 }
 
 function events_index() {
-	global $wpdb;
-	global $post;
+	global $wpdb, $post, $states_au;
 	
 	$epochtime = strtotime('now');
-	$states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
     if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
 		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
     }

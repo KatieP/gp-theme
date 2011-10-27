@@ -1,5 +1,7 @@
 <?php
 
+$states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
+
 /*
  * TIPS:
  * http://wordpress.stackexchange.com/questions/1567/best-collection-of-code-for-your-functions-php-file
@@ -442,8 +444,9 @@ function register_query_vars( $query_vars )
 /** ADD CUSTOM REWRITE RULES **/
 # see: http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
 function my_rewrite_rules( $wp_rewrite ) {
+  global $states_au;
+
 	$newrules = array();
-	$states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
 	
 	$newrules['events/AU/(' . implode($states_au, "|") . ')/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]&paged=$matches[2]';
 	$newrules['events/AU/(' . implode($states_au, "|") . ')/?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]';
@@ -1693,7 +1696,7 @@ function updated_messages( $messages ) {
 
 /***  meta ***/
 function gp_events_meta () {
-    global $post;
+    global $post, $states_au;
     $custom = get_post_custom($post->ID);
 
     $meta_sd = $custom["gp_events_startdate"][0];
@@ -1715,8 +1718,6 @@ function gp_events_meta () {
     $clean_st = date($time_format, $meta_st);
     $clean_et = date($time_format, $meta_et);
 
-    $states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
-    
     echo '<input type="hidden" name="gp_events-nonce" id="gp_events-nonce" value="' . wp_create_nonce( 'gp_events-nonce' ) . '" />';
     ?>
     <div class="tf-meta">
