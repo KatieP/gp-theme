@@ -513,13 +513,13 @@ margin-top: 16px;
 
 /** HEADER **/
 
-#header-mast, #header-nav, #header-search, #header-auth {
+#header-mast, #header-nav, #cref_iframe, #header-auth {
 	overflow: hidden;
 	float: left;
 	height: 42px;
 }
 
-#header-search, #header-auth {
+#cref_iframe, #header-auth {
 	width: 300px;
 	margin: 0 0 0 36px;
 }
@@ -678,6 +678,7 @@ margin-top: 16px;
 		cursor: pointer;
 		border: 0;
 		background-color: transparent;
+    color: #fff;
 	}
 	
 	

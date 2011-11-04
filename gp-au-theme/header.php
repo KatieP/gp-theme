@@ -134,11 +134,13 @@ $template_url = get_bloginfo('template_url');
 					<img src="<?php echo $template_url; ?>/template/mast.gif" width="234" height="38" />
 				</a>
 			</nav>
-			<form id="header-search" method="post">
+      <!-- Google CSE Search Box -->
+			<form id="cref_iframe" method="get" action="http://greenpages.localhost/search/">
 				<div id="search-tag"><span>Search For:</span> products, news, people, events, tips, forums.</div>
-				<div id="search-field"><input type="text" maxlength="255" /></div>
-				<div id="search-button">Search<input type="button" name="search" title="search" /></div>
+				<div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
+				<div id="search-button"><input type="submit" name="sa" value="Search" /></div>
 			</form>
+      <!-- Google CSE Search Box Ends -->
 			<nav id="header-nav">
 				<ul>
 					<?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
