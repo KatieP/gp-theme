@@ -135,7 +135,7 @@ $template_url = get_bloginfo('template_url');
 				</a>
 			</nav>
       <!-- Google CSE Search Box -->
-			<form id="cref_iframe" method="get" action="http://greenpages.localhost/search/">
+        <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
 				<div id="search-tag"><span>Search For:</span> products, news, people, events, tips, forums.</div>
 				<div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
 				<div id="search-button"><input type="submit" name="sa" value="Search" /></div>
