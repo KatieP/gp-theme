@@ -39,7 +39,7 @@
 				<?php
 				#}
 				
-				if ( get_post_type() == 'gp_news' && !is_author() && !is_single() ) {
+				if ( get_post_type() == 'gp_news' && !is_author() && !is_single() && !wp_title("",0)==" Search") {
 				?> 
 				<div id="twitter">
 					<span class="title">Live: Environmental News</span>
