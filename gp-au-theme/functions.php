@@ -570,6 +570,8 @@ function my_show_extra_profile_fields( $user ) {
 		');
 	}
 	
+/**	
+	
 	$locale_postcode = get_the_author_meta( 'locale_postcode', $user->ID );
 	echo ('
 	<h3>Locale</h3>
@@ -582,6 +584,8 @@ function my_show_extra_profile_fields( $user ) {
 		</tr>
 	</table>
 	');
+
+**/	
 	
 	if ( get_user_role( array($rolesubscriber, 'administrator') ) ) {
 		$employment_jobtitle = get_the_author_meta( 'employment_jobtitle', $user->ID );
@@ -639,40 +643,45 @@ function my_show_extra_profile_fields( $user ) {
 				<td><input type="text" maxlenght="255" name="contributors_posttagline" id="contributors_posttagline" class="regular-text" value="' . $contributors_posttagline . '" /><br />
 				<span class="description">In a couple sentences tell visitors a little about your organisation. Visible at end of each post you create.</span></td>
 			</tr>
+		</table>
+		
+		<h3>Activist Bar Buttons</h3>
+		
+		<table class="form-table">
 			<tr>
-				<th><label for="contributors_donate_url">Contributors Donation Link</label></th>
+				<th><label for="contributors_donate_url">Donate</label></th>
 				<td><input type="text" maxlength="255" name="contributors_donate_url" id="contributors_donate_url" class="regular-text" value="' . $contributors_donate_url . '" /><br />
 				<span class="description">Enter the url you use to accept donations and a \'Donate\' button will be visible on each 
 				post you create and your profile page!</span></td>
 			</tr>
 			<tr>
-				<th><label for="contributors_join_url">Contributors Join Link</label></th>
+				<th><label for="contributors_join_url">Join</label></th>
 				<td><input type="text" maxlength="255" name="contributors_join_url" id="contributors_join_url" class="regular-text" value="' . $contributors_join_url . '" /><br />
 				<span class="description">Enter the url you use to sign up new members and a \'Join\' button 
 				will be visible on each post you create and your profile page!</span></td>
 			</tr>
 			<tr>
-				<th><label for="contributors_letter_url">Contributors Send a Letter Link</label></th>
+				<th><label for="contributors_letter_url">Send Letter</label></th>
 				<td><input type="text" maxlength="255" name="contributors_letter_url" id="contributors_letter_url" class="regular-text" value="' . $contributors_letter_url . '" /><br />
 				<span class="description">Enter the url you use to encourage sending a letter to a 
 				decision maker and a \'Send Letter\' button will be visible on each post you create and your profile page!</span></td>
 			</tr>
 			<tr>
-				<th><label for="contributors_petition_url">Contributors Sign a Petition Link</label></th>
+				<th><label for="contributors_petition_url">Sign Petition</label></th>
 				<td><input type="text" maxlength="255" name="contributors_petition_url" id="contributors_petition_url" class="regular-text" value="' . $contributors_petition_url . '" /><br />
 				<span class="description">Enter the url you use to encourage signing a petition 
 				and a \'Sign a petition\' button will be visible on each post you create and your profile page!</span></td>
 			</tr>
 			<tr>
-				<th><label for="contributors_volunteer_url">Contributors Volunteer Link</label></th>
+				<th><label for="contributors_volunteer_url">Volunteer</label></th>
 				<td><input type="text" maxlength="255" name="contributors_volunteer_url" id="contributors_volunteer_url" class="regular-text" value="' . $contributors_volunteer_url . '" /><br />
 				<span class="description">Enter the url you use to sign up volunteers and a \'Volunteer\' button 
 				will be visible on each post you create and your profile page!</span></td>
-			</tr>	
-		</table>
-		');
+			</tr>		
+		</table>		');
 	}
 
+/**		
 	echo ('
 	<h3>Notification Settings</h3>
 
@@ -715,9 +724,10 @@ function my_show_extra_profile_fields( $user ) {
 		
 			}
 		}
+**/
 	?>
 	
-	</table>
+	<!-- </table> -->
 	
 	<?php
 	echo ('

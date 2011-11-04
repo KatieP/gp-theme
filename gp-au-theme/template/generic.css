@@ -2562,8 +2562,8 @@ border: 1px solid #CCC;
 /** CONTRIBUTOR DONATE | JOIN BAR / CONTENT PARTNER DONATE | JOIN | SIGN LETTER | VOLUNTEER BUTTONS **/
 
 #post-donate-join-bar {
-	margin-top: 30px;
-	margin-bottom: 80px;
+	margin-top: 10px;
+	margin-bottom: 20px;
 }
 
 #post-donate-join-bar input[type="button"] {

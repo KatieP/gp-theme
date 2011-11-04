@@ -1167,7 +1167,6 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 		$volunteer_url = $post_author->contributors_volunteer_url;
 		
 		?>
-		<h3>Would you like to help <?php echo $post_author->display_name ?> change the world?</h3>	 
 		<div id="post-donate-join-bar">
 			<?php
 			theme_contributors_donate($donate_url);
