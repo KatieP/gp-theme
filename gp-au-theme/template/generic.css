@@ -2572,11 +2572,11 @@ border: 1px solid #CCC;
 	float: left;
 	height: 20px;
 	display: inline;
-	margin: 0px 10px 0px 0px;
+	margin: 0px 15px 0px 0px;
 	line-height: 17px;
 	color: white;
 	border: 1px solid #CCC;
-	width: 80px;
+	width: 82px;
 }
 
 #post-donate-join-bar #donate {
@@ -2597,6 +2597,7 @@ border: 1px solid #CCC;
 
 #post-donate-join-bar #volunteer {
 	background-color: #61C201;
+	margin-right: 0px;
 }
 
 /** SPECIAL PAGE - CONTENT PARTNERS **/
