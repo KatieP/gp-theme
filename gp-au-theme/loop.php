@@ -374,21 +374,23 @@ function theme_index_feed_item() {
 	global $post;
 	
 	echo '<div class="profile-postbox">';
-		if ( has_post_thumbnail() ) {
-			$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-			$imageURL = $imageArray[0];
-			echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-		}
-		
-		?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php 		
+			?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php 		
 
-		$post_author = get_userdata($post->post_author);
-		$post_author_url = get_author_posts_url($post->post_author);
+			$post_author = get_userdata($post->post_author);
+			$post_author_url = get_author_posts_url($post->post_author);
 
-		echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></span>';				
-		the_excerpt();			
-		echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>		
-	</div>';
+			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></span>';				
+			the_excerpt();			
+			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>		
+		</div>';
+
+	if ( has_post_thumbnail() ) {
+		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+		$imageURL = $imageArray[0];
+		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+	}
+
+	echo '<div class="clear"></div>';
 }
 
 /*** TEMPLATE RENDERING ***/
