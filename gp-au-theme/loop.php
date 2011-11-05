@@ -736,15 +736,17 @@ function competitions_index() {
 	if ($pageposts) {
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
-			theme_indextitle();
-			theme_indexdetails();
 			$displaydate = get_competitiondate( strtotime('now'), $post->gp_competitions_enddate );
-			if ( !$displaydate ) {
-				the_content('Continue reading...');
-			} else {
-				the_content($displaydate);
-			}
-		    theme_indexsocialbar();
+			theme_index_feed_item();
+			echo $displaydate.'<div class="clear"></div>';
+			#theme_indextitle();
+			#theme_indexdetails();
+			#if ( !$displaydate ) {
+			#	the_content('Continue reading...');
+			#} else {
+			#	the_content($displaydate);
+			#}
+		    #theme_indexsocialbar();
 		}
 		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
 			<nav id="post-nav">

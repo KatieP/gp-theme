@@ -2476,6 +2476,10 @@ ul.categorieslistmain {
 	color: #f25b00;
 }
 
+.competition-enddate {
+	margin-bottom: 30px;	
+}	
+
 /** AJAX LIKE FEATURE  **/
 .like_heart {
      text-indent: -5000px;

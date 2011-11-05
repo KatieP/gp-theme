@@ -2298,7 +2298,7 @@ function get_competitiondate($start, $end, $format = 2) {
 	
 	}
 	
-	return $displaydate;
+	return '<div class="competition-enddate">'.$displaydate.'</div>';
 }
 
 /** GET ABSOLUTE DATE **/
