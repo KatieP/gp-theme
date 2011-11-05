@@ -2435,13 +2435,9 @@ ul.categorieslistmain {
 	color: #eff8e5;
 }
 
-#content .profile-postbox h1 {
-	margin-bottom: 0;
-}
-
 #content .profile-postbox {
 	float: left;
-	width: 310px;
+	width: 470px;
 	margin-right: 20px;
 }
 
@@ -2449,13 +2445,27 @@ ul.categorieslistmain {
 	margin: 6px 0 6px 0;
 }
 
-#content .profile-postbox h1, #content .profile_minithumb img {
-	margin: 30px 0 0 0;
+#content .profile-postbox h1 {
+	margin: 0 0 0 0;
+}
+
+.profile-postbox h1.loop-title {
+	margin-top: 0;
+}
+
+#content .profile-postbox .loop-title h1 {
+	margin: 0 0 0 0;
+}
+
+#content .profile_minithumb img {
+	margin: 0 0 80px 20px;
+	float: right;
 }
 
 #content .profile_postlink {
 	font-weight: bold;
 	float: left;
+	margin-bottom: 15px;
 }
 
 #content .comment-profile {

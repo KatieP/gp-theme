@@ -368,6 +368,29 @@ function theme_like() {
 	}
 }
 
+/** NEW INDEX FEED STYLE **/
+
+function theme_index_feed_item() {
+	global $post;
+	
+	echo '<div class="profile-postbox">';
+		if ( has_post_thumbnail() ) {
+			$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+			$imageURL = $imageArray[0];
+			echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+		}
+		
+		?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php 		
+
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+
+		echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></span>';				
+		the_excerpt();			
+		echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>		
+	</div>';
+}
+
 /*** TEMPLATE RENDERING ***/
 
 function default_index() {
@@ -433,8 +456,6 @@ function home_index() {
 	global $wpdb;
 	global $post;
 	
-	theme_homecreate_post();
-	
 	$epochtime = strtotime('now');
 	
 	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
@@ -442,7 +463,7 @@ function home_index() {
 	$querystr .= " union (" . $qrystart . " post_type='gp_events' and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_startdate ASC LIMIT 3)";
 	$querystr .= " union (" . $qrystart . " post_type='gp_advertorial' ORDER BY post_date DESC LIMIT 3)";
 	$querystr .= " union (" . $qrystart . " post_type='gp_people' ORDER BY post_date DESC LIMIT 3)";
-	$querystr .= " union (" . $qrystart . " post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_enddate ASC LIMIT 3)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_enddate ASC LIMIT 3)";
 	$querystr .= " union (" . $qrystart . " post_type='gp_ngocampaign' ORDER BY post_date DESC LIMIT 3)";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
@@ -458,33 +479,36 @@ function home_index() {
 			if ($counterA == -1) {
 				$counterA++;
 				#echo '<div class="hp_featured">';
-				theme_indextitle();
-				theme_indexdetails();
-		    	the_content('Continue reading...');
-		    	theme_indexsocialbar();
-				#echo '<div class="clear"></div></div>';
+				#theme_indextitle();
+				#theme_indexdetails();
+		    	#the_content('Continue reading...');
+		    	#theme_indexsocialbar();
+				#echo '<div class="clear"></div></div>';				
+				
+				theme_index_feed_item();
+				theme_homecreate_post();
 				
 			} else {
 				
-				if ($counterA == 0) {
-					echo '<div class="hp_minifeatured">';
-				}
+				#if ($counterA == 0) {				
+					#theme_index_feed_item();
+				#}
 				
 				$counterC++;
 				if($counterC % 3 == 0) {
 					switch (get_post_type()) {
-					    case 'gp_news':
-					        echo '<span class="hp_minitype"><a href="/news">News</a>:</span>';
-					        break;
+					    #case 'gp_news':
+					    #   echo '<span class="hp_minitype"><a href="/news">News</a>:</span>';
+					    #   break;
 					    case 'gp_ngocampaign':
 					        echo '<span class="hp_minitype"><a href="/ngo-campaign">Campaigns</a>:</span>';
 					        break;
 						case 'gp_advertorial':
 					        echo '<span class="hp_minitype"><a href="/new-stuff">New Stuff</a>:</span>';
 					        break;
-						case 'gp_competitions':
-					        echo '<span class="hp_minitype"><a href="/competitions">Competitions</a>:</span>';
-					        break;
+						#case 'gp_competitions':
+					    #   echo '<span class="hp_minitype"><a href="/competitions">Competitions</a>:</span>';
+					    #   break;
 					    case 'gp_events':
 					        echo '<span class="hp_minitype"><a href="/events">Events</a>:</span>';
 					        break;
@@ -494,13 +518,15 @@ function home_index() {
 					}
 				}
 				
-				$counterB++;
-				if ($counterB % 3 == 0) {
-					echo '<div class="hp_minipanel hp_minipanel_mid">';
-				} else {
-					echo '<div class="hp_minipanel">';
-				}
+				$counterB++;				
+				theme_index_feed_item();
 				
+				$counterA++;						# Delete or comment out these four lines if code block below is ever uncommented otherwise will be duplicated 
+				if($counterA % 3 == 0) {
+					echo '<div class="clear"></div>';
+				}
+
+/**				COMPETITION POSTS - HAVE COMMENTED OUT AS WE DON'T ALWAYS HAVE 3 COMPETITIONS RUNNING AND OFTEN THROWS HOMEPAGE OUT OF WHACK		
 				if ( has_post_thumbnail() ) { # we're doing this check twice and we don't have too?
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 					$imageURL = $imageArray[0];
@@ -516,6 +542,8 @@ function home_index() {
 				<h1><a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 				
 				<?php 
+
+				
 				if ( get_post_type() == 'gp_competitions' ) {
 					$epochtime = strtotime('now');
 					$competitions_enddate = $post->gp_enddate;
@@ -565,15 +593,17 @@ function home_index() {
 				<?php
 				}
 				echo '</div>';
+
 				
 				$counterA++;
 				if($counterA % 3 == 0) {
 					echo '<div class="clear"></div>';
 				}
 
-				if ($counterA == $numPosts) {
-					echo '</div>';
-				}
+				#if ($counterA == $numPosts) {
+				#	echo '</div>';
+				#}				
+**/				
 			}
 		}
 	}
