@@ -398,11 +398,12 @@ function theme_index_feed_item() {
 function default_index() {
 	if ( have_posts() ) {
 		while ( have_posts() ) { 
-			the_post(); 
-			theme_indextitle();
-			theme_indexdetails();
-		    the_content('Continue reading...');
-		    theme_indexsocialbar();    
+			the_post();
+			theme_index_feed_item();
+			#theme_indextitle();
+			#theme_indexdetails();
+		    #the_content('Continue reading...');
+		    #theme_indexsocialbar();    
 	    }
 	    theme_indexpagination();	
 	} else {
