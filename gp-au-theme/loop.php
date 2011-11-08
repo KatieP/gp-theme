@@ -1444,6 +1444,9 @@ function subscriber_index($profile_author) {
 	theme_authorschange($profile_author);
 	theme_authorsprojects($profile_author);
 	theme_authorsstuff($profile_author);
+	echo '<div class="clear"></div>';
+	theme_authorposts($profile_author); 
+	echo '<div class="clear"></div>';
 } 
 
 /** Contributors Profile **/
