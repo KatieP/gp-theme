@@ -1128,7 +1128,7 @@ function theme_authordisplayname($profile_author) {
 }
 
 function theme_authorposition($profile_author) {
-	echo '<div class="author-position">Position: ' . $profile_author->position . '</div>';
+	echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
 }
 
 function theme_authorlocation($profile_author) {
