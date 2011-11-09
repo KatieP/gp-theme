@@ -1413,8 +1413,8 @@ function editor_index($profile_author) {
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
 		theme_authorwww($profile_author);
-		theme_authorjoined($profile_author);
-		theme_authorseen($profile_author);
+		#theme_authorjoined($profile_author);
+		#theme_authorseen($profile_author);
 		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
 	theme_editorsblurb($profile_author);
@@ -1437,8 +1437,8 @@ function subscriber_index($profile_author) {
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
 		theme_authorwww($profile_author);
-		theme_authorjoined($profile_author);
-		theme_authorseen($profile_author);
+		#theme_authorjoined($profile_author);
+		#theme_authorseen($profile_author);
 		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
 	theme_authorschange($profile_author);
@@ -1463,8 +1463,8 @@ function contributor_index($profile_author) {
 			theme_authorrss($profile_author);
 		echo '<div class="clear"></div></div>';
 		theme_authorwww($profile_author);
-		theme_authorjoined($profile_author);
-		theme_authorseen($profile_author);
+		#theme_authorjoined($profile_author);
+		#theme_authorseen($profile_author);
 		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
 	theme_profile_contributor_donate_join_bar($profile_author);		
