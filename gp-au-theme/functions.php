@@ -203,7 +203,7 @@ function add_jquery_data() {
 		$(document).ready(function(){
 			$("form#your-profile > h3:first").hide(); // profile options
 			$("form#your-profile > table:first").hide(); // profile options
-			$("table.form-table:eq(1) tr:eq(3)").hide(); // nickname
+			//$("table.form-table:eq(1) tr:eq(3)").hide(); // nickname
 		});
 	</script>
 		<?php } ?>
