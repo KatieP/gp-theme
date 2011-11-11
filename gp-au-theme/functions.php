@@ -2644,4 +2644,41 @@ function makeIso8601TimeStamp ($dateTime = '') {
     return $isoTS;
 }
 
+function email_after_post_approved($post_ID) {
+
+  $bcc = "katiepatrickgp@gmail.com, scmelton@gmail.com";
+
+  $post = get_post($post_ID);
+  $user = get_userdata($post->post_author);
+  $post_url = site_url() . '/' . $post->post_name;
+
+  $headers  = 'Content-type: text/html' . "\r\n";
+  $headers .= 'Bcc: ' . $bcc . "\r\n";
+
+  $body  = '<table width="600px" style="font-size: 15px; font-family: helvetica, arial, tahoma; margin: 5px; background-color: rgb(255,255,255);">';
+  $body .= '<tr><td align="center">';
+  $body .= '<table width="640">';
+  $body .= '<tr style="padding: 0 20px 5px 5px;">';
+  $body .= '<td style="font-size: 18px; text-transform:non; color:rgb(100,100,100);padding:0 0 0 5px;">';
+  $body .= 'Hi ' . $user->user_nicename . "!<br /><br />";
+  $body .= 'Your Green Pages post has been approved.  Thanks for posting!<br /><br />';
+  $body .= 'You can see your new post at:<br />';
+  $body .= '<a href="'. $post_url . '" >' . $post_url."</a><br /><br />";
+  $body .= "Keep on making an amazing world.<br /><br />";
+  $body .= "The Green Pages Team<br />";
+
+  $body .= '<div style="color: rgb(0, 154, 194);font=size:13px; ">';
+  $body .= 'Green Pages Australia &nbsp;p 02 8003 5915&nbsp;<br />';
+  $body .= '<a href="mailto:info@thegreenpages.com.au">info@thegreenpages.com.au</a>&nbsp;';
+  $body .= '<a href="http://www.thegreenpages.com.au">www.thegreenpages.com.au</a>';
+  $body .= '<br />';
+  $body .= '</div>';
+
+  $body .= '</td></tr></table></td></tr></table><br /><br />';
+
+  wp_mail($user->user_email, 'Your Green Pages post has been approved!', $body, $headers);
+
+}
+add_action('pending_to_publish', 'email_after_post_approved');
+
 ?>
