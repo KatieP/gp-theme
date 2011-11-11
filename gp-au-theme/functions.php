@@ -2646,11 +2646,13 @@ function makeIso8601TimeStamp ($dateTime = '') {
 
 function email_after_post_approved($post_ID) {
 
+  global $post_type_to_url_part;
+
   $bcc = "katiepatrickgp@gmail.com, scmelton@gmail.com";
 
   $post = get_post($post_ID);
   $user = get_userdata($post->post_author);
-  $post_url = site_url() . '/' . $post->post_name;
+  $post_url = site_url() . '/' . $post_type_to_url_part[$post->post_type] . '/' . $post->post_name;
 
   $headers  = 'Content-type: text/html' . "\r\n";
   $headers .= 'Bcc: ' . $bcc . "\r\n";
