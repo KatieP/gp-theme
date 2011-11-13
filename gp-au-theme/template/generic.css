@@ -2331,20 +2331,25 @@ ul.categorieslistmain {
 	right: 0px;
 }
 
-#content .comment-hp a {
+#content .comment-hp a, #relevant-posts .comment-hp a {
 	display: block;
 	position: relative;
 	float: left;
 	line-height:14px;
 }
 
-#content .comment-mini-number {
+#relevant-posts .comment-hp a {
+		margin-top: 2px;
+		float: right;
+}
+
+#content .comment-mini-number, #relevant-posts .comment-mini-number {
 	color: #000;
 	font-size: 9px;
 	padding-left: 3px;
 }
 
-#content .comment-mini {
+#content .comment-mini, #relevant-posts .comment-mini {
 	float: left;
 }
 

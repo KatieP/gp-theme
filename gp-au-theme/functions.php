@@ -2440,6 +2440,7 @@ function relevant_posts() {
 		echo '<div id="relevant-posts"><span class="title">More <a href="' . $posttype_url . '">' . $posttype_title . '</a> you might like:</span>';
 		foreach ($pageposts as $rpost) {
 			setup_postdata($rpost);
+			echo '<div class="relevant-item">';
 			if ( has_post_thumbnail() ) {
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($rpost->ID), 'icon-thumbnail' );
 				$imageURL = $imageArray[0];
@@ -2682,5 +2683,4 @@ function email_after_post_approved($post_ID) {
 
 }
 add_action('pending_to_publish', 'email_after_post_approved');
-
 ?>
