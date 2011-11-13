@@ -31,11 +31,6 @@ $template_url = get_bloginfo('template_url');
 			window.google_analytics_uacct = "UA-2619469-9";
 		</script>
 		
-		<!--[if lte IE 8]>
-	      	<meta http-equiv="X-UA-Compatible" content="chrome=1">
-	      	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	    <![endif]-->
-		
 		<title><?php
         /*
          * Print the <title> tag based on what is being viewed.

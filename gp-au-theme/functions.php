@@ -2447,9 +2447,9 @@ function relevant_posts() {
 				echo '<a href="' . get_permalink($rpost->ID) . '" class="hp_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($rpost->ID) ) . '" /></a>';
 			}
 			?>
-			<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
+			<a href="<?php echo get_permalink($rpost->ID); ?>" title="Permalink to <?php esc_attr($rpost->post_title); ?>" rel="bookmark" class="title"><?php echo $rpost->post_title; ?></a>
 			<?php if ( $rpost->comment_status == 'open' ) { ?>
-				<div class="comment-hp"><a href="<?php the_permalink(); ?>#comments"><span class="comment-mini"></span></a><a href="<?php the_permalink(); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><?php echo $rpost->comment_count; ?></span></a></div>
+				<div class="clear"></div><div class="comment-hp"><a href="<?php echo get_permalink($rpost->ID); ?>#comments"><span class="comment-mini"></span></a><a href="<?php echo get_permalink($rpost->ID); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><?php echo $rpost->comment_count; ?></span></a></div>
 			<?php
 			}
 			echo '<div class="clear"></div></div>';
