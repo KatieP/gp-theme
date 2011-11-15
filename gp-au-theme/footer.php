@@ -13,10 +13,10 @@
 			</nav>
 			<nav id="footer-contact">
 				<div id="footer-contact-click-box">
-					<div class="click-contact-info" id="click-contact-address">Green Pages Pty Ltd<br />PO Box 1012<br />Broadway<br />NSW 2007<br />Australia</div>
-					<div class="click-contact-info" id="click-contact-phone"> 02 8003 5915</div>
-					<div class="click-contact-info" id="click-contact-email"> info [ at ] thegreenpages.com.au</div>
-					<div class="click-contact-info" id="click-contact-skype">SkypeID: katiepatrickgp</div>
+					<div class="click-contact-info" id="click-contact-address"><pre><?php echo get_option('gp_postaladdress'); ?></pre></div>
+					<div class="click-contact-info" id="click-contact-phone"><?php echo get_option('gp_phone1'); ?></div>
+					<div class="click-contact-info" id="click-contact-email"><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></div>
+					<div class="click-contact-info" id="click-contact-skype"><?php echo get_option('gp_skype1'); ?></div>
 				</div>
 				<ul>
 					<li class="title">Contact us</li>
