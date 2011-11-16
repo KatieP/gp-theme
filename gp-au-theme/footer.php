@@ -13,10 +13,10 @@
 			</nav>
 			<nav id="footer-contact">
 				<div id="footer-contact-click-box">
-					<div class="click-contact-info" id="click-contact-address"><pre><?php echo get_option('gp_postaladdress'); ?></pre></div>
-					<div class="click-contact-info" id="click-contact-phone"><?php echo get_option('gp_phone1'); ?></div>
-					<div class="click-contact-info" id="click-contact-email"><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></div>
-					<div class="click-contact-info" id="click-contact-skype"><?php echo get_option('gp_skype1'); ?></div>
+					<div class="click-contact-info" id="click-contact-address">Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre></div>
+					<div class="click-contact-info" id="click-contact-phone">Phone:<pre><?php echo get_option('gp_phone1'); ?></pre></div>
+					<div class="click-contact-info" id="click-contact-email">Email Address:<pre><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre></div>
+					<div class="click-contact-info" id="click-contact-skype">Skype ID:<pre><?php echo get_option('gp_skype1'); ?></pre></div>
 				</div>
 				<ul>
 					<li class="title">Contact us</li>

@@ -1,12 +1,16 @@
 @charset "UTF-8";
 
-body {
+body, pre {
 	background-color: #fff;
 	font-family: Helvetica;
 	line-height: 1.5em;
 	font-size: 13px;
 	color: #666;
 	padding: 15px 0 15px 0;
+}
+
+pre { 
+        padding: 0;
 }
 
 iframe {
@@ -106,7 +110,7 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section, time
 	font-weight: bold;
 }
 
-#content p, #content a {
+#content p, #content a, pre {
 		font-size: 12px;
 }
 
