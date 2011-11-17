@@ -30,12 +30,12 @@ function gp_remove_version_footer() {return '&nbsp;';}
 
 add_filter('wp_mail_from','yoursite_wp_mail_from');
 function yoursite_wp_mail_from($content_type) {
-	return 'wordpress@thegreenpages.com.au';
+	return 'no-reply@thegreenpages.com.au';
 }
 
 add_filter('wp_mail_from_name','yoursite_wp_mail_from_name');
 function yoursite_wp_mail_from_name($name) {
-	return 'WordPress';
+	return 'Green Pages';
 }
 
 
