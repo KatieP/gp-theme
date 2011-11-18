@@ -2705,3 +2705,66 @@ border: 1px solid #CCC;
 	color: #666;
 	text-decoration: underline;
 }
+
+
+/** Google Search **/
+
+#cse {
+ 	font-family: Helvetica;
+ 	line-height: 1.5em;
+	font-size: 13px;
+	color: #666;
+}
+
+#cse .gs-visibleUrl {
+	display: none;
+}
+
+#cse a, #cse .gs-title {
+  color: #01aed8;
+  text-decoration: none;
+}
+
+#cse a:hover, #cse .gs-title:hover {
+  color: #01aed8;
+  text-decoration: underline;
+}
+
+#cse .gs-title {
+	font-size: 16px;
+	margin: 10px 0 3px 0;
+}
+
+#cse .gs-title:first-letter {
+  text-transform: uppercase;
+}
+
+#cse .gs-snippet {
+	padding:0 0 12px 0;
+}
+
+#cse .gsc-cursor-box {
+	align:center;
+}
+
+#cse .gsc-cursor-page {
+	border: 1px solid #dfd9c3;
+	color: #222222;
+	display: block;
+	float: left;
+	background-color: #f5f3e5;
+	height: 20px;
+	min-width: 20px;
+	text-align: center;
+	text-decoration: none;
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+
+#cse .gsc-branding {}
+
+#cse .gsc-result-info {
+	color: #000;
+	font-size: 10px;
+}
