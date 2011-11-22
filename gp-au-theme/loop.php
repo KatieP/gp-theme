@@ -268,7 +268,7 @@ function theme_index_contributor_donate_join_bar() {
 		$volunteer_url = $post_author->contributors_volunteer_url;
 		
 		?>
-		<div id="post-donate-join-bar">
+		<div id="index-donate-join-bar">
 			<?php
 			theme_contributors_donate($donate_url);
 			theme_contributors_join($join_url);

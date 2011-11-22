@@ -2576,7 +2576,12 @@ border: 1px solid #CCC;
 /** CONTRIBUTOR DONATE | JOIN BAR / CONTENT PARTNER DONATE | JOIN | SIGN LETTER | VOLUNTEER BUTTONS **/
 
 #post-donate-join-bar {
-	margin-top: 0px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+#index-donate-join-bar { 
+	margin-top: 0px;  
 	margin-bottom: 20px;
 }
 
@@ -2586,30 +2591,34 @@ border: 1px solid #CCC;
 	float: left;
 	height: 20px;
 	display: inline;
-	margin: 0px 15px 35px 0px;
+	margin: 5px 15px 10px 0px;
 	line-height: 17px;
 	color: white;
 	border: 1px solid #CCC;
 	width: 82px;
 }
 
-#post-donate-join-bar #donate {
+#index-donate-join-bar input[type="button"] {
+	margin: 0 15px 35px 0px;
+}
+
+#post-donate-join-bar #donate, #index-donate-join-bar #donate {
 	background-color: #00AED7;
 }	 
 
-#post-donate-join-bar #join {
+#post-donate-join-bar #join, #index-donate-join-bar #join {
 	background-color: #FC0D6B;
 }	 
 
-#post-donate-join-bar #letter {
+#post-donate-join-bar #letter, #index-donate-join-bar #letter {
 	background-color: #61C201;
 }
 
-#post-donate-join-bar #petition {
+#post-donate-join-bar #petition, #index-donate-join-bar #petition  {
 	background-color: #F15C00;
 }
 
-#post-donate-join-bar #volunteer {
+#post-donate-join-bar #volunteer, #index-donate-join-bar #volunteer  {
 	background-color: #EBA006;
 	margin-right: 0px;
 }
