@@ -348,8 +348,8 @@ function theme_indexpagination() {
 	if (  $wp_query->max_num_pages > 1 ) { ?>
 		<nav id="post-nav">
 			<ul>
-				<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>Older Posts', $wp_query->max_num_pages); ?></li>
-				<li class="post-next"><?php previous_posts_link('Newer Posts<div class="arrow-next"></div>', $wp_query->max_num_pages); ?></li>
+				<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>More Posts', $wp_query->max_num_pages); ?></li>
+				<li class="post-next"><?php previous_posts_link('Recent Posts<div class="arrow-next"></div>', $wp_query->max_num_pages); ?></li>
 			</ul>
 		</nav>
 		<?php
@@ -689,8 +689,8 @@ function events_index() {
 		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
 			<nav id="post-nav">
 				<ul>
-					<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>Older Posts', $wp_query->max_num_pages); ?></li>
-					<li class="post-next"><?php previous_posts_link('Newer Posts<div class="arrow-next"></div>', $wp_query->max_num_pages-1); ?></li>
+					<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>Later in Time', $wp_query->max_num_pages); ?></li>
+					<li class="post-next"><?php previous_posts_link('Sooner in Time<div class="arrow-next"></div>', $wp_query->max_num_pages-1); ?></li>
 				</ul>
 			</nav>
 		<?php
@@ -751,8 +751,8 @@ function competitions_index() {
 		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
 			<nav id="post-nav">
 				<ul>
-					<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>Older Posts', $wp_query->max_num_pages); ?></li>
-					<li class="post-next"><?php previous_posts_link('Newer Posts<div class="arrow-next"></div>', $wp_query->max_num_pages-1); ?></li>
+					<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>Recent Posts', $wp_query->max_num_pages); ?></li>
+					<li class="post-next"><?php previous_posts_link('Closing Soon<div class="arrow-next"></div>', $wp_query->max_num_pages-1); ?></li>
 				</ul>
 			</nav>
 		<?php
