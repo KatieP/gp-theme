@@ -1128,7 +1128,9 @@ function theme_authordisplayname($profile_author) {
 }
 
 function theme_authorposition($profile_author) {
-	echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
+	if ( !empty($profile_author->employment_jobtitle) ) {
+		echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
+	}
 }
 
 function theme_authorlocation($profile_author) {
@@ -1173,7 +1175,9 @@ function theme_authorrss($profile_author) {
 }
 
 function theme_authorwww($profile_author) {
-	echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new">' . $profile_author->user_url . '</a></div>';
+	if ( !empty($profile_author->user_url) ) {
+		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new">' . $profile_author->user_url . '</a></div>';
+	}	
 }
 
 function theme_authorbio($profile_author) {
@@ -1309,18 +1313,24 @@ function theme_authorseen($profile_author) {
 }
 
 function theme_authorschange($profile_author) {
-	echo '<h1>How I Would Change the World</h1>';
-	echo '<p>' . $profile_author->bio_change . '</p>';
+	if (!empty($profile_author->bio_change)) {
+		echo '<h1>How I Would Change the World</h1>';
+		echo '<p>' . $profile_author->bio_change . '</p>';
+	}
 }
 
 function theme_authorsprojects($profile_author) {
-	echo '<h1>Green Projects I Need Help With</h1>';
-	echo '<p>' . $profile_author->bio_projects . '</p>';
+	if (!empty($profile_author->bio_projects)) {
+		echo '<h1>Green Projects I Need Help With</h1>';
+		echo '<p>' . $profile_author->bio_projects . '</p>';
+	}	
 }
 
 function theme_authorsstuff($profile_author) {
-	echo '<h1>Green Stuff I\'m Into</h1>';
-	echo '<p>' . $profile_author->bio_stuff . '</p>';
+	if (!empty($profile_author->bio_stuff)) {
+		echo '<h1>Green Stuff I\'m Into</h1>';
+		echo '<p>' . $profile_author->bio_stuff . '</p>';
+	}	
 }
 
 function theme_authorposts($profile_author) {
@@ -1342,7 +1352,7 @@ function theme_authorposts($profile_author) {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 	if ($pageposts) {
-		echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li><li><span>Favourites</span></li><li><span>Comments</span></li></ul></nav>';
+		echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li> <!-- <li><span>Favourites</span></li><li><span>Comments</span></li> --> </ul></nav>';
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			switch (get_post_type()) {
