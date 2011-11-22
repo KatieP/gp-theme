@@ -256,6 +256,32 @@ function theme_singlepagination() {
 	/* wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); */
 }
 
+function theme_index_contributor_donate_join_bar() {
+	if (get_post_type() != "page") { 
+		global $post;
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<div id="post-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url);
+			theme_contributors_join($join_url);
+			theme_contributors_letter($letter_url);
+			theme_contributors_petition($petition_url);
+			theme_contributors_volunteer($volunteer_url);
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php		
+	}
+}
+
 function theme_single_contributor_donate_join_bar(){
 	if (get_post_type() != "page") { 
 		global $post;
@@ -772,7 +798,17 @@ function advertorial_index() {
 
 function ngocampaign_index() {
 	theme_campaigncreate_post();
-	default_index();
+	if ( have_posts() ) {
+		while ( have_posts() ) { 
+			the_post(); 
+			theme_index_feed_item();
+			theme_index_contributor_donate_join_bar();
+	    }
+	    theme_indexpagination();	
+	} else {
+		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
+			<p>No there\'s nothing wrong. It just means there\'s no posts for this section yet! Which is admittedly a little strange but if you\'d like to help and write for us (In a volunteer capacity at this stage.) send us a email to info[at]thegreenpages.com.au and we\'ll be in touch.</p>';
+	}
 }
 
 

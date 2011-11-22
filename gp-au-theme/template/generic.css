@@ -2576,7 +2576,7 @@ border: 1px solid #CCC;
 /** CONTRIBUTOR DONATE | JOIN BAR / CONTENT PARTNER DONATE | JOIN | SIGN LETTER | VOLUNTEER BUTTONS **/
 
 #post-donate-join-bar {
-	margin-top: 10px;
+	margin-top: 0px;
 	margin-bottom: 20px;
 }
 
@@ -2586,7 +2586,7 @@ border: 1px solid #CCC;
 	float: left;
 	height: 20px;
 	display: inline;
-	margin: 0px 15px 0px 0px;
+	margin: 0px 15px 35px 0px;
 	line-height: 17px;
 	color: white;
 	border: 1px solid #CCC;
