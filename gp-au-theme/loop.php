@@ -1454,7 +1454,7 @@ function editor_index($profile_author) {
 			theme_authortwitter($profile_author);
 			theme_authorlinkedin($profile_author);
 			theme_authorskype($profile_author);
-			theme_authorrss($profile_author);
+			#theme_authorrss($profile_author);
 		echo '<div class="clear"></div></div>';
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
@@ -1506,7 +1506,7 @@ function contributor_index($profile_author) {
 			theme_authortwitter($profile_author);
 			theme_authorlinkedin($profile_author);
 			theme_authorskype($profile_author);
-			theme_authorrss($profile_author);
+			#theme_authorrss($profile_author);
 		echo '<div class="clear"></div></div>';
 		theme_authorwww($profile_author);
 		#theme_authorjoined($profile_author);
