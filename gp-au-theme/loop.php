@@ -217,7 +217,12 @@ function theme_profilecreate_post(){
 }
 
 function theme_insert_profilecreate_post(){
-	echo '<a href="/get-involved/become-a-member/"><input type="button" value="Create a Profile" /></a>';
+	// if user is logged in link to their own profile back end page, otherwise links to become a member page
+	if ( is_user_logged_in() ) {
+		echo '<a href="/wp-admin/profile.php"><input type="button" value="Edit My Profile" /></a>';
+	} else {
+		echo '<a href="/get-involved/become-a-member/"><input type="button" value="Create a Profile" /></a>';
+	}	
 }
 
 /*******************************************************************************/	
@@ -533,7 +538,7 @@ function home_index() {
 					        echo '<span class="hp_minitype"><a href="/ngo-campaign">Campaigns</a>:</span>';
 					        break;
 						case 'gp_advertorial':
-					        echo '<span class="hp_minitype"><a href="/new-stuff">New Stuff</a>:</span>';
+					        echo '<span class="hp_minitype"><a href="/new-stuff">Products</a>:</span>';
 					        break;
 						#case 'gp_competitions':
 					    #   echo '<span class="hp_minitype"><a href="/competitions">Competitions</a>:</span>';
