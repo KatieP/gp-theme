@@ -1292,18 +1292,18 @@ $productreviewtaxonomy = array(
 /* Advertorial */
     
 $advertorialargs = array(
-    'label' => __( 'Advertorials' ),
+    'label' => __( 'Products' ),
     'labels' => array(
-	    'name' => _x( 'Advertorials', 'post type general name' ),
-	    'singular_name' => _x( 'Advertorial', 'post type singular name' ),
-	    'add_new' => _x( 'Add New ($89)', 'Advertorial' ),
-	    'add_new_item' => __( 'Add New Advertorial - Just $89! (Charged only when post is approved for publication.)' ),
-	    'edit_item' => __( 'Edit Advertorial' ),
-	    'new_item' => __( 'New Advertorial' ),
-	    'view_item' => __( 'View Advertorial' ),
-	    'search_items' => __( 'Search Advertorials' ),
-	    'not_found' =>  __( 'No advertorials found' ),
-	    'not_found_in_trash' => __( 'No advertorials found in Trash' ),
+	    'name' => _x( 'Products', 'post type general name' ),
+	    'singular_name' => _x( 'Product', 'post type singular name' ),
+	    'add_new' => _x( 'Add New ($89)', 'Product' ),
+	    'add_new_item' => __( 'Post your eco friendly product here for $89! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All posts are approved within 24 hours.' ),
+	    'edit_item' => __( 'Edit Product' ),
+	    'new_item' => __( 'New Product' ),
+	    'view_item' => __( 'View Product' ),
+	    'search_items' => __( 'Search Products' ),
+	    'not_found' =>  __( 'No Products Found' ),
+	    'not_found_in_trash' => __( 'No Products Found in Trash' ),
 	    'parent_item_colon' => ''
 	),
     'public' => true,
@@ -1322,7 +1322,7 @@ $advertorialargs = array(
 );
 
 $advertorialtaxonomy = array(
-	'label' => __( 'Advertorial Category' ),
+	'label' => __( 'Product Category' ),
 	'labels' => array(
 		'name' => _x( 'Categories', 'taxonomy general name' ),
 		'singular_name' => _x( 'Category', 'taxonomy singular name' ),

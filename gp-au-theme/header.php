@@ -144,7 +144,7 @@ $template_url = get_bloginfo('template_url');
 					<li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>
 					<li><a href="/news"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
 					<li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
-					<li><a href="/new-stuff"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>New Stuff</a></li>
+					<li><a href="/new-stuff"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
 					<li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
 					<li><a href="/people"<?php if ( $post_type == 'gp_people' ) {echo ' class="active"';} ?>>People</a></li>
 					<li><a href="/ngo-campaign"<?php if ( $post_type == 'gp_ngocampaign' ) {echo ' class="active"';} ?>>Campaigns</a></li>

@@ -193,7 +193,7 @@ function theme_advertorialcreate_post(){
 }
 
 function theme_insert_advertorialcreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a New Stuff Story" /></a>';
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a Product Ad" /></a>';
 }
 
 function theme_competitioncreate_post(){
