@@ -548,7 +548,14 @@ function home_index() {
 				}
 				
 				$counterB++;				
-				theme_index_feed_item();
+
+				if ($counterA < 12) {       		 
+					theme_index_feed_item();		# DISPLAY POSTS
+				}
+				else {
+					theme_index_feed_item();		# CAMPAIGNS ALSO DISPLAY DONATE JOIN BUTTONS 
+					theme_index_contributor_donate_join_bar();
+				}
 				
 				$counterA++;						# Delete or comment out these four lines if code block below is ever uncommented otherwise will be duplicated 
 				if($counterA % 3 == 0) {
