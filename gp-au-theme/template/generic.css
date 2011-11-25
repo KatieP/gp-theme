@@ -2761,7 +2761,7 @@ border: 1px solid #CCC;
 	display: none;
 }
 
-#cse a, #cse .gs-title {
+#cse a, #cse .gs-title, #cse .gs-title * {
   color: #01aed8;
   text-decoration: none;
 }

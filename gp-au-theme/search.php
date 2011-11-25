@@ -10,7 +10,7 @@ Template Name: Search
 
   <?php get_sidebar('left'); ?>
 
-  <div id="col2" class="set3col">
+  <div id="col2" class="set2col">
     <div id="content">
 
     <div id="cse" style="width: 100%;">Loading Search Results...</div>
@@ -62,8 +62,6 @@ Template Name: Search
 
     </div>
   </div>
-
-  <?php get_sidebar('right'); ?>
 
 </div>
 
