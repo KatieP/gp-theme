@@ -409,12 +409,47 @@ function theme_index_feed_item() {
 
 			$post_author = get_userdata($post->post_author);
 			$post_author_url = get_author_posts_url($post->post_author);
-
-			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></span>';				
+			
+			/** CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE AND URL **/
+			switch (get_post_type()) {
+			    case 'gp_news':
+			        $post_title = 'News';
+			        $post_url = '/news';
+			        break;
+			    case 'gp_ngocampaign':
+			    	$post_title = 'Campaigns';
+			    	$post_url = '/ngo-campaign';
+			        break;
+				case 'gp_advertorial':
+					$post_title = 'Products';
+					$post_url = '/new-stuff';
+			        break;
+				case 'gp_competitions':
+					$post_title = 'Competitions';
+					$post_url = '/competitions';
+			        break;
+			    case 'gp_events':
+			    	$post_title = 'Events';
+			    	$post_url = '/events';
+			        break;
+			    case 'gp_people':
+			    	$post_title = 'People';
+			    	$post_url = '/people';
+			        break;
+			}
+			
+			/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
+			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . 
+					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
+					'</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . 
+					'</a> posted in <a href="' . $post_url . '">' . $post_title . '</a> on ' . 
+					get_the_time('F jS, Y g:i a') . 
+				 '</span>';
 			the_excerpt();			
 			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>		
 		</div>';
 
+	/** DISPLAY FEATURED IMAGE IF SET **/		
 	if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 		$imageURL = $imageArray[0];
@@ -486,32 +521,57 @@ function attachment_single() {
 	}
 }
 
+/** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS **/
 function home_index() {
 	global $wpdb;
 	global $post;
 	
 	$epochtime = strtotime('now');
 	
+	/** NEW SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
 	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
-	$querystr = "(" . $qrystart ." post_type='gp_news' ORDER BY post_date DESC LIMIT 4)";
-	$querystr .= " union (" . $qrystart . " post_type='gp_events' and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_startdate ASC LIMIT 3)";
-	$querystr .= " union (" . $qrystart . " post_type='gp_advertorial' ORDER BY post_date DESC LIMIT 3)";
-	$querystr .= " union (" . $qrystart . " post_type='gp_people' ORDER BY post_date DESC LIMIT 3)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_enddate ASC LIMIT 3)";
-	$querystr .= " union (" . $qrystart . " post_type='gp_ngocampaign' ORDER BY post_date DESC LIMIT 3)";
+	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR post_type='gp_events' AND post_status='publish' OR post_type='gp_advertorial' AND post_status='publish' OR post_type='gp_competitions' AND post_status='publish' OR post_type='gp_ngocampaign' AND post_status='publish' ORDER BY post_date DESC LIMIT 20)";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
-	$numPosts = $wpdb->num_rows-1;
+	#$numPosts = $wpdb->num_rows-1;
 	
+	/** NEW LIST VIEW OF 20 MOST RECENT POSTS **/
 	if ($pageposts) {
-		$counterA = -1;
-		$counterB = -2;
-		$counterC = -1;
-		foreach ($pageposts as $post) {
+		
+		theme_homecreate_post();							# DISPLAY CREATE NEW POST BUTTON
+
+		foreach ($pageposts as $post) {						# DISPLAY MOST RECENT POSTS 
 			setup_postdata($post);
+			if (get_post_type() != 'gp_ngocampaign') {
+				theme_index_feed_item();					# DISPLAY INDIVIDUAL POST TITLE, IMAGE, EXCERPT AND LINK 
+			} 
+			else {
+				theme_index_feed_item();		 
+				theme_index_contributor_donate_join_bar();	# CAMPAIGNS ALSO DISPLAY DONATE JOIN BUTTONS
+			}
+		}
+	}														# THAT'S IT!
+	
+	/** OLD SQL QUERIES SHOW 3 MOST RECENT POSTS FROM EACH CATEGORY **/
+	#$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
+	#$querystr = "(" . $qrystart ." post_type='gp_news' ORDER BY post_date DESC LIMIT 4)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_events' and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_startdate ASC LIMIT 3)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_advertorial' ORDER BY post_date DESC LIMIT 3)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_people' ORDER BY post_date DESC LIMIT 3)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_enddate ASC LIMIT 3)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_ngocampaign' ORDER BY post_date DESC LIMIT 3)";
+	
+	
+	/** OLD LIST VIEW OF 3 MOST RECENT POSTS FROM EACH CATEGORY **/
+	#if ($pageposts) {
+	#	$counterA = -1;
+	#	$counterB = -2;
+	#	$counterC = -1;
+	#	foreach ($pageposts as $post) {
+	#		setup_postdata($post);
 			
-			if ($counterA == -1) {
-				$counterA++;
+	#		if ($counterA == -1) {
+	#			$counterA++;
 				#echo '<div class="hp_featured">';
 				#theme_indextitle();
 				#theme_indexdetails();
@@ -519,53 +579,53 @@ function home_index() {
 		    	#theme_indexsocialbar();
 				#echo '<div class="clear"></div></div>';				
 				
-				theme_index_feed_item();
-				theme_homecreate_post();
+	#			theme_index_feed_item();
+	#			theme_homecreate_post();
 				
-			} else {
+	#		} else {
 				
 				#if ($counterA == 0) {				
 					#theme_index_feed_item();
 				#}
 				
-				$counterC++;
-				if($counterC % 3 == 0) {
-					switch (get_post_type()) {
+	#			$counterC++;
+	#			if($counterC % 3 == 0) {
+	#				switch (get_post_type()) {
 					    #case 'gp_news':
 					    #   echo '<span class="hp_minitype"><a href="/news">News</a>:</span>';
 					    #   break;
-					    case 'gp_ngocampaign':
-					        echo '<span class="hp_minitype"><a href="/ngo-campaign">Campaigns</a>:</span>';
-					        break;
-						case 'gp_advertorial':
-					        echo '<span class="hp_minitype"><a href="/new-stuff">Products</a>:</span>';
-					        break;
+	#				    case 'gp_ngocampaign':
+	#				        echo '<span class="hp_minitype"><a href="/ngo-campaign">Campaigns</a>:</span>';
+	#				        break;
+	#					case 'gp_advertorial':
+	#				        echo '<span class="hp_minitype"><a href="/new-stuff">Products</a>:</span>';
+	#				        break;
 						#case 'gp_competitions':
 					    #   echo '<span class="hp_minitype"><a href="/competitions">Competitions</a>:</span>';
 					    #   break;
-					    case 'gp_events':
-					        echo '<span class="hp_minitype"><a href="/events">Events</a>:</span>';
-					        break;
-					    case 'gp_people':
-					        echo '<span class="hp_minitype"><a href="/people">People</a>:</span>';
-					        break;
-					}
-				}
+	#				    case 'gp_events':
+	#				        echo '<span class="hp_minitype"><a href="/events">Events</a>:</span>';
+	#				        break;
+	#				    case 'gp_people':
+	#				        echo '<span class="hp_minitype"><a href="/people">People</a>:</span>';
+	#				        break;
+	#				}
+	#			}
 				
-				$counterB++;				
+	#			$counterB++;				
 
-				if ($counterA < 12) {       		 
-					theme_index_feed_item();		# DISPLAY POSTS
-				}
-				else {
-					theme_index_feed_item();		# CAMPAIGNS ALSO DISPLAY DONATE JOIN BUTTONS 
-					theme_index_contributor_donate_join_bar();
-				}
+	#			if ($counterA < 12) {       		 
+	#				theme_index_feed_item();		# DISPLAY POSTS
+	#			}
+	#			else {
+	#				theme_index_feed_item();		# CAMPAIGNS ALSO DISPLAY DONATE JOIN BUTTONS 
+	#				theme_index_contributor_donate_join_bar();
+	#			}
 				
-				$counterA++;						# Delete or comment out these four lines if code block below is ever uncommented otherwise will be duplicated 
-				if($counterA % 3 == 0) {
-					echo '<div class="clear"></div>';
-				}
+	#			$counterA++;						# Delete or comment out these four lines if code block below is ever uncommented otherwise will be duplicated 
+	#			if($counterA % 3 == 0) {
+	#				echo '<div class="clear"></div>';
+	#			}
 
 /**				COMPETITION POSTS - HAVE COMMENTED OUT AS WE DON'T ALWAYS HAVE 3 COMPETITIONS RUNNING AND OFTEN THROWS HOMEPAGE OUT OF WHACK		
 				if ( has_post_thumbnail() ) { # we're doing this check twice and we don't have too?
@@ -645,9 +705,9 @@ function home_index() {
 				#	echo '</div>';
 				#}				
 **/				
-			}
-		}
-	}
+	#		}
+	#	}
+	#}
 }
 
 function search_index() {
@@ -1443,7 +1503,7 @@ function theme_authorposts($profile_author) {
 			    	$post_url = '/ngo-campaign';
 			        break;
 				case 'gp_advertorial':
-					$post_title = 'New Stuff';
+					$post_title = 'Products';
 					$post_url = '/news-stuff';
 			        break;
 				case 'gp_competitions':
