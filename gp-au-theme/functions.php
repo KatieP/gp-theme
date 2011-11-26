@@ -2459,6 +2459,66 @@ function relevant_posts() {
 	}
 }
 
+/** SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT **/ 
+function coming_events() {
+					
+	global $wpdb;
+	global $post;
+	
+	$epochtime = strtotime('now');
+    
+	/** SQL QUERY FOR COMING 5 EVENTS **/
+	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
+	foreach ($metas as $i=>$meta_key) {
+        $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
+        $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
+    }
+    
+    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " FROM $wpdb->posts ";
+    $querystr .=  join(' ', $meta_joins);
+    $querystr .= " WHERE post_status='publish' AND post_type='gp_events' AND m5.meta_value='AU' " . $filterby_state . " AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_events_startdate ASC LIMIT 5;";
+						
+	$pageposts = $wpdb->get_results($querystr, OBJECT);
+	$numPosts = $wpdb->num_rows-1;
+					
+	if ($pageposts && $numPosts != -1) {
+		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a></span>'; 
+
+		foreach ($pageposts as $post) {
+			setup_postdata($post);
+			
+			$displayday = date('j', $post->gp_events_startdate);
+			$displaymonth = date('M', $post->gp_events_startdate);
+			$displayyear = date('y', $post->gp_events_startdate);
+			
+			$displayendday = date('j', $post->gp_events_enddate);
+			$displayendmonth = date('M', $post->gp_events_enddate);
+			
+			echo '<div class="relevant=item">';
+			if ( has_post_thumbnail() ) { 	# DISPLAY EVENTS FEATURED IMAGE 
+				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
+				$imageURL = $imageArray[0];
+				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+			} else {						# DISPLAY DEFAULT EVENT IMAGE 
+				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(7740), 'icon-thumbnail' );	# DEFAULT IMAGE STORED IN POST WHERE ID = 7740							
+				$imageURL = $imageArray[0];
+				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+			}
+			?>
+			<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
+			<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a></div>';
+			if ($displayday == $displayendday) {
+				echo '<div class="post-details">' . $displayday . ' ' . $displaymonth . '</div>';
+			} else {
+			echo '<div class="post-details">' . $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth . '</div>';
+			}
+			?>
+			<?php 	
+			echo '<div class="clear"></div></div>';
+		}
+		echo '</div>';
+	}			
+}
 
 /** SUBMIT POSTS AND REDIRECT TO CHARGIFY **/
 add_filter('redirect_post_location', 'redirect_to_chargify');

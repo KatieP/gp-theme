@@ -1460,7 +1460,7 @@ function theme_authorsprojects($profile_author) {
 
 function insert_memberslist_projects_excerpt($member) {
 	if (!empty($member->bio_projects)) {	
-		return '<div><p><strong>Needs Help With: </strong>' . addslashes(substr($member->bio_projects, 0, 145)) . ' <strong>... Learn More ...</strong></p></div>';
+		return '<div><p><strong>Needs Help With: </strong>' . substr($member->bio_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
 	}
 }
 

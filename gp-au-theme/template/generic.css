@@ -1088,9 +1088,9 @@ margin-top: 16px;
 	#col3 .title {
 		display: block;
 		text-transform: capitalize;
-		font-size: 17px;
+		font-size: 13px;
 		font-weight: 600;
-		padding: 0 2px 0 2px;
+		padding: 0 2px 3px 2px;
 	}
 	
 		/** 2 COLUMN SETTING **/

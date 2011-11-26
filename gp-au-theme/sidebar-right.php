@@ -9,6 +9,9 @@
 				</div>
 				
 				<?php
+				/**SHOWS THE NEXT 5 UP AND COMING EVENTS UNDER THE EVENT CALENDAR**/ 				
+				coming_events();
+				
 				cm_update_current_user(); # checks a users Campaign Monitor newsletter subscription first and modify's that user if necessary.
 				#$current_user = wp_get_current_user();
 				global $current_user;
@@ -32,7 +35,7 @@
 				#if ( is_home() ) {
 				?>		
 				<div id="facebook">
-					<span class="title">Find us on Facebook</span>
+					<!-- <span class="title">Find us on Facebook</span>  -->
 					<iframe src="http://www.facebook.com/plugins/likebox.php?id=135951849770296&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=274" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>
 					<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_new" class="moreinfo">Click here to visit our Facebook page</a>
 				</div>
