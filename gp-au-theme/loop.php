@@ -1471,6 +1471,132 @@ function theme_authorsstuff($profile_author) {
 	}	
 }
 
+/** SHOW MEMBERS GOOGLE ANALYTICS DATA FOR THEIR POSTS **/
+function theme_author_analytics($profile_author, $pageposts) {
+	require 'ga/analytics.class.php';
+	global $wpdb;
+	global $post;
+	global $current_user;
+
+	# HEADING AND TABLE HEADINGS
+	?>
+	<h1>My Posts Analytics Data:</h1>
+	<table class="author_analytics">
+		<tr>
+			<td class="author_analytics_title">Title</td>		
+			<td class="author_analytics_type">Post Type</td>
+			<td class="author_analytics_cost">Value</td>
+			<td class="author_analytics_date">Date Posted</td> 
+			<td class="author_analytics_page_impressions">Total Page Impressions</td>
+			<!-- <td>Clicks</td> -->
+			<td class="author_analytics_category_impressions">Total Category Impressions</td>
+		</tr>
+	<?php	
+				
+	if ($pageposts) {	
+		foreach ($pageposts as $post) {
+			setup_postdata($post);
+		
+			$post_url_ext = $post->post_name; //Need to get post_name for URL. Gets ful URl, but we only need /url extention for Google API
+			#echo $post_url_ext;				
+			$type = get_post_type($post->ID);
+			#echo $type . '<br />';	
+			extract($row); // take the array from the database and put it into the variables
+				
+			$post_type_map = array( "gp_news" => "news", 
+					                "gp_events" => "events", 
+                         			"gp_advertorial" => "new-stuff", 
+                        			"gp_competitions" => "competitions", 
+                         			"gp_people" => "people", 
+                         			"gp_ngocampaign" => "ngo-campaign");
+				
+			$post_url_end = $post_type_map[$type] . '/' . $post_url_ext;
+			#echo $post_url_end . '<br />$post_url_end<br />';
+				
+			$analytics = new analytics('greenpagesadserving@gmail.com', 'greenpages01'); //sign in and grab profile			
+  			$analytics->setProfileById('ga:42443499'); //$analytics->setProfileByName('Stage 1 - Green Pages');
+			$post_date = get_the_time('Y-m-d'); //Post Date
+			#echo $post_date . ' ';
+			$today_date = date('Y-m-d'); //Todays Date
+			#echo $today_date . ' ';
+				
+  			$analytics->setDateRange($post_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+				
+  			#print_r($analytics->getVisitors()); //get array of visitors by day
+  	
+			//Page views for specific URL
+  			$pageViewURL = ($analytics->getPageviewsURL($post_url_end));
+  			#echo $pageViewURL . ' $pageViewURL';
+  			#var_dump ($pageViewURL);
+  			$sumURL = 0;
+  			foreach ($pageViewURL as $data) {
+    			$sumURL = $sumURL + $data;
+  			}
+  			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';
+  				
+			//Page views for the section landing page, e.g., the news page
+  			$pageViewType = ($analytics->getPageviewsURL($post_type_map[$type]));
+  			$sumType = 0;
+  			foreach ($pageViewType as $data) {
+      			$sumType = $sumType + $data;
+  			}
+  				
+  			$keywords = $analytics->getData(array(
+            	'dimensions' => 'ga:keyword',
+           	 	'metrics' => 'ga:visits',
+            	'sort' => 'ga:keyword'
+            	)
+          	);	
+			
+			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL AND COST
+			   
+				case 'gp_advertorial':
+					$post_title = 'Products';
+					$post_url = '/new-stuff';
+					$post_price = '$89.00';
+		       		break;
+				case 'gp_competitions':
+					$post_title = 'Competitions';
+					$post_url = '/competitions';
+					$post_price = '$250.00';
+		       		break;
+		   		case 'gp_events':
+		   			$post_title = 'Events';
+		   			$post_url = '/events';
+		   			$post_price = 'N/A';
+		     		break;
+		     	case 'gp_news':
+		   			$post_title = 'News';
+		   			$post_url = '/news';
+		   			$post_price = 'N/A';
+		     		break;
+		     	case 'gp_ngocampaign':
+			    	$post_title = 'Campaigns';
+			    	$post_url = '/ngo-campaign';
+			    	$post_price = 'N/A';
+			        break;
+			}
+			
+			echo '<tr>';					# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
+				echo '<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
+				esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>'; 	#Title				
+				echo '<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>'; #Ad Type					
+				echo '<td class="author_analytics_cost">' . $post_price . '</td>'; #Cost				
+				echo '<td class="author_analytics_date">' . get_the_time('j-m-y') . '</td>';#date
+				echo '<td class="author_analytics_page_impressions">' . $sumURL . '</td>'; #Page Impressions
+				#echo '<td>' . ' ' . '</td>'; #Clicks
+				echo '<td class="author_analytics_category_impressions">' . $sumType . '</td>'; #Category Impressions				
+			echo '</tr>';
+		}
+	}	
+	?>
+	</table>
+	
+	<!-- <h1><a href="/wp-admin/post-new.php?post_type=gp_advertorial">Book another post!</a></h1> -->			
+	<?php	
+	theme_homecreate_post();							# DISPLAY CREATE NEW POST BUTTON
+}
+
 function theme_authorposts($profile_author) {
 	global $wpdb;
 	global $post;
@@ -1490,7 +1616,16 @@ function theme_authorposts($profile_author) {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 	if ($pageposts) {
-		echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li> <!-- <li><span>Favourites</span></li><li><span>Comments</span></li> --> </ul></nav>';
+			
+		if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID)) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
+			echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li><li><a href="">Analytics</a></li><!-- <li><span>Campaigns</span></li> --></ul></nav>';
+			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
+		} else {
+			echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
+		}
+			
+		echo '<h1>My Posts:</h1>';				#DELETE THIS HEADING ONCE TABS ARE FUNCTIONING
+		
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			switch (get_post_type()) {

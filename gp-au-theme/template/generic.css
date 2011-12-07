@@ -2487,7 +2487,37 @@ ul.categorieslistmain {
 
 .competition-enddate {
 	margin-bottom: 30px;	
-}	
+}
+
+/** AUTHOR ANALYTICS TABLES  **/
+
+#content .author_analytics tr td  {
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	text-align:left;
+	padding:10px;
+	vertical-align:top;
+}
+
+#content .author_analytics {
+	margin-bottom: 10px;	
+}
+	
+#content .author_analytics .author_analytics_cost,
+#content .author_analytics .author_analytics_date,
+#content .author_analytics .author_analytics_page_impressions, 
+#content .author_analytics .author_analytics_category_impressions {
+	text-align: center;
+}
+
+#content .author_analytics .author_analytics_title {
+	width: 35%;
+}
+
+#content .author_analytics .author_analytics_date {
+	width: 15%;
+}
 
 /** AJAX LIKE FEATURE  **/
 .like_heart {
