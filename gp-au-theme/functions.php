@@ -2744,4 +2744,61 @@ function email_after_post_approved($post_ID) {
 
 }
 add_action('pending_to_publish', 'email_after_post_approved');
+
+/** GET USER IP ADDRESS FROM SIMPLEGEO API **/
+#https://github.com/simplegeo/php-simplegeo
+#https://github.com/simplegeo/php-simplegeo/blob/master/README.md
+
+function simplegeo_ip_user_location() {
+	
+	require_once 'php-simplegeo/SimpleGeo.php';
+
+	$client = new SimpleGeo('bmZFj3mruK3MZ8B3aZnxAvYYzTdS7Dp8', 'F6hR5h2s3Ed9YTgsqeT4kSc3DeWpSjjs');
+				
+	$ip = 'ip';												#USING 'ip' AS AN INPUT FOR THE GET REQUEST, 
+															#SIMPLEGEO TRIES TO GET THE IP ADDRRESS FROM THE USERS BROWSER, 
+															#RESULTS ARE NOT VERY ACCURATE BUT AT LEAST GET THE STATE AND COUNTRY
+	$result = $client->ContextIP($ip);
+
+	$i = 0;
+	$user_location = '';
+	
+	foreach($result['features'] as $item) {					#DISPLAY ONLY SUBURB AND CITY
+		
+		switch ($i) {
+			case '0':
+				#$user_location .= $item['name'] .', '; 	#DISPLAY SUBURB
+				$i++;
+				break;
+			case '1':
+				#$user_location .= $item['name'] .', ';		#DISPLAY CITY
+				$i++;
+				break;
+			case '2':
+				#$user_location .= $item['name'] .', ';		#DISPLAY STATE/COUNTRY
+				$i++;
+				break;
+			case '3':
+				$user_location .= $item['name'] .', ';		#DISPLAY STATE
+				$i++;
+				break;								
+			case '4':
+				$user_location .= $item['name'];			#DISPLAY COUNTRY
+				$i++;
+				break;
+		}		
+	}	
+
+	return $user_location;									#SUBURB AND CITY IN STRING
+}
+
+/** LOCATION TAG LINE STYLE **/
+
+function theme_location_tag_line() {						#DISPLAY TAGLINE ENDING WITH USERS STATE AND COUNTRY
+	$location = simplegeo_ip_user_location();
+	?>
+	<div class="pos"><div class="post-details" id="header-tagline">Everything environmental happening in <?php echo $location; ?></div></div>  
+	<?php
+}
+
 ?>
