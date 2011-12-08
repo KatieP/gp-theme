@@ -2788,7 +2788,11 @@ function simplegeo_ip_user_location() {
 				break;
 		}		
 	}	
-
+	
+	if($user_location == ''){
+		$user_location = 'your part of the world';
+	}
+	
 	return $user_location;									#SUBURB AND CITY IN STRING
 }
 
