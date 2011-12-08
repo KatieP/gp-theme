@@ -272,5 +272,5 @@ $template_url = get_bloginfo('template_url');
 				</div>
 			</nav>
 			<?php } ?>
-			<?php theme_location_tag_line(); ?>	
+			<?php #theme_location_tag_line(); ?>	
 		</header>
