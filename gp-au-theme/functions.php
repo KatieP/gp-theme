@@ -2494,7 +2494,7 @@ function coming_events() {
 			$displayendday = date('j', $post->gp_events_enddate);
 			$displayendmonth = date('M', $post->gp_events_enddate);
 			
-			echo '<div class="relevant=item">';
+			echo '<div class="relevant-item">';
 			if ( has_post_thumbnail() ) { 	# DISPLAY EVENTS FEATURED IMAGE 
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
 				$imageURL = $imageArray[0];
@@ -2506,15 +2506,15 @@ function coming_events() {
 			}
 			?>
 			<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
-			<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a></div>';
+			<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
 			if ($displayday == $displayendday) {
-				echo '<div class="post-details">' . $displayday . ' ' . $displaymonth . '</div>';
+				echo '<div class="post-details">' . $displayday . ' ' . $displaymonth;
 			} else {
-			echo '<div class="post-details">' . $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth . '</div>';
+			echo '<div class="post-details">' . $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
 			}
 			?>
 			<?php 	
-			echo '<div class="clear"></div></div>';
+			echo '</div><div class="clear"></div></div>';
 		}
 		echo '</div>';
 	}			
