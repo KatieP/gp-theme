@@ -1480,17 +1480,17 @@ function theme_author_analytics($profile_author, $pageposts) {
 
 	# HEADING AND TABLE HEADINGS
 	?>
-	<h1>My Posts Analytics Data:</h1>
-	<table class="author_analytics">
-		<tr>
-			<td class="author_analytics_title">Title</td>		
-			<td class="author_analytics_type">Post Type</td>
-			<td class="author_analytics_cost">Value</td>
-			<td class="author_analytics_date">Date Posted</td> 
-			<td class="author_analytics_page_impressions">Total Page Impressions</td>
-			<!-- <td>Clicks</td> -->
-			<td class="author_analytics_category_impressions">Total Category Impressions</td>
-		</tr>
+	<div id="my-analytics">
+		<table class="author_analytics">
+			<tr>
+				<td class="author_analytics_title">Title</td>		
+				<td class="author_analytics_type">Post Type</td>
+				<td class="author_analytics_cost">Value</td>
+				<td class="author_analytics_date">Date Posted</td> 
+				<td class="author_analytics_page_impressions">Total Page Impressions</td>
+				<!-- <td>Clicks</td> -->
+				<td class="author_analytics_category_impressions">Total Category Impressions</td>
+			</tr>
 	<?php	
 				
 	if ($pageposts) {	
@@ -1590,11 +1590,11 @@ function theme_author_analytics($profile_author, $pageposts) {
 		}
 	}	
 	?>
-	</table>
-	
+		</table>	
 	<!-- <h1><a href="/wp-admin/post-new.php?post_type=gp_advertorial">Book another post!</a></h1> -->			
-	<?php	
-	theme_homecreate_post();							# DISPLAY CREATE NEW POST BUTTON
+	<?php theme_homecreate_post(); ?>
+	</div>
+<?php 
 }
 
 function theme_authorposts($profile_author) {
@@ -1618,13 +1618,29 @@ function theme_authorposts($profile_author) {
 	if ($pageposts) {
 			
 		if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID)) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
-			echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li><li><a href="">Analytics</a></li><!-- <li><span>Campaigns</span></li> --></ul></nav>';
+			?><script type="text/javascript"><!-- 	
+				function display_analytics(){		// JS DISPLAY ANAYTICS IF ANALYTICS TAB CLICKED ON
+					document.getElementById("my-analytics").style.display="inline";
+					document.getElementById("my-posts").style.display="none";
+					document.getElementById("analytics").style.backgroundColor="#61c201";
+					document.getElementById("posts").style.backgroundColor="#afde7f";
+				}
+
+				function display_posts(){			// JS DISPLAY POSTS IF POSTS TAB CLICKED ON
+					document.getElementById("my-analytics").style.display="none";
+					document.getElementById("my-posts").style.display="inline";
+					document.getElementById("analytics").style.backgroundColor="#afde7f";
+					document.getElementById("posts").style.backgroundColor="#61c201";
+				}
+			 --></script><?php 
+			echo '<nav class="profile-tabs"><ul><li id="posts" onclick="display_posts()">Posts</li><li id="analytics" onclick="display_analytics()">Analytics</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';
 			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
 		} else {
 			echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
 		}
-			
-		echo '<h1>My Posts:</h1>';				#DELETE THIS HEADING ONCE TABS ARE FUNCTIONING
+		?>
+		<div id="my-posts">
+		<?php 
 		
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
@@ -1672,6 +1688,9 @@ function theme_authorposts($profile_author) {
 			echo '<div class="clear"></div>';
 		}
 		#theme_indexpagination();
+		?>
+		</div>
+		<?php 
 	}
 }
 

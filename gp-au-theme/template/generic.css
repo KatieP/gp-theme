@@ -2433,7 +2433,11 @@ ul.categorieslistmain {
 	padding: 0;
 }
 
-#content .profile-tabs a, #content .profile-tabs span {
+#content .profile-tabs #analytics {
+  background-color: #afde7f;	
+}
+
+#content .profile-tabs li, #content .profile-tabs span {
 	padding: 4px 10px 4px 10px;
 	display: block;
 	background-color: #61c201;
