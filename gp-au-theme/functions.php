@@ -2508,9 +2508,9 @@ function coming_events() {
 			<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
 			<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
 			if ($displayday == $displayendday) {
-				echo '<div class="post-details">' . $displayday . ' ' . $displaymonth;
+				echo $displayday . ' ' . $displaymonth;
 			} else {
-			echo '<div class="post-details">' . $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
+				echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
 			}
 			?>
 			<?php 	
@@ -2755,8 +2755,7 @@ function simplegeo_ip_user_location() {
 
 	$client = new SimpleGeo('bmZFj3mruK3MZ8B3aZnxAvYYzTdS7Dp8', 'F6hR5h2s3Ed9YTgsqeT4kSc3DeWpSjjs');
 				
-	$ip = 'ip';												#USING 'ip' AS AN INPUT FOR THE GET REQUEST, 
-															#SIMPLEGEO TRIES TO GET THE IP ADDRRESS FROM THE USERS BROWSER, 
+	$ip = $_SERVER["REMOTE_ADDR"];							#Gets IP from user
 															#RESULTS ARE NOT VERY ACCURATE BUT AT LEAST GET THE STATE AND COUNTRY
 	$result = $client->ContextIP($ip);
 
