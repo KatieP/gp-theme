@@ -1877,6 +1877,8 @@ function change_post_menu_label() {
                 unset($menu[80]); # settings
                 unset($menu[100]); # gp-theme
                 unset($menu[101]); # gp-directory
+                unset($menu[102]); # syndication
+				unset($menu[103]); # performance
         }
 
 }

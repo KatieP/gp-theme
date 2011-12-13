@@ -1,6 +1,6 @@
 <?php
 //get the class
-require '../ga/analytics.class.php';
+require('../ga/analytics.class.php');
 //Google Analytics Script
 
 //hack: this should be included from gp-core.php in the greenpages theme plugin
