@@ -246,7 +246,7 @@
             return $aCache;
         }
         
-        echo $sUrl;
+        #echo $sUrl;
         
         $sXml = $this->getXml($sUrl);
         
