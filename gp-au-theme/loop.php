@@ -1497,11 +1497,8 @@ function theme_author_analytics($profile_author, $pageposts) {
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 		
-			$post_url_ext = $post->post_name; //Need to get post_name for URL. Gets ful URl, but we only need /url extention for Google API
-			#echo $post_url_ext;				
+			$post_url_ext = $post->post_name; //Need to get post_name for URL. Gets ful URl, but we only need /url extention for Google API			
 			$type = get_post_type($post->ID);
-			#echo $type . '<br />';	
-			extract($row); // take the array from the database and put it into the variables
 				
 			$post_type_map = array( "gp_news" => "news", 
 					                "gp_events" => "events", 
