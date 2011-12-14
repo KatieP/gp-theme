@@ -1636,7 +1636,7 @@ function theme_authorposts($profile_author) {
 			echo '<nav class="profile-tabs"><ul><li id="posts" onclick="display_posts()">Posts</li><li id="analytics" onclick="display_analytics()">Analytics</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';
 			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
 		} else {
-			echo '<nav class="profile-tabs"><ul><li><a href="">Posts</a></li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
+			echo '<nav class="profile-tabs"><ul><li id="posts">Posts</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
 		}
 		?>
 		<div id="my-posts">
