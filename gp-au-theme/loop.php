@@ -1600,6 +1600,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 function theme_authorposts($profile_author) {
 	global $wpdb;
 	global $post;
+	global $current_user;
 
 	$total = "SELECT COUNT(*) as count FROM $wpdb->posts " . $wpdb->prefix . "posts, $wpdb->postmeta " . $wpdb->prefix . "postmeta WHERE " . $wpdb->prefix . "posts.ID = " . $wpdb->prefix . "postmeta.post_id and " . $wpdb->prefix . "posts.post_status = 'publish' and (" . $wpdb->prefix . "posts.post_type = 'gp_news' or " . $wpdb->prefix . "posts.post_type = 'gp_events' or " . $wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . $wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . $wpdb->prefix . "posts.post_type = 'gp_competitions' or " . $wpdb->prefix . "posts.post_type = 'gp_people') and " . $wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . $wpdb->prefix . "postmeta.meta_value >= 1 and " . $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
 	$totalposts = $wpdb->get_results($total, OBJECT);
