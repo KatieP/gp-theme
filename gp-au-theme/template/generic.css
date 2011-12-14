@@ -2504,6 +2504,10 @@ ul.categorieslistmain {
 
 /** AUTHOR ANALYTICS TABLES  **/
 
+#content #my-analytics {
+	display: none;
+}
+
 #content .author_analytics tr td  {
 	border-style: solid;
 	border-width: 1px;
