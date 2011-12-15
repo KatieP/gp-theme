@@ -1699,6 +1699,7 @@ function administrator_index() {
 
 /** Editors/Authors Profile **/
 function editor_index($profile_author) {
+	theme_profilecreate_post();
 	theme_authorphoto($profile_author);
 	echo '<div class="author-box">';
 		theme_authordisplayname($profile_author);
@@ -1726,6 +1727,7 @@ function editor_index($profile_author) {
 
 /** Subscribers Profile **/
 function subscriber_index($profile_author) {
+	theme_profilecreate_post();
 	theme_authorphoto($profile_author);
 	echo '<div class="author-box">';
 		theme_authordisplayname($profile_author);
@@ -1751,6 +1753,7 @@ function subscriber_index($profile_author) {
 
 /** Contributors Profile **/
 function contributor_index($profile_author) {
+	theme_profilecreate_post();
 	theme_authorphoto($profile_author);
 	echo '<div class="author-box">';
 		theme_authordisplayname($profile_author);
