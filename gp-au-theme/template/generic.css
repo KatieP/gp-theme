@@ -2415,8 +2415,6 @@ ul.categorieslistmain {
 	font-weight: 600;
 }
 
-
-
 #content .profile-tabs {
 	border-bottom: 1px solid #61c201;
 	margin: 0 0 30px 0;
@@ -2431,6 +2429,10 @@ ul.categorieslistmain {
 	text-indent: 0;
 	margin: 0px 4px 0 4px;
 	padding: 0;
+}
+
+#content .profile-tabs li:hover {
+  cursor: pointer;
 }
 
 #content .profile-tabs #analytics {
