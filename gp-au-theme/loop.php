@@ -1615,7 +1615,7 @@ function theme_authorposts($profile_author) {
 		
 	if ($pageposts) {
 			
-		if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID)) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
+		if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) ) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
 			?><script type="text/javascript"><!-- 	
 				function display_analytics(){		// JS DISPLAY ANAYTICS IF ANALYTICS TAB CLICKED ON
 					document.getElementById("my-analytics").style.display="inline";
