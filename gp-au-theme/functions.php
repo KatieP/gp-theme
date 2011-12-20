@@ -1485,7 +1485,7 @@ $newposttypes = array(
 	array('id' => 'gp_people', 'name' => 'People', 'plural' => false, 'addmeta' => false, 'args' => $peopleargs, 'taxonomy' => $peopletaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_katiepatrick', 'name' => 'Katie Patrick', 'plural' => false, 'addmeta' => false, 'args' => $katiepatrickargs, 'taxonomy' => $katiepatricktaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_productreview', 'name' => 'Product Review', 'plural' => false, 'addmeta' => false, 'args' => $productreviewargs, 'taxonomy' => $productreviewtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_advertorial', 'name' => 'Advertorial', 'plural' => true, 'addmeta' => false, 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_advertorial', 'name' => 'Advertorial', 'plural' => true, 'addmeta' => true, 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_ngocampaign', 'name' => 'NGO Campaign', 'plural' => true, 'addmeta' => false, 'args' => $ngocampaignargs, 'taxonomy' => $ngocampaigntaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_greengurus', 'name' => 'Green Gurus', 'plural' => false, 'addmeta' => false, 'args' => $greengurusargs, 'taxonomy' => $greengurustaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment')
 );
@@ -1600,6 +1600,10 @@ function savePostType () {
 	    	update_post_meta($post->ID, $thisposttype . '_locsuburb', $_POST[$thisposttype . '_locsuburb'] );
 	    }
 	    
+		if(isset($_POST[$thisposttype . '_product_url'])) {		# gp_advertorial meta - url for 'Buy It!' button
+	    	update_post_meta($post->ID, $thisposttype . '_product_url', $_POST[$thisposttype . '_product_url'] );
+	    }
+	    
 	    return $post;
 }
 
@@ -1704,7 +1708,28 @@ function updated_messages( $messages ) {
   return $messages;
 }
 
-/***  meta ***/
+/***  META ***/
+
+function gp_advertorial_meta () {
+	 global $post;
+	 $custom = get_post_custom($post->ID);
+	 $meta_product_url = $custom["gp_advertorial_product_url"][0];
+	 
+	 echo '<input type="hidden" name="gp_advertorial-nonce" id="gp_advertorial-nonce" value="' . wp_create_nonce( 'gp_advertorial-nonce' ) . '" />';
+	 ?>	 
+	 <div class="gp-meta">
+	 	<label>Enter the url your product can be purchased from:  </label><input id="gp_advertorial_product_url" type="text" name="gp_advertorial_product_url" value="<?php 
+	 	if ( !empty($meta_product_url) ) {
+	 		echo $meta_product_url; 
+	 	} 
+	 	else {
+			echo 'http://';
+	 	}	
+	 ?>">
+	 </div>
+	 <?php 	  
+}
+
 function gp_events_meta () {
     global $post, $states_au;
     $custom = get_post_custom($post->ID);

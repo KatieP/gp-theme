@@ -503,6 +503,7 @@ function default_single() {
 			the_content();
 			theme_singlepagination();
 			theme_single_contributor_donate_join_bar();
+			theme_single_product_button();
 			theme_singlesocialbar();
 			theme_singlecomments();
 		echo '</article>';
@@ -1319,6 +1320,27 @@ function theme_authorbio($profile_author) {
 function theme_contributorsblurb($profile_author) {
 	if ( !empty($profile_author->contributors_blurb) ) {
 		echo '<p>' . nl2br($profile_author->contributors_blurb) . '</p>';
+	}
+}
+
+/** PRODUCT 'BUY IT!' BUTTON **/
+
+function theme_single_product_button() {
+	global $post;
+	if (get_post_type() == "gp_advertorial") { 
+		$custom = get_post_custom($post->ID);
+	 	$product_url = $custom["gp_advertorial_product_url"][0];
+	 	if ( !empty($product_url) ) {
+		?>
+		<div id="post-product-button-bar">
+			<?php
+			echo '<span><a href="' . $product_url . '" onClick="recordOutboundLink(this, "/outbound/"' . $post->ID . '"/"' . 
+			$postauthor->ID .'"/, "' . $product_url . '");return false;"><input type="button" id="product-button" value="Buy It!" /></a></span>';			
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php
+	 	}
 	}
 }
 

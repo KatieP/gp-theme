@@ -2623,9 +2623,9 @@ background-color: #F2F2F2;
 border: 1px solid #CCC;
 }
 
-/** CONTRIBUTOR DONATE | JOIN BAR / CONTENT PARTNER DONATE | JOIN | SIGN LETTER | VOLUNTEER BUTTONS **/
+/** CONTRIBUTOR DONATE | JOIN BAR / BUTTONS & PRODUCT BUTTON BAR **/
 
-#post-donate-join-bar {
+#post-donate-join-bar, #post-product-button-bar  {
 	margin-top: 20px;
 	margin-bottom: 30px;
 }
@@ -2635,7 +2635,7 @@ border: 1px solid #CCC;
 	margin-bottom: 20px;
 }
 
-#post-donate-join-bar input[type="button"], #index-donate-join-bar input[type="button"] {
+#post-donate-join-bar input[type="button"], #index-donate-join-bar input[type="button"], #post-product-button-bar input[type="button"] {
 	padding: 0 4px 0 4px;
 	overflow: hidden;
 	float: left;
@@ -2650,6 +2650,14 @@ border: 1px solid #CCC;
 
 #index-donate-join-bar input[type="button"] {
 	margin: 0 15px 35px 0px;
+}
+
+#index-donate-join-bar a:hover {
+	text-decoration:none;
+}
+
+#post-donate-join-bar a:hover {
+	text-decoration:none;
 }
 
 #post-donate-join-bar #donate, #index-donate-join-bar #donate {
@@ -2671,6 +2679,30 @@ border: 1px solid #CCC;
 #post-donate-join-bar #volunteer, #index-donate-join-bar #volunteer  {
 	background-color: #EBA006;
 	margin-right: 0px;
+}
+
+/** PRODUCT 'BUY IT! BUTTON **/
+
+#post-product-button-bar input[type="button"] {
+	height: 44px;	
+	line-height: 24px;
+	width: 130px;
+	font-size: 18px;
+	border-radius: 4px;
+	margin-left: 3px;
+}
+
+#post-product-button-bar input[type="button"]:hover {
+	border: solid 1px #F2F2F2;
+	box-shadow: 0 0 3px 3px  #F2F2F2;
+		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
+		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
+	cursor: pointer;
+}
+
+#post-product-button-bar a:hover {
+	text-decoration:none;
+	cursor: pointer;
 }
 
 /** SPECIAL PAGE - CONTENT PARTNERS **/
