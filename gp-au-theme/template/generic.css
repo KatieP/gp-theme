@@ -2623,6 +2623,10 @@ background-color: #F2F2F2;
 border: 1px solid #CCC;
 }
 
+#content #post-filter a:hover {
+	text-decoration:none;
+}
+
 /** CONTRIBUTOR DONATE | JOIN BAR / BUTTONS & PRODUCT BUTTON BAR **/
 
 #post-donate-join-bar, #post-product-button-bar  {
