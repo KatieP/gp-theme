@@ -2504,11 +2504,13 @@ ul.categorieslistmain {
 	margin-bottom: 30px;	
 }
 
-/** AUTHOR ANALYTICS TABLES  **/
+/** HIDE ANALYTICS AND ADVERTISE PANELS ON PROFILE PAGES **/
 
-#content #my-analytics {
+#content #my-analytics, #content #my-advertise {
 	display: none;
 }
+
+/** AUTHOR ANALYTICS TABLES ON PROFILE PAGES  **/
 
 #content .author_analytics tr td  {
 	border-style: solid;
@@ -2537,6 +2539,36 @@ ul.categorieslistmain {
 
 #content .author_analytics .author_analytics_date {
 	width: 15%;
+}
+
+/** ADVERTISE PANEL ON PROFILE PAGE BUTTONS **/
+
+#my-advertise input[type="button"] {
+	height: 32px;	
+	line-height: 36px;
+	width: 150px;
+	/*font-size: 13px;*/
+	border-radius: 4px;
+	margin-left: 3px;
+	margin-bottom: 10px;
+	background-color: #FC0D6B;
+}
+
+#my-advertise input[type="button"]:hover {
+	border: solid 1px #FC0D6B;
+	box-shadow: 0 0 3px 3px #F2F2F2;
+		-moz-box-shadow: 0 0 3px 3px #F2F2F2;
+		-webkit-box-shadow: 0 0 3px 3px #F2F2F2;
+	cursor: pointer;
+}
+
+#my-advertise a:hover {
+	pointer: cursor;
+	text-decoration: none;	
+}
+
+#my-advertise a {
+	color: grey;
 }
 
 /** AJAX LIKE FEATURE  **/

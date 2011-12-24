@@ -225,6 +225,16 @@ function theme_insert_profilecreate_post(){
 	}	
 }
 
+/** PROFILE PAGE ADVERTISER PANEL BUTTONS **/
+
+function theme_insert_listingcreate_new(){
+	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="Create a Directory Page" /></a><?php 
+}
+
+function theme_insert_emailcreate_new(){
+	?><a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry" ><input type="button" value="Inquire about EDM" /></a><?php 
+}
+
 /*******************************************************************************/	
 
 function theme_singletitle() {
@@ -1493,6 +1503,42 @@ function theme_authorsstuff($profile_author) {
 	}	
 }
 
+/** SHOW MEMBERS CREATE NEW AD OPTIONS **/
+function theme_author_advertise($profile_author) {
+	global $wpdb;
+	global $post;
+	global $current_user;
+	
+	?>
+	<div id="my-advertise">
+		<div>
+			<span><?php theme_insert_advertorialcreate_post(); ?></span>
+			<div class="clear"></div>			
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+		</div>
+		<div class="clear"></div>
+		<div>
+			<span><?php theme_insert_competitioncreate_post(); ?></span>	
+			<div class="clear"></div>				
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+		</div>
+		<div class="clear"></div>
+		<div>
+			<span><?php theme_insert_listingcreate_new(); ?></span>
+			<div class="clear"></div>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+		</div>
+		<div class="clear"></div>
+		<div>
+			<span><?php theme_insert_emailcreate_new(); ?></span>
+			<div class="clear"></div>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<?php 
+}
+
 /** SHOW MEMBERS GOOGLE ANALYTICS DATA FOR THEIR POSTS **/
 function theme_author_analytics($profile_author, $pageposts) {
 	require 'ga/analytics.class.php';
@@ -1639,22 +1685,43 @@ function theme_authorposts($profile_author) {
 			
 		if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) ) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
 			?><script type="text/javascript"><!-- 	
-				function display_analytics(){		// JS DISPLAY ANAYTICS IF ANALYTICS TAB CLICKED ON
-					document.getElementById("my-analytics").style.display="inline";
-					document.getElementById("my-posts").style.display="none";
-					document.getElementById("analytics").style.backgroundColor="#61c201";
-					document.getElementById("posts").style.backgroundColor="#afde7f";
-				}
+			function display_analytics(){		// JS DISPLAY ANAYTICS IF ANALYTICS TAB CLICKED ON
+				document.getElementById("my-posts").style.display="none";
+				document.getElementById("my-analytics").style.display="inline";
+				document.getElementById("my-advertise").style.display="none";
+				document.getElementById("posts").style.backgroundColor="#afde7f";
+				document.getElementById("analytics").style.backgroundColor="#61c201";
+				document.getElementById("advertise").style.backgroundColor="#afde7f";
+			}
 
-				function display_posts(){			// JS DISPLAY POSTS IF POSTS TAB CLICKED ON
-					document.getElementById("my-analytics").style.display="none";
-					document.getElementById("my-posts").style.display="inline";
-					document.getElementById("analytics").style.backgroundColor="#afde7f";
-					document.getElementById("posts").style.backgroundColor="#61c201";
-				}
-			 --></script><?php 
-			echo '<nav class="profile-tabs"><ul><li id="posts" onclick="display_posts()">Posts</li><li id="analytics" onclick="display_analytics()">Analytics</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';
-			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
+			function display_posts(){			// JS DISPLAY POSTS IF POSTS TAB CLICKED ON
+				document.getElementById("my-posts").style.display="inline";
+				document.getElementById("my-analytics").style.display="none";
+				document.getElementById("my-advertise").style.display="none";
+				document.getElementById("posts").style.backgroundColor="#61c201";
+				document.getElementById("analytics").style.backgroundColor="#afde7f";
+				document.getElementById("advertise").style.backgroundColor="#afde7f";
+			}
+
+			function display_advertise(){		// JS DISPLAY ADVERTISE PANEL IF ADVERTISE TAB CLICKED ON
+				document.getElementById("my-posts").style.display="none";
+				document.getElementById("my-analytics").style.display="none";
+				document.getElementById("my-advertise").style.display="inline";
+				document.getElementById("posts").style.backgroundColor="#afde7f";
+				document.getElementById("analytics").style.backgroundColor="#afde7f";
+				document.getElementById("advertise").style.backgroundColor="#61c201";
+			}
+		 --></script><?php 
+		echo 	'<nav class="profile-tabs">
+					<ul>
+						<li id="posts" onclick="display_posts()">Posts</li>
+						<li id="analytics" onclick="display_analytics()">Analytics</li>
+						<li id="advertise" onclick="display_advertise()">Advertise</li>
+						<!-- <li><span>Campaigns</span></li> -->
+					</ul>
+				</nav>';
+		theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
+		theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
 		} else {
 			echo '<nav class="profile-tabs"><ul><li id="posts">Posts</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
 		}
