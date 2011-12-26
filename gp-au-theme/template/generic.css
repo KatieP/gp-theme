@@ -2551,7 +2551,6 @@ ul.categorieslistmain {
 	border-radius: 4px;
 	margin-left: 3px;
 	margin-bottom: 10px;
-	background-color: #FC0D6B;
 }
 
 #my-advertise input[type="button"]:hover {
@@ -2696,19 +2695,19 @@ border: 1px solid #CCC;
 	text-decoration:none;
 }
 
-#post-donate-join-bar #donate, #index-donate-join-bar #donate {
+#post-donate-join-bar #donate, #index-donate-join-bar #donate, #my-advertise #advertorial input[type="button"] {
 	background-color: #00AED7;
 }	 
 
-#post-donate-join-bar #join, #index-donate-join-bar #join {
+#post-donate-join-bar #join, #index-donate-join-bar #join, #my-advertise #competition input[type="button"] {
 	background-color: #FC0D6B;
 }	 
 
-#post-donate-join-bar #letter, #index-donate-join-bar #letter {
+#post-donate-join-bar #letter, #index-donate-join-bar #letter, #my-advertise #listing input[type="button"]  {
 	background-color: #61C201;
 }
 
-#post-donate-join-bar #petition, #index-donate-join-bar #petition  {
+#post-donate-join-bar #petition, #index-donate-join-bar #petition, #post-product-button-bar #product-button, #my-advertise #email input[type="button"] {
 	background-color: #F15C00;
 }
 
