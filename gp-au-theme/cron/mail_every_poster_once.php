@@ -1,6 +1,6 @@
 <?php
 //get the class
-require '../ga/analytics.class.php';
+require('../ga/analytics.class.php');
 
 function days_diff($date_a, $date_b){
     $seconds_between = strtotime(date_format($date_a, "Y-m-d")) - strtotime(date_format($date_b, "Y-m-d"));
