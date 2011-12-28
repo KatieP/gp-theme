@@ -2435,7 +2435,7 @@ ul.categorieslistmain {
   cursor: pointer;
 }
 
-#content .profile-tabs #analytics {
+#content .profile-tabs #analytics, #content .profile-tabs #advertise {
   background-color: #afde7f;	
 }
 
