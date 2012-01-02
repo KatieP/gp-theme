@@ -1515,25 +1515,25 @@ function theme_author_advertise($profile_author) {
 		<div id="advertorial">
 			<span><?php theme_insert_advertorialcreate_post(); ?></span>
 			<div class="clear"></div>			
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="competition">
 			<span><?php theme_insert_competitioncreate_post(); ?></span>	
 			<div class="clear"></div>				
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="listing">
 			<span><?php theme_insert_listingcreate_new(); ?></span>
 			<div class="clear"></div>
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="email">
 			<span><?php theme_insert_emailcreate_new(); ?></span>
 			<div class="clear"></div>
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 	</div>

@@ -2546,8 +2546,7 @@ ul.categorieslistmain {
 #my-advertise input[type="button"] {
 	height: 32px;	
 	line-height: 36px;
-	width: 150px;
-	/*font-size: 13px;*/
+	width: 160px;
 	border-radius: 4px;
 	margin-left: 3px;
 	margin-bottom: 10px;
@@ -2568,6 +2567,7 @@ ul.categorieslistmain {
 
 #my-advertise a {
 	color: grey;
+	margin-left: 3px;
 }
 
 /** AJAX LIKE FEATURE  **/
