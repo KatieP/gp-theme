@@ -1345,7 +1345,7 @@ function theme_single_product_button() {
 		?>
 		<div id="post-product-button-bar">
 			<?php
-			$click_track_tag = '\'/outbound/' . $post->ID . '/' . $post_author->ID .'/\'';
+			$click_track_tag = '\'/outbound/product-button/' . $post->ID . '/' . $post_author->ID .'/\'';
 			echo '<span><a href="' . $product_url . '" target="_blank" onClick="recordOutboundLink(this, ' . $click_track_tag . ', \'' . $product_url . '\');return false;"><input type="button" id="product-button" value="Buy It!" /></a></span>';
 			?>			
 		</div>
