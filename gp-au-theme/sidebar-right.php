@@ -87,10 +87,6 @@
 				relevant_posts();
 				?>
 				<div id="toolbox">
-					<span class="title">Discussions:</span>
-					<script type="text/javascript" src="http://greenpages.disqus.com/combination_widget.js?num_items=5&hide_mods=1&color=blue&default_tab=popular&excerpt_length=200"></script>
-				</div>
-				<div id="toolbox">
 					<script type="text/javascript">
 					<!--
 						google_ad_client = "ca-pub-5276108711751681";

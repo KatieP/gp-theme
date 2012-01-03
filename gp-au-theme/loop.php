@@ -349,9 +349,9 @@ function theme_singlesocialbar() {
 				</div>';
 		if ( comments_open() && !is_attachment() ) {
 			echo '
-				<a href="' . get_permalink($post->ID) . '#disqus_thread" class="post-disqus">
+				<a href="' . get_permalink($post->ID) . '#comments" class="post-disqus">
 					<div class="comment-background">
-						<span class="comment-number dsq-postid">' . $post->comment_count . '</span>
+						<span class="comment-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span>
 					</div>
 				</a>
 				<div class="comment-leftcap"></div>
@@ -367,7 +367,13 @@ function theme_singlesocialbar() {
 function theme_singlecomments() {
 	if ( comments_open() ) {
 		echo '<a name="comments"></a>';
-		comments_template( '', true );
+		#comments_template( '', true );
+		?>
+		<div id="facebook-comments">
+			<h3 id="reply-title">Leave a Reply</h3>
+			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="470"></fb:comments>
+		</div>
+		<?php
 	}
 }
 

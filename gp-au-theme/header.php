@@ -57,6 +57,8 @@ $template_url = get_bloginfo('template_url');
         ?></title>
 		
 		<?php // Show required info for Facebook attach link functionality and open graph protocol
+			echo '<meta property="fb:app_id" content="305009166210437" />';
+            echo '<meta property="og:locale" content="en_US" />';
 			echo '<meta property="og:site_name" content="Green Pages" />';
 			echo '<meta property="og:url" content="' . urlencode(get_permalink($post->ID)) . '"/>';
 			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
@@ -131,6 +133,20 @@ $template_url = get_bloginfo('template_url');
 	</head>
 
 	<body>
+		<!-- Facebook JavaScript SDK -->
+		<div id="fb-root"></div>
+		<script>
+			window.fbAsyncInit = function() {
+				FB.init({appId: '305009166210437', status: true, cookie: true, xfbml: true});
+			};
+			(function() {
+				var e = document.createElement('script'); e.async = true;
+				e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+				document.getElementById('fb-root').appendChild(e);
+			}());
+		</script>
+		<!-- End Facebook JavaScript SDK -->
+	
 		<header class="pos">
 			<nav id="header-mast">
 				<a href="<?php echo get_option('home'); ?>">
