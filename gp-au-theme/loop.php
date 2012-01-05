@@ -1355,12 +1355,15 @@ function theme_single_product_button() {
 		$custom = get_post_custom($post->ID);
 	 	$product_url = $custom["gp_advertorial_product_url"][0];
 	 	$post_author = get_userdata($post->post_author);
+	 	$post_id = $post->ID;
+	 	$post_author_id = $post_author->ID;
+	 	
 	 	if ( !empty($product_url) ) {
 		?>
 		<div id="post-product-button-bar">
 			<?php
-			$click_track_tag = '\'/outbound/product-button/' . $post->ID . '/' . $post_author->ID .'/\'';
-			echo '<span><a href="' . $product_url . '" target="_blank" onClick="recordOutboundLink(this, ' . $click_track_tag . ', \'' . $product_url . '\');return false;"><input type="button" id="product-button" value="Buy It!" /></a></span>';
+			$click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
+			echo '<span><a href="' . $product_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="product-button" value="Buy It!" /></a></span>';
 			?>			
 		</div>
 		<div class="clear"></div>

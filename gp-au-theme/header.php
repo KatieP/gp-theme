@@ -29,8 +29,6 @@ $template_url = get_bloginfo('template_url');
 		
 		<script type="text/javascript">
 			window.google_analytics_uacct = "UA-2619469-9";
-			var pageTracker = _gat._getTracker("UA-2619469-9");
-			pageTracker._trackPageview();
 		</script>
 		
 		<title><?php
@@ -105,13 +103,6 @@ $template_url = get_bloginfo('template_url');
          */
         wp_head();
 		?>
-		
-		<script type="text/javascript">
-			function recordOutboundLink(link, category, action) {
-    			_gat._getTrackerByName()._trackEvent(category, action);
-    			setTimeout('document.location = "' + link.href + '"', 100);
-  			}
-		</script>
 		
 		<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
 		</script>
