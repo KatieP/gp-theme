@@ -10,7 +10,7 @@ body, pre {
 }
 
 pre { 
-        padding: 0;
+    padding: 0;
 }
 
 iframe {
@@ -2686,6 +2686,14 @@ border: 1px solid #CCC;
 #index-donate-join-bar input[type="button"] {
 	margin: 0 15px 35px 0px;
 }
+
+#index-donate-join-bar input[type="button"]:hover {
+	border: solid 1px #F2F2F2;
+	box-shadow: 0 0 3px 3px  #F2F2F2;
+		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
+		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
+	cursor: pointer;
+}	
 
 #index-donate-join-bar a:hover {
 	text-decoration:none;
