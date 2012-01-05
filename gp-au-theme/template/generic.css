@@ -2654,6 +2654,14 @@ background-color: #F2F2F2;
 border: 1px solid #CCC;
 }
 
+#content #post-filter input[type="button"]:hover {
+	border: solid 1px #CCC;
+	box-shadow: 0 0 3px 3px  #F2F2F2;
+		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
+		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
+	cursor: pointer;
+}	
+
 #content #post-filter a:hover {
 	text-decoration:none;
 }
