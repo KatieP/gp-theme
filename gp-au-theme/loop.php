@@ -279,59 +279,6 @@ function theme_singlepagination() {
 	/* wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); */
 }
 
-function theme_index_contributor_donate_join_bar() {
-	if (get_post_type() != "page") { 
-		global $post;
-		$post_author = get_userdata($post->post_author);
-		$post_author_url = get_author_posts_url($post->post_author);
-		$donate_url = $post_author->contributors_donate_url;
-		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
-		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
-		
-		?>
-		<div id="index-donate-join-bar">
-			<?php
-			theme_contributors_donate($donate_url);
-			theme_contributors_join($join_url);
-			theme_contributors_letter($letter_url);
-			theme_contributors_petition($petition_url);
-			theme_contributors_volunteer($volunteer_url);
-			?>			
-		</div>
-		<div class="clear"></div>
-		<?php		
-	}
-}
-
-function theme_single_contributor_donate_join_bar(){
-	if (get_post_type() != "page") { 
-		global $post;
-		$post_author = get_userdata($post->post_author);
-		$post_author_url = get_author_posts_url($post->post_author);
-		$donate_url = $post_author->contributors_donate_url;
-		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
-		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
-		
-		?>
-		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
-		<div id="post-donate-join-bar">
-			<?php
-			theme_contributors_donate($donate_url);
-			theme_contributors_join($join_url);
-			theme_contributors_letter($letter_url);
-			theme_contributors_petition($petition_url);
-			theme_contributors_volunteer($volunteer_url);
-			?>			
-		</div>
-		<div class="clear"></div>
-		<?php		
-	}
-}
-
 function theme_singlesocialbar() {
 	if (get_post_type() != "page") { 
 		global $post;
@@ -1374,27 +1321,27 @@ function theme_single_product_button() {
 
 /********************************************************************************/
 
-/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
+/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BARS **/
 
 function theme_profile_contributor_donate_join_bar($profile_author){
 	if (get_post_type() != "page") { 
-		global $post;
-		
+		global $post;	
 		$post_author = $profile_author;
+		$post_author_id = $post_author->ID;
 		$donate_url = $post_author->contributors_donate_url;
 		$join_url = $post_author->contributors_join_url;
 		$letter_url = $post_author->contributors_letter_url;
 		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
+		$volunteer_url = $post_author->contributors_volunteer_url	
 		
 		?>
 		<div id="post-donate-join-bar">
 			<?php
-			theme_contributors_donate($donate_url);
-			theme_contributors_join($join_url);
-			theme_contributors_letter($letter_url);
-			theme_contributors_petition($petition_url);
-			theme_contributors_volunteer($volunteer_url);
+			theme_contributors_donate($donate_url, $post_author_id);
+			theme_contributors_join($join_url, $post_author_id);
+			theme_contributors_letter($letter_url, $post_author_id);
+			theme_contributors_petition($petition_url, $post_author_id);
+			theme_contributors_volunteer($volunteer_url, $post_author_id);
 			?>			
 		</div>
 		<div class="clear"></div>
@@ -1402,33 +1349,95 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 	}
 }
 
-function theme_contributors_donate($donate_url) {
+function theme_index_contributor_donate_join_bar() {
+	if (get_post_type() != "page") { 
+		global $post;
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+		$post_author_id = $post_author->ID;
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<div id="index-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url, $post_author_id);
+			theme_contributors_join($join_url, $post_author_id);
+			theme_contributors_letter($letter_url, $post_author_id);
+			theme_contributors_petition($petition_url, $post_author_id);
+			theme_contributors_volunteer($volunteer_url, $post_author_id);
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php		
+	}
+}
+
+function theme_single_contributor_donate_join_bar() {
+	if (get_post_type() != "page") { 
+		global $post;
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+		$post_author_id = $post_author->ID;
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
+		<div id="post-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url, $post_author_id);
+			theme_contributors_join($join_url, $post_author_id);
+			theme_contributors_letter($letter_url, $post_author_id);
+			theme_contributors_petition($petition_url, $post_author_id);
+			theme_contributors_volunteer($volunteer_url, $post_author_id);
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php		
+	}
+}
+
+/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
+
+function theme_contributors_donate($donate_url, $post_author_id) {
 	if ( !empty($donate_url) ) {
-		echo '<span><a href="'.$donate_url.'"><input type="button" id="donate" value="Donate" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-donate-button/' . $post_author_id . '/' . $donate_url .'/\'';
+		echo '<span><a href="' . $donate_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="donate" value="Donate" /></a></span>';
 	}
 }
 
-function theme_contributors_join($join_url) {
+function theme_contributors_join($join_url, $post_author_id) {
 	if ( !empty($join_url) ) {
-		echo '<span><a href="'.$join_url.'"><input type="button" id="join" value="Join" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-join-button/' . $post_author_id . '/' . $join_url .'/\'';
+		echo '<span><a href="' . $join_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="join" value="Join" /></a></span>';
 	}
 }
 
-function theme_contributors_letter($letter_url) {
+function theme_contributors_letter($letter_url, $post_author_id) {
 	if ( !empty($letter_url) ) {
-		echo '<span><a href="'.$letter_url.'"><input type="button" id="letter" value="Send Letter" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-letter-button/' . $post_author_id . '/' . $letter_url .'/\'';
+		echo '<span><a href="'. $letter_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="letter" value="Send Letter" /></a></span>';
 	}
 }
 
-function theme_contributors_petition($petition_url) {
+function theme_contributors_petition($petition_url, $post_author_id) {
 	if ( !empty($petition_url) ) {
-		echo '<span><a href="'.$petition_url.'"><input type="button" id="petition" value="Sign Petition" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-petition-button/' . $post_author_id . '/' . $petition_url .'/\'';
+		echo '<span><a href="'. $petition_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="petition" value="Sign Petition" /></a></span>';
 	}
 }
 
-function theme_contributors_volunteer($volunteer_url) {
+function theme_contributors_volunteer($volunteer_url, $post_author_id) {
 	if ( !empty($volunteer_url) ) {
-		echo '<span><a href="'.$volunteer_url.'"><input type="button" id="volunteer" value="Volunteer" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-volunteer-button/' . $post_author_id . '/' . $volunteer_url .'/\'';
+		echo '<span><a href="'. $volunteer_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="volunteer" value="Volunteer" /></a></span>';
 	}
 }
 
