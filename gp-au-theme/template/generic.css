@@ -2703,6 +2703,14 @@ border: 1px solid #CCC;
 	cursor: pointer;
 }	
 
+#post-donate-join-bar input[type="button"]:hover {
+	border: solid 1px #F2F2F2;
+	box-shadow: 0 0 3px 3px  #F2F2F2;
+		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
+		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
+	cursor: pointer;
+}
+
 #index-donate-join-bar a:hover {
 	text-decoration:none;
 }
