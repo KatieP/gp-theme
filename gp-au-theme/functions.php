@@ -38,6 +38,11 @@ function yoursite_wp_mail_from_name($name) {
 	return 'Green Pages';
 }
 
+/*** MANUALLY SETS WORD LENGTH OF EXCERPT FROM POST SHOWN IN INDEX AND PROFILE PAGES ***/
+add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+function custom_excerpt_length( $length ) {
+	return 25;
+}
 
 function cm_subscribe($subscribe = '') {
 	if ($subscribe == 'true' || $subscribe = 'false') {

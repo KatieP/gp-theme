@@ -1112,9 +1112,10 @@ margin-top: 16px;
 	/** COLUMN 2 **/
 
 		#col2 {
-			width: 470px;
-			margin-right: 38px;
-			overflow: hidden;
+		/**	width: 470px;
+    		margin-right: 38px;   ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
+      		width: 636px;
+      		overflow: hidden;
 		}
 
 		/** 2 COLUMN SETTING **/
@@ -1973,10 +1974,13 @@ margin-top: 16px;
 }
 
 #content .author-box {
-	width: 290px;
-	float: right;
-	font-size: 11px;
-	line-height: 24px;
+/** 
+  width: 290px;
+  float: right;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
+  width: 456px;
+  float: left;
+  font-size: 11px;
+  line-height: 24px;
 }
 
 #content .author-box a {
@@ -2465,7 +2469,8 @@ ul.categorieslistmain {
 
 #content .profile-postbox {
   float: left;
-  width: 310px;
+  /** width: 310px;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
+  width: 476px;
   margin-right: 20px;
 }
 
@@ -2475,6 +2480,10 @@ ul.categorieslistmain {
 
 #content .profile-postbox h1, #content .profile_minithumb img {
   margin: 0 0 0 0;
+}
+
+#content .profile_minithumb img {
+  float: right;
 }
 
 #content .profile_postlink {
@@ -2641,7 +2650,7 @@ padding: 2px;
 margin: 0;
 }
 
-/** Button that links front end category pages to create new post backend admin pages **/
+/** Button that links front end index pages to create new post backend admin pages **/
 #content #post-filter input[type="button"] {
 display: inline;
 float: right;
@@ -2688,7 +2697,8 @@ border: 1px solid #CCC;
 	line-height: 17px;
 	color: white;
 	border: 1px solid #CCC;
-	width: 82px;
+	width: 115px;
+/**	width: 82px;   ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
 }
 
 #index-donate-join-bar input[type="button"] {
@@ -2701,7 +2711,7 @@ border: 1px solid #CCC;
 		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
 		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
 	cursor: pointer;
-}	
+}
 
 #post-donate-join-bar input[type="button"]:hover {
 	border: solid 1px #F2F2F2;
@@ -2709,7 +2719,7 @@ border: 1px solid #CCC;
 		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
 		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
 	cursor: pointer;
-}
+}	
 
 #index-donate-join-bar a:hover {
 	text-decoration:none;
@@ -2721,13 +2731,13 @@ border: 1px solid #CCC;
 
 #post-donate-join-bar #donate, #index-donate-join-bar #donate, #my-advertise #advertorial input[type="button"] {
 	background-color: #00AED7;
-}	 
+}
 
 #post-donate-join-bar #join, #index-donate-join-bar #join, #my-advertise #competition input[type="button"] {
 	background-color: #FC0D6B;
-}	 
+}
 
-#post-donate-join-bar #letter, #index-donate-join-bar #letter, #my-advertise #listing input[type="button"]  {
+#post-donate-join-bar #letter, #index-donate-join-bar #letter, #my-advertise #listing input[type="button"] {
 	background-color: #61C201;
 }
 
@@ -2735,7 +2745,7 @@ border: 1px solid #CCC;
 	background-color: #F15C00;
 }
 
-#post-donate-join-bar #volunteer, #index-donate-join-bar #volunteer  {
+#post-donate-join-bar #volunteer, #index-donate-join-bar #volunteer {
 	background-color: #EBA006;
 	margin-right: 0px;
 }

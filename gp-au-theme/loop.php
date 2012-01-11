@@ -318,7 +318,7 @@ function theme_singlecomments() {
 		?>
 		<div id="facebook-comments">
 			<h3 id="reply-title">Leave a Reply</h3>
-			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="470"></fb:comments>
+			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="636"></fb:comments>
 		</div>
 		<?php
 	}
@@ -981,7 +981,7 @@ function author_edit() {
 		
 		<label for="contributors_posttagline">Contributors Post Tagline</label>
 		<p>In a couple sentences tell visitors a little about your organisation. Visible at end of each post you create.</p>
-		<input type="text" value="<?php echo $contributors_posttagline; ?>" maxlenght="255" name="contributors_posttagline" id="contributors_posttagline" style="width:470px" />
+		<input type="text" value="<?php echo $contributors_posttagline; ?>" maxlength="255" name="contributors_posttagline" id="contributors_posttagline" style="width:470px" />
 		<?php
 		} 
 		?>
