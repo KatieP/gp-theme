@@ -702,8 +702,9 @@ function events_index() {
     $querytotal = "SELECT COUNT(*) as count FROM $wpdb->posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' left join " . $wpdb->prefix . "postmeta as m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_loccountry' left join " . $wpdb->prefix . "postmeta as m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_locstate' WHERE post_status='publish' AND post_type='gp_events' AND m4.meta_value='AU' " . $filterby_state . " AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . ";";
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
 
-	$ppp = intval(get_query_var('posts_per_page'));
-
+	#$ppp = intval(get_query_var('posts_per_page'));
+	$ppp = 20;
+	
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
 	$on_page = intval(get_query_var('paged'));	
