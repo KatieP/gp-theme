@@ -86,6 +86,26 @@
 				}
 				relevant_posts();
 				?>
+				<table>
+					<tr>
+						<td>
+							<nav id="lyb">
+								<a href="<?php echo get_permalink(472); ?>">
+									<span class="title">List your business</span>
+									<span class="content">Free 30 day trial</span>
+								</a>
+							</nav>
+						</td>
+						<td>
+							<nav id="advertisewus">
+								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460"  class="pirobox_gall1">
+									<span class="title">Advertise</span>
+									<span class="content">Explore the options</span>
+								</a>
+							</nav>
+						</td>
+					</tr>
+				</table>
 				<div id="toolbox">
 					<script type="text/javascript">
 					<!--
