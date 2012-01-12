@@ -1584,7 +1584,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 				<td class="author_analytics_cost">Value</td>
 				<td class="author_analytics_date">Date Posted</td> 
 				<td class="author_analytics_page_impressions">Total Page Impressions</td>
-				<!-- <td>Clicks</td> -->
+				<!-- <td class="author_analytics_clicks">Clicks</td> -->
 				<td class="author_analytics_category_impressions">Total Category Impressions</td>
 			</tr>
 	<?php	
@@ -1626,6 +1626,33 @@ function theme_author_analytics($profile_author, $pageposts) {
     			$sumURL = $sumURL + $data;
   			}
   			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';
+  			
+/**
+  			
+	  		//Clicks as Page views for specific URL
+			if (get_post_type() == "gp_advertorial") { 
+  				$custom = get_post_custom($post->ID);
+	 			$product_url = $custom["gp_advertorial_product_url"][0];
+	 			$post_author = get_userdata($post->post_author);
+	 			$post_id = $post->ID;
+	 			$post_author_id = $post_author->ID;
+  			
+	 			if ( !empty($product_url) ) {
+  					$click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
+	  		
+  					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  					#echo $clickURL . ' $clickURL';
+  					var_dump ($click_track_tag);
+	 			}
+  			
+  				$sumClick = 0;
+  				foreach ($clickURL as $data) {
+    				$sumClick = $sumClick + $data;
+  				}
+  				#echo ' <br />*** ' . $clickURL . ' ***<br /> ';	
+			}
+**/
+  			
   				
 			//Page views for the section landing page, e.g., the news page
   			$pageViewType = ($analytics->getPageviewsURL($post_type_map[$type]));
@@ -1677,7 +1704,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 				echo '<td class="author_analytics_cost">' . $post_price . '</td>'; #Cost				
 				echo '<td class="author_analytics_date">' . get_the_time('j-m-y') . '</td>';#date
 				echo '<td class="author_analytics_page_impressions">' . $sumURL . '</td>'; #Page Impressions
-				#echo '<td>' . ' ' . '</td>'; #Clicks
+				#echo '<td class="author_analytics_clicks">' . $sumClick . '</td>'; #Clicks
 				echo '<td class="author_analytics_category_impressions">' . $sumType . '</td>'; #Category Impressions				
 			echo '</tr>';
 		}

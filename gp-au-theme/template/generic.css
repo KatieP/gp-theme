@@ -2558,6 +2558,7 @@ ul.categorieslistmain {
 #content .author_analytics .author_analytics_cost,
 #content .author_analytics .author_analytics_date,
 #content .author_analytics .author_analytics_page_impressions, 
+#content .author_analytics .author_analytics_clicks, 
 #content .author_analytics .author_analytics_category_impressions {
 	text-align: center;
 }
