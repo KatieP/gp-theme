@@ -1250,28 +1250,40 @@ function theme_authoremail($profile_author) {
 
 function theme_authorfacebook($profile_author) {
 if ( !empty($profile_author->facebook) ) {
-		echo '<a href="' . $profile_author->facebook . '" target="_new" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_facebook = $profile_author->facebook;
+		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id . '/' . $profile_author_facebook .'/\'';
+		echo '<a href="' . $profile_author->facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
 	}
 }
 
 function theme_authorlinkedin($profile_author) {
 if ( !empty($profile_author->linkedin) ) {
-		echo '<a href="' . $profile_author->linkedin . '" target="_new" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_linkedin = $profile_author->linkedin;
+		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id . '/' . $profile_author_linkedin .'/\'';
+		echo '<a href="' . $profile_author->linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
 	}
 }
 
 function theme_authortwitter($profile_author) {
 	if ( !empty($profile_author->twitter) ) {
-		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_twitter = $profile_author->twitter;
+		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id . '/' . $profile_author_twitter .'/\'';
+		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
 	}
 }
 
 function theme_authorskype($profile_author) {
 	if ( is_user_logged_in() && !empty($profile_author->skype) ) {
-		$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
-		if ( get_user_role($skype_viewers, $profile_author->ID) )  {
-			echo '<a href="callto://' .$profile_author->skype . '" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
-		} 
+		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
+		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
+			$profile_author_id = $profile_author->ID;
+			$profile_author_skype = $profile_author->skype;
+			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id . '/' . $profile_author_skype .'/\'';			
+			echo '<a href="callto://' .$profile_author->skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
+		#} 
 	}
 }
 
@@ -1281,7 +1293,10 @@ function theme_authorrss($profile_author) {
 
 function theme_authorwww($profile_author) {
 	if ( !empty($profile_author->user_url) ) {
-		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new">' . $profile_author->user_url . '</a></div>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_url = $profile_author->user_url;
+		$click_track_tag = '\'/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/\'';
+		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);">' . $profile_author->user_url . '</a></div>';
 	}	
 }
 
@@ -1869,6 +1884,7 @@ function subscriber_index($profile_author) {
 			theme_authorfacebook($profile_author);
 			theme_authortwitter($profile_author);
 			theme_authorlinkedin($profile_author);
+			theme_authorskype($profile_author);
 		echo '<div class="clear"></div></div>';
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
