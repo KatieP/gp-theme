@@ -1604,7 +1604,8 @@ function theme_author_analytics($profile_author, $pageposts) {
 			</tr>
 	<?php	
 				
-	if ($pageposts) {	
+	if ($pageposts) {
+	 
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 		
@@ -1639,6 +1640,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   			$sumURL = 0;
   			foreach ($pageViewURL as $data) {
     			$sumURL = $sumURL + $data;
+    			$total_sumURL = $total_sumURL + $data;
   			}
   			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';
   				
@@ -1702,6 +1704,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			        break;
 			}
 			
+			
 			echo '<tr>';					# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
 				echo '<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
 				esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>'; 	#Title				
@@ -1715,9 +1718,10 @@ function theme_author_analytics($profile_author, $pageposts) {
 		}
 	}	
 	?>
-		</table>	
-	<!-- <h1><a href="/wp-admin/post-new.php?post_type=gp_advertorial">Book another post!</a></h1> -->			
-	<?php theme_homecreate_post(); ?>
+		</table>			
+		<?php theme_homecreate_post(); ?>
+		<p>Your posts have been viewed a total of</p> 
+		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
 	</div>
 <?php 
 }

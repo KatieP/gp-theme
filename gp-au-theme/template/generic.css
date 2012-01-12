@@ -2540,6 +2540,11 @@ ul.categorieslistmain {
 	display: none;
 }
 
+#content #my-analytics .big-number {
+	margin:0px;
+	font-size: 40px;	
+}	
+
 /** AUTHOR ANALYTICS TABLES ON PROFILE PAGES  **/
 
 #content .author_analytics tr td  {
