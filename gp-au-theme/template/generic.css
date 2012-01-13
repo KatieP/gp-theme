@@ -1501,6 +1501,10 @@ margin-top: 16px;
 		
 		/** LIST YOU BUSINESS / ADVERTISE WITH US / FOLLOW US **/
 		
+		.hidden {
+			display: none;
+		}
+		
 		#col3 table {
 			width: 320px;
 		}
@@ -2717,14 +2721,14 @@ border: 1px solid #CCC;
 	padding: 0 4px 0 4px;
 	overflow: hidden;
 	float: left;
-	height: 22px;
+	height: 24px;
 	display: inline;
 	margin: 5px 15px 10px 0px;
 	line-height: 17px;
 	color: white;
 	border: 1px solid #CCC;
-	width: 115px;
-/**	width: 82px;   ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
+	border-radius: 4px;	
+	width: 80px;
 }
 
 #index-donate-join-bar input[type="button"] {

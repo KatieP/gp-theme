@@ -177,11 +177,11 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section, time
 #content h1, #content h1 a, #content h2, #content h2 a {
 	font-size: 20px;
 	font-weight: 600;
-	margin: 30px 0 30px 0;
+	margin: 10px 0 30px 0;
 }
 
 #content h1, #content h2 {
-	margin: 30px 0 10px 0;
+	margin: 10px 0 10px 0;
 	line-height: 24px;
 }
 

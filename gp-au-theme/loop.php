@@ -1670,12 +1670,15 @@ function theme_author_analytics($profile_author, $pageposts) {
 	 				$post_id = $post->ID;
 	 				$post_author_id = $post_author->ID;
 	 				if ( !empty($product_url) ) {
-  						$click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
+  						$click_track_tag = '/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/';
   						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
 	 				}
   					$sumClick = 0;
   					foreach ($clickURL as $data) {
     					$sumClick = $sumClick + $data;
+    					if ($sumClick == 0) {
+    						$sumClick = 'Coming';
+    					}
   					}					
 		       		break;
 				case 'gp_competitions':
@@ -1925,7 +1928,7 @@ function contributor_index($profile_author) {
 		#theme_authorseen($profile_author);
 		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
-	theme_profile_contributor_donate_join_bar($profile_author);		
+	theme_profile_contributor_donate_join_bar($profile_author);
 	theme_contributorsblurb($profile_author);
 	echo '<div class="clear"></div>';
 	theme_authorposts($profile_author); 
