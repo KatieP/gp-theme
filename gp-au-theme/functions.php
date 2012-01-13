@@ -20,6 +20,30 @@ function gp_add_admin_header() {
 }
 */
 
+/*
+Remove action from plugin - wp-email-login.
+Javascript generates errors if element isn't found. Element is also different for plugin - simple modal-login.
+*/
+remove_action( 'login_form', 'username_or_email_login' );
+
+function new_username_or_email_login() { ?>
+	<script type="text/javascript">
+		var regtitle = document.getElementById('loginform');
+		
+		if (regtitle != undefined) {
+			if (regtitle.childNodes[1] != undefined && regtitle.childNodes[1].childNodes[1] != undefined && regtitle.childNodes[1].childNodes[1].childNodes[0] != undefined && regtitle.childNodes[1].childNodes[1].childNodes[0].length > 0) {
+				regtitle.childNodes[1].childNodes[1].childNodes[0].nodeValue = '<?php echo esc_js( __( 'Username or Email Address', 'email-login' ) ); ?>';
+			}
+		}
+		
+		// Error Messages
+		if ( document.getElementById('login_error') )
+			document.getElementById('login_error').innerHTML = document.getElementById('login_error').innerHTML.replace( '<?php echo esc_js( __( 'username' ) ); ?>', '<?php echo esc_js( __( 'Username or Email' , 'email-login' ) ); ?>' );
+	</script>
+<?php } 
+
+add_action( 'login_form', 'new_username_or_email_login' );
+
 add_filter( 'admin_footer_text', 'gp_add_admin_footer' );
 function gp_add_admin_footer() {
 	echo 'Welcome to the Green Pages backend editor! Go back to <a href="http://www.thegreenpages.com.au/">front end</a>';
