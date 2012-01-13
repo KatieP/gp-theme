@@ -236,11 +236,11 @@ function theme_insert_advertise_competitioncreate_post(){
 }
 
 function theme_insert_listingcreate_new(){
-	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="Create a Directory Page" /></a><?php 
+	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="List Your Business $39/m" /></a><?php 
 }
 
 function theme_insert_emailcreate_new(){
-	?><a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry" ><input type="button" value="Inquire about EDM" /></a><?php 
+	?><a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry" ><input type="button" value="Exclusive Email $3500" /></a><?php 
 }
 
 /*******************************************************************************/	
@@ -1557,25 +1557,25 @@ function theme_author_advertise($profile_author) {
 		<div id="advertorial">
 			<span><?php theme_insert_advertise_advertorialcreate_post(); ?></span>
 			<div class="clear"></div>			
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="competition">
 			<span><?php theme_insert_advertise_competitioncreate_post(); ?></span>	
 			<div class="clear"></div>				
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="listing">
 			<span><?php theme_insert_listingcreate_new(); ?></span>
 			<div class="clear"></div>
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="email">
 			<span><?php theme_insert_emailcreate_new(); ?></span>
 			<div class="clear"></div>
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 	</div>
@@ -1775,17 +1775,18 @@ function theme_authorposts($profile_author) {
 				document.getElementById("analytics").style.backgroundColor="#afde7f";
 				document.getElementById("advertise").style.backgroundColor="#61c201";
 			}
-		 --></script><?php 
-		echo 	'<nav class="profile-tabs">
-					<ul>
-						<li id="posts" onclick="display_posts()">Posts</li>
-						<li id="analytics" onclick="display_analytics()">Analytics</li>
-						<li id="advertise" onclick="display_advertise()">Advertise</li>
-						<!-- <li><span>Campaigns</span></li> -->
-					</ul>
-				</nav>';
-		theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
-		theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
+			--></script> 
+			<nav class="profile-tabs">
+				<ul>
+					<li id="posts" onclick="display_posts()">Posts</li>
+					<li id="analytics" onclick="display_analytics()">Analytics</li>
+					<li id="advertise" onclick="display_advertise()">Advertise</li>
+					<!-- <li><span>Campaigns</span></li> -->
+				</ul>
+			</nav>
+			<?php
+			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
+			theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
 		} else {
 			echo '<nav class="profile-tabs"><ul><li id="posts">Posts</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
 		}
