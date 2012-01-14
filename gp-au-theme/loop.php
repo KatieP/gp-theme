@@ -1669,24 +1669,27 @@ function theme_author_analytics($profile_author, $pageposts) {
 					$post_url = '/new-stuff';
 					$post_price = '$89.00';
 			  		$custom = get_post_custom($post->ID);
-	 				$product_url = $custom["gp_advertorial_product_url"][0];
+	 				$product_url = $custom["gp_advertorial_product_url"][0];	
 	 				if ( !empty($product_url) ) {
   						$click_track_tag = '/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/';
   						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+	 					$sumClick = 0;
+  						foreach ($clickURL as $data) {
+    						$sumClick = $sumClick + $data;
+  					    	if ($sumClick == 0) {
+    							$sumClick = 'Coming';
+    						}
+  						}
+	 				} 
+	 				else {
+	 					$sumClick = 'Coming';
 	 				}
-  					$sumClick = 0;
-  					foreach ($clickURL as $data) {
-    					$sumClick = $sumClick + $data;
-  					    if ($sumClick == 0) {
-    						$sumClick = 'Coming';
-    					}
-  					}					
 		       		break;
 				case 'gp_competitions':
 					$post_title = 'Competitions';
 					$post_url = '/competitions';
 					$post_price = '$250.00';
-  					$click_track_tag = '/yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
+  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
   					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   					$sumClick = 0;
   					foreach ($clickURL as $data) {
@@ -1700,7 +1703,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 		   			$post_title = 'Events';
 		   			$post_url = '/events';
 		   			$post_price = 'N/A';
-  					$click_track_tag = '/yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
+  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
   					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   					$sumClick = 0;
   					foreach ($clickURL as $data) {
@@ -1714,7 +1717,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 				   	$post_title = 'News';
 		   			$post_url = '/news';
 		   			$post_price = 'N/A';
-  					$click_track_tag = '/yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
+  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
   					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   					$sumClick = 0;
   					foreach ($clickURL as $data) {
@@ -1728,7 +1731,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			    	$post_title = 'Campaigns';
 			    	$post_url = '/ngo-campaign';
 			    	$post_price = 'N/A';
-  					$click_track_tag = '/yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
+  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
   					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   					$sumClick = 0;
   					foreach ($clickURL as $data) {
