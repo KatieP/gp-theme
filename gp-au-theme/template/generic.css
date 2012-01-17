@@ -1923,7 +1923,7 @@ margin-top: 16px;
 	color: #fff;
 }
 
-.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini {
+.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini, .comment-mini-closed {
 	background: url(../template/map-comments.png) no-repeat;
 }
 
@@ -1953,7 +1953,7 @@ margin-top: 16px;
 	z-index: 1;
 }
 
-.comment-mini {
+.comment-mini, .comment-mini-closed {
 	position: relative;
 	display: block;
 	background-position: 0px -26px;
@@ -1961,6 +1961,10 @@ margin-top: 16px;
 	width: 16px;
 	float: right;
 	margin-left: 4px;
+}
+
+.comment-mini-closed {
+	background-position: -16px -26px;
 }
 
 #content .comment-number {
@@ -2391,7 +2395,7 @@ ul.categorieslistmain {
 	padding-left: 3px;
 }
 
-#content .comment-mini, #relevant-posts .comment-mini {
+#content .comment-mini, #relevant-posts .comment-mini, #content .comment-mini-closed, #relevant-posts .comment-mini-closed {
 	float: left;
 }
 
@@ -2424,6 +2428,7 @@ ul.categorieslistmain {
 	font-size: 10px;
 	font-style: italic;
 	color: #666;
+	text-decoration: underline;
 }
 
 #content .hp_featured {

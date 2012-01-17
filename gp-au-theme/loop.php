@@ -417,8 +417,14 @@ function theme_index_feed_item() {
 					get_the_time('F jS, Y g:i a') . 
 				 '</span>';
 			the_excerpt();			
-			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>		
-		</div>';
+			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>';
+			
+			if ( comments_open($post->ID) ) {
+				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+			} else {
+				echo '<div class="comment-profile"><span class="comment-mini-closed"></span></div>';
+			}
+		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
 	if ( has_post_thumbnail() ) {
@@ -662,7 +668,7 @@ function home_index() {
 				
 				
 				<?php if ( comments_open() ) { ?>
-				<div class="comment-hp"><a href="<?php the_permalink(); ?>#comments"><span class="comment-mini"></span></a><a href="<?php the_permalink(); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><?php echo $post->comment_count; ?></span></a></div>
+					<div class="comment-hp"><a href="<?php the_permalink(); ?>#comments"><span class="comment-mini"></span></a><a href="<?php the_permalink(); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><fb:comments-count href="<?php the_permalink(); ?>"></fb:comments-count></span></a></div>
 				<?php
 				}
 				echo '</div>';
@@ -1868,7 +1874,9 @@ function theme_authorposts($profile_author) {
 		    	the_excerpt();
 				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 			if ( comments_open() ) {
-				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span></a><a href="' . get_permalink($post->ID) . '#disqus_thread" class="comment-profile"><span class="comment-mini-number dsq-postid">' . $post->comment_count . '</span></a></div>';
+				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+			} else {
+				echo '<div class="comment-profile"><span class="comment-mini-closed"></span></div>';
 			}
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
