@@ -1964,7 +1964,8 @@ margin-top: 16px;
 }
 
 .comment-mini-closed {
-	background-position: -16px -26px;
+	 background-position: -16px -26px;
+     margin-right: 8px;
 }
 
 #content .comment-number {
@@ -2390,9 +2391,14 @@ ul.categorieslistmain {
 }
 
 #content .comment-mini-number, #relevant-posts .comment-mini-number {
-	color: #000;
-	font-size: 9px;
+	color: #333;
+	font-size: 11px;
+	font-weight: bold;
 	padding-left: 3px;
+}
+
+#content .comment-profile a:hover {
+	color: #333;
 }
 
 #content .comment-mini, #relevant-posts .comment-mini, #content .comment-mini-closed, #relevant-posts .comment-mini-closed {
