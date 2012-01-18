@@ -547,8 +547,20 @@ function home_index() {
 	$epochtime = strtotime('now');
 	
 	/** NEW SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
-	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
-	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR post_type='gp_events' AND post_status='publish' OR post_type='gp_advertorial' AND post_status='publish' OR post_type='gp_competitions' AND post_status='publish' OR post_type='gp_ngocampaign' AND post_status='publish' ORDER BY post_date DESC LIMIT 20)";
+	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate 
+				FROM " . $wpdb->prefix . "posts left join " . 
+						 $wpdb->prefix . "postmeta as m0 on m0.post_id=" . 
+						 $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . 
+						 $wpdb->prefix . "postmeta as m1 on m1.post_id=" . 
+						 $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . 
+						 $wpdb->prefix . "postmeta as m2 on m2.post_id=" . 
+						 $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') 
+				WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
+	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR 
+						post_type='gp_advertorial' AND post_status='publish' OR 
+						post_type='gp_competitions' AND post_status='publish' OR 
+						post_type='gp_ngocampaign' AND post_status='publish' 
+						ORDER BY post_date DESC LIMIT 20)";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	#$numPosts = $wpdb->num_rows-1;
