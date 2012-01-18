@@ -3031,9 +3031,77 @@ border: 1px solid #CCC;
 border: 1px solid #cccccc;
 padding: 4px;
 box-shadow: 0pt 1px 2px rgba(0, 0, 0, 0.15) inset;
-border-radius: 2px;
 background-color: rgba(255, 255, 255, 0.85);
 color: #000;            
 font-size:12px;
 height:auto;
+		-moz-border-radius: 2px;
+    	-webkit-border-radius: 2px;
+  	border-radius: 2px;
 }
+
+
+/** SOCIALBAR **/
+
+#gp_share .fixed {
+    position: fixed;
+    top: 20px;
+}
+
+#gp_sharebar {
+    float: left;
+    margin-left: -90px;
+    position: absolute;
+}
+
+#gp_sharebar .wdt {
+    float: left;
+    clear: left;
+    padding: 5px;
+    width: 58px;
+	text-align: center;
+}
+
+#gp_sharebox, #gp_commentbox {
+	background: #f0fafd;
+    margin-bottom: 10px;
+    	-moz-border-radius: 2px;
+    	-webkit-border-radius: 2px;
+  	border-radius: 2px;
+}
+
+#gp_commentbox {
+	background: #f6fbf0;
+	margin: 0;
+}
+
+#gp_sharebar .title {		
+	text-transform: uppercase;
+	font-size: 8px;
+	font-weight: bold;
+	padding-bottom: 0px;
+}
+
+#gp_sharebox .title {color: #00aede;}
+#gp_commentbox .title {color: #62b900;}
+#gp_commentbox .commentcount {padding: 5px;}
+
+#gp_commentbox .commentcount a {
+	display:block;
+	border:1px solid #ccc;
+	background-color: #fff;
+	padding: 0 7px 0 7px;
+	height: 34px;
+	width: 42px;
+	color: #333;
+	font-size: 16px;
+	text-align: center;
+	line-height: 36px;
+	overflow:hidden;
+		-moz-border-radius: 2px;
+    	-webkit-border-radius: 2px;
+  	border-radius: 2px;
+}
+
+
+#gp_commentbox .comment-mini {margin-top:8px;}

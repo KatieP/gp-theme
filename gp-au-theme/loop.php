@@ -282,7 +282,7 @@ function theme_singlepagination() {
 function theme_singlesocialbar() {
 	if (get_post_type() != "page") { 
 		global $post;
-		echo '
+		/*echo '
 			<div class="post-socialnav">
 				<div class="post-google">
 					<g:plusone size="medium" href="' . urlencode(get_permalink($post->ID)) . '"></g:plusone>
@@ -307,7 +307,47 @@ function theme_singlesocialbar() {
 		
 		echo '
 				<div class="clear"></div>
-			</div>';
+			</div>';*/
+		
+		echo '
+		<div id="gp_share">
+		    <div id="gp_sharebar">
+		    	<div id="gp_sharebox">
+			    	<div class="wdt title">Share</div>
+			        <div class="wdt twitter">
+			            <a href="http://twitter.com/share" class="twitter-share-button" data-url="' . get_permalink($post->ID) . '" data-text="' . esc_attr(get_the_title($post->ID)) . '"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
+			            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			        </div>
+			        <div class="wdt google-plus">
+			            <g:plusone size="tall" href="' . urlencode(get_permalink($post->ID)) . '"></g:plusone>
+			            <script type="text/javascript">
+			                (function() {
+			                var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
+			                po.src = \'https://apis.google.com/js/plusone.js\';
+			                var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
+			                })();
+			            </script>
+			        </div>
+			        <div class="wdt linkedin">
+			        	<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
+						<script type="IN/Share" data-url="' . urlencode(get_permalink($post->ID)) . '" data-counter="top"></script>
+			        </div>
+			        <div class="wdt facebook">
+			            <div class="fb-like" data-href="' . urlencode(get_permalink($post->ID)) . '" data-send="true" data-layout="box_count"></div>
+			        </div>
+			        <div class="clear"></div>
+		        </div>';
+				if ( comments_open() ) {
+			        echo '<div id="gp_commentbox">
+			    		<div class="wdt title">Comments</div>
+			    		<div class="clear"></div>
+			    		<div class="commentcount"><a href="#comments"><span class="comment-mini"></span><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></a></div>
+			    		<div class="clear"></div>
+			    	</div>';
+				}
+		    echo '</div>
+		</div>
+		';
 	}
 }
 
@@ -472,6 +512,7 @@ function default_single() {
 		echo '<article>';
 			theme_singlecreate_post();
 			theme_singletitle();
+			theme_singlesocialbar();
 			if ( get_user_role( array('contributor'), $posts[0]->post_author) ) {
 				theme_singlecontributorstagline();
 			} else {
@@ -481,7 +522,6 @@ function default_single() {
 			theme_singlepagination();
 			theme_single_contributor_donate_join_bar();
 			theme_single_product_button();
-			theme_singlesocialbar();
 			theme_singlecomments();
 		echo '</article>';
 	}
@@ -492,9 +532,9 @@ function attachment_single() {
 		the_post();
 		echo '<article>';
 			theme_singletitle();
+			theme_singlesocialbar();
 			theme_singledetails();
 			the_content();
-			theme_singlesocialbar();
 		echo '</article>';
 	}
 }

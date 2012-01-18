@@ -7,9 +7,23 @@ if ( is_user_logged_in() ) {
 }
 
 $template_url = get_bloginfo('template_url');
-?>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="ltr" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
+
+$schematype = ' itemscope itemtype="http://schema.org/';
+if ( is_single() ) {
+	switch (get_post_type()) {
+	    case 'gp_events':
+	        $schematype .= 'Event';
+	        break;
+	    default:
+	       $schematype .= 'Article';
+	}
+	$schematype .= '"';
+} else {
+	$schematype = '';
+}
+?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="ltr"<?php echo $schematype; ?> xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 
 	<head>
 	
@@ -54,7 +68,27 @@ $template_url = get_bloginfo('template_url');
 
         ?></title>
 		
-		<?php // Show required info for Facebook attach link functionality and open graph protocol
+		<?php
+			if ( is_single() || is_page() ) {
+				if ( have_posts() ) : while ( have_posts() ) : the_post();
+						$out_excerpt = str_replace(array('\r\n', '\r', '\n'), '', strip_tags(get_the_excerpt()));
+						$out_excerpt = apply_filters('the_excerpt_rss', $out_excerpt);
+					endwhile;
+				endif;
+			}
+		
+			// Show required info for Google Plus button
+			if (get_post_type() != "page") {
+				echo '<meta itemprop="name" content="' . esc_attr(get_bloginfo('name')) . esc_attr(wp_title('|', false, '')) . '">';
+				echo '<meta itemprop="description" content="' . esc_attr($out_excerpt) . '">';
+				
+				if ( is_single() && function_exists('has_post_thumbnail') && has_post_thumbnail($post->ID) ) {
+					$socialThumb = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'thumbnail');
+					echo '<meta itemprop="image" content="' . esc_url($socialThumb[0]) . '">';
+				}
+			}
+		
+			// Show required info for Facebook attach link functionality and open graph protocol
 			echo '<meta property="fb:app_id" content="305009166210437" />';
             echo '<meta property="og:locale" content="en_US" />';
 			echo '<meta property="og:site_name" content="Green Pages" />';
@@ -70,12 +104,6 @@ $template_url = get_bloginfo('template_url');
 			if ( is_single() || is_page() ) {
 				echo '<meta property="og:type" content="article"/>';
 				echo '<meta name="title" property="og:title" content="' . esc_attr(get_bloginfo('name')) . esc_attr(wp_title('|', false, '')) . '" />';
-				
-				if ( have_posts() ) : while ( have_posts() ) : the_post();
-						$out_excerpt = str_replace(array('\r\n', '\r', '\n'), '', strip_tags(get_the_excerpt()));
-						$out_excerpt = apply_filters('the_excerpt_rss', $out_excerpt);
-					endwhile;
-				endif;
 				echo '<meta name="description" property="og:description" content="' . esc_attr($out_excerpt) . '" />';
 			}
 			
@@ -246,7 +274,7 @@ $template_url = get_bloginfo('template_url');
 								<a href="<?php echo $post_author_url; ?>" title="Your profile">Your Profile</a> 
 								<a href="/wp-admin" title="Edit account">Edit Account</a>
 								<a href="/about/help" title="Help">Help</a>
-								<a href="<?php echo wp_logout_url("/"); ?>" title="Logout">Logout</a>
+								<a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
 							</li>
 							<!-- 
 							<li class="auth-dash-title">Your Toolbox</li>
