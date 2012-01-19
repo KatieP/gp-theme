@@ -2766,7 +2766,7 @@ function email_after_post_approved($post_ID) {
 
   global $post_type_to_url_part;
 
-  $bcc = "katiepatrickgp@gmail.com, scmelton@gmail.com";
+  $bcc = "katiepatrickgp@gmail.com, jesse.browne@thegreenpages.com.au";
 
   $post = get_post($post_ID);
   $user = get_userdata($post->post_author);
