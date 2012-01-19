@@ -1716,11 +1716,18 @@ function theme_author_analytics($profile_author, $pageposts) {
             	)
           	);	
           	
+          	#SET UP POST ID AND AUTHOR ID DATA, RETREIVE LINK CLICKS DATA FROM GA 
           	$post_author = get_userdata($post->post_author);
 	 		$post_id = $post->ID;
 	 		$post_author_id = $post_author->ID;
+	 		$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article';
+			$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  			$sumClick = 0;
+			foreach ($clickURL as $data) {
+    			$sumClick = $sumClick + $data;
+  			}
 			
-			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL, COST AND CLICK DATA
+			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL, COST AND BUTTON CLICKS DATA
 			   
 				case 'gp_advertorial':
 					$post_title = 'Products';
@@ -1728,78 +1735,40 @@ function theme_author_analytics($profile_author, $pageposts) {
 					$post_price = '$89.00';
 			  		$custom = get_post_custom($post->ID);
 	 				$product_url = $custom["gp_advertorial_product_url"][0];	
-	 				if ( !empty($product_url) ) {
-  						$click_track_tag = '/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/';
-  						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
-	 					$sumClick = 0;
-  						foreach ($clickURL as $data) {
+	 				if ( !empty($product_url) ) {		# IF 'BUY IT' BUTTON ACTIVATED, GET CLICKS
+	 					$click_track_tag_product_button = 'outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url; 
+  						$clickURL_product_button = ($analytics->getPageviewsURL($click_track_tag_product_button));
+  						foreach ($clickURL_product_button as $data) {
     						$sumClick = $sumClick + $data;
-  					    	if ($sumClick == 0) {
-    							#$sumClick = 'Coming';
-    						}
   						}
 	 				} 
-	 				else {
-	 					#$sumClick = 'Coming';
-	 				}
 		       		break;
 				case 'gp_competitions':
 					$post_title = 'Competitions';
 					$post_url = '/competitions';
 					$post_price = '$250.00';
-  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
-  					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
-  					$sumClick = 0;
-  					foreach ($clickURL as $data) {
-    					$sumClick = $sumClick + $data;
-    					if ($sumClick == 0) {
-    						#$sumClick = 'Coming';
-    					}
-  					}
 		       		break;
 		   		case 'gp_events':
 		   			$post_title = 'Events';
 		   			$post_url = '/events';
 		   			$post_price = 'N/A';
-  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
-  					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
-  					$sumClick = 0;
-  					foreach ($clickURL as $data) {
-    					$sumClick = $sumClick + $data;
-    					if ($sumClick == 0) {
-    						#$sumClick = 'Coming';
-    					}
-  					}
 		     		break;
 		     	case 'gp_news':
 				   	$post_title = 'News';
 		   			$post_url = '/news';
-		   			$post_price = 'N/A';
-  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
-  					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
-  					$sumClick = 0;
-  					foreach ($clickURL as $data) {
-    					$sumClick = $sumClick + $data;
-    					if ($sumClick == 0) {
-    						#$sumClick = 'Coming';
-    					}
-  					}		   			
+		   			$post_price = 'N/A';		   			
 		     		break;
 		     	case 'gp_ngocampaign':
 			    	$post_title = 'Campaigns';
 			    	$post_url = '/ngo-campaign';
 			    	$post_price = 'N/A';
-  					$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article/';
-  					$clickURL = ($analytics->getPageviewsURL($click_track_tag));
-  					$sumClick = 0;
-  					foreach ($clickURL as $data) {
-    					$sumClick = $sumClick + $data;
-    					if ($sumClick == 0) {
-    						#$sumClick = 'Coming';
-    					}
-  					}
+					#Add click data to $sumClick for activist bar / donate / join buttons here
 			        break;
 			}
+			
+		  	if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'COMING'
+    			$sumClick = 'Coming';
+    		}
 			
 			
 			echo '<tr>';					# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
