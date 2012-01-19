@@ -236,7 +236,7 @@ function theme_insert_advertise_competitioncreate_post(){
 }
 
 function theme_insert_listingcreate_new(){
-	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="List Your Business $39/m" /></a><?php 
+	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="Directory Page $39/m" /></a><?php 
 }
 
 function theme_insert_emailcreate_new(){
