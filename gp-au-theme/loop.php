@@ -1735,12 +1735,12 @@ function theme_author_analytics($profile_author, $pageposts) {
   						foreach ($clickURL as $data) {
     						$sumClick = $sumClick + $data;
   					    	if ($sumClick == 0) {
-    							$sumClick = 'Coming';
+    							#$sumClick = 'Coming';
     						}
   						}
 	 				} 
 	 				else {
-	 					$sumClick = 'Coming';
+	 					#$sumClick = 'Coming';
 	 				}
 		       		break;
 				case 'gp_competitions':
@@ -1753,7 +1753,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   					foreach ($clickURL as $data) {
     					$sumClick = $sumClick + $data;
     					if ($sumClick == 0) {
-    						$sumClick = 'Coming';
+    						#$sumClick = 'Coming';
     					}
   					}
 		       		break;
@@ -1767,7 +1767,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   					foreach ($clickURL as $data) {
     					$sumClick = $sumClick + $data;
     					if ($sumClick == 0) {
-    						$sumClick = 'Coming';
+    						#$sumClick = 'Coming';
     					}
   					}
 		     		break;
@@ -1781,7 +1781,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   					foreach ($clickURL as $data) {
     					$sumClick = $sumClick + $data;
     					if ($sumClick == 0) {
-    						$sumClick = 'Coming';
+    						#$sumClick = 'Coming';
     					}
   					}		   			
 		     		break;
@@ -1795,7 +1795,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   					foreach ($clickURL as $data) {
     					$sumClick = $sumClick + $data;
     					if ($sumClick == 0) {
-    						$sumClick = 'Coming';
+    						#$sumClick = 'Coming';
     					}
   					}
 			        break;
@@ -1828,7 +1828,25 @@ function theme_authorposts($profile_author) {
 	global $post;
 	global $current_user;
 
-	$total = "SELECT COUNT(*) as count FROM $wpdb->posts " . $wpdb->prefix . "posts, $wpdb->postmeta " . $wpdb->prefix . "postmeta WHERE " . $wpdb->prefix . "posts.ID = " . $wpdb->prefix . "postmeta.post_id and " . $wpdb->prefix . "posts.post_status = 'publish' and (" . $wpdb->prefix . "posts.post_type = 'gp_news' or " . $wpdb->prefix . "posts.post_type = 'gp_events' or " . $wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . $wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . $wpdb->prefix . "posts.post_type = 'gp_competitions' or " . $wpdb->prefix . "posts.post_type = 'gp_people') and " . $wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . $wpdb->prefix . "postmeta.meta_value >= 1 and " . $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+	$total = "SELECT COUNT(*) as count 
+			FROM $wpdb->posts " . 
+				$wpdb->prefix . "posts, 
+				$wpdb->postmeta " . 
+				$wpdb->prefix . "postmeta 
+			WHERE " . $wpdb->prefix . "posts.ID = " . 
+				$wpdb->prefix . "postmeta.post_id and " . 
+				$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+					$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_people') 
+				and " . 
+				$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+				$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+				$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+				
 	$totalposts = $wpdb->get_results($total, OBJECT);
 
 	$ppp = intval(get_query_var('posts_per_page'));
@@ -1839,7 +1857,26 @@ function theme_authorposts($profile_author) {
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
 	
-	$querystr = "SELECT " . $wpdb->prefix . "posts.* FROM $wpdb->posts " . $wpdb->prefix . "posts, $wpdb->postmeta " . $wpdb->prefix . "postmeta WHERE " . $wpdb->prefix . "posts.ID = " . $wpdb->prefix . "postmeta.post_id and " . $wpdb->prefix . "posts.post_status = 'publish' and (" . $wpdb->prefix . "posts.post_type = 'gp_news' or " . $wpdb->prefix . "posts.post_type = 'gp_events' or " . $wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . $wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . $wpdb->prefix . "posts.post_type = 'gp_competitions' or " . $wpdb->prefix . "posts.post_type = 'gp_people') and " . $wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . $wpdb->prefix . "postmeta.meta_value >= 1 and " . $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
+	$querystr = "SELECT " . $wpdb->prefix . "posts.* 
+				FROM $wpdb->posts " . 
+					$wpdb->prefix . "posts, 
+					$wpdb->postmeta " . 
+					$wpdb->prefix . "postmeta 
+				WHERE " . $wpdb->prefix . "posts.ID = " . 
+					$wpdb->prefix . "postmeta.post_id and " . 
+					$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+						$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_people') 
+					and " . 
+					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+				ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
+					
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 	if ($pageposts) {
@@ -1885,7 +1922,7 @@ function theme_authorposts($profile_author) {
 			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
 			theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
 		} else {
-			echo '<nav class="profile-tabs"><ul><li id="posts">Posts</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
+			?><nav class="profile-tabs"><ul><li id="posts">Posts</li></ul></nav><?php 				
 		}
 		?>
 		<div id="my-posts">
