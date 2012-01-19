@@ -1716,7 +1716,8 @@ function theme_author_analytics($profile_author, $pageposts) {
             	)
           	);	
           	
-          	#SET UP POST ID AND AUTHOR ID DATA, RETREIVE LINK CLICKS DATA FROM GA 
+          	#SET UP POST ID AND AUTHOR ID DATA, POST DATE, GET LINK CLICKS DATA FROM GA 
+          	$post_date_au = get_the_time('j-m-y');
           	$post_author = get_userdata($post->post_author);
 	 		$post_id = $post->ID;
 	 		$post_author_id = $post_author->ID;
@@ -1727,7 +1728,7 @@ function theme_author_analytics($profile_author, $pageposts) {
     			$sumClick = $sumClick + $data;
   			}
 			
-			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL, COST AND BUTTON CLICKS DATA
+			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL, COST AND GET BUTTON CLICKS DATA
 			   
 				case 'gp_advertorial':
 					$post_title = 'Products';
@@ -1767,7 +1768,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			}
 			
 		  	if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'COMING'
-    			$sumClick = 'Coming';
+    			$sumClick = 'Unavailable';
     		}
 			
 			
@@ -1776,7 +1777,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 				esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>'; 	#Title				
 				echo '<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>'; #Ad Type					
 				echo '<td class="author_analytics_cost">' . $post_price . '</td>'; #Cost				
-				echo '<td class="author_analytics_date">' . get_the_time('j-m-y') . '</td>';#date
+				echo '<td class="author_analytics_date">' . $post_date_au . '</td>';#date
 				echo '<td class="author_analytics_page_impressions">' . $sumURL . '</td>'; #Page Impressions			
 				echo '<td class="author_analytics_clicks">' . $sumClick . '</td>'; #Clicks				
 				echo '<td class="author_analytics_category_impressions">' . $sumType . '</td>'; #Category Impressions				
@@ -1788,6 +1789,10 @@ function theme_author_analytics($profile_author, $pageposts) {
 		<?php theme_homecreate_post(); ?>
 		<p>Your posts have been viewed a total of</p> 
 		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
+		<p></p>
+		<div class="post-details">Why are Clicks for some posts showing as 'Unavailable'?</div>
+		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
+		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>		
 	</div>
 <?php 
 }
