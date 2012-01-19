@@ -3065,6 +3065,7 @@ height:auto;
 #gp_sharebox, #gp_commentbox {
 	background: #f0fafd;
     margin-bottom: 10px;
+    width: 68px;
     	-moz-border-radius: 2px;
     	-webkit-border-radius: 2px;
   	border-radius: 2px;
