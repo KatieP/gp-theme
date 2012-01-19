@@ -319,7 +319,7 @@ function theme_singlesocialbar() {
 			            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 			        </div>
 			        <div class="wdt google-plus">
-			            <g:plusone size="tall" href="' . urlencode(get_permalink($post->ID)) . '"></g:plusone>
+			            <g:plusone size="tall" href="' . get_permalink($post->ID) . '"></g:plusone>
 			            <script type="text/javascript">
 			                (function() {
 			                var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
@@ -330,10 +330,10 @@ function theme_singlesocialbar() {
 			        </div>
 			        <div class="wdt linkedin">
 			        	<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
-						<script type="IN/Share" data-url="' . urlencode(get_permalink($post->ID)) . '" data-counter="top"></script>
+						<script type="IN/Share" data-url="' . get_permalink($post->ID) . '" data-counter="top"></script>
 			        </div>
 			        <div class="wdt facebook">
-			            <div class="fb-like" data-href="' . urlencode(get_permalink($post->ID)) . '" data-send="true" data-layout="box_count"></div>
+			            <div class="fb-like" data-href="' . get_permalink($post->ID) . '" data-send="true" data-layout="box_count"></div>
 			        </div>
 			        <div class="clear"></div>
 		        </div>';
