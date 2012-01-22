@@ -11,7 +11,7 @@ global $wpdb;
 global $the_query;
 
 $the_query = new WP_Query(array('post_status' => 'any', 
-                                'posts_per_page' => 10,
+                                'posts_per_page' => 100,
                                 'orderby' => 'date',
                                 'order' => 'DESC',
                                 'post_type' => 'gp_news'));
@@ -68,7 +68,12 @@ if ($format == "html" || $format == "") {
 						<!-- Repeater1 for News Content Starts -->
             <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 0 0 10px 0;">
               <tr>
-                <td><span style="font-size:18px; padding:0 0 0 0px;color:rgb(120,120,120);font-weight:bold;">News Content</span></td>
+                <td>
+                  <a href="<?php the_permalink(); ?>" 
+                     style="font-size:18px; padding:0 0 0 0px;color:rgb(120,120,120);font-weight:bold;text-decoration:none;">
+                    <?php the_title(); ?>
+                  </a>
+                </td>
                 <td align="right">
                   <!--<img src="http://www.thegreenpages.com.au/razor/body_facebook.gif" alt="facebook" width="16" height="16"/>
                   <img src="http://www.thegreenpages.com.au/razor/body_twitter.gif" alt="twitter" width="16" height="16"/>
@@ -82,8 +87,33 @@ if ($format == "html" || $format == "") {
                 <td colspan="2" valign="top">
                   <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td valign="top"><img editable="true" label="Image" alt="story" width="100" style="padding:5px;border:1px solid rgb(205,205,205);margin:0 10px 0 0;" /></td>
-                      <td valign="top" style="font-size: 12px; color:rgb(120,120,120); line-height:1.25em;"><p>Enter <a href="<?php echo site_url(); ?>" style="text-decoration:none"><span style="text-decoration:none;color:#01AED8">test link back to main website</span></a> body content here </p></td>
+                      <td valign="top">
+                        <?php if (has_post_thumbnail() ){
+                                $imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail');
+                                $imageURL = $imageArray[0];
+                        ?>
+                          <a href="<?php the_permalink(); ?>">
+                            <img label="Image" alt="story" width="100" 
+                            style="padding:5px;border:1px solid rgb(205,205,205);margin:0 10px 0 0;"
+                            src="<?php echo $imageURL; ?>" 
+                            alt="<?php get_the_title( get_post_thumbnail_id($post->ID) ) ?>"
+                            />
+                          </a>
+                        <?php } ?>
+                      </td>
+                      <td valign="top" style="font-size: 12px; color:rgb(120,120,120); line-height:1.25em;">
+
+                      <?php the_excerpt(); ?>
+
+                       <a href="<?php the_permalink(); ?>" style="text-decoration: none; color: #01AED8; font-weight: bold;">Continue reading...</a> 
+
+<!--                        <p>Enter <a href="<?php echo site_url(); ?>" style="text-decoration:none"><span 
+                        style="text-decoration:none;color:#01AED8">test link back to main 
+                        website</span></a> body content here </p>
+-->
+
+
+                    </td>
                     </tr>
                   </table>
                 </td>
