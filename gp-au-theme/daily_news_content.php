@@ -9,6 +9,13 @@ Template Name: Daily News Content
 global $post;
 global $wpdb;
 global $the_query;
+global $link_style;
+$link_style = 'text-decoration: none; color: #01AED8;';
+
+function transform_post_html($text){
+  global $link_style;
+  return strtr($text, array('<a' => '<a style="' . $link_style . '"'));
+}
 
 $the_query = new WP_Query(array('post_status' => 'any', 
                                 'posts_per_page' => 100,
@@ -70,7 +77,8 @@ if ($format == "html" || $format == "") {
               <tr>
                 <td>
                   <a href="<?php the_permalink(); ?>" 
-                     style="font-size:18px; padding:0 0 0 0px;color:rgb(120,120,120);font-weight:bold;text-decoration:none;">
+                     style="font-size:18px; padding:0 0 0 0px;color:rgb(120,120,120);font-weight:bold;text-decoration:none;"
+                     class="post-title" >
                     <?php the_title(); ?>
                   </a>
                 </td>
@@ -103,15 +111,10 @@ if ($format == "html" || $format == "") {
                       </td>
                       <td valign="top" style="font-size: 12px; color:rgb(120,120,120); line-height:1.25em;">
 
-                      <?php the_excerpt(); ?>
-
-                       <a href="<?php the_permalink(); ?>" style="text-decoration: none; color: #01AED8; font-weight: bold;">Continue reading...</a> 
-
-<!--                        <p>Enter <a href="<?php echo site_url(); ?>" style="text-decoration:none"><span 
-                        style="text-decoration:none;color:#01AED8">test link back to main 
-                        website</span></a> body content here </p>
--->
-
+                        <?php echo transform_post_html(get_the_excerpt()); ?>
+                        <br />
+                        <br />
+                        <a href="<?php the_permalink(); ?>" style="text-decoration: none; color: #01AED8; font-weight: bold;">Continue reading...</a> 
 
                     </td>
                     </tr>
