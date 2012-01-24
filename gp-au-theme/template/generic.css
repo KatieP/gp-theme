@@ -2574,7 +2574,8 @@ ul.categorieslistmain {
 #content .author_analytics {
 	margin-bottom: 10px;	
 }
-	
+
+#content .author_analytics .author_analytics_activist,
 #content .author_analytics .author_analytics_cost,
 #content .author_analytics .author_analytics_date,
 #content .author_analytics .author_analytics_page_impressions, 
@@ -2584,7 +2585,11 @@ ul.categorieslistmain {
 }
 
 #content .author_analytics .author_analytics_title {
-	width: 35%;
+	width: 28%;
+}
+
+#content .author_analytics .author_analytics_activist {
+	width: 12%;
 }
 
 #content .author_analytics .author_analytics_date {

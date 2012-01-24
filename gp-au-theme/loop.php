@@ -1646,8 +1646,8 @@ function theme_author_analytics($profile_author, $pageposts) {
 	global $wpdb;
 	global $post;
 	global $current_user;
-
-	# HEADING AND TABLE HEADINGS
+	
+	# TABLE HEADINGS
 	?>
 	<div id="my-analytics">
 		<table class="author_analytics">
@@ -1663,6 +1663,9 @@ function theme_author_analytics($profile_author, $pageposts) {
 	<?php	
 				
 	if ($pageposts) {
+		
+
+		$profile_author_id = $profile_author->ID;
 	 
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
@@ -1718,10 +1721,8 @@ function theme_author_analytics($profile_author, $pageposts) {
           	
           	#SET UP POST ID AND AUTHOR ID DATA, POST DATE, GET LINK CLICKS DATA FROM GA 
           	$post_date_au = get_the_time('j-m-y');
-          	$post_author = get_userdata($post->post_author);
 	 		$post_id = $post->ID;
-	 		$post_author_id = $post_author->ID;
-	 		$click_track_tag = 'yoast-ga/' . $post_id . '/' . $post_author_id . '/outbound-article';
+	 		$click_track_tag = 'yoast-ga/' . $post_id . '/' . $profile_author_id . '/outbound-article';
 			$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   			$sumClick = 0;
 			foreach ($clickURL as $data) {
@@ -1737,7 +1738,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			  		$custom = get_post_custom($post->ID);
 	 				$product_url = $custom["gp_advertorial_product_url"][0];	
 	 				if ( !empty($product_url) ) {		# IF 'BUY IT' BUTTON ACTIVATED, GET CLICKS
-	 					$click_track_tag_product_button = 'outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url; 
+	 					$click_track_tag_product_button = 'outbound/product-button/' . $post_id . '/' . $profile_author_id . '/' . $product_url; 
   						$clickURL_product_button = ($analytics->getPageviewsURL($click_track_tag_product_button));
   						foreach ($clickURL_product_button as $data) {
     						$sumClick = $sumClick + $data;
@@ -1767,21 +1768,21 @@ function theme_author_analytics($profile_author, $pageposts) {
 			        break;
 			}
 			
-		  	if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'COMING'
+		  	if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
     			$sumClick = 'Unavailable';
     		}
 			
-			
-			echo '<tr>';					# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
-				echo '<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
-				esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>'; 	#Title				
-				echo '<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>'; #Ad Type					
-				echo '<td class="author_analytics_cost">' . $post_price . '</td>'; #Cost				
-				echo '<td class="author_analytics_date">' . $post_date_au . '</td>';#date
-				echo '<td class="author_analytics_page_impressions">' . $sumURL . '</td>'; #Page Impressions			
-				echo '<td class="author_analytics_clicks">' . $sumClick . '</td>'; #Clicks				
-				echo '<td class="author_analytics_category_impressions">' . $sumType . '</td>'; #Category Impressions				
-			echo '</tr>';
+											# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
+			echo '<tr>				
+					<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
+					esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>				
+					<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>					
+					<td class="author_analytics_cost">' . $post_price . '</td>				
+					<td class="author_analytics_date">' . $post_date_au . '</td>
+					<td class="author_analytics_page_impressions">' . $sumURL . '</td>	
+					<td class="author_analytics_clicks">' . $sumClick . '</td>				
+					<td class="author_analytics_category_impressions">' . $sumType . '</td>				
+				</tr>';
 		}
 	}	
 	?>
@@ -1790,6 +1791,67 @@ function theme_author_analytics($profile_author, $pageposts) {
 		<p>Your posts have been viewed a total of</p> 
 		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
 		<p></p>
+		
+		<?php   # FOR CONTRIBUTORS / CONTENT PARTNERS - DISPLAY ACTIVIST BAR / DONATE JOIN BUTTON ANALYTICS DATA
+		if ( get_user_role( array('contributor') ) || get_user_role( array($rolecontributor, 'administrator') ) ) {
+			
+			# SET AND RESET SOME VARIABLES AND GET ACTIVIST BAR DATA FROM GA
+			$start_date = '2012-01-01'; 	// Click tracking of activist buttons began just after this Date
+			$today_date = date('Y-m-d'); 	//Todays Date
+				
+  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+			
+  			$donate_url = $profile_author->contributors_donate_url;
+			$join_url = $profile_author->contributors_join_url;
+			$letter_url = $profile_author->contributors_letter_url;
+			$petition_url = $profile_author->contributors_petition_url;
+			$volunteer_url = $profile_author->contributors_volunteer_url;
+			
+  			$button_labels = array('donate' => $donate_url, 
+  									'join' =>  $join_url, 
+  									'letter' =>  $letter_url, 
+  									'petition' =>  $petition_url, 
+  									'volunteer' =>  $volunteer_url);
+  			$activist_clicks_sum = 0;
+  			  			
+			?>
+			<table class="author_analytics">
+				<tr>
+					<td class="author_analytics_title">Activist Buttons</td>
+					<td class="author_analytics_activist">Donate</td>
+					<td class="author_analytics_activist">Join</td>
+					<td class="author_analytics_activist">Send Letter</td>
+					<td class="author_analytics_clicks">Sign Petition</td>
+					<td class="author_analytics_clicks">Volunteer</td>
+					<td class="author_analytics_clicks">Total</td>		
+				</tr>
+				<tr>
+					<td class="author_analytics_title">Clicks</td>
+					<?php #DISPLAY TABLE CELLS WITH CLICK DATA FOR ACTIVIST BAR BUTTONS
+		  			foreach ($button_labels as $label => $label_url) {
+  						$click_track_tag = 'outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url;
+						#var_dump($click_track_tag);
+  						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  						$sumClick = 0;
+						foreach ($clickURL as $data) {
+    						$sumClick = $sumClick + $data;							// Clicks for that button from all posts
+    						$activist_clicks_sum = $activist_clicks_sum + $data;	// Total clicks for all activist bar buttons
+  						}
+  						if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    						$sumClick = 'Unavailable';
+    					}
+  						echo '<td class="author_analytics_activist">' . $sumClick . '</td>';
+  					}
+		  			if ($activist_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    					$activist_clicks_sum = 'Unavailable';
+    				}
+					echo '<td class="author_analytics_activist">' . $activist_clicks_sum . '</td>';
+					?>		
+				</tr>
+			</table>
+		<?php 
+		} 
+		?>
 		<div class="post-details">Why are Clicks for some posts showing as 'Unavailable'?</div>
 		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
 		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>		
