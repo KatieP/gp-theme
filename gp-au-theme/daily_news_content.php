@@ -18,11 +18,22 @@ function transform_post_html($text){
   return strtr($text, array('<a' => '<a style="' . $link_style . '"'));
 }
 
-$the_query = new WP_Query(array('post_status' => 'any', 
-                                'posts_per_page' => 100,
+$today = getdate();
+function filter_where($where = '') {
+  //posts in the last 24 hours
+  $where .= " AND DATE(post_date) > DATE(DATE_SUB(NOW(), INTERVAL 24 HOUR))";
+  return $where;
+}
+add_filter('posts_where', 'filter_where');
+$the_query = new WP_Query(array('post_status' => 'publish', 
+                                'posts_per_page' => -1,
                                 'orderby' => 'date',
                                 'order' => 'DESC',
-                                'post_type' => 'gp_news'));
+                                'post_type' => array('gp_news', 'gp_events', 
+                                                     'gp_advertorial', 
+                                                     'gp_competitions', 
+                                                     'gp_ngocampaign')));
+remove_filter('posts_where', 'filter_where');
 
 # print posts in html or txt format
 $format = htmlspecialchars($_GET["format"]);
