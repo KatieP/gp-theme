@@ -849,6 +849,19 @@ function my_show_extra_profile_fields( $user ) {
 			<tr><th>Advertiser</th><td><input type="checkbox" name="reg_advertiser" id="reg_advertiser" value="reg_advertiser"' . $checkthis . ' /></td></tr>
 		</table>
 		');
+		
+		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
+		echo ('
+		<h3>Miscellaneous</h3>
+		
+		<table class="form-table">
+			<tr>
+				<th><label for="old_crm_id">Old CRM ID</label></th>
+				<td><input type="text" name="old_crm_id" id="old_crm_id" class="regular-text" maxlength="6" value="' . esc_attr($old_crm_id) . '" /><br />
+				<span class="description">This is used to map business ID\'s used in our old CRM to the new ID\'s in Wordpress.</span></td>
+			</tr>
+		</table>
+		');
 	}
 	?>
 
@@ -918,6 +931,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'contributors_volunteer_url', $_POST['contributors_volunteer_url'] );	
 	update_usermeta($user_id, 'notification', $notification_post );
 	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
+	update_usermeta($user_id, 'old_crm_id', $_POST['old_crm_id'] );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
 	if (cm_subscribe($subscription_post['subscription-greenrazor'])) {
