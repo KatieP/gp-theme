@@ -841,6 +841,14 @@ function my_show_extra_profile_fields( $user ) {
 			
 			echo ('</table>');
 		}
+		
+		if ( get_the_author_meta( 'reg_advertiser', $user->ID ) == true ) {$checkthis = ' checked="checked"';} else {$checkthis = '';}
+		echo ('
+		<h3>Accounts Types</h3>
+		<table class="form-table">
+			<tr><th>Advertiser</th><td><input type="checkbox" name="reg_advertiser" id="reg_advertiser" value="reg_advertiser"' . $checkthis . ' /></td></tr>
+		</table>
+		');
 	}
 	?>
 
@@ -892,6 +900,8 @@ function my_save_extra_profile_fields( $user_id ) {
 		}
 	}
 	
+	$reg_advertiser = isset( $_POST[ 'reg_advertiser' ] ) ? true : false;
+	
 	update_usermeta($user_id, 'bio_change', $_POST['bio_change'] );
 	update_usermeta($user_id, 'bio_projects', $_POST['bio_projects'] );
 	update_usermeta($user_id, 'bio_stuff', $_POST['bio_stuff'] );
@@ -907,6 +917,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'contributors_petition_url', $_POST['contributors_petition_url'] );
 	update_usermeta($user_id, 'contributors_volunteer_url', $_POST['contributors_volunteer_url'] );	
 	update_usermeta($user_id, 'notification', $notification_post );
+	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
 	if (cm_subscribe($subscription_post['subscription-greenrazor'])) {
