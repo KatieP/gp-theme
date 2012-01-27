@@ -236,11 +236,11 @@ function theme_insert_advertise_competitioncreate_post(){
 }
 
 function theme_insert_listingcreate_new(){
-	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="Create a Directory Page" /></a><?php 
+	?><a href="<?php echo get_permalink(472); ?>"><input type="button" value="Directory Page $39/m" /></a><?php 
 }
 
 function theme_insert_emailcreate_new(){
-	?><a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry" ><input type="button" value="Inquire about EDM" /></a><?php 
+	?><a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry" ><input type="button" value="Exclusive Email $3500" /></a><?php 
 }
 
 /*******************************************************************************/	
@@ -279,63 +279,10 @@ function theme_singlepagination() {
 	/* wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); */
 }
 
-function theme_index_contributor_donate_join_bar() {
-	if (get_post_type() != "page") { 
-		global $post;
-		$post_author = get_userdata($post->post_author);
-		$post_author_url = get_author_posts_url($post->post_author);
-		$donate_url = $post_author->contributors_donate_url;
-		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
-		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
-		
-		?>
-		<div id="index-donate-join-bar">
-			<?php
-			theme_contributors_donate($donate_url);
-			theme_contributors_join($join_url);
-			theme_contributors_letter($letter_url);
-			theme_contributors_petition($petition_url);
-			theme_contributors_volunteer($volunteer_url);
-			?>			
-		</div>
-		<div class="clear"></div>
-		<?php		
-	}
-}
-
-function theme_single_contributor_donate_join_bar(){
-	if (get_post_type() != "page") { 
-		global $post;
-		$post_author = get_userdata($post->post_author);
-		$post_author_url = get_author_posts_url($post->post_author);
-		$donate_url = $post_author->contributors_donate_url;
-		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
-		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
-		
-		?>
-		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
-		<div id="post-donate-join-bar">
-			<?php
-			theme_contributors_donate($donate_url);
-			theme_contributors_join($join_url);
-			theme_contributors_letter($letter_url);
-			theme_contributors_petition($petition_url);
-			theme_contributors_volunteer($volunteer_url);
-			?>			
-		</div>
-		<div class="clear"></div>
-		<?php		
-	}
-}
-
 function theme_singlesocialbar() {
 	if (get_post_type() != "page") { 
 		global $post;
-		echo '
+		/*echo '
 			<div class="post-socialnav">
 				<div class="post-google">
 					<g:plusone size="medium" href="' . urlencode(get_permalink($post->ID)) . '"></g:plusone>
@@ -349,9 +296,9 @@ function theme_singlesocialbar() {
 				</div>';
 		if ( comments_open() && !is_attachment() ) {
 			echo '
-				<a href="' . get_permalink($post->ID) . '#disqus_thread" class="post-disqus">
+				<a href="' . get_permalink($post->ID) . '#comments" class="post-disqus">
 					<div class="comment-background">
-						<span class="comment-number dsq-postid">' . $post->comment_count . '</span>
+						<span class="comment-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span>
 					</div>
 				</a>
 				<div class="comment-leftcap"></div>
@@ -360,14 +307,60 @@ function theme_singlesocialbar() {
 		
 		echo '
 				<div class="clear"></div>
-			</div>';
+			</div>';*/
+		
+		echo '
+		<div id="gp_share">
+		    <div id="gp_sharebar">
+		    	<div id="gp_sharebox">
+			    	<div class="wdt title">Share</div>
+			        <div class="wdt twitter">
+			            <a href="http://twitter.com/share" class="twitter-share-button" data-url="' . get_permalink($post->ID) . '" data-text="' . esc_attr(get_the_title($post->ID)) . '"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
+			            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			        </div>
+			        <div class="wdt google-plus">
+			            <g:plusone size="tall" href="' . get_permalink($post->ID) . '"></g:plusone>
+			            <script type="text/javascript">
+			                (function() {
+			                var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
+			                po.src = \'https://apis.google.com/js/plusone.js\';
+			                var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
+			                })();
+			            </script>
+			        </div>
+			        <div class="wdt linkedin">
+			        	<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
+						<script type="IN/Share" data-url="' . get_permalink($post->ID) . '" data-counter="top"></script>
+			        </div>
+			        <div class="wdt facebook">
+			            <div class="fb-like" data-href="' . get_permalink($post->ID) . '" data-send="true" data-layout="box_count"></div>
+			        </div>
+			        <div class="clear"></div>
+		        </div>';
+				if ( comments_open() ) {
+			        echo '<div id="gp_commentbox">
+			    		<div class="wdt title">Comments</div>
+			    		<div class="clear"></div>
+			    		<div class="commentcount"><a href="#comments"><span class="comment-mini"></span><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></a></div>
+			    		<div class="clear"></div>
+			    	</div>';
+				}
+		    echo '</div>
+		</div>
+		';
 	}
 }
 
 function theme_singlecomments() {
 	if ( comments_open() ) {
 		echo '<a name="comments"></a>';
-		comments_template( '', true );
+		#comments_template( '', true );
+		?>
+		<div id="facebook-comments">
+			<h3 id="reply-title">Leave a Reply</h3>
+			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="636"></fb:comments>
+		</div>
+		<?php
 	}
 }
 
@@ -464,8 +457,14 @@ function theme_index_feed_item() {
 					get_the_time('F jS, Y g:i a') . 
 				 '</span>';
 			the_excerpt();			
-			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>		
-		</div>';
+			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>';
+			
+			if ( comments_open($post->ID) ) {
+				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+			} else {
+				echo '<div class="comment-profile"><span class="comment-mini-closed"></span></div>';
+			}
+		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
 	if ( has_post_thumbnail() ) {
@@ -513,6 +512,7 @@ function default_single() {
 		echo '<article>';
 			theme_singlecreate_post();
 			theme_singletitle();
+			theme_singlesocialbar();
 			if ( get_user_role( array('contributor'), $posts[0]->post_author) ) {
 				theme_singlecontributorstagline();
 			} else {
@@ -522,7 +522,6 @@ function default_single() {
 			theme_singlepagination();
 			theme_single_contributor_donate_join_bar();
 			theme_single_product_button();
-			theme_singlesocialbar();
 			theme_singlecomments();
 		echo '</article>';
 	}
@@ -533,9 +532,9 @@ function attachment_single() {
 		the_post();
 		echo '<article>';
 			theme_singletitle();
+			theme_singlesocialbar();
 			theme_singledetails();
 			the_content();
-			theme_singlesocialbar();
 		echo '</article>';
 	}
 }
@@ -548,8 +547,20 @@ function home_index() {
 	$epochtime = strtotime('now');
 	
 	/** NEW SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
-	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
-	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR post_type='gp_events' AND post_status='publish' OR post_type='gp_advertorial' AND post_status='publish' OR post_type='gp_competitions' AND post_status='publish' OR post_type='gp_ngocampaign' AND post_status='publish' ORDER BY post_date DESC LIMIT 20)";
+	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate 
+				FROM " . $wpdb->prefix . "posts left join " . 
+						 $wpdb->prefix . "postmeta as m0 on m0.post_id=" . 
+						 $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . 
+						 $wpdb->prefix . "postmeta as m1 on m1.post_id=" . 
+						 $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . 
+						 $wpdb->prefix . "postmeta as m2 on m2.post_id=" . 
+						 $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') 
+				WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
+	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR 
+						post_type='gp_advertorial' AND post_status='publish' OR 
+						post_type='gp_competitions' AND post_status='publish' OR 
+						post_type='gp_ngocampaign' AND post_status='publish' 
+						ORDER BY post_date DESC LIMIT 20)";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	#$numPosts = $wpdb->num_rows-1;
@@ -709,7 +720,7 @@ function home_index() {
 				
 				
 				<?php if ( comments_open() ) { ?>
-				<div class="comment-hp"><a href="<?php the_permalink(); ?>#comments"><span class="comment-mini"></span></a><a href="<?php the_permalink(); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><?php echo $post->comment_count; ?></span></a></div>
+					<div class="comment-hp"><a href="<?php the_permalink(); ?>#comments"><span class="comment-mini"></span></a><a href="<?php the_permalink(); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><fb:comments-count href="<?php the_permalink(); ?>"></fb:comments-count></span></a></div>
 				<?php
 				}
 				echo '</div>';
@@ -749,8 +760,9 @@ function events_index() {
     $querytotal = "SELECT COUNT(*) as count FROM $wpdb->posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' left join " . $wpdb->prefix . "postmeta as m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_loccountry' left join " . $wpdb->prefix . "postmeta as m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_locstate' WHERE post_status='publish' AND post_type='gp_events' AND m4.meta_value='AU' " . $filterby_state . " AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . ";";
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
 
-	$ppp = intval(get_query_var('posts_per_page'));
-
+	#$ppp = intval(get_query_var('posts_per_page'));
+	$ppp = 20;
+	
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
 	$on_page = intval(get_query_var('paged'));	
@@ -1028,7 +1040,7 @@ function author_edit() {
 		
 		<label for="contributors_posttagline">Contributors Post Tagline</label>
 		<p>In a couple sentences tell visitors a little about your organisation. Visible at end of each post you create.</p>
-		<input type="text" value="<?php echo $contributors_posttagline; ?>" maxlenght="255" name="contributors_posttagline" id="contributors_posttagline" style="width:470px" />
+		<input type="text" value="<?php echo $contributors_posttagline; ?>" maxlength="255" name="contributors_posttagline" id="contributors_posttagline" style="width:470px" />
 		<?php
 		} 
 		?>
@@ -1296,28 +1308,40 @@ function theme_authoremail($profile_author) {
 
 function theme_authorfacebook($profile_author) {
 if ( !empty($profile_author->facebook) ) {
-		echo '<a href="' . $profile_author->facebook . '" target="_new" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_facebook = $profile_author->facebook;
+		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id . '/' . $profile_author_facebook .'/\'';
+		echo '<a href="' . $profile_author->facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
 	}
 }
 
 function theme_authorlinkedin($profile_author) {
 if ( !empty($profile_author->linkedin) ) {
-		echo '<a href="' . $profile_author->linkedin . '" target="_new" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_linkedin = $profile_author->linkedin;
+		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id . '/' . $profile_author_linkedin .'/\'';
+		echo '<a href="' . $profile_author->linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
 	}
 }
 
 function theme_authortwitter($profile_author) {
 	if ( !empty($profile_author->twitter) ) {
-		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_twitter = $profile_author->twitter;
+		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id . '/' . $profile_author_twitter .'/\'';
+		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
 	}
 }
 
 function theme_authorskype($profile_author) {
 	if ( is_user_logged_in() && !empty($profile_author->skype) ) {
-		$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
-		if ( get_user_role($skype_viewers, $profile_author->ID) )  {
-			echo '<a href="callto://' .$profile_author->skype . '" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
-		} 
+		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
+		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
+			$profile_author_id = $profile_author->ID;
+			$profile_author_skype = $profile_author->skype;
+			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id . '/' . $profile_author_skype .'/\'';			
+			echo '<a href="callto://' .$profile_author->skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
+		#} 
 	}
 }
 
@@ -1327,7 +1351,10 @@ function theme_authorrss($profile_author) {
 
 function theme_authorwww($profile_author) {
 	if ( !empty($profile_author->user_url) ) {
-		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new">' . $profile_author->user_url . '</a></div>';
+		$profile_author_id = $profile_author->ID;
+		$profile_author_url = $profile_author->user_url;
+		$click_track_tag = '\'/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/\'';
+		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);">' . $profile_author->user_url . '</a></div>';
 	}	
 }
 
@@ -1349,12 +1376,15 @@ function theme_single_product_button() {
 		$custom = get_post_custom($post->ID);
 	 	$product_url = $custom["gp_advertorial_product_url"][0];
 	 	$post_author = get_userdata($post->post_author);
+	 	$post_id = $post->ID;
+	 	$post_author_id = $post_author->ID;
+	 	
 	 	if ( !empty($product_url) ) {
 		?>
 		<div id="post-product-button-bar">
 			<?php
-			$click_track_tag = '\'/outbound/product-button/' . $post->ID . '/' . $post_author->ID .'/\'';
-			echo '<span><a href="' . $product_url . '" target="_blank" onClick="recordOutboundLink(this, ' . $click_track_tag . ', \'' . $product_url . '\');return false;"><input type="button" id="product-button" value="Buy It!" /></a></span>';
+			$click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
+			echo '<span><a href="' . $product_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="product-button" value="Buy It!" /></a></span>';
 			?>			
 		</div>
 		<div class="clear"></div>
@@ -1365,27 +1395,27 @@ function theme_single_product_button() {
 
 /********************************************************************************/
 
-/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
+/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BARS **/
 
 function theme_profile_contributor_donate_join_bar($profile_author){
 	if (get_post_type() != "page") { 
-		global $post;
-		
+		global $post;	
 		$post_author = $profile_author;
+		$post_author_id = $post_author->ID;
 		$donate_url = $post_author->contributors_donate_url;
 		$join_url = $post_author->contributors_join_url;
 		$letter_url = $post_author->contributors_letter_url;
 		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
+		$volunteer_url = $post_author->contributors_volunteer_url	
 		
 		?>
 		<div id="post-donate-join-bar">
 			<?php
-			theme_contributors_donate($donate_url);
-			theme_contributors_join($join_url);
-			theme_contributors_letter($letter_url);
-			theme_contributors_petition($petition_url);
-			theme_contributors_volunteer($volunteer_url);
+			theme_contributors_donate($donate_url, $post_author_id);
+			theme_contributors_join($join_url, $post_author_id);
+			theme_contributors_letter($letter_url, $post_author_id);
+			theme_contributors_petition($petition_url, $post_author_id);
+			theme_contributors_volunteer($volunteer_url, $post_author_id);
 			?>			
 		</div>
 		<div class="clear"></div>
@@ -1393,33 +1423,95 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 	}
 }
 
-function theme_contributors_donate($donate_url) {
+function theme_index_contributor_donate_join_bar() {
+	if (get_post_type() != "page") { 
+		global $post;
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+		$post_author_id = $post_author->ID;
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<div id="index-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url, $post_author_id);
+			theme_contributors_join($join_url, $post_author_id);
+			theme_contributors_letter($letter_url, $post_author_id);
+			theme_contributors_petition($petition_url, $post_author_id);
+			theme_contributors_volunteer($volunteer_url, $post_author_id);
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php		
+	}
+}
+
+function theme_single_contributor_donate_join_bar() {
+	if (get_post_type() != "page") { 
+		global $post;
+		$post_author = get_userdata($post->post_author);
+		$post_author_url = get_author_posts_url($post->post_author);
+		$post_author_id = $post_author->ID;
+		$donate_url = $post_author->contributors_donate_url;
+		$join_url = $post_author->contributors_join_url;
+		$letter_url = $post_author->contributors_letter_url;
+		$petition_url = $post_author->contributors_petition_url;
+		$volunteer_url = $post_author->contributors_volunteer_url;
+		
+		?>
+		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
+		<div id="post-donate-join-bar">
+			<?php
+			theme_contributors_donate($donate_url, $post_author_id);
+			theme_contributors_join($join_url, $post_author_id);
+			theme_contributors_letter($letter_url, $post_author_id);
+			theme_contributors_petition($petition_url, $post_author_id);
+			theme_contributors_volunteer($volunteer_url, $post_author_id);
+			?>			
+		</div>
+		<div class="clear"></div>
+		<?php		
+	}
+}
+
+/** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
+
+function theme_contributors_donate($donate_url, $post_author_id) {
 	if ( !empty($donate_url) ) {
-		echo '<span><a href="'.$donate_url.'"><input type="button" id="donate" value="Donate" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-donate-button/' . $post_author_id . '/' . $donate_url .'/\'';
+		echo '<span><a href="' . $donate_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="donate" value="Donate" /></a></span>';
 	}
 }
 
-function theme_contributors_join($join_url) {
+function theme_contributors_join($join_url, $post_author_id) {
 	if ( !empty($join_url) ) {
-		echo '<span><a href="'.$join_url.'"><input type="button" id="join" value="Join" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-join-button/' . $post_author_id . '/' . $join_url .'/\'';
+		echo '<span><a href="' . $join_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="join" value="Join" /></a></span>';
 	}
 }
 
-function theme_contributors_letter($letter_url) {
+function theme_contributors_letter($letter_url, $post_author_id) {
 	if ( !empty($letter_url) ) {
-		echo '<span><a href="'.$letter_url.'"><input type="button" id="letter" value="Send Letter" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-letter-button/' . $post_author_id . '/' . $letter_url .'/\'';
+		echo '<span><a href="'. $letter_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="letter" value="Send Letter" /></a></span>';
 	}
 }
 
-function theme_contributors_petition($petition_url) {
+function theme_contributors_petition($petition_url, $post_author_id) {
 	if ( !empty($petition_url) ) {
-		echo '<span><a href="'.$petition_url.'"><input type="button" id="petition" value="Sign Petition" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-petition-button/' . $post_author_id . '/' . $petition_url .'/\'';
+		echo '<span><a href="'. $petition_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="petition" value="Sign Petition" /></a></span>';
 	}
 }
 
-function theme_contributors_volunteer($volunteer_url) {
+function theme_contributors_volunteer($volunteer_url, $post_author_id) {
 	if ( !empty($volunteer_url) ) {
-		echo '<span><a href="'.$volunteer_url.'"><input type="button" id="volunteer" value="Volunteer" /></a></span>';
+		$click_track_tag = '\'/outbound/activist-volunteer-button/' . $post_author_id . '/' . $volunteer_url .'/\'';
+		echo '<span><a href="'. $volunteer_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="volunteer" value="Volunteer" /></a></span>';
 	}
 }
 
@@ -1523,25 +1615,25 @@ function theme_author_advertise($profile_author) {
 		<div id="advertorial">
 			<span><?php theme_insert_advertise_advertorialcreate_post(); ?></span>
 			<div class="clear"></div>			
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="competition">
 			<span><?php theme_insert_advertise_competitioncreate_post(); ?></span>	
 			<div class="clear"></div>				
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="listing">
 			<span><?php theme_insert_listingcreate_new(); ?></span>
 			<div class="clear"></div>
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 		<div id="email">
 			<span><?php theme_insert_emailcreate_new(); ?></span>
 			<div class="clear"></div>
-			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
+			<span><a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1">Learn more</a></span>
 		</div>
 		<div class="clear"></div>
 	</div>
@@ -1554,8 +1646,8 @@ function theme_author_analytics($profile_author, $pageposts) {
 	global $wpdb;
 	global $post;
 	global $current_user;
-
-	# HEADING AND TABLE HEADINGS
+	
+	# TABLE HEADINGS
 	?>
 	<div id="my-analytics">
 		<table class="author_analytics">
@@ -1565,12 +1657,16 @@ function theme_author_analytics($profile_author, $pageposts) {
 				<td class="author_analytics_cost">Value</td>
 				<td class="author_analytics_date">Date Posted</td> 
 				<td class="author_analytics_page_impressions">Total Page Impressions</td>
-				<!-- <td>Clicks</td> -->
+				<td class="author_analytics_clicks">Clicks</td>
 				<td class="author_analytics_category_impressions">Total Category Impressions</td>
 			</tr>
 	<?php	
 				
-	if ($pageposts) {	
+	if ($pageposts) {
+		
+
+		$profile_author_id = $profile_author->ID;
+	 
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 		
@@ -1605,6 +1701,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   			$sumURL = 0;
   			foreach ($pageViewURL as $data) {
     			$sumURL = $sumURL + $data;
+    			$total_sumURL = $total_sumURL + $data;
   			}
   			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';
   				
@@ -1621,13 +1718,32 @@ function theme_author_analytics($profile_author, $pageposts) {
             	'sort' => 'ga:keyword'
             	)
           	);	
+          	
+          	#SET UP POST ID AND AUTHOR ID DATA, POST DATE, GET LINK CLICKS DATA FROM GA 
+          	$post_date_au = get_the_time('j-m-y');
+	 		$post_id = $post->ID;
+	 		$click_track_tag = 'yoast-ga/' . $post_id . '/' . $profile_author_id . '/outbound-article';
+			$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  			$sumClick = 0;
+			foreach ($clickURL as $data) {
+    			$sumClick = $sumClick + $data;
+  			}
 			
-			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL AND COST
+			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL, COST AND GET BUTTON CLICKS DATA
 			   
 				case 'gp_advertorial':
 					$post_title = 'Products';
 					$post_url = '/new-stuff';
 					$post_price = '$89.00';
+			  		$custom = get_post_custom($post->ID);
+	 				$product_url = $custom["gp_advertorial_product_url"][0];	
+	 				if ( !empty($product_url) ) {		# IF 'BUY IT' BUTTON ACTIVATED, GET CLICKS
+	 					$click_track_tag_product_button = 'outbound/product-button/' . $post_id . '/' . $profile_author_id . '/' . $product_url; 
+  						$clickURL_product_button = ($analytics->getPageviewsURL($click_track_tag_product_button));
+  						foreach ($clickURL_product_button as $data) {
+    						$sumClick = $sumClick + $data;
+  						}
+	 				} 
 		       		break;
 				case 'gp_competitions':
 					$post_title = 'Competitions';
@@ -1640,33 +1756,105 @@ function theme_author_analytics($profile_author, $pageposts) {
 		   			$post_price = 'N/A';
 		     		break;
 		     	case 'gp_news':
-		   			$post_title = 'News';
+				   	$post_title = 'News';
 		   			$post_url = '/news';
-		   			$post_price = 'N/A';
+		   			$post_price = 'N/A';		   			
 		     		break;
 		     	case 'gp_ngocampaign':
 			    	$post_title = 'Campaigns';
 			    	$post_url = '/ngo-campaign';
 			    	$post_price = 'N/A';
+					#Add click data to $sumClick for activist bar / donate / join buttons here
 			        break;
 			}
 			
-			echo '<tr>';					# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
-				echo '<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
-				esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>'; 	#Title				
-				echo '<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>'; #Ad Type					
-				echo '<td class="author_analytics_cost">' . $post_price . '</td>'; #Cost				
-				echo '<td class="author_analytics_date">' . get_the_time('j-m-y') . '</td>';#date
-				echo '<td class="author_analytics_page_impressions">' . $sumURL . '</td>'; #Page Impressions
-				#echo '<td>' . ' ' . '</td>'; #Clicks
-				echo '<td class="author_analytics_category_impressions">' . $sumType . '</td>'; #Category Impressions				
-			echo '</tr>';
+		  	if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    			$sumClick = 'Unavailable';
+    		}
+			
+											# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
+			echo '<tr>				
+					<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
+					esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>				
+					<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>					
+					<td class="author_analytics_cost">' . $post_price . '</td>				
+					<td class="author_analytics_date">' . $post_date_au . '</td>
+					<td class="author_analytics_page_impressions">' . $sumURL . '</td>	
+					<td class="author_analytics_clicks">' . $sumClick . '</td>				
+					<td class="author_analytics_category_impressions">' . $sumType . '</td>				
+				</tr>';
 		}
 	}	
 	?>
-		</table>	
-	<!-- <h1><a href="/wp-admin/post-new.php?post_type=gp_advertorial">Book another post!</a></h1> -->			
-	<?php theme_homecreate_post(); ?>
+		</table>			
+		<?php theme_homecreate_post(); ?>
+		<p>Your posts have been viewed a total of</p> 
+		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
+		<p></p>
+		
+		<?php   # FOR CONTRIBUTORS / CONTENT PARTNERS - DISPLAY ACTIVIST BAR / DONATE JOIN BUTTON ANALYTICS DATA
+		if ( get_user_role( array('contributor') ) || get_user_role( array($rolecontributor, 'administrator') ) ) {
+			
+			# SET AND RESET SOME VARIABLES AND GET ACTIVIST BAR DATA FROM GA
+			$start_date = '2012-01-01'; 	// Click tracking of activist buttons began just after this Date
+			$today_date = date('Y-m-d'); 	//Todays Date
+				
+  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+			
+  			$donate_url = $profile_author->contributors_donate_url;
+			$join_url = $profile_author->contributors_join_url;
+			$letter_url = $profile_author->contributors_letter_url;
+			$petition_url = $profile_author->contributors_petition_url;
+			$volunteer_url = $profile_author->contributors_volunteer_url;
+			
+  			$button_labels = array('donate' => $donate_url, 
+  									'join' =>  $join_url, 
+  									'letter' =>  $letter_url, 
+  									'petition' =>  $petition_url, 
+  									'volunteer' =>  $volunteer_url);
+  			$activist_clicks_sum = 0;
+  			  			
+			?>
+			<table class="author_analytics">
+				<tr>
+					<td class="author_analytics_title">Activist Buttons</td>
+					<td class="author_analytics_activist">Donate</td>
+					<td class="author_analytics_activist">Join</td>
+					<td class="author_analytics_activist">Send Letter</td>
+					<td class="author_analytics_clicks">Sign Petition</td>
+					<td class="author_analytics_clicks">Volunteer</td>
+					<td class="author_analytics_clicks">Total</td>		
+				</tr>
+				<tr>
+					<td class="author_analytics_title">Clicks</td>
+					<?php #DISPLAY TABLE CELLS WITH CLICK DATA FOR ACTIVIST BAR BUTTONS
+		  			foreach ($button_labels as $label => $label_url) {
+  						$click_track_tag = 'outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url;
+						#var_dump($click_track_tag);
+  						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  						$sumClick = 0;
+						foreach ($clickURL as $data) {
+    						$sumClick = $sumClick + $data;							// Clicks for that button from all posts
+    						$activist_clicks_sum = $activist_clicks_sum + $data;	// Total clicks for all activist bar buttons
+  						}
+  						if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    						$sumClick = 'Unavailable';
+    					}
+  						echo '<td class="author_analytics_activist">' . $sumClick . '</td>';
+  					}
+		  			if ($activist_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    					$activist_clicks_sum = 'Unavailable';
+    				}
+					echo '<td class="author_analytics_activist">' . $activist_clicks_sum . '</td>';
+					?>		
+				</tr>
+			</table>
+		<?php 
+		} 
+		?>
+		<div class="post-details">Why are Clicks for some posts showing as 'Unavailable'?</div>
+		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
+		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>		
 	</div>
 <?php 
 }
@@ -1676,7 +1864,25 @@ function theme_authorposts($profile_author) {
 	global $post;
 	global $current_user;
 
-	$total = "SELECT COUNT(*) as count FROM $wpdb->posts " . $wpdb->prefix . "posts, $wpdb->postmeta " . $wpdb->prefix . "postmeta WHERE " . $wpdb->prefix . "posts.ID = " . $wpdb->prefix . "postmeta.post_id and " . $wpdb->prefix . "posts.post_status = 'publish' and (" . $wpdb->prefix . "posts.post_type = 'gp_news' or " . $wpdb->prefix . "posts.post_type = 'gp_events' or " . $wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . $wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . $wpdb->prefix . "posts.post_type = 'gp_competitions' or " . $wpdb->prefix . "posts.post_type = 'gp_people') and " . $wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . $wpdb->prefix . "postmeta.meta_value >= 1 and " . $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+	$total = "SELECT COUNT(*) as count 
+			FROM $wpdb->posts " . 
+				$wpdb->prefix . "posts, 
+				$wpdb->postmeta " . 
+				$wpdb->prefix . "postmeta 
+			WHERE " . $wpdb->prefix . "posts.ID = " . 
+				$wpdb->prefix . "postmeta.post_id and " . 
+				$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+					$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_people') 
+				and " . 
+				$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+				$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+				$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+				
 	$totalposts = $wpdb->get_results($total, OBJECT);
 
 	$ppp = intval(get_query_var('posts_per_page'));
@@ -1687,7 +1893,26 @@ function theme_authorposts($profile_author) {
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
 	
-	$querystr = "SELECT " . $wpdb->prefix . "posts.* FROM $wpdb->posts " . $wpdb->prefix . "posts, $wpdb->postmeta " . $wpdb->prefix . "postmeta WHERE " . $wpdb->prefix . "posts.ID = " . $wpdb->prefix . "postmeta.post_id and " . $wpdb->prefix . "posts.post_status = 'publish' and (" . $wpdb->prefix . "posts.post_type = 'gp_news' or " . $wpdb->prefix . "posts.post_type = 'gp_events' or " . $wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . $wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . $wpdb->prefix . "posts.post_type = 'gp_competitions' or " . $wpdb->prefix . "posts.post_type = 'gp_people') and " . $wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . $wpdb->prefix . "postmeta.meta_value >= 1 and " . $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
+	$querystr = "SELECT " . $wpdb->prefix . "posts.* 
+				FROM $wpdb->posts " . 
+					$wpdb->prefix . "posts, 
+					$wpdb->postmeta " . 
+					$wpdb->prefix . "postmeta 
+				WHERE " . $wpdb->prefix . "posts.ID = " . 
+					$wpdb->prefix . "postmeta.post_id and " . 
+					$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+						$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_people') 
+					and " . 
+					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+				ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
+					
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 	if ($pageposts) {
@@ -1720,19 +1945,20 @@ function theme_authorposts($profile_author) {
 				document.getElementById("analytics").style.backgroundColor="#afde7f";
 				document.getElementById("advertise").style.backgroundColor="#61c201";
 			}
-		 --></script><?php 
-		echo 	'<nav class="profile-tabs">
-					<ul>
-						<li id="posts" onclick="display_posts()">Posts</li>
-						<li id="analytics" onclick="display_analytics()">Analytics</li>
-						<li id="advertise" onclick="display_advertise()">Advertise</li>
-						<!-- <li><span>Campaigns</span></li> -->
-					</ul>
-				</nav>';
-		theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
-		theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
+			--></script> 
+			<nav class="profile-tabs">
+				<ul>
+					<li id="posts" onclick="display_posts()">Posts</li>
+					<li id="analytics" onclick="display_analytics()">Analytics</li>
+					<li id="advertise" onclick="display_advertise()">Advertise</li>
+					<!-- <li><span>Campaigns</span></li> -->
+				</ul>
+			</nav>
+			<?php
+			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
+			theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
 		} else {
-			echo '<nav class="profile-tabs"><ul><li id="posts">Posts</li><!-- <li><span>Campaigns</span></li> --></ul></nav>';				
+			?><nav class="profile-tabs"><ul><li id="posts">Posts</li></ul></nav><?php 				
 		}
 		?>
 		<div id="my-posts">
@@ -1773,7 +1999,9 @@ function theme_authorposts($profile_author) {
 		    	the_excerpt();
 				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 			if ( comments_open() ) {
-				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span></a><a href="' . get_permalink($post->ID) . '#disqus_thread" class="comment-profile"><span class="comment-mini-number dsq-postid">' . $post->comment_count . '</span></a></div>';
+				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+			} else {
+				echo '<div class="comment-profile"><span class="comment-mini-closed"></span></div>';
 			}
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
@@ -1833,6 +2061,7 @@ function subscriber_index($profile_author) {
 			theme_authorfacebook($profile_author);
 			theme_authortwitter($profile_author);
 			theme_authorlinkedin($profile_author);
+			theme_authorskype($profile_author);
 		echo '<div class="clear"></div></div>';
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
@@ -1868,7 +2097,7 @@ function contributor_index($profile_author) {
 		#theme_authorseen($profile_author);
 		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
-	theme_profile_contributor_donate_join_bar($profile_author);		
+	theme_profile_contributor_donate_join_bar($profile_author);
 	theme_contributorsblurb($profile_author);
 	echo '<div class="clear"></div>';
 	theme_authorposts($profile_author); 

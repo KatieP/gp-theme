@@ -1,3 +1,4 @@
+<!--  TRIALING NEW LOOK AND FEEL WITH NO LEFT SIDEBAR JAN 2012
 			<div id="col1">
 				<nav id="dir-sidenav">
 					<ul class="menu">
@@ -56,13 +57,13 @@
 					</ul>
 				</nav>
 				<nav id="lyb">
-					<a href="<?php echo get_permalink(472); ?>">
+					<a href="<?php #echo get_permalink(472); ?>">
 						<span class="title">List your business</span>
 						<span class="content">Free 30 day trial</span>
 					</a>
 				</nav>
 				<nav id="advertisewus">
-					<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460"  class="pirobox_gall1">
+					<a href="<?php #bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460"  class="pirobox_gall1">
 						<span class="title">Advertise</span>
 						<span class="content">Explore the options</span>
 					</a>
@@ -72,17 +73,18 @@
 					<ul id="nav-shadow">
 						<li>
 							<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_new" class="followus-facebook">Facebook</a>
-							<img class="shadow" src="<?php bloginfo('template_url'); ?>/template/icons-shadow.jpg" width="29" height="10" alt="" />
+							<img class="shadow" src="<?php #bloginfo('template_url'); ?>/template/icons-shadow.jpg" width="29" height="10" alt="" />
 						</li>
 						<li>
 							<a href="http://twitter.com/GreenPagesAu" target="_new" class="followus-twitter">Twitter</a>
-							<img class="shadow" src="<?php bloginfo('template_url'); ?>/template/icons-shadow.jpg" width="29" height="10" alt="" />
+							<img class="shadow" src="<?php #bloginfo('template_url'); ?>/template/icons-shadow.jpg" width="29" height="10" alt="" />
 						</li>
 						<li>
 							<a href="http://www.youtube.com/user/greenpagesaustralia" target="_new" class="followus-youtube">YouTube</a>
-							<img class="shadow" src="<?php bloginfo('template_url'); ?>/template/icons-shadow.jpg" width="29" height="10" alt="" />
+							<img class="shadow" src="<?php #bloginfo('template_url'); ?>/template/icons-shadow.jpg" width="29" height="10" alt="" />
 						</li>
 					</ul>
 					<div class="clear"></div>
 				</nav>
 			</div>
+ -->

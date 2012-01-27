@@ -86,10 +86,44 @@
 				}
 				relevant_posts();
 				?>
-				<div id="toolbox">
-					<span class="title">Discussions:</span>
-					<script type="text/javascript" src="http://greenpages.disqus.com/combination_widget.js?num_items=5&hide_mods=1&color=blue&default_tab=popular&excerpt_length=200"></script>
-				</div>
+				<table>
+					<tr>
+						<td>
+							<nav id="lyb">
+								<?php $click_track_tag_lyb = '/internal/advertising/list-your-business/'; ?>
+								<a href="<?php echo get_permalink(472); ?>" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_lyb; ?>']);">
+									<span class="title">List your business</span>
+									<span class="content">Free 30 day trial</span>
+								</a>
+							</nav>
+						</td>
+						<td>
+							<nav id="advertisewus">
+								<?php $click_track_tag_awu = '/internal/advertising/advertise-with-us/'; ?>
+								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
+									<span class="title">Advertise</span>
+									<span class="content">Explore the options</span>
+								</a>
+							</nav>
+							<div class="hidden">
+								<?php if ( !is_user_logged_in() ) { ?>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-display-ad.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+								<?php } 
+								else { ?>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-display-ad-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
+									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>								
+								<?php }?>								
+							</div>
+						</td>
+					</tr>
+				</table>
 				<div id="toolbox">
 					<script type="text/javascript">
 					<!--

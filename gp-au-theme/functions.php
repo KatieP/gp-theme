@@ -20,6 +20,30 @@ function gp_add_admin_header() {
 }
 */
 
+/*
+Remove action from plugin - wp-email-login.
+Javascript generates errors if element isn't found. Element is also different for plugin - simple modal-login.
+*/
+remove_action( 'login_form', 'username_or_email_login' );
+
+function new_username_or_email_login() { ?>
+	<script type="text/javascript">
+		var regtitle = document.getElementById('loginform');
+		
+		if (regtitle != undefined) {
+			if (regtitle.childNodes[1] != undefined && regtitle.childNodes[1].childNodes[1] != undefined && regtitle.childNodes[1].childNodes[1].childNodes[0] != undefined && regtitle.childNodes[1].childNodes[1].childNodes[0].length > 0) {
+				regtitle.childNodes[1].childNodes[1].childNodes[0].nodeValue = '<?php echo esc_js( __( 'Username or Email Address', 'email-login' ) ); ?>';
+			}
+		}
+		
+		// Error Messages
+		if ( document.getElementById('login_error') )
+			document.getElementById('login_error').innerHTML = document.getElementById('login_error').innerHTML.replace( '<?php echo esc_js( __( 'username' ) ); ?>', '<?php echo esc_js( __( 'Username or Email' , 'email-login' ) ); ?>' );
+	</script>
+<?php } 
+
+add_action( 'login_form', 'new_username_or_email_login' );
+
 add_filter( 'admin_footer_text', 'gp_add_admin_footer' );
 function gp_add_admin_footer() {
 	echo 'Welcome to the Green Pages backend editor! Go back to <a href="http://www.thegreenpages.com.au/">front end</a>';
@@ -38,6 +62,11 @@ function yoursite_wp_mail_from_name($name) {
 	return 'Green Pages';
 }
 
+/*** MANUALLY SETS WORD LENGTH OF EXCERPT FROM POST SHOWN IN INDEX AND PROFILE PAGES ***/
+add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+function custom_excerpt_length( $length ) {
+	return 25;
+}
 
 function cm_subscribe($subscribe = '') {
 	if ($subscribe == 'true' || $subscribe = 'false') {
@@ -2737,7 +2766,7 @@ function email_after_post_approved($post_ID) {
 
   global $post_type_to_url_part;
 
-  $bcc = "katiepatrickgp@gmail.com, scmelton@gmail.com";
+  $bcc = "katiepatrickgp@gmail.com, jesse.browne@thegreenpages.com.au";
 
   $post = get_post($post_ID);
   $user = get_userdata($post->post_author);
