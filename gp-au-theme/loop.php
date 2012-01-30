@@ -1647,24 +1647,25 @@ function theme_author_analytics($profile_author, $pageposts) {
 	global $post;
 	global $current_user;
 	
-	# TABLE HEADINGS
+	$profile_author_id = $profile_author->ID;
+	
+	# TABLE HEADINGS FOR POST ANALYTICS
 	?>
 	<div id="my-analytics">
+		<h2>Post Analytics</h2>
 		<table class="author_analytics">
 			<tr>
 				<td class="author_analytics_title">Title</td>		
 				<td class="author_analytics_type">Post Type</td>
 				<td class="author_analytics_cost">Value</td>
 				<td class="author_analytics_date">Date Posted</td> 
-				<td class="author_analytics_page_impressions">Total Page Impressions</td>
+				<td class="author_analytics_page_impressions">Page Views</td>
 				<td class="author_analytics_clicks">Clicks</td>
-				<td class="author_analytics_category_impressions">Total Category Impressions</td>
+				<td class="author_analytics_category_impressions">Category Impressions</td>
 			</tr>
 	<?php	
 				
-	if ($pageposts) {	
-
-		$profile_author_id = $profile_author->ID;
+	if ($pageposts) {		
 	 	
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
@@ -1787,9 +1788,50 @@ function theme_author_analytics($profile_author, $pageposts) {
 		<p>Your posts have been viewed a total of</p> 
 		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
 		<p></p>
-		<div class="post-details">Why are Clicks for some posts showing as 'Unavailable'?</div>
-		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
-		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>	
+		
+		
+		<?php 	# FOR ADVERTISERS WHO HAVE (OR HAVE HAD) A DIRECTORY PAGE
+		$old_crm_id = $profile_author->old_crm_id;
+		if (!empty($old_crm_id)) {
+		?>
+			<h2>Directory Page Analytics</h2>
+			<table class="author_analytics">
+				<tr>
+					<td class="author_analytics_title">Title</td>
+					<td class="author_analytics_cost">Value</td>
+					<!-- <td class="author_analytics_page_impressions">Page Impressions</td>  -->
+					<td class="author_analytics_clicks">Clicks</td>
+				</tr>	
+
+				<?php 		
+				# SET AND RESET SOME VARIABLES AND GET DIRECTORY PAGE DATA FROM GA
+				$start_date = '2012-01-01'; 	// Click tracking of Directory Pages began just after this Date
+				$today_date = date('Y-m-d'); 	// Todays Date
+				
+	  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+				
+				$click_track_tag = 'outbound/directory/' . $profile_author_id;
+  				$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  				$sumClick = 0;
+				foreach ($clickURL as $data) {
+    				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
+	  			}
+  				if ($sumClick == 0) {					#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    				$sumClick = 'Unavailable';
+    			}
+    			?>
+    			<tr>
+    				<td class="author_analytics_title">Directory page</td>
+    				<td class="author_analytics_cost">$39 per month</td>
+    				<!-- <td class="author_analytics_page_impressions">Coming Soon!</td> -->
+    				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
+    			</tr>
+    		</table>
+    		<div id="post-filter"></div>
+    		<div class="post-details">Page Views will be available soon!</div>
+    		<?php 		
+		}	
+		?>
 		
 		<?php   # FOR CONTRIBUTORS / CONTENT PARTNERS - DISPLAY ACTIVIST BAR / DONATE JOIN BUTTON ANALYTICS DATA
 		if ( get_user_role( array('contributor') ) || get_user_role( array($rolecontributor, 'administrator') ) ) {
@@ -1799,7 +1841,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			$today_date = date('Y-m-d'); 	// Todays Date
 				
   			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
-			
+
   			$donate_url = $profile_author->contributors_donate_url;
 			$join_url = $profile_author->contributors_join_url;
 			$letter_url = $profile_author->contributors_letter_url;
@@ -1849,21 +1891,21 @@ function theme_author_analytics($profile_author, $pageposts) {
 			</table>
 			<?php
 			theme_profilecreate_post();
-			if($activist_clicks_sum != 0) { #IF CLICKS DATA RETURNED, DISPLAY TOTAL
+			if($activist_clicks_sum != 0) { 	#IF CLICKS DATA RETURNED, DISPLAY TOTAL
 			?>
 				<p>Your activist buttons have been clicked a total of</p> 
 				<p><span class="big-number"><?php echo $activist_clicks_sum;?></span> times!</p>	
 				<p></p>
 			<?php
-			} 
+			}
 			?>
-			<div class="post-details">Why are Clicks for some buttons showing as 'Unavailable'?</div>
-			<div class="post-details">These buttons are only visible on your posts and profile page if you've entered a destination url for that button.</div> 
 			<div class="post-details">You can enter or update urls for these buttons by clicking on Edit My Profile!</div>
 			<?php 
 		} 
 		?>
-	
+		<div class="post-details">Why are Clicks showing as 'Unavailable'?</div>
+		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
+		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>	
 	</div>
 <?php 
 }
