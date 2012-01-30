@@ -1662,11 +1662,10 @@ function theme_author_analytics($profile_author, $pageposts) {
 			</tr>
 	<?php	
 				
-	if ($pageposts) {
-		
+	if ($pageposts) {	
 
 		$profile_author_id = $profile_author->ID;
-	 
+	 	
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 		
@@ -1684,18 +1683,17 @@ function theme_author_analytics($profile_author, $pageposts) {
 			#echo $post_url_end . '<br />$post_url_end<br />';
 				
 			$analytics = new analytics('greenpagesadserving@gmail.com', 'greenpages01'); //sign in and grab profile			
-  			$analytics->setProfileById('ga:42443499'); //$analytics->setProfileByName('Stage 1 - Green Pages');
-			$post_date = get_the_time('Y-m-d'); //Post Date
+  			$analytics->setProfileById('ga:42443499'); 			//$analytics->setProfileByName('Stage 1 - Green Pages');
+			$post_date = get_the_time('Y-m-d'); 				//Post Date
 			#echo $post_date . ' ';
-			$today_date = date('Y-m-d'); //Todays Date
+			$today_date = date('Y-m-d'); 						//Todays Date
 			#echo $today_date . ' ';
 				
-  			$analytics->setDateRange($post_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+  			$analytics->setDateRange($post_date, $today_date); 	//Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
 				
-  			#print_r($analytics->getVisitors()); //get array of visitors by day
+  			#print_r($analytics->getVisitors()); 				//get array of visitors by day
   	
-			//Page views for specific URL
-  			$pageViewURL = ($analytics->getPageviewsURL($post_url_end));
+  			$pageViewURL = ($analytics->getPageviewsURL($post_url_end));	//Page views for specific URL
   			#echo $pageViewURL . ' $pageViewURL';
   			#var_dump ($pageViewURL);
   			$sumURL = 0;
@@ -1703,10 +1701,9 @@ function theme_author_analytics($profile_author, $pageposts) {
     			$sumURL = $sumURL + $data;
     			$total_sumURL = $total_sumURL + $data;
   			}
-  			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';
-  				
-			//Page views for the section landing page, e.g., the news page
-  			$pageViewType = ($analytics->getPageviewsURL($post_type_map[$type]));
+  			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';			
+			
+  			$pageViewType = ($analytics->getPageviewsURL($post_type_map[$type]));	//Page views for the section landing page, e.g. the news page
   			$sumType = 0;
   			foreach ($pageViewType as $data) {
       			$sumType = $sumType + $data;
@@ -1764,7 +1761,6 @@ function theme_author_analytics($profile_author, $pageposts) {
 			    	$post_title = 'Campaigns';
 			    	$post_url = '/ngo-campaign';
 			    	$post_price = 'N/A';
-					#Add click data to $sumClick for activist bar / donate / join buttons here
 			        break;
 			}
 			
@@ -1791,13 +1787,16 @@ function theme_author_analytics($profile_author, $pageposts) {
 		<p>Your posts have been viewed a total of</p> 
 		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
 		<p></p>
+		<div class="post-details">Why are Clicks for some posts showing as 'Unavailable'?</div>
+		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
+		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>	
 		
 		<?php   # FOR CONTRIBUTORS / CONTENT PARTNERS - DISPLAY ACTIVIST BAR / DONATE JOIN BUTTON ANALYTICS DATA
 		if ( get_user_role( array('contributor') ) || get_user_role( array($rolecontributor, 'administrator') ) ) {
 			
 			# SET AND RESET SOME VARIABLES AND GET ACTIVIST BAR DATA FROM GA
 			$start_date = '2012-01-01'; 	// Click tracking of activist buttons began just after this Date
-			$today_date = date('Y-m-d'); 	//Todays Date
+			$today_date = date('Y-m-d'); 	// Todays Date
 				
   			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
 			
@@ -1815,6 +1814,7 @@ function theme_author_analytics($profile_author, $pageposts) {
   			$activist_clicks_sum = 0;
   			  			
 			?>
+			<h2>Activist Bar Analytics</h2>
 			<table class="author_analytics">
 				<tr>
 					<td class="author_analytics_title">Activist Buttons</td>
@@ -1822,8 +1822,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 					<td class="author_analytics_activist">Join</td>
 					<td class="author_analytics_activist">Send Letter</td>
 					<td class="author_analytics_clicks">Sign Petition</td>
-					<td class="author_analytics_clicks">Volunteer</td>
-					<td class="author_analytics_clicks">Total</td>		
+					<td class="author_analytics_clicks">Volunteer</td>	
 				</tr>
 				<tr>
 					<td class="author_analytics_title">Clicks</td>
@@ -1845,16 +1844,26 @@ function theme_author_analytics($profile_author, $pageposts) {
 		  			if ($activist_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
     					$activist_clicks_sum = 'Unavailable';
     				}
-					echo '<td class="author_analytics_activist">' . $activist_clicks_sum . '</td>';
 					?>		
 				</tr>
 			</table>
-		<?php 
+			<?php
+			theme_profilecreate_post();
+			if($activist_clicks_sum != 0) { #IF CLICKS DATA RETURNED, DISPLAY TOTAL
+			?>
+				<p>Your activist buttons have been clicked a total of</p> 
+				<p><span class="big-number"><?php echo $activist_clicks_sum;?></span> times!</p>	
+				<p></p>
+			<?php
+			} 
+			?>
+			<div class="post-details">Why are Clicks for some buttons showing as 'Unavailable'?</div>
+			<div class="post-details">These buttons are only visible on your posts and profile page if you've entered a destination url for that button.</div> 
+			<div class="post-details">You can enter or update urls for these buttons by clicking on Edit My Profile!</div>
+			<?php 
 		} 
 		?>
-		<div class="post-details">Why are Clicks for some posts showing as 'Unavailable'?</div>
-		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
-		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>		
+	
 	</div>
 <?php 
 }

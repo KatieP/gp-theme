@@ -2573,6 +2573,7 @@ ul.categorieslistmain {
 
 #content .author_analytics {
 	margin-bottom: 10px;	
+	width: 636px;
 }
 
 #content .author_analytics .author_analytics_activist,
@@ -2585,11 +2586,11 @@ ul.categorieslistmain {
 }
 
 #content .author_analytics .author_analytics_title {
-	width: 28%;
+	width: 25%;
 }
 
 #content .author_analytics .author_analytics_activist {
-	width: 12%;
+	width: 15%;
 }
 
 #content .author_analytics .author_analytics_date {
