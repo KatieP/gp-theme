@@ -2545,8 +2545,13 @@ function coming_events() {
 					
 	global $wpdb;
 	global $post;
+	global $states_au;
 	
 	$epochtime = strtotime('now');
+
+	if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
+		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
+    }
     
 	/** SQL QUERY FOR COMING 5 EVENTS **/
 	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
@@ -2564,7 +2569,13 @@ function coming_events() {
 					
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a></span>'; 
-
+		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
+		foreach ($states_au as $state) {
+			if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
+  			echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
+		}									
+		?></select></span><div class="clear"></div></div><?php
+		
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			

@@ -1899,7 +1899,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			<?php
 			}
 			?>
-			<div class="post-details">You can enter or update urls for these buttons by clicking on Edit My Profile!</div>
+			<div class="post-details">You can enter or update urls for Activist Bar buttons by clicking on Edit My Profile!</div>
 			<?php 
 		} 
 		?>

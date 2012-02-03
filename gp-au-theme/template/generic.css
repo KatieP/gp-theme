@@ -207,7 +207,7 @@ margin-top: 16px;
 /** FORMS **/
 /** Note: Form style by type not compatible with IE6. Can use js to fix. **/
 
-#content input[type="text"], #content input[type="password"], #content textarea, #content select {
+#content input[type="text"], #content input[type="password"], #content textarea, #content select, #relevant-posts select {
 	display: block;
 	height: 25px;
 	min-width: 280px;
@@ -223,7 +223,7 @@ margin-top: 16px;
 	border-radius: 2px;	
 }
 
-#content select {
+#content select, #relevant-posts select {
 	height: 36px;
 	padding: 10px;
 	min-width: 60px;
@@ -2670,7 +2670,7 @@ ul.categorieslistmain {
 	border-radius: 2px;
 }
 
-
+#relevant-posts #post-filter,
 #content #post-filter {
 border-width: 0px 0px;
 border-style: none;
@@ -2680,10 +2680,15 @@ margin-bottom: 10px;
 font-size: 11px;
 }
 
+#relevant-posts #post-filter .left {
+	float: left;
+}
+	
 #content #post-filter .right {
 	float: right;
 }
 
+#relevant-posts #post-filter select,
 #content #post-filter select {
 padding: 2px;
 margin: 0;
@@ -2692,6 +2697,7 @@ font-size: 12px;
 float: right;
 }
 
+#relevant-posts #post-filter option,
 #content #post-filter option {
 padding: 2px;
 margin: 0;
