@@ -2529,10 +2529,46 @@ ul.categorieslistmain {
 }
 
 #content .comment-profile {
-	float: right;
 	color: #000;
-	padding-left: 4px;
 }
+
+#content .comment-profile {
+	border: 1px solid #d7edbc;
+	background-color: #f6faf0;
+	float: right;
+	overflow: hidden;
+	max-lenght: 100px;
+	height: 15px;
+	padding: 2px;
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+	border-radius:2px
+}  
+
+#content .comment-profile span, #content .comment-profile a {
+	margin: 0;
+	padding: 0;
+	display: block;
+	float: left;
+} 
+
+#content span.comment-mini {margin-left: 2px;} 
+
+#content span.fb_comments_count {
+	display: block;
+	padding: 0 2px;
+	margin-right: 1px;
+	border: 1px solid #d7edbc;
+	background-color: #FFF;
+	overflow: hidden;
+	height: 13px;
+		-moz-border-radius: 2px;
+		-webkit-border-radius: 2px;
+	border-radius:2px;
+	line-height:14px;
+} 
+
+#content .fb_comments_count_zero {display: none;}
 
 .medrec {
 	width: 350px;

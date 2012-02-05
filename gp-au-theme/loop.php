@@ -461,8 +461,6 @@ function theme_index_feed_item() {
 			
 			if ( comments_open($post->ID) ) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
-			} else {
-				echo '<div class="comment-profile"><span class="comment-mini-closed"></span></div>';
 			}
 		echo '</div>';
 
@@ -2051,8 +2049,6 @@ function theme_authorposts($profile_author) {
 				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 			if ( comments_open() ) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
-			} else {
-				echo '<div class="comment-profile"><span class="comment-mini-closed"></span></div>';
 			}
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
