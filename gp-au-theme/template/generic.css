@@ -1923,7 +1923,7 @@ margin-top: 16px;
 	color: #fff;
 }
 
-.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini, .comment-mini-closed {
+.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini, .star-mini, .comment-mini-closed {
 	background: url(../template/map-comments.png) no-repeat;
 }
 
@@ -1953,7 +1953,7 @@ margin-top: 16px;
 	z-index: 1;
 }
 
-.comment-mini, .comment-mini-closed {
+.comment-mini, .comment-mini-closed, .star-mini {
 	position: relative;
 	display: block;
 	background-position: 0px -26px;
@@ -1967,6 +1967,8 @@ margin-top: 16px;
 	 background-position: -16px -26px;
      margin-right: 8px;
 }
+
+.star-mini {background-position: 0px -41px;}
 
 #content .comment-number {
 	display: block;
@@ -2390,7 +2392,7 @@ ul.categorieslistmain {
 		float: right;
 }
 
-#content .comment-mini-number, #relevant-posts .comment-mini-number {
+#content .comment-mini-number, #content .star-mini-number, #relevant-posts .comment-mini-number {
 	color: #333;
 	font-size: 11px;
 	font-weight: bold;
@@ -2401,7 +2403,7 @@ ul.categorieslistmain {
 	color: #333;
 }
 
-#content .comment-mini, #relevant-posts .comment-mini, #content .comment-mini-closed, #relevant-posts .comment-mini-closed {
+#content .comment-mini, #content .star-mini, #relevant-posts .comment-mini, #content .comment-mini-closed, #relevant-posts .comment-mini-closed {
 	float: left;
 }
 
@@ -2528,11 +2530,8 @@ ul.categorieslistmain {
   margin-bottom: 15px;
 }
 
-#content .comment-profile {
+#content .comment-profile, #content .favourite-profile {
 	color: #000;
-}
-
-#content .comment-profile {
 	border: 1px solid #d7edbc;
 	background-color: #f6faf0;
 	float: right;
@@ -2545,16 +2544,18 @@ ul.categorieslistmain {
 	border-radius:2px
 }  
 
-#content .comment-profile span, #content .comment-profile a {
+#content .favourite-profile {display:block;}
+
+#content .comment-profile span, #content .comment-profile a, #content .favourite-profile span, #content .favourite-profile a {
 	margin: 0;
 	padding: 0;
 	display: block;
 	float: left;
 } 
 
-#content  .profile-postbox span.comment-mini{margin: 0 2px;}
+#content .profile-postbox span.comment-mini, #content .profile-postbox span.star-mini{margin: 0 2px;} 
 
-#content .profile-postbox span.fb_comments_count {
+#content .profile-postbox span.fb_comments_count, #content .profile-postbox span.star-mini-number {
 	display: block;
 	padding: 0 2px;
 	margin: 0 1px 0 2px;
@@ -2567,6 +2568,9 @@ ul.categorieslistmain {
 	border-radius:2px;
 	line-height:14px;
 } 
+
+#content .favourite-profile {margin-right: 8px;background-color: #f5f2ca;}
+#content .profile-postbox span.star-mini-number, #content .favourite-profile {border: 1px solid #f1e0b4;}
 
 #content .profile-postbox .fb_comments_count_zero {display: none;}
 

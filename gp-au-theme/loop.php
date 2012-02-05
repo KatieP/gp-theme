@@ -462,6 +462,8 @@ function theme_index_feed_item() {
 			if ( comments_open($post->ID) ) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
+			
+			echo '<div class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
 		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
@@ -2047,9 +2049,13 @@ function theme_authorposts($profile_author) {
 		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
 		    	the_excerpt();
 				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
+				
 			if ( comments_open() ) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
+			
+			echo '<div class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
+			
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
