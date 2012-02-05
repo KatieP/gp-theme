@@ -2552,12 +2552,12 @@ ul.categorieslistmain {
 	float: left;
 } 
 
-#content span.comment-mini {margin-left: 2px;} 
+#content span.comment-mini{margin: 0 2px;}
 
-#content span.fb_comments_count {
+#content .profile-postbox span.fb_comments_count {
 	display: block;
 	padding: 0 2px;
-	margin-right: 1px;
+	margin: 0 1px 0 2px;
 	border: 1px solid #d7edbc;
 	background-color: #FFF;
 	overflow: hidden;
@@ -2568,7 +2568,7 @@ ul.categorieslistmain {
 	line-height:14px;
 } 
 
-#content .fb_comments_count_zero {display: none;}
+#content .profile-postbox .fb_comments_count_zero {display: none;}
 
 .medrec {
 	width: 350px;

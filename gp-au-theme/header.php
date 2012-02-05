@@ -8,7 +8,6 @@ if ( is_user_logged_in() ) {
 
 $template_url = get_bloginfo('template_url');
 
-
 $schematype = ' itemscope itemtype="http://schema.org/';
 if ( is_single() ) {
 	switch (get_post_type()) {
@@ -110,8 +109,6 @@ if ( is_single() ) {
 			if ( is_home() || is_front_page() ) {
                 echo '<meta property="og:type" content="blog"/>';
         	}
-        	
-        	
 		?>
 
 		<link rel="shortcut icon" href="<?php echo $template_url; ?>/template/gpicon.ico" />
@@ -221,7 +218,7 @@ if ( is_single() ) {
 				<ul id="auth-tools">
 					<li id="auth-yourfavourites" class="no-js">
 						<a href="" class="auth-yourfavourites-start" title="Your Favourites">
-							<span class="icon-heart">Your Favourites</span>
+							<span class="icon-favourites">Your Favourites</span>
 						</a>
 						<ul id="auth-dash-favourites" class="auth-dash">
 							
