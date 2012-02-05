@@ -2552,7 +2552,7 @@ ul.categorieslistmain {
 	float: left;
 } 
 
-#content span.comment-mini{margin: 0 2px;}
+#content  .profile-postbox span.comment-mini{margin: 0 2px;}
 
 #content .profile-postbox span.fb_comments_count {
 	display: block;
