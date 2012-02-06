@@ -64,7 +64,7 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section, time
 }
 
 #content h1, #content h1 a, #content h2, #content h2 a {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 600;
 	margin: 30px 0 30px 0;
 }
@@ -91,11 +91,11 @@ article, aside, dialog, figure, footer, header, hgroup, menu, nav, section, time
 }
 
 #content h1 a, #content h2 a {
-	color: #717171;
+	color: #134;
 }
 
 #content h1 a:hover, #content h2 a:hover {
-	color: #aaa;
+	color: #134;
 }
 
 #content em, #content i {
@@ -1650,7 +1650,7 @@ margin-top: 16px;
 		/** FOOTER LEADER BOARD **/
 	
 		#footer-ad {
-			background-color: #f2f2f2;
+			background-color: #f8f8f8;
 			margin: 10px 0 0 0;
 		}
 		
@@ -2408,8 +2408,8 @@ ul.categorieslistmain {
 }
 
 #content .hp_miniauthor, #content .hp_featuredauthor {
-	font-size: 10px;
-	font-style: italic;
+	color: #9da2a8;
+	font-size: 11px;
 	display: block;
 	line-height: 12px;
 	margin: 4px 0 8px 0;
@@ -2433,9 +2433,8 @@ ul.categorieslistmain {
 }
 
 #content .hp_miniauthor a, #content .hp_featuredauthor a {
-	font-size: 10px;
-	font-style: italic;
-	color: #666;
+	font-size: 11px;
+	color: #134;
 	text-decoration: underline;
 }
 
@@ -2508,8 +2507,12 @@ ul.categorieslistmain {
 #content .profile-postbox {
   float: left;
   /** width: 310px;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
-  width: 476px;
+  width: 462px;
   margin-right: 20px;
+  margin-bottom: 10px;
+  padding: 6px; 
+  background-color: #f8f8f8;
+  border-bottom: 5px solid #eee;
 }
 
 #content .profile-postbox p {
