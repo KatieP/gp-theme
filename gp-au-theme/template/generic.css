@@ -1983,12 +1983,11 @@ margin-top: 16px;
 
 .post-details {
 	font-size: 11px;
-	font-style: italic;
 }
 
-#content .post-details a {
+#content .post-details a, .post-details a {
 	font-size: 11px;
-	color: #666;
+	color: #134;
 	text-decoration: underline;
 }
 
@@ -2083,7 +2082,7 @@ margin-top: 16px;
 }
 
 #content h1 a:hover, #content h2 a:hover {
-	color: #aaa;
+	color: #134;
 }
 
 #content .author-postdate, #content .author-postcomments {
@@ -2505,10 +2504,10 @@ ul.categorieslistmain {
 }
 
 #content .profile-postbox {
-  float: left;
+  float: right;
   /** width: 310px;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
   width: 462px;
-  margin-right: 20px;
+  margin-left: 20px;
   margin-bottom: 10px;
   padding: 6px; 
   background-color: #f8f8f8;
@@ -2524,7 +2523,7 @@ ul.categorieslistmain {
 }
 
 #content .profile_minithumb img {
-  float: right;
+  float: left;
 }
 
 #content .profile_postlink {
