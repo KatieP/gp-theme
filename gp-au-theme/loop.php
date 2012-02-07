@@ -406,11 +406,11 @@ function theme_like() {
 		$likedclass = ' favorited';
 	}
 	
-	$likecount = 0;
 	$likecount = get_post_meta($post->ID, 'likecount', true);
 	if ($likecount > 0) {
 		$showlikecount = '';
 	} else {
+		$likecount = 0;
 		$showlikecount = ' style="display:none;"';
 	}
 	
@@ -482,11 +482,11 @@ function theme_index_feed_item() {
 				$likedclass = ' favorited';
 			}
 			
-			$likecount = 0;
 			$likecount = get_post_meta($post->ID, 'likecount', true);
 			if ($likecount > 0) {
 				$showlikecount = '';
 			} else {
+				$likecount = 0;
 				$showlikecount = ' style="display:none;"';
 			}
 			
@@ -2086,11 +2086,11 @@ function theme_authorposts($profile_author) {
 				$likedclass = ' favorited';
 			}
 			
-			$likecount = 0;
 			$likecount = get_post_meta($post->ID, 'likecount', true);
 			if ($likecount > 0) {
 				$showlikecount = '';
 			} else {
+				$likecount = 0;
 				$showlikecount = ' style="display:none;"';
 			}
 			
