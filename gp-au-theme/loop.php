@@ -400,8 +400,9 @@ function theme_indexpagination() {
 
 function theme_like() {
 	global $post;
-	global $current_user;
-	if ( get_user_meta($current_user->ID, 'likepost' . $post->ID , true) ) {
+	global $current_user, $current_site;
+	
+	if ( get_user_meta($current_user->ID, 'likepost-' . $current_site->id . '-' . $post->ID , true) ) {
 		$likedclass = ' favorited';
 	}
 	
@@ -473,8 +474,8 @@ function theme_index_feed_item() {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
 			
-			global $current_user;
-			if ( get_user_meta($current_user->ID, 'likepost' . $post->ID , true) ) {
+			global $current_user, $current_site;
+			if ( get_user_meta($current_user->ID, 'likepost-' . $current_site->id . '-' . $post->ID , true) ) {
 				$likedclass = ' favorited';
 			}
 			
@@ -2069,8 +2070,8 @@ function theme_authorposts($profile_author) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
 			
-			global $current_user;
-			if ( get_user_meta($current_user->ID, 'likepost' . $post->ID , true) ) {
+			global $current_user, $current_site;
+			if ( get_user_meta($current_user->ID, 'likepost-' . $current_site->id . '-' . $post->ID , true) ) {
 				$likedclass = ' favorited';
 			}
 			
