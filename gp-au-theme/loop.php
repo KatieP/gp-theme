@@ -259,6 +259,7 @@ function theme_singledetails() {
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
 	echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
 	theme_like();
+	echo '<div class="clear"></div>'
 }
 
 function theme_singlecontributorstagline() {

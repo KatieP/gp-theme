@@ -2597,16 +2597,16 @@ function coming_events() {
 				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
 			}
 			?>
+			<div class="relevant-content">
 			<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
-			<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
+			<?php echo '<div class="post-details">';
 			if ($displayday == $displayendday) {
 				echo $displayday . ' ' . $displaymonth;
 			} else {
 				echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
 			}
-			?>
-			<?php 	
-			echo '</div><div class="clear"></div></div>';
+			echo '<br />' . $post->gp_events_locsuburb . ', <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a>' 	
+			echo '</div></div><div class="clear"></div></div>';
 		}
 		echo '</div>';
 	}			

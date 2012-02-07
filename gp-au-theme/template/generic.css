@@ -1988,6 +1988,8 @@ margin-top: 16px;
 .post-details {
 	font-size: 11px;
 	color: #9da2a8;
+	max-width: 500px;
+	float: left;
 }
 
 #content .post-details a, .post-details a {
@@ -2563,9 +2565,9 @@ ul.categorieslistmain {
 	float: left;
 } 
 
-#content .profile-postbox span.comment-mini, #content .profile-postbox span.star-mini{margin: 0 2px;} 
+#content span.comment-mini, #content span.star-mini{margin: 0 2px;} 
 
-#content .profile-postbox span.fb_comments_count, #content .profile-postbox span.star-mini-number {
+#content span.fb_comments_count, #content span.star-mini-number {
 	display: block;
 	padding: 0 2px;
 	margin: 0 1px 0 2px;
@@ -2580,9 +2582,9 @@ ul.categorieslistmain {
 } 
 
 #content .favourite-profile {margin-right: 8px;background-color: #f5f2ca;}
-#content .profile-postbox span.star-mini-number, #content .favourite-profile {border: 1px solid #f1e0b4;}
+#content span.star-mini-number, #content .favourite-profile {border: 1px solid #f1e0b4;}
 
-#content .profile-postbox .fb_comments_count_zero {display: none;}
+#content .fb_comments_count_zero {display: none;}
 
 .medrec {
 	width: 350px;
