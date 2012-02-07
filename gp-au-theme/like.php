@@ -45,9 +45,13 @@ if ( !isset($current_site->id) ) {
 
 if ( $post_action == 'add' ) {
 	update_usermeta($post_userid, $post_what . '_' . $current_site->id . '_' . $post_id, $epochtime);
+	$likecount = get_post_meta($post_id, 'likecount', true);
+	update_post_meta($post_id, 'likecount', $likecount+1);
 }
 
 if ( $post_action == 'remove' ) {
 	delete_user_meta($post_userid, $post_what . '_' . $current_site->id . '_' . $post_id);
+	$likecount = get_post_meta($post_id, 'likecount', true);
+	update_post_meta($post_id, 'likecount', $likecount-1);
 }
 ?>

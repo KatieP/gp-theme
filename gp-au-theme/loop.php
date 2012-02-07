@@ -407,8 +407,11 @@ function theme_like() {
 	}
 	
 	$likecount = 0;
+	$likecount = get_post_meta($post->ID, 'likecount', true);
 	if ($likecount > 0) {
-		$showlikecount = '<span class="star-mini-number">0</span>';
+		$showlikecount = '';
+	} else {
+		$showlikecount = ' style="display:none;"';
 	}
 	
 	if ( comments_open($post->ID) ) {
@@ -417,7 +420,7 @@ function theme_like() {
 	
 	if ( is_user_logged_in() && is_single() ) {
 		#echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
-		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span>' . $showlikecount . '</a></div>';
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span></a></div>';
 	}
 }
 
@@ -479,7 +482,15 @@ function theme_index_feed_item() {
 				$likedclass = ' favorited';
 			}
 			
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number">0</span></a></div>';
+			$likecount = 0;
+			$likecount = get_post_meta($post->ID, 'likecount', true);
+			if ($likecount > 0) {
+				$showlikecount = '';
+			} else {
+				$showlikecount = ' style="display:none;"';
+			}
+			
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span></a></div>';
 		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
@@ -2075,7 +2086,15 @@ function theme_authorposts($profile_author) {
 				$likedclass = ' favorited';
 			}
 			
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number">0</span></a></div>';
+			$likecount = 0;
+			$likecount = get_post_meta($post->ID, 'likecount', true);
+			if ($likecount > 0) {
+				$showlikecount = '';
+			} else {
+				$showlikecount = ' style="display:none;"';
+			}
+			
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span></a></div>';
 			
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
