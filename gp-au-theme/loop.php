@@ -416,7 +416,7 @@ function theme_like() {
 	
 	if ( is_user_logged_in() && is_single() ) {
 		#echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
-		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#"><span class="star-mini' . $likedclass . '"></span>' . $showlikecount . '</a></div>';
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span>' . $showlikecount . '</a></div>';
 	}
 }
 
@@ -473,7 +473,12 @@ function theme_index_feed_item() {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
 			
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
+			global $current_user;
+			if ( get_user_meta($current_user->ID, 'likepost' . $post->ID , true) ) {
+				$likedclass = ' favorited';
+			}
+			
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number">0</span></a></div>';
 		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
@@ -2064,7 +2069,12 @@ function theme_authorposts($profile_author) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
 			
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
+			global $current_user;
+			if ( get_user_meta($current_user->ID, 'likepost' . $post->ID , true) ) {
+				$likedclass = ' favorited';
+			}
+			
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number">0</span></a></div>';
 			
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
