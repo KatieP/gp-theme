@@ -2409,7 +2409,7 @@ ul.categorieslistmain {
 		float: right;
 }
 
-#content .comment-mini-number, #content .star-mini-number, #relevant-posts .comment-mini-number {
+#content .comment-mini-number, #content .star-mini-number, #content .star-mini-number-plus-one, #content .star-mini-number-minus-one, #relevant-posts .comment-mini-number {
 	color: #333;
 	font-size: 11px;
 	font-weight: bold;
@@ -2575,7 +2575,7 @@ ul.categorieslistmain {
 
 #content span.comment-mini, #content span.star-mini{margin: 0 2px;} 
 
-#content span.fb_comments_count, #content span.star-mini-number {
+#content span.fb_comments_count, #content span.star-mini-number, #content span.star-mini-number-plus-one, #content span.star-mini-number-minus-one {
 	display: block;
 	padding: 0 2px;
 	margin: 0 1px 0 2px;
@@ -2590,7 +2590,7 @@ ul.categorieslistmain {
 } 
 
 #content .favourite-profile {margin-right: 8px;background-color: #f5f2ca;}
-#content span.star-mini-number, #content .favourite-profile {border: 1px solid #f1e0b4;}
+#content span.star-mini-number, #content span.star-mini-number-plus-one, #content span.star-mini-number-minus-one, #content .favourite-profile {border: 1px solid #f1e0b4;}
 
 #content .fb_comments_count_zero {display: none;}
 
