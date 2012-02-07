@@ -259,7 +259,7 @@ function theme_singledetails() {
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
 	echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
 	theme_like();
-	echo '<div class="clear"></div>'
+	echo '<div class="clear"></div>';
 }
 
 function theme_singlecontributorstagline() {
@@ -337,14 +337,14 @@ function theme_singlesocialbar() {
 			        </div>
 			        <div class="clear"></div>
 		        </div>';
-				if ( comments_open() ) {
+				/*if ( comments_open() ) {
 			        echo '<div id="gp_commentbox">
 			    		<div class="wdt title">Comments</div>
 			    		<div class="clear"></div>
 			    		<div class="commentcount"><a href="#comments"><span class="comment-mini"></span><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></a></div>
 			    		<div class="clear"></div>
 			    	</div>';
-				}
+				}*/
 		    echo '</div>
 		</div>
 		';
@@ -405,9 +405,18 @@ function theme_like() {
 		$likedclass = ' favorited';
 	}
 	
+	$likecount = 0;
+	if ($likecount > 0) {
+		$showlikecount = '<span class="star-mini-number">0</span>';
+	}
+	
+	if ( comments_open($post->ID) ) {
+		echo '<div class="comment-profile"><a href="#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+	}
+	
 	if ( is_user_logged_in() && is_single() ) {
 		#echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
-		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number">0</span></a></div>';
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#"><span class="star-mini' . $likedclass . '"></span>' . $showlikecount . '</a></div>';
 	}
 }
 

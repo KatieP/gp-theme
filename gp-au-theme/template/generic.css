@@ -1990,6 +1990,7 @@ margin-top: 16px;
 	color: #9da2a8;
 	max-width: 500px;
 	float: left;
+	line-height: 16px;
 }
 
 #content .post-details a, .post-details a {

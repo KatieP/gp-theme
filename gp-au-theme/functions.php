@@ -2605,7 +2605,7 @@ function coming_events() {
 			} else {
 				echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
 			}
-			echo '<br />' . $post->gp_events_locsuburb . ', <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a>' 	
+			echo '<br />' . $post->gp_events_locsuburb . ', <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a>'; 	
 			echo '</div></div><div class="clear"></div></div>';
 		}
 		echo '</div>';
