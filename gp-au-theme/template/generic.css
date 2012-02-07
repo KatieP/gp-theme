@@ -1972,7 +1972,7 @@ margin-top: 16px;
      margin-right: 8px;
 }
 
-.star-mini {background-position: 0px -41px;}
+.star-mini {background-position: -16px -41px;}
 
 #content .comment-number {
 	display: block;
@@ -1993,6 +1993,10 @@ margin-top: 16px;
 #content .post-details a, .post-details a {
 	font-size: 11px;
 	color: #134;
+}
+
+#content .post-details a:hover, .post-details a:hover {
+	text-decoration: underline;
 }
 
 /** AUTHOR DETAILS **/
