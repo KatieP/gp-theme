@@ -228,7 +228,7 @@ if ( is_single() ) {
 							
 							$post_author_url = get_author_posts_url($current_user->ID);
 							#$querystr = "SELECT REPLACE(meta_key, 'likepost', '') as post_id FROM wp_usermeta WHERE meta_value > 0 and user_id = 5 and meta_key LIKE 'likepost%' order by meta_value DESC limit 5;";
-							$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id FROM " . $wpdb->prefix . "posts LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_'" . $current_site->id . "'_', '')=" . $wpdb->prefix . "posts.ID left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' WHERE post_status='publish' AND m0.meta_value > 0 AND m0.user_id = $current_user->ID AND m0.meta_key LIKE 'likepost%' AND m1.meta_value >= 1 ORDER BY m0.meta_value DESC LIMIT 5;";
+							$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id FROM " . $wpdb->prefix . "posts LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' WHERE post_status='publish' AND m0.meta_value > 0 AND m0.user_id = $current_user->ID AND m0.meta_key LIKE 'likepost%' AND m1.meta_value >= 1 ORDER BY m0.meta_value DESC LIMIT 5;";
 							$pageposts = $wpdb->get_results($querystr, OBJECT);
 							$numPosts = $wpdb->num_rows-1;
 							
