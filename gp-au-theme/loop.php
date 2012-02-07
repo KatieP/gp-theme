@@ -418,9 +418,13 @@ function theme_like() {
 		echo '<div class="comment-profile"><a href="#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 	}
 	
-	if ( is_user_logged_in() && is_single() ) {
+	if ( is_single() ) {
 		#echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
-		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+		if (is_user_logged_in()) {
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+		} else {
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login">Login...</a></div>';
+		}
 	}
 }
 
@@ -490,7 +494,11 @@ function theme_index_feed_item() {
 				$showlikecount = ' style="display:none;"';
 			}
 			
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+			if (is_user_logged_in()) {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+			} else {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login">Login...</a></div>';
+			}
 		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
@@ -2094,8 +2102,12 @@ function theme_authorposts($profile_author) {
 				$showlikecount = ' style="display:none;"';
 			}
 			
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
-			
+			if (is_user_logged_in()) {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+			} else {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login">Login...</a></div>';
+			}
+				
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
