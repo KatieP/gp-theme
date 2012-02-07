@@ -402,7 +402,7 @@ function theme_like() {
 	global $post;
 	global $current_user, $current_site;
 	
-	if ( get_user_meta($current_user->ID, 'likepost-' . $current_site->id . '-' . $post->ID , true) ) {
+	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
 	}
 	
@@ -475,7 +475,7 @@ function theme_index_feed_item() {
 			}
 			
 			global $current_user, $current_site;
-			if ( get_user_meta($current_user->ID, 'likepost-' . $current_site->id . '-' . $post->ID , true) ) {
+			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 				$likedclass = ' favorited';
 			}
 			
@@ -2071,7 +2071,7 @@ function theme_authorposts($profile_author) {
 			}
 			
 			global $current_user, $current_site;
-			if ( get_user_meta($current_user->ID, 'likepost-' . $current_site->id . '-' . $post->ID , true) ) {
+			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 				$likedclass = ' favorited';
 			}
 			

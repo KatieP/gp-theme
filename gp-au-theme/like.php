@@ -44,10 +44,10 @@ if ( !isset($current_site->id) ) {
 }
 
 if ( $post_action == 'add' ) {
-	update_usermeta($post_userid, $post_what . '-' . $current_site->id . '-' . $post_id, $epochtime);
+	update_usermeta($post_userid, $post_what . '_' . $current_site->id . '_' . $post_id, $epochtime);
 }
 
 if ( $post_action == 'remove' ) {
-	delete_user_meta($post_userid, $post_what . '-' . $current_site->id . '-' . $post_id);
+	delete_user_meta($post_userid, $post_what . '_' . $current_site->id . '_' . $post_id);
 }
 ?>
