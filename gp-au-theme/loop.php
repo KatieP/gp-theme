@@ -250,9 +250,7 @@ function theme_singletitle() {
 	global $post;
 	$titleClass = '';
 	if ($wp_query->current_post == 0 || $wp_query->current_post == -1) {$titleClass = ' class="loop-title"';}
-	echo '<h1' . $titleClass. '><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a>';
-	theme_like();
-	echo '</h1>';
+	echo '<h1' . $titleClass. '><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
 }
 
 function theme_singledetails() {
@@ -260,6 +258,7 @@ function theme_singledetails() {
 	$post_author = get_userdata($posts[0]->post_author);
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
 	echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
+	theme_like();
 }
 
 function theme_singlecontributorstagline() {
@@ -406,7 +405,8 @@ function theme_like() {
 	}
 	
 	if ( is_user_logged_in() && is_single() ) {
-		echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
+		#echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number">0</span></a></div>';
 	}
 }
 
@@ -463,7 +463,7 @@ function theme_index_feed_item() {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
 			
-			echo '<div class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
 		echo '</div>';
 
 	/** DISPLAY FEATURED IMAGE IF SET **/		
@@ -2054,7 +2054,7 @@ function theme_authorposts($profile_author) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
 			}
 			
-			echo '<div class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href=""><span class="star-mini"></span><span class="star-mini-number">0</span></a></div>';
 			
 	    	echo '</div>';
 			if ( has_post_thumbnail() ) {
