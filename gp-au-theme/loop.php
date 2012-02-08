@@ -1645,7 +1645,7 @@ function theme_author_favourites($profile_author) {
 	global $post;
 	global $current_user, $current_site;
 	
-	querystr = "SELECT " . $wpdb->prefix . "posts.*
+	$querystr = "SELECT " . $wpdb->prefix . "posts.*
 					, m1.meta_value as _thumbnail_id 
 				FROM " . $wpdb->prefix . "posts 
 				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
