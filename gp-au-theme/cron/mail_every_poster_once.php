@@ -59,7 +59,7 @@ function email_post($row, $count, $total) {
 	$post_type_map = array(
 		"gp_news" => "news", 
 		"gp_events" => "events", 
-		"gp_advertorial" => "new-stuff", 
+		"gp_advertorial" => "eco-friendly-products", 
 		"gp_competitions" => "competitions", 
 		"gp_people" => "people", 
 		"gp_ngocampaign" => "ngo-campaign"

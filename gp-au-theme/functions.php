@@ -1368,7 +1368,7 @@ $advertorialargs = array(
     'capability_type' => 'post',
     'menu_icon' => get_bloginfo( 'template_url' ).'/template/icon-advertorial.png',
     'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'new-stuff' ,'with_front' => FALSE ),
+    'rewrite' => array( 'slug' => 'eco-friendly-products' ,'with_front' => FALSE ),
     'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
     'show_in_nav_menus' => true,
     'taxonomies' => array( 'gp_advertorial_category', 'post_tag'),
@@ -2506,7 +2506,7 @@ function relevant_posts() {
 	        break;
 		case 'gp_advertorial':
 	       	$posttype_title = 'stuff';
-	       	$posttype_url = '/new-stuff';
+	       	$posttype_url = '/eco-friendly-products';
 	        break;
 	    case 'gp_people':
 	    	$posttype_title = 'people';

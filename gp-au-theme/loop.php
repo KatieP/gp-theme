@@ -451,7 +451,7 @@ function theme_index_feed_item() {
 			        break;
 				case 'gp_advertorial':
 					$post_title = 'Products';
-					$post_url = '/new-stuff';
+					$post_url = '/eco-friendly-products';
 			        break;
 				case 'gp_competitions':
 					$post_title = 'Competitions';
@@ -663,7 +663,7 @@ function home_index() {
 	#				        echo '<span class="hp_minitype"><a href="/ngo-campaign">Campaigns</a>:</span>';
 	#				        break;
 	#					case 'gp_advertorial':
-	#				        echo '<span class="hp_minitype"><a href="/new-stuff">Products</a>:</span>';
+	#				        echo '<span class="hp_minitype"><a href="/eco-friendly-products">Products</a>:</span>';
 	#				        break;
 						#case 'gp_competitions':
 					    #   echo '<span class="hp_minitype"><a href="/competitions">Competitions</a>:</span>';
@@ -1710,7 +1710,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 				
 			$post_type_map = array( "gp_news" => "news", 
 					                "gp_events" => "events", 
-                         			"gp_advertorial" => "new-stuff", 
+                         			"gp_advertorial" => "eco-friendly-products", 
                         			"gp_competitions" => "competitions", 
                          			"gp_people" => "people", 
                          			"gp_ngocampaign" => "ngo-campaign");
@@ -1766,7 +1766,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 			   
 				case 'gp_advertorial':
 					$post_title = 'Products';
-					$post_url = '/new-stuff';
+					$post_url = '/eco-friendly-products';
 					$post_price = '$89.00';
 			  		$custom = get_post_custom($post->ID);
 	 				$product_url = $custom["gp_advertorial_product_url"][0];	

@@ -9,7 +9,7 @@ require('../ga/analytics.class.php');
 
 $post_type_to_url_part = array("gp_news" => "news",
                                "gp_events" => "events",
-                               "gp_advertorial" => "new-stuff",
+                               "gp_advertorial" => "eco-friendly-products",
                                "gp_competitions" => "competitions",
                                "gp_people" => "people",
                                "gp_ngocampaign" => "ngo-campaign");
@@ -80,7 +80,7 @@ function email_post($row) {
 
   // Send the email
 	
- 	$to = "katiepatrickgp@gmail.com";
+ 	$to = "katiepatrickgp@gmail.com, eddy.respondek@gmail.com, jesse.browne@thegreenpages.com.au";
 	//$to = $email;
   $bcc = "katiepatrickgp@gmail.com, scmelton@gmail.com, eddy.respondek@gmail.com, jessebrowne78@gmail.com";
 	$subject="Report: Your post from " . $date . " has gotten a bunch of visitors!";
@@ -97,7 +97,9 @@ function email_post($row) {
 	$body .= '<div style="font-size:14px;"><em>"Never doubt that a small group of thoughtful, committed, citizens can change the world. <br /> Indeed, it is the only thing that ever has." Margaret Mead</em></div>';
 	$body .= '</td></tr></table></td></tr></table><br /><br /><br /><br />';
 
-  $headers = 'Content-type: text/html' . "\r\n";
+  $headers = 'MIME-Version: 1.0' . "\r\n";
+  $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+  $headers .= 'From: no-reply@thegreenpages.com.au' . "\r\n" .
   $headers .= 'Bcc: ' . $bcc . "\r\n";
 	
 	if (mail($to, $subject, $body, $headers)) {

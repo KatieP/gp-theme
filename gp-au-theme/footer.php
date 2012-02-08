@@ -43,7 +43,7 @@
 							<li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>
 							<li><a href="/news">News</a></li>
 							<li><a href="/events">Events</a></li>
-							<li><a href="/new-stuff">New Stuff</a></li>
+							<li><a href="/eco-friendly-products">New Stuff</a></li>
 							<li><a href="/competitions">Competitions</a></li>
 							<li><a href="/people">People</a></li>
 							<li><a href="/ngo-campaign">Campaigns</a></li>

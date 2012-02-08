@@ -64,7 +64,7 @@ if ($format == "html" || $format == "") {
 								<td align="center"><a href="http://directory.thegreenpages.com.au/" style="text-decoration:none; font-weight:; color:#fff; font-size: 13px;">Directory</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/news/" style="text-decoration:none;font-weight:; color:#fff;font-size: 13px;">News</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/events" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Events</a></td>
-                <td align="center"><a href="<?php echo site_url(); ?>/new-stuff" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">New Stuff</a></td>
+                <td align="center"><a href="<?php echo site_url(); ?>/eco-friendly-products" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">New Stuff</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/competitions" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Competitions</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/people/" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">People</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/ngo-campaign" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Campaigns</a></td>
