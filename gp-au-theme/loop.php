@@ -1660,7 +1660,7 @@ function theme_author_favourites($profile_author) {
 					
 	$pageposts = $wpdb->get_results($querystr, OBJECT);	
 	?>
-		<div id="my-posts">
+		<div id="my-favourites">
 		<?php 
 		
 		foreach ($pageposts as $post) {

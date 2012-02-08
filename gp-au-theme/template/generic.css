@@ -2493,7 +2493,7 @@ ul.categorieslistmain {
   cursor: pointer;
 }
 
-#content .profile-tabs #analytics, #content .profile-tabs #advertise {
+#content .profile-tabs #analytics, #content .profile-tabs #advertise, #content .profile-tabs #favourites {
   background-color: #afde7f;	
 }
 
