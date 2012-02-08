@@ -2599,6 +2599,8 @@ ul.categorieslistmain {
 	padding: 0 4px;
 }
 
+#content span.fb_comments_count:hover, #content span.star-mini-number:hover, #content span.star-mini-number-plus-one:hover, #content span.star-mini-number-minus-one:hover, #content .favourite-profile .star-login:hover {text-decoration: none;}
+
 #content .fb_comments_count_zero {display: none;}
 
 .medrec {
