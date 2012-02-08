@@ -1639,6 +1639,101 @@ function theme_authorsstuff($profile_author) {
 	}	
 }
 
+/** SHOW MEMBERS FAVOURITE POSTS **/
+function theme_author_favourites($profile_author) {
+	global $wpdb;
+	global $post;
+	global $current_user, $current_site;
+	
+	querystr = "SELECT " . $wpdb->prefix . "posts.*
+					, m1.meta_value as _thumbnail_id 
+				FROM " . $wpdb->prefix . "posts 
+				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
+				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' 
+				WHERE post_status='publish' 
+					AND m0.meta_value > 0 
+					AND m0.user_id = $profile_author->ID 
+					AND m0.meta_key LIKE 'likepost%' 
+					AND m1.meta_value >= 1 
+				ORDER BY m0.meta_value 
+				DESC;";
+					
+	$pageposts = $wpdb->get_results($querystr, OBJECT);	
+	?>
+		<div id="my-posts">
+		<?php 
+		
+		foreach ($pageposts as $post) {
+			setup_postdata($post);
+			switch (get_post_type()) {
+			    case 'gp_news':
+			        $post_title = 'News';
+			        $post_url = '/news';
+			        break;
+			    case 'gp_ngocampaign':
+			    	$post_title = 'Campaigns';
+			    	$post_url = '/ngo-campaign';
+			        break;
+				case 'gp_advertorial':
+					$post_title = 'Products';
+					$post_url = '/news-stuff';
+			        break;
+				case 'gp_competitions':
+					$post_title = 'Competitions';
+					$post_url = '/competitions';
+			        break;
+			    case 'gp_events':
+			    	$post_title = 'Events';
+			    	$post_url = '/events';
+			        break;
+			    case 'gp_people':
+			    	$post_title = 'People';
+			    	$post_url = '/people';
+			        break;
+			}
+			echo '
+			<div class="profile-postbox">
+		    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
+		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
+		    	the_excerpt();
+				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
+				
+			if ( comments_open() ) {
+				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+			}
+			
+			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
+				$likedclass = ' favorited';
+			}
+			
+			$likecount = get_post_meta($post->ID, 'likecount', true);
+			if ($likecount > 0) {
+				$showlikecount = '';
+			} else {
+				$likecount = 0;
+				$showlikecount = ' style="display:none;"';
+			}
+			
+			if (is_user_logged_in()) {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+			} else {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+			}
+				
+	    	echo '</div>';
+			if ( has_post_thumbnail() ) {
+				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+				$imageURL = $imageArray[0];
+				echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+			}
+			echo '<div class="clear"></div>';
+		}
+		#theme_indexpagination();
+		?>
+		</div>
+		<?php 
+}
+
 /** SHOW MEMBERS CREATE NEW AD OPTIONS **/
 function theme_author_advertise($profile_author) {
 	global $wpdb;
@@ -2007,34 +2102,52 @@ function theme_authorposts($profile_author) {
 			?><script type="text/javascript"><!-- 	
 			function display_analytics(){		// JS DISPLAY ANAYTICS IF ANALYTICS TAB CLICKED ON
 				document.getElementById("my-posts").style.display="none";
+				document.getElementById("my-favourites").style.display="none";
 				document.getElementById("my-analytics").style.display="inline";
 				document.getElementById("my-advertise").style.display="none";
 				document.getElementById("posts").style.backgroundColor="#afde7f";
+				document.getElementById("favourites").style.backgroundColor="#afde7f";
 				document.getElementById("analytics").style.backgroundColor="#61c201";
 				document.getElementById("advertise").style.backgroundColor="#afde7f";
 			}
 
 			function display_posts(){			// JS DISPLAY POSTS IF POSTS TAB CLICKED ON
 				document.getElementById("my-posts").style.display="inline";
+				document.getElementById("my-favourites").style.display="none";
 				document.getElementById("my-analytics").style.display="none";
 				document.getElementById("my-advertise").style.display="none";
 				document.getElementById("posts").style.backgroundColor="#61c201";
+				document.getElementById("favourites").style.backgroundColor="#afde7f";
 				document.getElementById("analytics").style.backgroundColor="#afde7f";
 				document.getElementById("advertise").style.backgroundColor="#afde7f";
 			}
 
 			function display_advertise(){		// JS DISPLAY ADVERTISE PANEL IF ADVERTISE TAB CLICKED ON
 				document.getElementById("my-posts").style.display="none";
+				document.getElementById("my-favourites").style.display="none";
 				document.getElementById("my-analytics").style.display="none";
 				document.getElementById("my-advertise").style.display="inline";
 				document.getElementById("posts").style.backgroundColor="#afde7f";
+				document.getElementById("favourites").style.backgroundColor="#afde7f";
 				document.getElementById("analytics").style.backgroundColor="#afde7f";
 				document.getElementById("advertise").style.backgroundColor="#61c201";
+			}
+
+			function display_favourites(){		// JS DISPLAY FAVOURITES PANEL IF FAVOURITES TAB CLICKED ON
+				document.getElementById("my-posts").style.display="none";
+				document.getElementById("my-favourites").style.display="inline";
+				document.getElementById("my-analytics").style.display="none";
+				document.getElementById("my-advertise").style.display="none";
+				document.getElementById("posts").style.backgroundColor="#afde7f";
+				document.getElementById("favourites").style.backgroundColor="#61c201";
+				document.getElementById("analytics").style.backgroundColor="#afde7f";
+				document.getElementById("advertise").style.backgroundColor="#afde7f";
 			}
 			--></script> 
 			<nav class="profile-tabs">
 				<ul>
-					<li id="posts" onclick="display_posts()">Posts</li>
+					<li id="posts" onclick="display_posts()">Your Posts</li>
+					<li id="favourites" onclick="display_favourites()">Favourites</li>
 					<li id="analytics" onclick="display_analytics()">Analytics</li>
 					<li id="advertise" onclick="display_advertise()">Advertise</li>
 					<!-- <li><span>Campaigns</span></li> -->
@@ -2043,6 +2156,7 @@ function theme_authorposts($profile_author) {
 			<?php
 			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
 			theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
+			theme_author_favourites($profile_author);						 #SHOW USER THEIR FAVOURITE POSTS IF LOGGED IN
 		} else {
 			?><nav class="profile-tabs"><ul><li id="posts">Posts</li></ul></nav><?php 				
 		}

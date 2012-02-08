@@ -2576,6 +2576,8 @@ ul.categorieslistmain {
 #content span.comment-mini, #content span.star-mini{margin: 0 2px;} 
 
 #content span.fb_comments_count, #content span.star-mini-number, #content span.star-mini-number-plus-one, #content span.star-mini-number-minus-one {
+	color: #134;
+	font-weight: bold;
 	display: block;
 	padding: 0 2px;
 	margin: 0 1px 0 2px;
@@ -2599,7 +2601,9 @@ ul.categorieslistmain {
 	padding: 0 4px;
 }
 
-#content span.fb_comments_count:hover, #content span.star-mini-number:hover, #content span.star-mini-number-plus-one:hover, #content span.star-mini-number-minus-one:hover, #content .favourite-profile .star-login:hover {text-decoration: none;}
+#content span.fb_comments_count:hover, #content span.star-mini-number:hover, #content span.star-mini-number-plus-one:hover, #content span.star-mini-number-minus-one:hover, #content .favourite-profile .star-login:hover {
+	text-decoration: none;
+}
 
 #content .fb_comments_count_zero {display: none;}
 
