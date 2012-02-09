@@ -2282,7 +2282,6 @@ function theme_authorposts($profile_author) {
 			<?php
 			theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
 			theme_author_favourites($profile_author);						 #SHOW USER THEIR FAVOURITE POSTS IF LOGGED IN
-			?>
 		}
 	}
 }
