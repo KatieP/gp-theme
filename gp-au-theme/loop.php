@@ -2044,7 +2044,7 @@ function theme_author_analytics($profile_author, $pageposts) {
 
 function theme_subscriberposts($profile_author) {
 	global $current_user;
-	if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) )
+	if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) ) {
 		?>
 		<nav class="profile-tabs">
 			<ul>
