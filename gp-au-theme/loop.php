@@ -1779,6 +1779,13 @@ function theme_author_analytics($profile_author, $pageposts) {
 	global $post;
 	global $current_user;
 	
+	if (!$pageposts) {
+		?>
+		<div id="my-analytics"></div>
+		<?php 
+		return;
+	}
+	
 	$profile_author_id = $profile_author->ID;
 	
 	# TABLE HEADINGS FOR POST ANALYTICS
@@ -2062,6 +2069,58 @@ function theme_authorposts($profile_author) {
 	global $current_user;
 			
 	if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) ) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
+		
+		$total = "SELECT COUNT(*) as count 
+				FROM $wpdb->posts " . 
+					$wpdb->prefix . "posts, 
+					$wpdb->postmeta " . 
+					$wpdb->prefix . "postmeta 
+				WHERE " . $wpdb->prefix . "posts.ID = " . 
+					$wpdb->prefix . "postmeta.post_id and " . 
+					$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+						$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_people') 
+					and " . 
+					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+					
+		$totalposts = $wpdb->get_results($total, OBJECT);
+	
+		$ppp = intval(get_query_var('posts_per_page'));
+		$wp_query->found_posts = $totalposts[0]->count;
+		$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
+		$on_page = intval(get_query_var('paged'));	
+	
+		if($on_page == 0){ $on_page = 1; }		
+		$offset = ($on_page-1) * $ppp;
+		
+		$querystr = "SELECT " . $wpdb->prefix . "posts.* 
+					FROM $wpdb->posts " . 
+						$wpdb->prefix . "posts, 
+						$wpdb->postmeta " . 
+						$wpdb->prefix . "postmeta 
+					WHERE " . $wpdb->prefix . "posts.ID = " . 
+						$wpdb->prefix . "postmeta.post_id and " . 
+						$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+							$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+							$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+							$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+							$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+							$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+							$wpdb->prefix . "posts.post_type = 'gp_people') 
+						and " . 
+						$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+						$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+						$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+					ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
+						
+		$pageposts = $wpdb->get_results($querystr, OBJECT);
+		
 		?><script type="text/javascript"><!-- 	
 		function display_analytics(){		// JS DISPLAY ANAYTICS IF ANALYTICS TAB CLICKED ON
 			document.getElementById("my-posts").style.display="none";
@@ -2117,60 +2176,7 @@ function theme_authorposts($profile_author) {
 			</ul>
 		</nav>
 		<?php
-		$total = "SELECT COUNT(*) as count 
-				FROM $wpdb->posts " . 
-					$wpdb->prefix . "posts, 
-					$wpdb->postmeta " . 
-					$wpdb->prefix . "postmeta 
-				WHERE " . $wpdb->prefix . "posts.ID = " . 
-					$wpdb->prefix . "postmeta.post_id and " . 
-					$wpdb->prefix . "posts.post_status = 'publish' and (" . 
-						$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
-						$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
-						$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
-						$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
-						$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
-						$wpdb->prefix . "posts.post_type = 'gp_people') 
-					and " . 
-					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
-					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
-					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
-					
-		$totalposts = $wpdb->get_results($total, OBJECT);
-	
-		$ppp = intval(get_query_var('posts_per_page'));
-		$wp_query->found_posts = $totalposts[0]->count;
-		$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
-		$on_page = intval(get_query_var('paged'));	
-	
-		if($on_page == 0){ $on_page = 1; }		
-		$offset = ($on_page-1) * $ppp;
-		
-		$querystr = "SELECT " . $wpdb->prefix . "posts.* 
-					FROM $wpdb->posts " . 
-						$wpdb->prefix . "posts, 
-						$wpdb->postmeta " . 
-						$wpdb->prefix . "postmeta 
-					WHERE " . $wpdb->prefix . "posts.ID = " . 
-						$wpdb->prefix . "postmeta.post_id and " . 
-						$wpdb->prefix . "posts.post_status = 'publish' and (" . 
-							$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
-							$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
-							$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
-							$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
-							$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
-							$wpdb->prefix . "posts.post_type = 'gp_people') 
-						and " . 
-						$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
-						$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
-						$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
-					ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
-						
-		$pageposts = $wpdb->get_results($querystr, OBJECT);
-		
-		if ($pageposts) {
-			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
-		}
+		theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
 		theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
 		theme_author_favourites($profile_author);						 #SHOW USER THEIR FAVOURITE POSTS IF LOGGED IN
 		?>
