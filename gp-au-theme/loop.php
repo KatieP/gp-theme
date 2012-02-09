@@ -2048,7 +2048,7 @@ function theme_subscriberposts($profile_author) {
 		?>
 		<nav class="profile-tabs">
 			<ul>
-				<li id="favourites">Your Favourites</li>
+				<li id="favourites" style="background-color:#61c201;">Your Favourites</li>
 			</ul>
 		</nav>
 		<?php
@@ -2117,12 +2117,6 @@ function theme_authorposts($profile_author) {
 			</ul>
 		</nav>
 		<?php
-		theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
-		theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
-		theme_author_favourites($profile_author);						 #SHOW USER THEIR FAVOURITE POSTS IF LOGGED IN
-		?>
-		<div id="my-posts">
-		<?php 
 		$total = "SELECT COUNT(*) as count 
 				FROM $wpdb->posts " . 
 					$wpdb->prefix . "posts, 
@@ -2173,6 +2167,15 @@ function theme_authorposts($profile_author) {
 					ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
 						
 		$pageposts = $wpdb->get_results($querystr, OBJECT);
+		
+		if ($pageposts) {
+			theme_author_analytics($profile_author, $pageposts);			 #SHOW USER THEIR AD DATA IF LOGGED IN AND ON THEIR OWN PAGE
+		}
+		theme_author_advertise($profile_author);						 #SHOW USER AN ADVERTISE PANEL WHERE THEY CAN CREATE ADS OR LEARN ABOUT AD TYPES
+		theme_author_favourites($profile_author);						 #SHOW USER THEIR FAVOURITE POSTS IF LOGGED IN
+		?>
+		<div id="my-posts">
+		<?php 
 		
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
