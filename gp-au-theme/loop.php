@@ -841,7 +841,8 @@ function events_index() {
 					echo '<a href="' . get_permalink($post->ID) . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
 				}
 			#}
-			theme_indextitle();
+			#theme_indextitle();
+			echo '<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
 			echo '<a href="' . get_permalink($post->ID) . '" class="more-link">Continue reading...</a><div>';
 			theme_indexdetails('author');
 			echo '<div class="post-loc">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a></div><div class="clear"></div></div>';

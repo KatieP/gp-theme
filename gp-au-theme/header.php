@@ -217,11 +217,6 @@ if ( is_single() ) {
 			<nav id="header-auth">
 				<ul id="auth-tools">
 					<li id="auth-yourfavourites" class="no-js">
-						<a href="" class="auth-yourfavourites-start" title="Your Favourites">
-							<span class="icon-favourites">Your Favourites</span>
-						</a>
-						<ul id="auth-dash-favourites" class="auth-dash">
-							
 							<?php
 							global $wpdb;
 							global $current_site;
@@ -231,6 +226,11 @@ if ( is_single() ) {
 							$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id FROM " . $wpdb->prefix . "posts LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' WHERE post_status='publish' AND m0.meta_value > 0 AND m0.user_id = $current_user->ID AND m0.meta_key LIKE 'likepost%' AND m1.meta_value >= 1 ORDER BY m0.meta_value DESC LIMIT 5;";
 							$pageposts = $wpdb->get_results($querystr, OBJECT);
 							$numPosts = $wpdb->num_rows-1;
+
+							echo '<a href="' . $post_author_url . '#favourites" title="Your Favourites">
+								<span class="icon-favourites">Your Favourites</span>
+							</a>
+							<ul id="auth-dash-favourites" class="auth-dash">';
 							
 							if ($pageposts && $numPosts != -1) {
 								echo '<li class="auth-dash-title">Your Favourites<div class="clear"></div></li>';
@@ -252,7 +252,7 @@ if ( is_single() ) {
 						</ul>
 					</li>
 					<li id="auth-yournotifications" class="no-js">
-						<a href="" class="auth-yournotifications-start" title="Your Notifications">
+						<a href="#/" class="auth-yournotifications-start" title="Your Notifications">
 							<span class="icon-notifications">Your Notifications</span>
 						</a>
 						<ul id="auth-dash-notifications" class="auth-dash">
@@ -260,7 +260,7 @@ if ( is_single() ) {
 						</ul>
 					</li>
 					<li id="auth-youraccount" class="no-js">
-						<a href="" class="auth-youraccount-start">
+						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
 							<span class="bullet2"></span>
 							Your Account
 						</a>
