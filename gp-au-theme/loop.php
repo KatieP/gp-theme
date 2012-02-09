@@ -2042,6 +2042,17 @@ function theme_author_analytics($profile_author, $pageposts) {
 <?php 
 }
 
+function theme_subscriberposts($profile_author) {
+	?>
+	<nav class="profile-tabs">
+		<ul>
+			<li id="favourites">Your Favourites</li>
+		</ul>
+	</nav>
+	<?php
+	theme_author_favourites($profile_author);	 #SHOW USER THEIR FAVOURITE POSTS IF LOGGED IN
+}
+
 function theme_authorposts($profile_author) {
 	global $wpdb;
 	global $post;
@@ -2297,7 +2308,7 @@ function subscriber_index($profile_author) {
 	theme_authorsprojects($profile_author);
 	theme_authorsstuff($profile_author);
 	echo '<div class="clear"></div>';
-	theme_authorposts($profile_author); 
+	theme_subscriberposts($profile_author); 
 	echo '<div class="clear"></div>';
 } 
 
