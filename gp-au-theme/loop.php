@@ -257,7 +257,7 @@ function theme_singledetails() {
 	global $posts;
 	$post_author = get_userdata($posts[0]->post_author);
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
-	echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
+	echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted ' . time_ago(get_the_time('U'), 1) . ' ago by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></div>';
 	theme_like();
 	echo '<div class="clear"></div>';
 }
@@ -268,7 +268,7 @@ function theme_singlecontributorstagline() {
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
 	$post_author_tagline = get_the_author_meta( 'contributors_posttagline', $post_author->ID );
 	if ( !empty($post_author_tagline) ) {
-		echo '<div class="post-authorsdisclaimer"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '50', '', $post_author->display_name ) . '</a><div class="post-authorsdisclaimer-details">Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div><div class="post-authorsdisclaimer-content">' . $post_author_tagline . '</div><div class="clear"></div></div>';
+		echo '<div class="post-authorsdisclaimer"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '50', '', $post_author->display_name ) . '</a><div class="post-authorsdisclaimer-details">Posted ' . time_ago(get_the_time('U'), 1) . ' ago by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></div><div class="post-authorsdisclaimer-content">' . $post_author_tagline . '</div><div class="clear"></div></div>';
 	} else {
 		theme_singledetails();
 	}
@@ -373,11 +373,11 @@ function theme_indexdetails($format='full') {
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);
 	if ($format == 'full') {
-		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
+		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted ' . time_ago(get_the_time('U'), 1) . ' ago by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></div>';
 	}
 	
 	if ($format == 'author') {
-		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></div>';
+		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted ' . time_ago(get_the_time('U'), 1) . ' ago by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></div>';
 	}
 }
 
@@ -470,10 +470,7 @@ function theme_index_feed_item() {
 			/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
 			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . 
 					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
-					'</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . 
-					'</a> posted in <a href="' . $post_url . '">' . $post_title . '</a> on ' . 
-					get_the_time('F jS, Y g:i a') . 
-				 '</span>';
+					'</a>Posted ' . time_ago(get_the_time('U'), 1) . ' ago by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="' . $post_url . '">' . $post_title . '</a></span>';
 			the_excerpt();			
 			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>';
 			
@@ -493,6 +490,8 @@ function theme_index_feed_item() {
 				$likecount = 0;
 				$showlikecount = ' style="display:none;"';
 			}
+			
+			$likecount = abbr_number($likecount);
 			
 			if (is_user_logged_in()) {
 				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
@@ -1694,7 +1693,7 @@ function theme_author_favourites($profile_author) {
 			echo '
 			<div class="profile-postbox">
 		    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
-		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
+		    	<div class="post-details">Posted ' . time_ago(get_the_time('U'), 1) . ' ago in <a href="' . $post_url . '">' . $post_title . '</a></div>';
 		    	the_excerpt();
 				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 				
@@ -1713,6 +1712,8 @@ function theme_author_favourites($profile_author) {
 				$likecount = 0;
 				$showlikecount = ' style="display:none;"';
 			}
+			
+			$likecount = abbr_number($likecount);
 			
 			if (is_user_logged_in()) {
 				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
@@ -2195,7 +2196,7 @@ function theme_authorposts($profile_author) {
 			echo '
 			<div class="profile-postbox">
 		    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
-		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> on ' . get_the_time('F jS, Y g:i a') . '</div>';
+		    	<div class="post-details">Posted ' . time_ago(get_the_time('U'), 1) . ' ago in <a href="' . $post_url . '">' . $post_title . '</a></div>';
 		    	the_excerpt();
 				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 				
@@ -2215,6 +2216,8 @@ function theme_authorposts($profile_author) {
 				$likecount = 0;
 				$showlikecount = ' style="display:none;"';
 			}
+			
+			$likecount = abbr_number($likecount);
 			
 			if (is_user_logged_in()) {
 				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
