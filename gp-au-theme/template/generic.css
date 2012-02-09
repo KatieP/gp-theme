@@ -2452,7 +2452,6 @@ ul.categorieslistmain {
 #content .hp_miniauthor a, #content .hp_featuredauthor a {
 	font-size: 11px;
 	color: #134;
-	text-decoration: underline;
 }
 
 #content .hp_featured {
@@ -2538,6 +2537,10 @@ ul.categorieslistmain {
 
 #content .profile-postbox h1, #content .profile_minithumb img {
   margin: 0 0 0 0;
+}
+
+#content .profile-postbox .post-details {
+	float: none;
 }
 
 #content .profile_minithumb img {
