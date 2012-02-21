@@ -976,9 +976,11 @@ function ngocampaign_index() {
 
 /*** PROFILES ***/
 
-function get_profile_author() {
-	return (get_query_var('author_name')) ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author'));
-}
+#	This function was being declared both here and in gp-wp-core repository 
+#	wordpress/wp-content/plugins/gp-theme/core/gp-core.php and developer environment was breaking
+#function get_profile_author() {
+#	return (get_query_var('author_name')) ? get_user_by('slug', get_query_var('author_name')) : get_userdata(get_query_var('author'));
+#}
 
 /* Route profiles by user role or profile type */
 function author_index() {
