@@ -123,6 +123,17 @@
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<nav id="renew-directory">
+								<?php $click_track_tag_renew_directory = '/chargify/renew-directory/'; ?>
+								<a href="https://green-pages.chargify.com/h/51439/subscriptions/new" target="_blank" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_renew_directory; ?>']);">
+									<span class="title">Renew My Listing</span>
+									<span class="content">Directory Page Renewal</span>
+								</a>
+							</nav>
+						</td>							
+					</tr>
 				</table>
 				<div id="toolbox">
 					<script type="text/javascript">

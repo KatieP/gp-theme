@@ -1532,12 +1532,12 @@ margin-top: 16px;
 			width: 320px;
 		}
 		
-		#lyb, #advertisewus, #followus {
+		#lyb, #advertisewus, #followus, #renew-directory {
 			margin: 22px 0 0 0;
 			width: 140px;
 		}
 		
-		#lyb a, #advertisewus a, #followus {
+		#lyb a, #advertisewus a, #renew-directory a, #followus {
 			background-color: #f2f2f2;	
 			color: #666;
 			font-size: 11px;
@@ -1551,7 +1551,11 @@ margin-top: 16px;
 		
 		#advertisewus a {
 			border: 1px solid #fc0d6b;
-
+		}
+		
+		#renew-directory a {
+			border: 1px solid #61C201;
+			
 		}
 		
 		#followus {
@@ -1559,7 +1563,7 @@ margin-top: 16px;
 			padding-bottom:6px;
 		}
 	
-		#lyb .title, #advertisewus .title, #followus .title {
+		#lyb .title, #advertisewus .title, #followus .title, #renew-directory .title{
 			margin: -1px -1px 0px -1px;
 			display: block;
 			color: #fff;
@@ -1573,7 +1577,7 @@ margin-top: 16px;
 			text-transform: capitalize;
 		}
 		
-		#lyb .content, #advertisewus .content {
+		#lyb .content, #advertisewus .content, #renew-directory .content {
 			line-height: 25px;
 			padding: 0px 6px 0px 6px;
 			display: block;
@@ -1581,9 +1585,10 @@ margin-top: 16px;
 	
 		#lyb .title {background-color: #e9a107;}
 		#advertisewus .title {background-color: #fc0d6b;}
-		#followus .title {background-color: #00aed7;}	
+		#followus .title {background-color: #00aed7;}
+		#renew-directory .title {background-color: #61C201;}
 		
-		#lyb .content:hover, #advertisewus .content:hover {
+		#lyb .content:hover, #advertisewus .content:hover, #renew-directory .content:hover {
 			text-decoration:underline;
 		}	
 		
