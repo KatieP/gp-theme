@@ -164,48 +164,48 @@ function theme_singlecreate_post() {
 }
 
 function theme_newscreate_post(){
-	?><div id="post-filter"><span class="right"><?php theme_insert_newscreate_post(); ?></span><div class="clear"></div></div><?php
+	?><div class="new-action"><span class="right"><?php theme_insert_newscreate_post(); ?></span><div class="clear"></div></div><?php
 }
 
 function theme_insert_newscreate_post(){
 	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
 	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
-		echo '<a href="/wp-admin/post-new.php?post_type=gp_news"><input type="button" value="Post a News Story" /></a>';
+		echo '<a href="/wp-admin/post-new.php?post_type=gp_news" class="new-post-action">Post a News Story</a>';
 	} else {
-		echo '<a href="/get-involved/become-a-content-partner/"><input type="button" value="Post a News Story" /></a>';
+		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';
 	}
 }
 
 function theme_campaigncreate_post(){
-	?><div id="post-filter"><span class="right"><?php theme_insert_campaigncreate_post(); ?></span><div class="clear"></div></div><?php
+	?><div class="new-action"><span class="right"><?php theme_insert_campaigncreate_post(); ?></span><div class="clear"></div></div><?php
 }
 
 function theme_insert_campaigncreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_ngocampaign"><input type="button" value="Post a Campaign" /></a>';
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_ngocampaign" class="new-post-action">Post a Campaign</a>';
 }
 
 function theme_advertorialcreate_post(){
-	?><div id="post-filter"><span class="right"><?php theme_insert_advertorialcreate_post(); ?></span><div class="clear"></div></div><?php 
+	?><div class="new-action"><span class="right"><?php theme_insert_advertorialcreate_post(); ?></span><div class="clear"></div></div><?php 
 }
 
 function theme_insert_advertorialcreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial"><input type="button" value="Post a Product Ad" /></a>';
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial" class="new-post-action">Post a Product Ad</a>';
 }
 
 function theme_competitioncreate_post(){
-	?><div id="post-filter"><span class="right"><?php theme_insert_competitioncreate_post(); ?></span><div class="clear"></div></div><?php
+	?><div class="new-action"><span class="right"><?php theme_insert_competitioncreate_post(); ?></span><div class="clear"></div></div><?php
 }
 
 function theme_insert_competitioncreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_competitions"><input type="button" value="Post a Competition" /></a>';
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_competitions" class="new-post-action">Post a Competition</a>';
 }
 
 function theme_eventcreate_post(){
-	?><div id="post-filter"><span class="right"><?php theme_insert_eventcreate_post(); ?></span><div class="clear"></div></div><?php
+	?><div class="new-action"><span class="right"><?php theme_insert_eventcreate_post(); ?></span><div class="clear"></div></div><?php
 }
 
 function theme_insert_eventcreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_events"><input type="button" value="Post an Event" /></a>';
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_events" class="new-post-action">Post an Event</a>';
 }
 
 
@@ -389,7 +389,7 @@ function theme_like() {
 		if (is_user_logged_in()) {
 			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
 		} else {
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</span></a></div>';
 		}
 	}
 }
@@ -471,7 +471,7 @@ function theme_index_feed_item() {
 			if (is_user_logged_in()) {
 				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
 			} else {
-				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</span></a></div>';
 			}
 		echo '</div>
 			<div class="topic-container">
@@ -807,7 +807,7 @@ function events_index() {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	#please fix this and make it accessable to non js users
-	?><div id="post-filter"><span class="right"> <?php theme_insert_eventcreate_post(); ?> </span><span class="right">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
+	?><div id="new-action"><span class="right"> <?php theme_insert_eventcreate_post(); ?> </span><span class="right" id="post-filter">Filter by State:&nbsp;&nbsp;<select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
 	foreach ($states_au as $state) {
 		if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
   		echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';

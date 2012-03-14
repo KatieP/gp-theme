@@ -27,17 +27,25 @@ if ( is_single() ) {
 	<head>
 	
 		<?php
-		if (isset($_GET['noscript'])) { 
-			if ($_GET['noscript'] != '1') { ?>
+		/*
+		We've removed the follow noscript tags because Facebook Debugger will fail if meta tags are found outsite the head tag. Very annoying! 
+		
+		if (!isset($_GET['noscript'])) { 
+			if ($_GET['noscript'] != '1') { 
+		echo '
 		<noscript>
 			<meta http-equiv=refresh content="0; URL=/?noscript=1" />
 		</noscript>
-		<?php }} ?>
-
-		<noscript>
+		';
+			}
+		}
+		
+		<!--<noscript>
 			<meta http-equiv="X-Frame-Options" content="deny" />
-		</noscript>
-	
+		</noscript>-->
+		*/
+		?>
+		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		
 		<script type="text/javascript">
@@ -77,13 +85,13 @@ if ( is_single() ) {
 			}
 		
 			// Show required info for Google Plus button
-			if (get_post_type() != "page") {
-				echo '<meta itemprop="name" content="' . esc_attr(get_bloginfo('name')) . esc_attr(wp_title('|', false, '')) . '">';
-				echo '<meta itemprop="description" content="' . esc_attr($out_excerpt) . '">';
+			if ( is_single() || is_page() ) {
+				echo '<meta itemprop="name" content="' . esc_attr(get_bloginfo('name')) . esc_attr(wp_title('|', false, '')) . '"/>';
+				echo '<meta itemprop="description" content="' . esc_attr(sanitize_text_field($out_excerpt)) . '"/>';
 				
 				if ( is_single() && function_exists('has_post_thumbnail') && has_post_thumbnail($post->ID) ) {
 					$socialThumb = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'thumbnail');
-					echo '<meta itemprop="image" content="' . esc_url($socialThumb[0]) . '">';
+					echo '<meta itemprop="image" content="' . esc_url($socialThumb[0]) . '"/>';
 				}
 			}
 		
@@ -91,7 +99,7 @@ if ( is_single() ) {
 			echo '<meta property="fb:app_id" content="305009166210437" />';
             echo '<meta property="og:locale" content="en_US" />';
 			echo '<meta property="og:site_name" content="Green Pages" />';
-			echo '<meta property="og:url" content="' . urlencode(get_permalink($post->ID)) . '"/>';
+			echo '<meta property="og:url" content="' . get_permalink($post->ID) . '"/>';
 			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
 	
 			if ( is_single() && function_exists('has_post_thumbnail') && has_post_thumbnail($post->ID) ) {
@@ -102,8 +110,8 @@ if ( is_single() ) {
 			
 			if ( is_single() || is_page() ) {
 				echo '<meta property="og:type" content="article"/>';
-				echo '<meta name="title" property="og:title" content="' . esc_attr(get_bloginfo('name')) . esc_attr(wp_title('|', false, '')) . '" />';
-				echo '<meta name="description" property="og:description" content="' . esc_attr($out_excerpt) . '" />';
+				echo '<meta name="title" property="og:title" content="' . esc_attr(wp_title('', false, '')) . '" />';
+				echo '<meta name="description" property="og:description" content="' . esc_attr(sanitize_text_field($out_excerpt)) . '" />';
 			}
 			
 			if ( is_home() || is_front_page() ) {
@@ -167,7 +175,7 @@ if ( is_single() ) {
 			<nav id="header-mast">
 				<a href="<?php echo get_option('home'); ?>">
 					<span class="header-slogan"><?php echo str_replace(':', ':<br />', get_option('gp_slogan')); ?></span>
-					<img src="<?php echo $template_url; ?>/template/mast.gif" width="234" height="38" />
+					<img src="<?php echo $template_url; ?>/template/mast.gif" width="234" height="38" alt="Green Pages" />
 				</a>
 			</nav>
       <!-- Google CSE Search Box -->

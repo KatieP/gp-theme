@@ -2152,7 +2152,7 @@ margin-top: 16px;
 }
 
 /** 3 COLUMN - MEDIUM RECTANGLE AD  **/
-#col3-ad {
+.col3-ad {
 	width: 300px;
 	height: 256px;
 }
@@ -2805,7 +2805,7 @@ ul.categorieslistmain {
 }
 
 #relevant-posts #post-filter,
-#content #post-filter {
+#content .new-action {
 border-width: 0px 0px;
 border-style: none;
 border-color: #aaa;
@@ -2818,47 +2818,47 @@ font-size: 11px;
 	float: left;
 }
 	
-#content #post-filter .right {
+#content .new-action .right {
 	float: right;
 }
 
-#relevant-posts #post-filter select,
-#content #post-filter select {
-padding: 2px;
-margin: 0;
-height: 18px;
-font-size: 12px;
-float: right;
+#relevant-posts #post-filter select, #content #post-filter select {
+height:21px;
+color:grey;
+background-color:#F2F2F2;
+border:1px solid #CCC;
+font-weight:700;
+font-size:11px;
+margin:0px;
+padding:2px;
+float:right;
 }
 
-#relevant-posts #post-filter option,
-#content #post-filter option {
-padding: 2px;
-margin: 0;
+#relevant-posts #post-filter option, #content #post-filter option {
+margin:2px;
+padding:2px;
 }
 
 /** Button that links front end index pages to create new post backend admin pages **/
-#content #post-filter input[type="button"] {
-display: inline;
-float: right;
-margin: 0px 0px 0 10px;
-padding: 0 10px 0 10px;
-line-height: 17px;
-height: 18px;
-color: grey;
-background-color: #F2F2F2;
-border: 1px solid #CCC;
+#content .new-action .new-post-action {
+display:inline;
+float:right;
+line-height:17px;
+color:grey;
+background-color:#F2F2F2;
+border:1px solid #CCC;
+margin:0 10px 0 10px;
+padding:1px 10px;
+font-weight: bold;
+font-size: 11px;
 }
 
-#content #post-filter input[type="button"]:hover {
+#content .new-action .new-post-action:hover {
 	border: solid 1px #CCC;
 	box-shadow: 0 0 3px 3px  #F2F2F2;
 		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
 		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
 	cursor: pointer;
-}	
-
-#content #post-filter a:hover {
 	text-decoration:none;
 }
 

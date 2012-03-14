@@ -1,5 +1,5 @@
 			<div id="col3"  class="set3col">
-				<div id="col3-ad">
+				<div class="col3-ad">
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec1.html" class="medrec"></iframe> -->
 						<!-- stg1_medrec -->
 						<script type='text/javascript'>
@@ -147,7 +147,7 @@
 					</script>
 					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 				</div>
-				<div id="col3-ad" style="margin-top:20px;">
+				<div class="col3-ad" style="margin-top:20px;">
 					<div>
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec2.html" class="medrec"></iframe> -->
 						<!-- stg1_medrec -->

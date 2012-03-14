@@ -2571,7 +2571,7 @@ function coming_events() {
 					
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a></span>'; 
-		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
+		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
 		foreach ($states_au as $state) {
 			if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
   			echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
@@ -3652,11 +3652,11 @@ function theme_profile_analytics($profile_pid) {
 }
 
 function theme_homecreate_post(){
-	?><div id="post-filter"><span class="right"><?php theme_insert_homecreate_post(); ?></span><div class="clear"></div></div><?php
+	?><div class="new-action"><span class="right"><?php theme_insert_homecreate_post(); ?></span><div class="clear"></div></div><?php
 }
 
 function theme_insert_homecreate_post(){
-	echo '<a href="/wp-admin/index.php"><input type="button" value="Create a Post" /></a>';
+	echo '<a href="/wp-admin/index.php" class="new-post-action">Create a Post</a>';
 	#theme_insert_newscreate_post();
 	#theme_insert_eventcreate_post();
 	#theme_insert_advertorialcreate_post();
