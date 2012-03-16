@@ -3482,7 +3482,14 @@ function theme_profile_analytics($profile_pid) {
   						foreach ($clickURL_product_button as $data) {
     						$sumClick = $sumClick + $data;
   						}
-	 				} 
+	 				}
+	 				# GET PAGE IMPRESSIONS FOR OLD PRODUCT POSTS FROM BEFORE WE CHANGED URL AND ADD TO TOTAL
+				 	$old_post_url_end = 'new-stuff/' . $post_url_ext;
+	 				$old_PageViewURL = ($analytics->getPageviewsURL($old_post_url_end));	//Page views for specific old URL
+  					foreach ($old_PageViewURL as $data) {
+    					$sumURL = $sumURL + $data;
+    					$total_sumURL = $total_sumURL + $data;
+  					}
 		       		break;
 				case 'gp_competitions':
 					$post_title = 'Competitions';
@@ -3540,7 +3547,7 @@ function theme_profile_analytics($profile_pid) {
 				<tr>
 					<td class="author_analytics_title">Title</td>
 					<td class="author_analytics_cost">Value</td>
-					<!-- <td class="author_analytics_page_impressions">Page Impressions</td>  -->
+					<td class="author_analytics_page_impressions">Page views</td>
 					<td class="author_analytics_clicks">Clicks</td>
 				</tr>	
 
@@ -3551,6 +3558,16 @@ function theme_profile_analytics($profile_pid) {
 				
 	  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
 				
+	  			# GET IMPRESSIONS DATA - PLACEHOLDER FROM PRODUCTS INDEX PAGE AT THE MOMENT	  			
+	  			$dir_post_url_end = 'eco-friendly-products';
+	  			$dir_pageViewURL = ($analytics->getPageviewsURL($dir_post_url_end));	//Page views for specific URL
+  				$dir_sumURL = 0;
+  				foreach ($dir_pageViewURL as $data) {
+    				$dir_sumURL = $dir_sumURL + $data;
+    				$total_sumURL = $total_sumURL + $data;
+  				}	  			
+	  			
+	  			# GET CLICK DATA	  			
 				$click_track_tag = 'outbound/directory/' . $profile_author_id;
   				$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   				$sumClick = 0;
@@ -3564,12 +3581,11 @@ function theme_profile_analytics($profile_pid) {
     			<tr>
     				<td class="author_analytics_title">Directory page</td>
     				<td class="author_analytics_cost">$39 per month</td>
-    				<!-- <td class="author_analytics_page_impressions">Coming Soon!</td> -->
+    				<td class="author_analytics_page_impressions"><?php echo $dir_sumURL; ?></td>
     				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
     			</tr>
     		</table>
     		<div id="post-filter"></div>
-    		<div class="post-details">Page Views will be available soon!</div>
     		<?php 		
 		}	
 		?>
@@ -3641,6 +3657,7 @@ function theme_profile_analytics($profile_pid) {
 			}
 			?>
 			<div class="post-details">You can enter or update urls for Activist Bar buttons by clicking on Edit My Profile!</div>
+			<div id="post-details"></div>
 			<?php 
 		} 
 		?>
