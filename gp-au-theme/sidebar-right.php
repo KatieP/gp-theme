@@ -100,7 +100,12 @@
 						<td>
 							<nav id="advertisewus">
 								<?php $click_track_tag_awu = '/internal/advertising/advertise-with-us/'; ?>
+								<?php if ( !is_user_logged_in() ) { ?>
 								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
+								<?php } 
+								else { ?>
+								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover-logged-in.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
+								<?php } ?>
 									<span class="title">Advertise</span>
 									<span class="content">Explore the options</span>
 								</a>
