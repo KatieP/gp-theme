@@ -2872,6 +2872,7 @@ font-size: 11px;
 #index-donate-join-bar { 
 	margin-top: 0px;  
 	margin-bottom: 20px;
+	margin-left: 164px;
 }
 
 #post-donate-join-bar input[type="button"], #index-donate-join-bar input[type="button"], #post-product-button-bar input[type="button"] {
@@ -2889,7 +2890,7 @@ font-size: 11px;
 }
 
 #index-donate-join-bar input[type="button"] {
-	margin: 0 15px 35px 0px;
+	margin: 0 18px 35px 0px;
 }
 
 #index-donate-join-bar input[type="button"]:hover {
