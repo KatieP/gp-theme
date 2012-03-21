@@ -1,8 +1,10 @@
 @charset "UTF-8";
 
+* {font-family: Helvetica, Arial, Sans-Serif;}
+
 body, pre {
 	background-color: #fff;
-	font-family: Helvetica;
+	font-family: Helvetica, Arial, Sans-Serif;
 	line-height: 1.5em;
 	font-size: 13px;
 	color: #666;
@@ -710,7 +712,7 @@ margin-top: 16px;
 	
 	/** USER ACCOUNT NAVIGATION **/
 	
-	#auth-tools {
+	#auth-tools, #auth-tools-dir {
 		height: 25px;
 		line-height: 25px;
 		background-color: #61c201;
@@ -720,7 +722,7 @@ margin-top: 16px;
 		padding: 0 10px 0 10px;
 	}
 	
-	#auth-tools .bullet1 {
+	#auth-tools .bullet1, #auth-tools-dir .bullet1 {
 		float: right;
 	}
 	
@@ -757,7 +759,7 @@ margin-top: 16px;
 		display: inline;
 	}
 	
-	#auth-tools .icon-alert {
+	#auth-tools .icon-alert, #auth-tools-dir .icon-alert {
 		position: absolute;
 		top: 0px;
 		right: 0px;
