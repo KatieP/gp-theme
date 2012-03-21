@@ -37,7 +37,7 @@
 				<div id="facebook">
 					<!-- <span class="title">Find us on Facebook</span>  -->
 					<iframe src="http://www.facebook.com/plugins/likebox.php?id=135951849770296&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=274" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>
-					<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_new" class="moreinfo">Click here to visit our Facebook page</a>
+					<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_blank" class="moreinfo">Click here to visit our Facebook page</a>
 				</div>
 				<?php
 				#}
@@ -80,7 +80,7 @@
 					  }
 					}).render().start();
 					</script>
-					<a href="http://twitter.com/GreenPagesAu" target="_new" class="moreinfo">Click here to visit our Twitter account</a>
+					<a href="http://twitter.com/GreenPagesAu" target="_blank" class="moreinfo">Click here to visit our Twitter account</a>
 				</div>
 				<?php
 				}
@@ -137,7 +137,8 @@
 									<span class="content">Directory Page Renewal</span>
 								</a>
 							</nav>
-						</td>							
+						</td>
+						<td></td>							
 					</tr>
 				</table>
 				<div id="toolbox">

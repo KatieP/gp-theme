@@ -1709,10 +1709,10 @@ function theme_subscribertabs($profile_author) {
 			</ul></nav>
 	        <div class=\"clear\"></div>
 			<div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 	        <div class=\"profile-container\"></div>
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
 	
@@ -1746,10 +1746,10 @@ function theme_subscribertabs($profile_author) {
 			</ul></nav>
 	        <div class=\"clear\"></div>
 			<div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 	        <div class=\"profile-container\"></div>
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 
 	}
@@ -1795,10 +1795,10 @@ function theme_editortabs($profile_author) {
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 	        <div class=\"profile-container\"></div>
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
 	
@@ -1834,10 +1834,10 @@ function theme_editortabs($profile_author) {
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 	        <div class=\"profile-container\"></div>
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
 }
@@ -1882,10 +1882,10 @@ function theme_contributortabs($profile_author) {
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 	        <div class=\"profile-container\"></div>
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
 	
@@ -1921,10 +1921,10 @@ function theme_contributortabs($profile_author) {
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading top\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 	        <div class=\"profile-container\"></div>
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
-	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" /></div>
+	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
 }
