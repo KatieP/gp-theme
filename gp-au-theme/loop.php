@@ -606,7 +606,13 @@ function home_index() {
 			}
 		}
 	}														# THAT'S IT!
-	
+	?>
+	<nav id="post-nav">										<!-- LINK TO NEWS/PAGE/3 AT BOTTOM OF FEED -->
+		<ul>
+				<li class="post-previous"><a href="/news/page/3/"><div class="arrow-previous"></div>More Posts</a></li>
+		</ul>
+	</nav>
+	<?php 
 	/** OLD SQL QUERIES SHOW 3 MOST RECENT POSTS FROM EACH CATEGORY **/
 	#$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
 	#$querystr = "(" . $qrystart ." post_type='gp_news' ORDER BY post_date DESC LIMIT 4)";
