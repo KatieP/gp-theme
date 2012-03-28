@@ -1456,7 +1456,7 @@ function theme_single_product_button() {
 		<div id="post-product-button-bar">
 			<?php
 			$click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
-			echo '<span><a href="' . $product_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="product-button" value="Buy It!" /></a></span>';
+			echo '<a href="' . $product_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="product-button">Buy It!</span></a>';
 			?>			
 		</div>
 		<div class="clear"></div>

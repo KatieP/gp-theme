@@ -2877,7 +2877,7 @@ font-size: 11px;
 	margin-left: 164px;
 }
 
-#post-donate-join-bar span, #index-donate-join-bar span, #post-product-button-bar input[type="button"] {
+#post-donate-join-bar span, #index-donate-join-bar span, #post-product-button-bar span {
 	padding: 2px 4px 0 4px;
 	overflow: hidden;
 	float: left;
@@ -2951,7 +2951,8 @@ font-size: 11px;
 
 /** PRODUCT 'BUY IT! BUTTON **/
 
-#post-product-button-bar input[type="button"] {
+#post-product-button-bar span {
+	padding: 8px 4px 0 4px;
 	height: 44px;	
 	line-height: 24px;
 	width: 130px;
@@ -2960,12 +2961,13 @@ font-size: 11px;
 	margin-left: 3px;
 }
 
-#post-product-button-bar input[type="button"]:hover {
+#post-product-button-bar span:hover {
 	border: solid 1px #F2F2F2;
 	box-shadow: 0 0 3px 3px  #F2F2F2;
 		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
 		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
 	cursor: pointer;
+	text-decoration:none;
 }
 
 #post-product-button-bar a:hover {
