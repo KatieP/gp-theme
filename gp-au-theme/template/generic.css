@@ -2877,8 +2877,8 @@ font-size: 11px;
 	margin-left: 164px;
 }
 
-#post-donate-join-bar input[type="button"], #index-donate-join-bar input[type="button"], #post-product-button-bar input[type="button"] {
-	padding: 0 4px 0 4px;
+#post-donate-join-bar span, #index-donate-join-bar span, #post-product-button-bar input[type="button"] {
+	padding: 2px 4px 0 4px;
 	overflow: hidden;
 	float: left;
 	height: 24px;
@@ -2886,29 +2886,38 @@ font-size: 11px;
 	margin: 5px 15px 10px 0px;
 	line-height: 17px;
 	color: white;
+	font-weight: 600;
+	font-size: 11px;
+	text-align: center;
+	-webkit-box-align: center;
+	box-sizing: border-box;
+	cursor: pointer;
+	font-family: inherit;
 	border: 1px solid #CCC;
 	border-radius: 4px;	
 	width: 80px;
 }
 
-#index-donate-join-bar input[type="button"] {
+#index-donate-join-bar span {
 	margin: 0 18px 35px 0px;
 }
 
-#index-donate-join-bar input[type="button"]:hover {
+#index-donate-join-bar span:hover {
 	border: solid 1px #F2F2F2;
 	box-shadow: 0 0 3px 3px  #F2F2F2;
 		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
 		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
 	cursor: pointer;
+	text-decoration:none;
 }
 
-#post-donate-join-bar input[type="button"]:hover {
+#post-donate-join-bar span:hover {
 	border: solid 1px #F2F2F2;
 	box-shadow: 0 0 3px 3px  #F2F2F2;
 		-moz-box-shadow: 0 0 3px 3px  #F2F2F2;
 		-webkit-box-shadow: 0 0 3px 3px  #F2F2F2;
 	cursor: pointer;
+	text-decoration:none;
 }	
 
 #index-donate-join-bar a:hover {

@@ -1555,35 +1555,35 @@ function theme_single_contributor_donate_join_bar() {
 function theme_contributors_donate($donate_url, $post_author_id) {
 	if ( !empty($donate_url) ) {
 		$click_track_tag = '\'/outbound/activist-donate-button/' . $post_author_id . '/' . $donate_url .'/\'';
-		echo '<span><a href="' . $donate_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="donate" value="Donate" /></a></span>';
+		echo '<a href="' . $donate_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="donate">Donate</span></a>';
 	}
 }
 
 function theme_contributors_join($join_url, $post_author_id) {
 	if ( !empty($join_url) ) {
 		$click_track_tag = '\'/outbound/activist-join-button/' . $post_author_id . '/' . $join_url .'/\'';
-		echo '<span><a href="' . $join_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="join" value="Join" /></a></span>';
+		echo '<a href="' . $join_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="join">Join</span></a>';
 	}
 }
 
 function theme_contributors_letter($letter_url, $post_author_id) {
 	if ( !empty($letter_url) ) {
 		$click_track_tag = '\'/outbound/activist-letter-button/' . $post_author_id . '/' . $letter_url .'/\'';
-		echo '<span><a href="'. $letter_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="letter" value="Send Letter" /></a></span>';
+		echo '<a href="'. $letter_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="letter">Send Letter</span></a>';
 	}
 }
 
 function theme_contributors_petition($petition_url, $post_author_id) {
 	if ( !empty($petition_url) ) {
 		$click_track_tag = '\'/outbound/activist-petition-button/' . $post_author_id . '/' . $petition_url .'/\'';
-		echo '<span><a href="'. $petition_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="petition" value="Sign Petition" /></a></span>';
+		echo '<a href="'. $petition_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="petition">Sign Petition</span></a>';
 	}
 }
 
 function theme_contributors_volunteer($volunteer_url, $post_author_id) {
 	if ( !empty($volunteer_url) ) {
 		$click_track_tag = '\'/outbound/activist-volunteer-button/' . $post_author_id . '/' . $volunteer_url .'/\'';
-		echo '<span><a href="'. $volunteer_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><input type="button" id="volunteer" value="Volunteer" /></a></span>';
+		echo '<a href="'. $volunteer_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="volunteer">Volunteer</span></a>';
 	}
 }
 
