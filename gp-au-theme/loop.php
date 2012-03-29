@@ -1242,6 +1242,8 @@ function author_locale() {
 }
 
 function author_newsletters() {
+	global $current_user, $current_site, $gp, $wpdb;
+	
 	echo "<div class=\"profile-edit-title\">My Settings</div>";
 	theme_authoreditnav();
 	?>
@@ -1255,11 +1257,13 @@ function author_newsletters() {
 				<th>Not Subscribed</th>
 			</tr>
 			<?php
-			$subscription_items = array("subscription-greenrazor" => "Green Razor newsletter");
-			$subscription_user = get_the_author_meta( 'subscription', $user->ID );
+			$profile_author = get_profile_author();
 			
-			if ( is_array( $subscription_items ) ) {
-				foreach ( $subscription_items as $key => $value ) {
+			$subscription_user = get_the_author_meta( $wpdb->prefix . 'subscription', $profile_author->ID );
+
+			$cm_lists = $gp->campaignmonitor[$current_site->id]['lists'];
+			if ( is_array( $cm_lists ) ) {
+				foreach ( $cm_lists as $key => $value ) {
 					$checked = false;
 					if ( is_array( $subscription_user ) ) {
 						if ( array_key_exists( $key, $subscription_user ) ) {
@@ -1271,7 +1275,7 @@ function author_newsletters() {
 			
 					echo ('		
 					<tr>
-						<th>' . $value . '</th>
+						<th>' . $value['profile_text'] . '</th>
 						<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="true" ');
 					if ( $checked == true ) {echo "checked=\"checked\"";} 
 					echo ('
@@ -1282,9 +1286,9 @@ function author_newsletters() {
 				   	 /></td>
 					</tr>
 					');
-	
+			
 				}
-			} 
+			}
 			?>
 		</table>
 	</form>
@@ -1592,12 +1596,6 @@ function theme_contributors_volunteer($volunteer_url, $post_author_id) {
 function theme_editorsblurb($profile_author) {
 	if ( !empty($profile_author->editors_blurb) ) {
 		echo '<p>' . nl2br($profile_author->editors_blurb) . '</p>';
-	}
-}
-
-function theme_authorgreenrazor($profile_author) {
-	if ($profile_author->subscription["subscription-greenrazor"] == "true") {
-		echo '<div class="author-greenrazor">Subscriptions: <a href="/about/green-razor-newsletter">Green Razor Newsletter</a></div>';
 	}
 }
 
@@ -1960,7 +1958,6 @@ function editor_index($profile_author) {
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);
 		#theme_authorseen($profile_author);
-		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
 	theme_editorsblurb($profile_author);
 	#echo '<div class="clear"></div>';
@@ -1987,7 +1984,6 @@ function subscriber_index($profile_author) {
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);
 		#theme_authorseen($profile_author);
-		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
 	theme_authorschange($profile_author);
 	theme_authorsprojects($profile_author);
@@ -2015,7 +2011,6 @@ function contributor_index($profile_author) {
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);
 		#theme_authorseen($profile_author);
-		#theme_authorgreenrazor($profile_author);
 	echo '</div><div class="clear"></div>';
 	theme_profile_contributor_donate_join_bar($profile_author);
 	theme_contributorsblurb($profile_author);

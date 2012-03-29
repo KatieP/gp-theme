@@ -120,9 +120,10 @@
          */
 		
         wp_footer();
-        global $current_user;
+        global $current_user, $wpdb;
         #$current_user = wp_get_current_user();
-        if ($current_user->subscription["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
+
+        if ($current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
         ?>
 		<script type='text/javascript'>
 			var allDialogs = [];

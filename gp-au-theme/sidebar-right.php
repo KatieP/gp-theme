@@ -14,9 +14,8 @@
 				
 				cm_update_current_user(); # checks a users Campaign Monitor newsletter subscription first and modify's that user if necessary.
 				#$current_user = wp_get_current_user();
-				global $current_user;
-
-				if ( ( is_page() || is_home() ) && ( $current_user->subscription["subscription-greenrazor"] != "true" || !is_user_logged_in() ) ) {
+				global $current_user, $wpdb;
+				if ( ( is_page() || is_home() ) && ( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] !== "true" || !is_user_logged_in() ) ) {
 				?>
 				<div id="subscribe">
 					<span class="title">Subscribe to the Green Razor</span>

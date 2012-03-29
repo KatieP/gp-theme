@@ -68,123 +68,6 @@ function custom_excerpt_length( $length ) {
 	return 25;
 }
 
-function cm_subscribe($subscribe = '') {
-	if ($subscribe == 'true' || $subscribe = 'false') {
-		if (is_user_logged_in()) {
-			
-			#$current_user = wp_get_current_user();
-			global $current_user;
-			
-			require_once 'template/createsend-api/csrest_subscribers.php';
-			
-			$wrap = new CS_REST_Subscribers('6f745fb4dad5ab592b5bac0f23d9e826', 'fd592f119aba9e1a50c9c7f09119e0ff');
-	
-			if ($subscribe == 'true') {
-				$result = $wrap->update($current_user->user_email, array(
-					'EmailAddress' => $current_user->user_email,
-				    'Name' => $current_user->display_name,
-				    'CustomFields' => array(
-				        array(
-				            'Key' => 'Wordpress-id',
-				            'Value' => $current_user->ID
-				        ),
-				        array(
-				            'Key' => 'postcode',
-				            'Value' => $current_user->locale_postcode
-				        )
-				    ),
-				    'Resubscribe' => true
-				));
-			}
-			if ($subscribe == 'false') {
-				$result = $wrap->update($current_user->user_email, array(
-					'EmailAddress' => $current_user->user_email,
-				    'Name' => $current_user->display_name,
-				    'CustomFields' => array(
-				        array(
-				            'Key' => 'Wordpress-id',
-				            'Value' => $current_user->ID
-				        ),
-				        array(
-				            'Key' => 'postcode',
-				            'Value' => $current_user->locale_postcode
-				        )
-				    ),
-				    'Resubscribe' => false
-				));
-			}
-			
-			if($result->was_successful()) {
-				return true;
-			} else {
-				return false;
-			}
-			/*** SHOULD ADD SOMETHING HERE TO MONITOR SUCCESSFUL OR UNSUCCESSFUL UPDATE RESULT ***/
-		}
-	}
-}
-
-function cm_update_current_user() {
-	/*
-     * Campaign Monitor
-     * 
-     * We are going to check if logged in user is subscribed to the mail list or not.
-     * 
-     * We must check the results against Wordpress $current_user->subscription["subscription-greenrazor"] value. If $subscriberGreenRazor = true then $current_user->subscription["subscription-greenrazor"] must be updated to true as well.
-     * 
-     * true = don't show subscribe dialog
-     * false = do show subscribe dialog
-     * 
-     * Note1: This isn't the best way to do this. Ideally Create/Send should send the results itself. In this case there us a margin of error - if the user never visits the site or their profile update page then the value of $current_user->subscription["subscription-greenrazor"] may be incorrect.
-     * Note2: There is a timing issue with this - any updates to $current_user->subscription["subscription-greenrazor"] do not take effect until next time the user visits a page.
-	 */
-	
-	#$current_user = wp_get_current_user(); #is global variable?! should change this everywhere.
-	global $current_user;
-	
-	$subscriberGreenRazor = false;
-	if (is_user_logged_in()) {
-        require_once 'template/createsend-api/csrest_subscribers.php';
-        	
-        $wrap = new CS_REST_Subscribers('6f745fb4dad5ab592b5bac0f23d9e826', 'fd592f119aba9e1a50c9c7f09119e0ff');
-		$result = $wrap->get($current_user->user_email);
-
-		if($result->was_successful()) {
-			#var_dump($result->response);
-			$subscriberGreenRazor = true;
-		}
-	}
-        
-	$subscription_post = $current_user->subscription;
-	
-	if ($current_user->subscription["subscription-greenrazor"] != "true" && $subscriberGreenRazor == true) {
-		if (is_array($subscription_post)) {
-			if (array_key_exists('subscription-greenrazor', $subscription_post)) {
-				$subscription_post['subscription-greenrazor']='true';
-			} else {
-				$subscription_post = $subscription_post + array('subscription-greenrazor'=>'true');
-			}
-		} else {
-			$subscription_post = array('subscription-greenrazor'=>'true');
-		}
-		update_usermeta($current_user->ID, 'subscription', $subscription_post );
-	}
-        
-	if ($current_user->subscription["subscription-greenrazor"] == "true" && $subscriberGreenRazor == false) {
-		if (is_array($subscription_post)) {
-			if (array_key_exists('subscription-greenrazor', $subscription_post)) {
-				$subscription_post['subscription-greenrazor']='false';
-			} else {
-				$subscription_post = $subscription_post + array('subscription-greenrazor'=>'false');
-			}
-		} else {
-			$subscription_post = array('subscription-greenrazor'=>'false');
-		}
-        update_usermeta($current_user->ID, 'subscription', $subscription_post );
-    	
-	}
-}
-
 function add_jquery_data() { 
 	global $current_user;
 	if ( parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/profile.php" || parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/user-edit.php" ) {
@@ -563,7 +446,7 @@ function my_show_extra_profile_fields( $user ) {
 	$rolecontributor = 'contributor';
 	
 	
-	global $current_user;
+	global $current_user, $current_site, $gp, $wpdb;
 	$user_roles = $current_user->roles;
 	$user_role = array_shift($user_roles);
 	
@@ -774,11 +657,11 @@ function my_show_extra_profile_fields( $user ) {
 		</tr>
 	'); 
 		
-		$subscription_items = array("subscription-greenrazor" => "Green Razor newsletter");
-		$subscription_user = get_the_author_meta( 'subscription', $user->ID );
-		
-		if ( is_array( $subscription_items ) ) {
-			foreach ( $subscription_items as $key => $value ) {
+		$subscription_user = get_the_author_meta( $wpdb->prefix . 'subscription', $user->ID );
+
+		$cm_lists = $gp->campaignmonitor[$current_site->id]['lists'];
+		if ( is_array( $cm_lists ) ) {
+			foreach ( $cm_lists as $key => $value ) {
 				$checked = false;
 				if ( is_array( $subscription_user ) ) {
 					if ( array_key_exists( $key, $subscription_user ) ) {
@@ -790,7 +673,7 @@ function my_show_extra_profile_fields( $user ) {
 		
 				echo ('		
 				<tr>
-					<th><label for="' . esc_attr($key) . '">' . $value . '</label></th>
+					<th><label for="' . esc_attr($key) . '">' . $value['profile_text'] . '</label></th>
 					<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="true" ');
 				if ( $checked == true ) {echo "checked=\"checked\"";} 
 				echo ('
@@ -888,6 +771,8 @@ add_action( 'personal_options_update', 'my_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'my_save_extra_profile_fields' );
 
 function my_save_extra_profile_fields( $user_id ) {
+	global $current_site, $gp, $wpdb;
+	
 	if ( !current_user_can( 'edit_user', $user_id ) ) {
 		return false;
 	}
@@ -900,18 +785,6 @@ function my_save_extra_profile_fields( $user_id ) {
 		foreach ( $notification_items as $value ) {
 			if ( isset ( $_POST[$value] ) && in_array ( $_POST[$value], $notification_values ) ) {
 				$notification_post = $notification_post + array($value => $_POST[$value]);
-			}
-		}
-	}
-	
-	$subscription_items = array("subscription-greenrazor");
-	$subscription_post = array();
-	$subscription_values = array("true", "false");
-	
-	if ( is_array( $subscription_items ) ) {
-		foreach ( $subscription_items as $value ) {
-			if ( isset ( $_POST[$value] ) && in_array ( $_POST[$value], $subscription_values ) ) {
-				$subscription_post = $subscription_post + array($value => $_POST[$value]);
 			}
 		}
 	}
@@ -950,13 +823,21 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
-	if (cm_subscribe($subscription_post['subscription-greenrazor'])) {
-		update_usermeta($user_id, 'subscription', $subscription_post );
-	} else {
-		$subscription_post['subscription-greenrazor']='false';
-		update_usermeta($user_id, 'subscription', $subscription_post );
+	$subscription_post = array();
+	if ( is_array( $gp->campaignmonitor ) ) {
+		foreach ( $gp->campaignmonitor as $key => $value ) {
+			if ($key == $current_site->id) {
+				foreach ( $value['lists'] as $list_key => $list_value ) {
+					if (!cm_subscribe($list_key, $_POST[$list_key])) {
+						$_POST[$list_key] = false;
+					}
+					$subscription_post = $subscription_post + array($list_key => $_POST[$list_key]);
+				}
+				update_usermeta($user_id, $wpdb->prefix . 'subscription', $subscription_post);
+			}
+		}
 	}
-	
+
 	update_usermeta($user_id, 'profiletypes', $profiletypes_post );
 }
 
