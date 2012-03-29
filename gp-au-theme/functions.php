@@ -854,14 +854,26 @@ function my_show_extra_profile_fields( $user ) {
 		');
 		
 		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
+		$wp_id = $user->ID;
+		$directory_page_url = get_the_author_meta( 'directory_page_url', $user->ID );
 		echo ('
 		<h3>Miscellaneous</h3>
 		
 		<table class="form-table">
 			<tr>
 				<th><label for="old_crm_id">Old CRM ID</label></th>
-				<td><input type="text" name="old_crm_id" id="old_crm_id" class="regular-text" maxlength="6" value="' . esc_attr($old_crm_id) . '" /><br />
+				<td><input type="text" 	name="old_crm_id" id="old_crm_id" class="regular-text" maxlength="6" value="' . esc_attr($old_crm_id) . '" /><br />
 				<span class="description">This is used to map business ID\'s used in our old CRM to the new ID\'s in Wordpress.</span></td>
+			</tr>
+			<tr>
+				<th><label for="wp_id">Wordpress ID</label></th>
+				<td><span>' . esc_attr($wp_id) . '</span><br />
+				<span class="description">This is used to map the new ID\'s in Wordpress to the business ID\'s used in our old CRM.</span></td>
+			</tr>
+			<tr>
+				<th><label for="directory_page_url">Directory Page URL</label></th>
+				<td><input type="text" 	name="directory_page_url" id="directory_page_url" class="regular-text" maxlength="255" value="' . esc_attr($directory_page_url) . '" /><br />
+				<span class="description">This is used to provide a link to the members Directory Page from their profile page</span></td>
 			</tr>
 		</table>
 		');
@@ -935,6 +947,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'notification', $notification_post );
 	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
 	update_usermeta($user_id, 'old_crm_id', $_POST['old_crm_id'] );
+	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
 	if (cm_subscribe($subscription_post['subscription-greenrazor'])) {
@@ -3405,9 +3418,9 @@ function theme_profile_analytics($profile_pid) {
 				<td class="author_analytics_type">Post Type</td>
 				<td class="author_analytics_cost">Value</td>
 				<td class="author_analytics_date">Date Posted</td> 
+				<td class="author_analytics_category_impressions">Category Impressions</td>
 				<td class="author_analytics_page_impressions">Page Views</td>
 				<td class="author_analytics_clicks">Clicks</td>
-				<td class="author_analytics_category_impressions">Category Impressions</td>
 			</tr>
 	<?php	
 				
@@ -3524,9 +3537,9 @@ function theme_profile_analytics($profile_pid) {
 					<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>					
 					<td class="author_analytics_cost">' . $post_price . '</td>				
 					<td class="author_analytics_date">' . $post_date_au . '</td>
+					<td class="author_analytics_category_impressions">' . $sumType . '</td>
 					<td class="author_analytics_page_impressions">' . $sumURL . '</td>	
-					<td class="author_analytics_clicks">' . $sumClick . '</td>				
-					<td class="author_analytics_category_impressions">' . $sumType . '</td>				
+					<td class="author_analytics_clicks">' . $sumClick . '</td>								
 				</tr>';
 		}
 	}	
@@ -3540,6 +3553,7 @@ function theme_profile_analytics($profile_pid) {
 		
 		<?php 	# FOR ADVERTISERS WHO HAVE (OR HAVE HAD) A DIRECTORY PAGE
 		$old_crm_id = $profile_author->old_crm_id;
+		$directory_page_url = $profile_author->directory_page_url;
 		if (!empty($old_crm_id)) {
 		?>
 			<h2>Directory Page Analytics</h2>
@@ -3574,17 +3588,31 @@ function theme_profile_analytics($profile_pid) {
 				foreach ($clickURL as $data) {
     				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
 	  			}
+	  			
+	  			# ADD CLICKS FROM PROFILE PAGE WEBSITE LINK TO CLICKS (TEMPORARY?)
+	  			
+	  			$authorwww_click_track_tag = '\'/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/\'';
+	  			$authorwww_clickURL = ($analytics->getPageviewsURL($authorwww_click_track_tag));
+	  			
+				foreach ($authorwww_clickURL as $data) {
+    				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
+	  			}
+	  			
   				if ($sumClick == 0) {					#IF NO CLICKS YET, DISPLAY 'Unavailable'
     				$sumClick = 'Unavailable';
     			}
     			?>
     			<tr>
-    				<td class="author_analytics_title">Directory page</td>
+    				<td class="author_analytics_title"><a href="<?php echo $directory_page_url; ?>">Directory Page</a></td>
     				<td class="author_analytics_cost">$39 per month</td>
     				<td class="author_analytics_page_impressions"><?php echo $dir_sumURL; ?></td>
     				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
     			</tr>
     		</table>
+    		<div id="post-filter">The ability to edit your Directory Page details yourself will be ready soon! In the meantime:</div>
+    		<div id="post-filter">
+    			<a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Please%20Update%20My%20Directory%20Page%20Details" >Update my Directory Page details here</a>
+    		</div>
     		<div id="post-filter"></div>
     		<?php 		
 		}	
@@ -3652,11 +3680,12 @@ function theme_profile_analytics($profile_pid) {
 			?>
 				<p>Your activist buttons have been clicked a total of</p> 
 				<p><span class="big-number"><?php echo $activist_clicks_sum;?></span> times!</p>	
-				<p></p>
+				<br />
 			<?php
 			}
 			?>
-			<div class="post-details">You can enter or update urls for Activist Bar buttons by clicking on Edit My Profile!</div>
+			<div class="post-details"><a href="/wp-admin/profile.php">Enter or update urls for Activist Bar buttons</a></div>
+			<br />
 			<div id="post-details"></div>
 			<?php 
 		} 
