@@ -3289,6 +3289,19 @@ function theme_profile_analytics($profile_pid) {
 					
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
+	$old_crm_id = $profile_author->old_crm_id;
+	$directory_page_url = $profile_author->directory_page_url;
+	
+	if (!$pageposts && !empty($old_crm_id) ) {
+		?>
+		<div id="my-analytics">
+			<?php theme_advertorialcreate_post(); ?>
+			<p>Create your complementary Product of the Week Advertorial to unlock your Analytics.</p>
+		</div>
+		<?php 
+		return;
+	}
+	
 	if (!$pageposts) {
 		?>
 		<div id="my-analytics"></div>
@@ -3440,8 +3453,6 @@ function theme_profile_analytics($profile_pid) {
 		
 		
 		<?php 	# FOR ADVERTISERS WHO HAVE (OR HAVE HAD) A DIRECTORY PAGE
-		$old_crm_id = $profile_author->old_crm_id;
-		$directory_page_url = $profile_author->directory_page_url;
 		if (!empty($old_crm_id)) {
 		?>
 			<h2>Directory Page Analytics</h2>
