@@ -1,5 +1,5 @@
 			<div id="col3"  class="set3col">
-				<div id="col3-ad">
+				<div class="col3-ad">
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec1.html" class="medrec"></iframe> -->
 						<!-- stg1_medrec -->
 						<script type='text/javascript'>
@@ -14,9 +14,8 @@
 				
 				cm_update_current_user(); # checks a users Campaign Monitor newsletter subscription first and modify's that user if necessary.
 				#$current_user = wp_get_current_user();
-				global $current_user;
-
-				if ( ( is_page() || is_home() ) && ( $current_user->subscription["subscription-greenrazor"] != "true" || !is_user_logged_in() ) ) {
+				global $current_user, $wpdb;
+				if ( ( is_page() || is_home() ) && ( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] !== "true" || !is_user_logged_in() ) ) {
 				?>
 				<div id="subscribe">
 					<span class="title">Subscribe to the Green Razor</span>
@@ -37,7 +36,7 @@
 				<div id="facebook">
 					<!-- <span class="title">Find us on Facebook</span>  -->
 					<iframe src="http://www.facebook.com/plugins/likebox.php?id=135951849770296&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=274" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>
-					<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_new" class="moreinfo">Click here to visit our Facebook page</a>
+					<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_blank" class="moreinfo">Click here to visit our Facebook page</a>
 				</div>
 				<?php
 				#}
@@ -80,7 +79,7 @@
 					  }
 					}).render().start();
 					</script>
-					<a href="http://twitter.com/GreenPagesAu" target="_new" class="moreinfo">Click here to visit our Twitter account</a>
+					<a href="http://twitter.com/GreenPagesAu" target="_blank" class="moreinfo">Click here to visit our Twitter account</a>
 				</div>
 				<?php
 				}
@@ -100,7 +99,12 @@
 						<td>
 							<nav id="advertisewus">
 								<?php $click_track_tag_awu = '/internal/advertising/advertise-with-us/'; ?>
+								<?php if ( !is_user_logged_in() ) { ?>
 								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
+								<?php } 
+								else { ?>
+								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover-logged-in.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
+								<?php } ?>
 									<span class="title">Advertise</span>
 									<span class="content">Explore the options</span>
 								</a>
@@ -123,6 +127,18 @@
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<nav id="renew-directory">
+								<?php $click_track_tag_renew_directory = '/chargify/renew-directory/'; ?>
+								<a href="https://green-pages.chargify.com/h/51439/subscriptions/new" target="_blank" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_renew_directory; ?>']);">
+									<span class="title">Renew My Listing</span>
+									<span class="content">Directory Page Renewal</span>
+								</a>
+							</nav>
+						</td>
+						<td></td>							
+					</tr>
 				</table>
 				<div id="toolbox">
 					<script type="text/javascript">
@@ -136,7 +152,7 @@
 					</script>
 					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 				</div>
-				<div id="col3-ad" style="margin-top:20px;">
+				<div class="col3-ad" style="margin-top:20px;">
 					<div>
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec2.html" class="medrec"></iframe> -->
 						<!-- stg1_medrec -->

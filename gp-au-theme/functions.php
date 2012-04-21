@@ -68,123 +68,6 @@ function custom_excerpt_length( $length ) {
 	return 25;
 }
 
-function cm_subscribe($subscribe = '') {
-	if ($subscribe == 'true' || $subscribe = 'false') {
-		if (is_user_logged_in()) {
-			
-			#$current_user = wp_get_current_user();
-			global $current_user;
-			
-			require_once 'template/createsend-api/csrest_subscribers.php';
-			
-			$wrap = new CS_REST_Subscribers('6f745fb4dad5ab592b5bac0f23d9e826', 'fd592f119aba9e1a50c9c7f09119e0ff');
-	
-			if ($subscribe == 'true') {
-				$result = $wrap->update($current_user->user_email, array(
-					'EmailAddress' => $current_user->user_email,
-				    'Name' => $current_user->display_name,
-				    'CustomFields' => array(
-				        array(
-				            'Key' => 'Wordpress-id',
-				            'Value' => $current_user->ID
-				        ),
-				        array(
-				            'Key' => 'postcode',
-				            'Value' => $current_user->locale_postcode
-				        )
-				    ),
-				    'Resubscribe' => true
-				));
-			}
-			if ($subscribe == 'false') {
-				$result = $wrap->update($current_user->user_email, array(
-					'EmailAddress' => $current_user->user_email,
-				    'Name' => $current_user->display_name,
-				    'CustomFields' => array(
-				        array(
-				            'Key' => 'Wordpress-id',
-				            'Value' => $current_user->ID
-				        ),
-				        array(
-				            'Key' => 'postcode',
-				            'Value' => $current_user->locale_postcode
-				        )
-				    ),
-				    'Resubscribe' => false
-				));
-			}
-			
-			if($result->was_successful()) {
-				return true;
-			} else {
-				return false;
-			}
-			/*** SHOULD ADD SOMETHING HERE TO MONITOR SUCCESSFUL OR UNSUCCESSFUL UPDATE RESULT ***/
-		}
-	}
-}
-
-function cm_update_current_user() {
-	/*
-     * Campaign Monitor
-     * 
-     * We are going to check if logged in user is subscribed to the mail list or not.
-     * 
-     * We must check the results against Wordpress $current_user->subscription["subscription-greenrazor"] value. If $subscriberGreenRazor = true then $current_user->subscription["subscription-greenrazor"] must be updated to true as well.
-     * 
-     * true = don't show subscribe dialog
-     * false = do show subscribe dialog
-     * 
-     * Note1: This isn't the best way to do this. Ideally Create/Send should send the results itself. In this case there us a margin of error - if the user never visits the site or their profile update page then the value of $current_user->subscription["subscription-greenrazor"] may be incorrect.
-     * Note2: There is a timing issue with this - any updates to $current_user->subscription["subscription-greenrazor"] do not take effect until next time the user visits a page.
-	 */
-	
-	#$current_user = wp_get_current_user(); #is global variable?! should change this everywhere.
-	global $current_user;
-	
-	$subscriberGreenRazor = false;
-	if (is_user_logged_in()) {
-        require_once 'template/createsend-api/csrest_subscribers.php';
-        	
-        $wrap = new CS_REST_Subscribers('6f745fb4dad5ab592b5bac0f23d9e826', 'fd592f119aba9e1a50c9c7f09119e0ff');
-		$result = $wrap->get($current_user->user_email);
-
-		if($result->was_successful()) {
-			#var_dump($result->response);
-			$subscriberGreenRazor = true;
-		}
-	}
-        
-	$subscription_post = $current_user->subscription;
-	
-	if ($current_user->subscription["subscription-greenrazor"] != "true" && $subscriberGreenRazor == true) {
-		if (is_array($subscription_post)) {
-			if (array_key_exists('subscription-greenrazor', $subscription_post)) {
-				$subscription_post['subscription-greenrazor']='true';
-			} else {
-				$subscription_post = $subscription_post + array('subscription-greenrazor'=>'true');
-			}
-		} else {
-			$subscription_post = array('subscription-greenrazor'=>'true');
-		}
-		update_usermeta($current_user->ID, 'subscription', $subscription_post );
-	}
-        
-	if ($current_user->subscription["subscription-greenrazor"] == "true" && $subscriberGreenRazor == false) {
-		if (is_array($subscription_post)) {
-			if (array_key_exists('subscription-greenrazor', $subscription_post)) {
-				$subscription_post['subscription-greenrazor']='false';
-			} else {
-				$subscription_post = $subscription_post + array('subscription-greenrazor'=>'false');
-			}
-		} else {
-			$subscription_post = array('subscription-greenrazor'=>'false');
-		}
-        update_usermeta($current_user->ID, 'subscription', $subscription_post );
-    	
-	}
-}
-
 function add_jquery_data() { 
 	global $current_user;
 	if ( parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/profile.php" || parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/user-edit.php" ) {
@@ -436,15 +319,17 @@ function change_author_permalinks() {
 add_action('init','change_author_permalinks');
 
 /** AUTHOR EDIT REWRITE RULE **/
-#add_action( 'author_rewrite_rules', 'edit_author_slug' ); #new-edit
+add_action( 'author_rewrite_rules', 'edit_author_slug' ); #new-edit
 function edit_author_slug( $author_rules )
 {
     $author_rules['profile/([^/]+)/edit/?$'] = 'index.php?author_name=$matches[1]&author_edit=1';
-    $author_rules['profile/([^/]+)/edit/settings?$'] = 'index.php?author_name=$matches[1]&author_edit=2';
+    $author_rules['profile/([^/]+)/edit/account?$'] = 'index.php?author_name=$matches[1]&author_edit=2';
     $author_rules['profile/([^/]+)/edit/locale?$'] = 'index.php?author_name=$matches[1]&author_edit=3';
     $author_rules['profile/([^/]+)/edit/notifications?$'] = 'index.php?author_name=$matches[1]&author_edit=4';
-    $author_rules['profile/([^/]+)/edit/subscriptions?$'] = 'index.php?author_name=$matches[1]&author_edit=5';
+    $author_rules['profile/([^/]+)/edit/newsletters?$'] = 'index.php?author_name=$matches[1]&author_edit=5';
     $author_rules['profile/([^/]+)/edit/privacy?$'] = 'index.php?author_name=$matches[1]&author_edit=6';
+    $author_rules['profile/([^/]+)/edit/password?$'] = 'index.php?author_name=$matches[1]&author_edit=7';
+    $author_rules['profile/([^/]+)/edit/admin?$'] = 'index.php?author_name=$matches[1]&author_edit=8';
     return $author_rules;
 }
 
@@ -490,13 +375,14 @@ add_filter('generate_rewrite_rules','my_rewrite_rules');
 
 function twocolumn_template() {
 	if ( get_query_var( 'author_edit' ) ) {
-		$template = TEMPLATEPATH . '/twocolumn.php';
+		$template = TEMPLATEPATH . '/singlecolumn.php';
 		if ( file_exists($template) ) {
 			include($template);
+			exit;
 		}
 	}
 }
-#add_action('template_redirect', 'twocolumn_template'); #new-edit
+add_action('template_redirect', 'twocolumn_template'); #new-edit
 
 
 /** CHECK USER ROLES **/
@@ -560,7 +446,7 @@ function my_show_extra_profile_fields( $user ) {
 	$rolecontributor = 'contributor';
 	
 	
-	global $current_user;
+	global $current_user, $current_site, $gp, $wpdb;
 	$user_roles = $current_user->roles;
 	$user_role = array_shift($user_roles);
 	
@@ -771,11 +657,11 @@ function my_show_extra_profile_fields( $user ) {
 		</tr>
 	'); 
 		
-		$subscription_items = array("subscription-greenrazor" => "Green Razor newsletter");
-		$subscription_user = get_the_author_meta( 'subscription', $user->ID );
-		
-		if ( is_array( $subscription_items ) ) {
-			foreach ( $subscription_items as $key => $value ) {
+		$subscription_user = get_the_author_meta( $wpdb->prefix . 'subscription', $user->ID );
+
+		$cm_lists = $gp->campaignmonitor[$current_site->id]['lists'];
+		if ( is_array( $cm_lists ) ) {
+			foreach ( $cm_lists as $key => $value ) {
 				$checked = false;
 				if ( is_array( $subscription_user ) ) {
 					if ( array_key_exists( $key, $subscription_user ) ) {
@@ -787,7 +673,7 @@ function my_show_extra_profile_fields( $user ) {
 		
 				echo ('		
 				<tr>
-					<th><label for="' . esc_attr($key) . '">' . $value . '</label></th>
+					<th><label for="' . esc_attr($key) . '">' . $value['profile_text'] . '</label></th>
 					<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="true" ');
 				if ( $checked == true ) {echo "checked=\"checked\"";} 
 				echo ('
@@ -851,14 +737,26 @@ function my_show_extra_profile_fields( $user ) {
 		');
 		
 		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
+		$wp_id = $user->ID;
+		$directory_page_url = get_the_author_meta( 'directory_page_url', $user->ID );
 		echo ('
 		<h3>Miscellaneous</h3>
 		
 		<table class="form-table">
 			<tr>
 				<th><label for="old_crm_id">Old CRM ID</label></th>
-				<td><input type="text" name="old_crm_id" id="old_crm_id" class="regular-text" maxlength="6" value="' . esc_attr($old_crm_id) . '" /><br />
+				<td><input type="text" 	name="old_crm_id" id="old_crm_id" class="regular-text" maxlength="6" value="' . esc_attr($old_crm_id) . '" /><br />
 				<span class="description">This is used to map business ID\'s used in our old CRM to the new ID\'s in Wordpress.</span></td>
+			</tr>
+			<tr>
+				<th><label for="wp_id">Wordpress ID</label></th>
+				<td><span>' . esc_attr($wp_id) . '</span><br />
+				<span class="description">This is used to map the new ID\'s in Wordpress to the business ID\'s used in our old CRM.</span></td>
+			</tr>
+			<tr>
+				<th><label for="directory_page_url">Directory Page URL</label></th>
+				<td><input type="text" 	name="directory_page_url" id="directory_page_url" class="regular-text" maxlength="255" value="' . esc_attr($directory_page_url) . '" /><br />
+				<span class="description">This is used to provide a link to the members Directory Page from their profile page</span></td>
 			</tr>
 		</table>
 		');
@@ -873,6 +771,8 @@ add_action( 'personal_options_update', 'my_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'my_save_extra_profile_fields' );
 
 function my_save_extra_profile_fields( $user_id ) {
+	global $current_site, $gp, $wpdb;
+	
 	if ( !current_user_can( 'edit_user', $user_id ) ) {
 		return false;
 	}
@@ -885,18 +785,6 @@ function my_save_extra_profile_fields( $user_id ) {
 		foreach ( $notification_items as $value ) {
 			if ( isset ( $_POST[$value] ) && in_array ( $_POST[$value], $notification_values ) ) {
 				$notification_post = $notification_post + array($value => $_POST[$value]);
-			}
-		}
-	}
-	
-	$subscription_items = array("subscription-greenrazor");
-	$subscription_post = array();
-	$subscription_values = array("true", "false");
-	
-	if ( is_array( $subscription_items ) ) {
-		foreach ( $subscription_items as $value ) {
-			if ( isset ( $_POST[$value] ) && in_array ( $_POST[$value], $subscription_values ) ) {
-				$subscription_post = $subscription_post + array($value => $_POST[$value]);
 			}
 		}
 	}
@@ -932,15 +820,24 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'notification', $notification_post );
 	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
 	update_usermeta($user_id, 'old_crm_id', $_POST['old_crm_id'] );
+	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
-	if (cm_subscribe($subscription_post['subscription-greenrazor'])) {
-		update_usermeta($user_id, 'subscription', $subscription_post );
-	} else {
-		$subscription_post['subscription-greenrazor']='false';
-		update_usermeta($user_id, 'subscription', $subscription_post );
+	$subscription_post = array();
+	if ( is_array( $gp->campaignmonitor ) ) {
+		foreach ( $gp->campaignmonitor as $key => $value ) {
+			if ($key == $current_site->id) {
+				foreach ( $value['lists'] as $list_key => $list_value ) {
+					if (!cm_subscribe($list_key, $_POST[$list_key])) {
+						$_POST[$list_key] = false;
+					}
+					$subscription_post = $subscription_post + array($list_key => $_POST[$list_key]);
+				}
+				update_usermeta($user_id, $wpdb->prefix . 'subscription', $subscription_post);
+			}
+		}
 	}
-	
+
 	update_usermeta($user_id, 'profiletypes', $profiletypes_post );
 }
 
@@ -1539,8 +1436,8 @@ $newposttypes = array(
 	array('id' => 'gp_people', 'name' => 'People', 'plural' => false, 'addmeta' => false, 'args' => $peopleargs, 'taxonomy' => $peopletaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_katiepatrick', 'name' => 'Katie Patrick', 'plural' => false, 'addmeta' => false, 'args' => $katiepatrickargs, 'taxonomy' => $katiepatricktaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_productreview', 'name' => 'Product Review', 'plural' => false, 'addmeta' => false, 'args' => $productreviewargs, 'taxonomy' => $productreviewtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_advertorial', 'name' => 'Advertorial', 'plural' => true, 'addmeta' => true, 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_ngocampaign', 'name' => 'NGO Campaign', 'plural' => true, 'addmeta' => false, 'args' => $ngocampaignargs, 'taxonomy' => $ngocampaigntaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_advertorial', 'name' => 'Product', 'plural' => true, 'addmeta' => true, 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_ngocampaign', 'name' => 'Campaign', 'plural' => true, 'addmeta' => false, 'args' => $ngocampaignargs, 'taxonomy' => $ngocampaigntaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_greengurus', 'name' => 'Green Gurus', 'plural' => false, 'addmeta' => false, 'args' => $greengurusargs, 'taxonomy' => $greengurustaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment')
 );
 
@@ -2278,7 +2175,6 @@ function override_template() {
 		exit;
 	}
 }
-#add_action('template_redirect', 'override_template');
 
 /** RECORD DATE/TIME OF LAST TIME USER LOGGED IN **/
 function user_last_login($login) {
@@ -2569,7 +2465,7 @@ function coming_events() {
 					
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a></span>'; 
-		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
+		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
 		foreach ($states_au as $state) {
 			if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
   			echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
@@ -2896,4 +2792,823 @@ function theme_location_tag_line() {						#DISPLAY TAGLINE ENDING WITH USERS STA
 	<?php
 }
 
+
+/** SHOW MEMBERS POSTS **/
+function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
+	// note: Favourites are viewable by everyone!
+	
+	$profile_author = get_user_by('slug', $profile_pid);
+	
+	global $wpdb, $post, $current_user, $post_type_to_url_part, $newposttypes;
+
+	$post_type_filter = "";
+	$post_type_key = array_search($post_type, $post_type_to_url_part);
+	if ( $post_type_key ) {
+		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
+	} else {
+		foreach ($post_type_to_url_part as $key => $value) {
+			$post_type_filter .= $wpdb->prefix . "posts.post_type = '{$key}' or ";
+		}
+		$post_type_filter = substr($post_type_filter, 0, -4);
+	}
+	
+		
+	#if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) ) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
+		
+		$total = "SELECT COUNT(*) as count 
+				FROM $wpdb->posts " . 
+					$wpdb->prefix . "posts, 
+					$wpdb->postmeta " . 
+					$wpdb->prefix . "postmeta 
+				WHERE " . $wpdb->prefix . "posts.ID = " . 
+					$wpdb->prefix . "postmeta.post_id and " . 
+					$wpdb->prefix . "posts.post_status = 'publish' and 
+					(" . $post_type_filter . ")	and " . 
+					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+					
+		$totalposts = $wpdb->get_results($total, OBJECT);
+		#$ppp = intval(get_query_var('posts_per_page'));
+		$ppp = 10;
+		$wp_query->found_posts = $totalposts[0]->count;
+		$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
+		#$on_page = intval(get_query_var('paged'));	
+		$on_page = $post_page;
+
+		if($on_page == 0){ $on_page = 1; }		
+		$offset = ($on_page-1) * $ppp;
+		
+		$querystr = "SELECT " . $wpdb->prefix . "posts.* 
+					FROM $wpdb->posts " . 
+						$wpdb->prefix . "posts, 
+						$wpdb->postmeta " . 
+						$wpdb->prefix . "postmeta 
+					WHERE " . $wpdb->prefix . "posts.ID = " . 
+						$wpdb->prefix . "postmeta.post_id and " . 
+						$wpdb->prefix . "posts.post_status = 'publish' and 
+						(" . $post_type_filter . ") and " . 
+						$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+						$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+						$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+					ORDER BY " . $wpdb->prefix . "posts.post_date DESC 
+					LIMIT " . $ppp . " 
+					OFFSET " . $offset;
+						
+		$pageposts = $wpdb->get_results($querystr, OBJECT);
+		
+		if ( $post_type_key ) {
+			foreach ($newposttypes as $newposttype) {
+				if ($newposttype['id'] == $post_type_key) {$post_type_name = " " . $newposttype['name'];}
+			}
+		}
+		
+		if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
+			echo "
+				<div class=\"total-posts\">
+					<span>{$wp_query->found_posts}</span>{$post_type_name} Posts
+					<div class=\"profile-action-container no-js\">
+						<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
+						<ul class=\"profile-action-items\">
+							<li><a href=\"/wp-admin/post-new.php?post_type=gp_news\">News (Free)</a></li>
+							<li><a href=\"/wp-admin/post-new.php?post_type=gp_events\">Event (Free)</a></li>
+							<li><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\">Product Feature ($89)</a></li>
+							<li><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\">Competition ($250)</a></li>
+							<li><a href=\"/wp-admin/post-new.php?post_type=gp_ngocampaign\">Campaign (Free)</a></li>
+						</ul>
+					</div>
+				</div>
+			";
+		} else {
+			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span>{$post_type_name} Posts</div>";
+		}
+		
+		if ($pageposts) {
+			$post_author_url = get_author_posts_url($profile_author->ID);
+			
+			foreach ($pageposts as $post) {
+			
+				setup_postdata($post);
+				
+				switch (get_post_type()) {
+				    case 'gp_news':
+				        $post_title = 'News';
+				        $post_url = '/news';
+				        break;
+				    case 'gp_ngocampaign':
+				    	$post_title = 'Campaigns';
+				    	$post_url = '/ngo-campaign';
+				        break;
+					case 'gp_advertorial':
+						$post_title = 'Products';
+						$post_url = '/news-stuff';
+				        break;
+					case 'gp_competitions':
+						$post_title = 'Competitions';
+						$post_url = '/competitions';
+				        break;
+				    case 'gp_events':
+				    	$post_title = 'Events';
+				    	$post_url = '/events';
+				        break;
+				    case 'gp_people':
+				    	$post_title = 'People';
+				    	$post_url = '/people';
+				        break;
+				}
+
+				if ( has_post_thumbnail() ) {
+					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+					$imageURL = $imageArray[0];
+					echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+				}
+
+				echo '
+				<div class="profile-postbox">
+			    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
+			    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
+			    	the_excerpt();
+					echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
+					
+				if ( comments_open() ) {
+					echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+				}
+				
+				global $current_user, $current_site;
+				
+				$likedclass = '';
+				if ( get_user_meta( $current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true ) ) {
+					$likedclass = ' favorited';
+				}
+				
+				$likecount = get_post_meta( $post->ID, 'likecount', true );
+				if ($likecount > 0) {
+					$showlikecount = '';
+				} else {
+					$likecount = 0;
+					$showlikecount = ' style="display:none;"';
+				}
+				
+				$likecount = abbr_number( $likecount );
+				
+				if ( is_user_logged_in() ) {
+					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+				} else {
+					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+				}
+					
+		    	echo '
+		    		</div>
+		    		<div class="topic-container">
+		    			<div class="topic-content">
+		    				<a href="#/" class="topic-bookmark">test topic</a>
+		    			</div>
+		    		</div>
+		    		<div class="clear"></div>
+		    	';
+			}
+			
+			if ( $wp_query->max_num_pages > 1 ) {
+				theme_tagnumpagination( $on_page, $wp_query->max_num_pages, $post_tab, $post_type );
+			}
+
+		}
+	#}	
+}
+
+function theme_tagnumpagination ($on_page, $post_pages, $post_tab, $post_type) {
+	echo "<div class=\"post-number-paging\"><div>";
+	for ($i = 1; $i <= $post_pages; $i++) {
+		if ($i == 1 && $on_page != $i) {
+			$previous = $on_page - 1;
+			#echo "<a href=\"#tag:{$post_tab};page:{$i};\">First<a>";
+			echo "<a href=\"#tag:{$post_tab};post:{$post_type};page:{$previous};\" class=\"post-number-arrow\">&larr;</a>";
+		}
+		if ($on_page == $i) {
+			echo "<a href=\"#tag:{$post_tab};post:{$post_type};page:{$i};\" class=\"active-page\">{$i}</a>";
+		} else {
+			echo "<a href=\"#tag:{$post_tab};post:{$post_type};page:{$i};\">{$i}</a>";
+		}
+		
+		if ($i != $post_pages) {
+			echo " &middot; ";
+		}
+		
+		if ($i == $post_pages && $on_page != $post_pages) {
+			$next = $on_page + 1;
+			echo "<a href=\"#tag:{$post_tab};type:{$post_type};page:{$next};\" class=\"post-number-arrow\">&rarr;</a>";
+			#echo "<a href=\"#tag:{$post_tab};page:{$i};\">Last<a>";
+		}
+	}
+	echo "</div></div>";
+}
+
+/** SHOW MEMBERS FOLLOWING MEMBERSHIP **/
+function theme_profile_following($profile_pid) {
+	// note: Favourites are viewable by everyone!
+	
+	echo "
+	<div class=\"total-posts\">
+		<span>0</span> Following
+	</div>
+	";
+}
+
+/** SHOW MEMBERS TOPIC MEMBERSHIP **/
+function theme_profile_topics($profile_pid) {
+	// note: Favourites are viewable by everyone!
+	
+	echo "
+	<div class=\"total-posts\">
+		<span>0</span> Topics
+	</div>
+	";	
+}
+
+/** SHOW MEMBERS FAVOURITE POSTS **/
+function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_type) {
+
+	// note: Favourites are viewable by everyone!
+	
+	$profile_author = get_user_by('slug', $profile_pid);
+
+	global $wpdb, $post, $current_user, $current_site, $post_type_to_url_part, $newposttypes;
+	
+	$post_type_filter = "";
+	$post_type_key = array_search($post_type, $post_type_to_url_part);
+	if ( $post_type_key ) {
+		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
+	} else {
+		foreach ($post_type_to_url_part as $key => $value) {
+			$post_type_filter .= $wpdb->prefix . "posts.post_type = '{$key}' or ";
+		}
+		$post_type_filter = substr($post_type_filter, 0, -4);
+	}
+
+	$total = "SELECT COUNT(*) as count
+				FROM " . $wpdb->prefix . "posts 
+				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
+				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' 
+				WHERE post_status='publish' 
+					AND (" . $post_type_filter . ")
+					AND m0.meta_value > 0 
+					AND m0.user_id = $profile_author->ID 
+					AND m0.meta_key LIKE 'likepost%' 
+					AND m1.meta_value >= 1;";
+					
+	$totalposts = $wpdb->get_results($total, OBJECT);
+	#$ppp = intval(get_query_var('posts_per_page'));
+	$ppp = 10;
+	$wp_query->found_posts = $totalposts[0]->count;
+	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
+	#$on_page = intval(get_query_var('paged'));	
+	$on_page = $post_page;
+
+	if($on_page == 0){ $on_page = 1; }		
+	$offset = ($on_page-1) * $ppp;
+
+	$querystr = "SELECT " . $wpdb->prefix . "posts.*
+					, m1.meta_value as _thumbnail_id 
+				FROM " . $wpdb->prefix . "posts 
+				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
+				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' 
+				WHERE post_status='publish'
+					AND (" . $post_type_filter . ")   
+					AND m0.meta_value > 0 
+					AND m0.user_id = $profile_author->ID 
+					AND m0.meta_key LIKE 'likepost%' 
+					AND m1.meta_value >= 1 
+				ORDER BY m0.meta_value DESC
+				LIMIT " . $ppp . " 
+				OFFSET " . $offset;
+					
+	$pageposts = $wpdb->get_results($querystr, OBJECT);	
+			
+		if ( $post_type_key ) {
+			foreach ($newposttypes as $newposttype) {
+				if ($newposttype['id'] == $post_type_key) {
+					if ($newposttype['plural'] == true) {
+						$post_type_name = " " . $newposttype['name'] . "s";
+					} else {
+						$post_type_name = " " . $newposttype['name'];
+					}
+				}
+			}
+		}
+		
+		if ($post_type_name) {
+			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span> Favourite{$post_type_name}</div>";
+		} else {
+			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span> Favourites</div>";
+		}
+		
+		foreach ($pageposts as $post) {
+		
+			setup_postdata($post);
+			switch (get_post_type()) {
+			    case 'gp_news':
+			        $post_title = 'News';
+			        $post_url = '/news';
+			        break;
+			    case 'gp_ngocampaign':
+			    	$post_title = 'Campaigns';
+			    	$post_url = '/ngo-campaign';
+			        break;
+				case 'gp_advertorial':
+					$post_title = 'Products';
+					$post_url = '/news-stuff';
+			        break;
+				case 'gp_competitions':
+					$post_title = 'Competitions';
+					$post_url = '/competitions';
+			        break;
+			    case 'gp_events':
+			    	$post_title = 'Events';
+			    	$post_url = '/events';
+			        break;
+			    case 'gp_people':
+			    	$post_title = 'People';
+			    	$post_url = '/people';
+			        break;
+			}
+
+			if ( has_post_thumbnail() ) {
+                                $imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+                                $imageURL = $imageArray[0];
+                                echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+                        }
+
+			echo '
+			<div class="profile-postbox">
+		    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
+		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
+		    	the_excerpt();
+				echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
+				
+			if ( comments_open() ) {
+				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+			}
+			
+			$likedclass = '';
+			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
+				$likedclass = ' favorited';
+			}
+			
+			$likecount = get_post_meta($post->ID, 'likecount', true);
+			if ($likecount > 0) {
+				$showlikecount = '';
+			} else {
+				$likecount = 0;
+				$showlikecount = ' style="display:none;"';
+			}
+			
+			$likecount = abbr_number($likecount);
+			
+			if (is_user_logged_in()) {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+			} else {
+				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+			}
+				
+	    	echo '</div><div class="topic-container"><div class="topic-content"><a href="#/" class="topic-bookmark">test topic</a></div></div>';
+/*			if ( has_post_thumbnail() ) {
+				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+				$imageURL = $imageArray[0];
+				echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+			}*/
+			echo '<div class="clear"></div>';
+		}
+		
+		if ( $wp_query->max_num_pages > 1 ) {
+			theme_tagnumpagination( $on_page, $wp_query->max_num_pages, $post_tab, $post_type );
+		}
+}
+
+/** SHOW MEMBERS ADVERTISING OPTIONS **/
+function theme_profile_advertise($profile_pid) {
+	$profile_author = get_user_by('slug', $profile_pid);
+	
+	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
+
+	echo "
+	<div id=\"my-advertise\">
+		<div id=\"advertorial\">
+			<span><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
+			<div class=\"clear\"></div>			
+			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-new-stuff-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+		</div>
+		<div class=\"clear\"></div>
+		<div id=\"competition\">
+			<span><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
+			<div class=\"clear\"></div>				
+			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-competition-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+		</div>
+		<div class=\"clear\"></div>
+		<div id=\"listing\">
+			<span><a href=\"" . get_permalink(472) . "\"><input type=\"button\" value=\"Directory Page $39/m\" /></a></span>
+			<div class=\"clear\"></div>
+			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-directory-page-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+		</div>
+		<div class=\"clear\"></div>
+		<div id=\"email\">
+			<span><a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry\" ><input type=\"button\" value=\"Exclusive Email $3500\" /></a></span>
+			<div class=\"clear\"></div>
+			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-exclusive-email-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+		</div>
+		<div class=\"clear\"></div>
+	</div>
+	";
+}
+
+/** SHOW MEMBERS POST ANALYTICS **/
+function theme_profile_analytics($profile_pid) {
+	global $wpdb, $post, $current_user, $post_type_to_url_part;
+
+	$profile_author = get_user_by('slug', $profile_pid);
+	$profile_author_id = $profile_author->ID;
+
+	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
+
+	require 'ga/analytics.class.php';
+	
+	$total = "SELECT COUNT(*) as count 
+			FROM $wpdb->posts " . 
+				$wpdb->prefix . "posts, 
+				$wpdb->postmeta " . 
+				$wpdb->prefix . "postmeta 
+			WHERE " . $wpdb->prefix . "posts.ID = " . 
+				$wpdb->prefix . "postmeta.post_id and " . 
+				$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+					$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_people') 
+				and " . 
+				$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+				$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+				$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+				
+	$totalposts = $wpdb->get_results($total, OBJECT);
+
+	$ppp = intval(get_query_var('posts_per_page'));
+	$wp_query->found_posts = $totalposts[0]->count;
+	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
+	$on_page = intval(get_query_var('paged'));	
+
+	if($on_page == 0){ $on_page = 1; }		
+	$offset = ($on_page-1) * $ppp;
+	
+	$querystr = "SELECT " . $wpdb->prefix . "posts.* 
+				FROM $wpdb->posts " . 
+					$wpdb->prefix . "posts, 
+					$wpdb->postmeta " . 
+					$wpdb->prefix . "postmeta 
+				WHERE " . $wpdb->prefix . "posts.ID = " . 
+					$wpdb->prefix . "postmeta.post_id and " . 
+					$wpdb->prefix . "posts.post_status = 'publish' and (" . 
+						$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_people') 
+					and " . 
+					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
+					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
+					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+				ORDER BY " . $wpdb->prefix . "posts.post_date DESC";
+					
+	$pageposts = $wpdb->get_results($querystr, OBJECT);
+	
+	if (!$pageposts) {
+		?>
+		<div id="my-analytics"></div>
+		<?php 
+		return;
+	}
+	
+	# TABLE HEADINGS FOR POST ANALYTICS
+	?>
+	<div id="my-analytics">
+		<h2>Post Analytics</h2>
+		<table class="author_analytics">
+			<tr>
+				<td class="author_analytics_title">Title</td>		
+				<td class="author_analytics_type">Post Type</td>
+				<td class="author_analytics_cost">Value</td>
+				<td class="author_analytics_date">Date Posted</td> 
+				<td class="author_analytics_category_impressions">Category Impressions</td>
+				<td class="author_analytics_page_impressions">Page Views</td>
+				<td class="author_analytics_clicks">Clicks</td>
+			</tr>
+	<?php	
+				
+	if ($pageposts) {		
+	 	
+		foreach ($pageposts as $post) {
+			setup_postdata($post);
+		
+			$post_url_ext = $post->post_name; //Need to get post_name for URL. Gets ful URl, but we only need /url extention for Google API			
+			$type = get_post_type($post->ID);
+				
+			$post_type_map = $post_type_to_url_part;
+				
+			$post_url_end = $post_type_map[$type] . '/' . $post_url_ext;
+			#echo $post_url_end . '<br />$post_url_end<br />';
+				
+			$analytics = new analytics('greenpagesadserving@gmail.com', 'greenpages01'); //sign in and grab profile			
+  			$analytics->setProfileById('ga:42443499'); 			//$analytics->setProfileByName('Stage 1 - Green Pages');
+			$post_date = get_the_time('Y-m-d'); 				//Post Date
+			#echo $post_date . ' ';
+			$today_date = date('Y-m-d'); 						//Todays Date
+			#echo $today_date . ' ';
+				
+  			$analytics->setDateRange($post_date, $today_date); 	//Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+				
+  			#print_r($analytics->getVisitors()); 				//get array of visitors by day
+  	
+  			$pageViewURL = ($analytics->getPageviewsURL($post_url_end));	//Page views for specific URL
+  			#echo $pageViewURL . ' $pageViewURL';
+  			#var_dump ($pageViewURL);
+  			$sumURL = 0;
+  			foreach ($pageViewURL as $data) {
+    			$sumURL = $sumURL + $data;
+    			$total_sumURL = $total_sumURL + $data;
+  			}
+  			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';			
+			
+  			$pageViewType = ($analytics->getPageviewsURL($post_type_map[$type]));	//Page views for the section landing page, e.g. the news page
+  			$sumType = 0;
+  			foreach ($pageViewType as $data) {
+      			$sumType = $sumType + $data;
+  			}
+  				
+  			$keywords = $analytics->getData(array(
+            	'dimensions' => 'ga:keyword',
+           	 	'metrics' => 'ga:visits',
+            	'sort' => 'ga:keyword'
+            	)
+          	);	
+          	
+          	#SET UP POST ID AND AUTHOR ID DATA, POST DATE, GET LINK CLICKS DATA FROM GA 
+          	$post_date_au = get_the_time('j-m-y');
+	 		$post_id = $post->ID;
+	 		$click_track_tag = 'yoast-ga/' . $post_id . '/' . $profile_author_id . '/outbound-article';
+			$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  			$sumClick = 0;
+			foreach ($clickURL as $data) {
+    			$sumClick = $sumClick + $data;
+  			}
+			
+			switch (get_post_type()) {		# CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE, URL, COST AND GET BUTTON CLICKS DATA
+			   
+				case 'gp_advertorial':
+					$post_title = 'Products';
+					$post_url = '/eco-friendly-products';
+					$post_price = '$89.00';
+			  		$custom = get_post_custom($post->ID);
+	 				$product_url = $custom["gp_advertorial_product_url"][0];	
+	 				if ( !empty($product_url) ) {		# IF 'BUY IT' BUTTON ACTIVATED, GET CLICKS
+	 					$click_track_tag_product_button = 'outbound/product-button/' . $post_id . '/' . $profile_author_id . '/' . $product_url; 
+  						$clickURL_product_button = ($analytics->getPageviewsURL($click_track_tag_product_button));
+  						foreach ($clickURL_product_button as $data) {
+    						$sumClick = $sumClick + $data;
+  						}
+	 				}
+	 				# GET PAGE IMPRESSIONS FOR OLD PRODUCT POSTS FROM BEFORE WE CHANGED URL AND ADD TO TOTAL
+				 	$old_post_url_end = 'new-stuff/' . $post_url_ext;
+	 				$old_PageViewURL = ($analytics->getPageviewsURL($old_post_url_end));	//Page views for specific old URL
+  					foreach ($old_PageViewURL as $data) {
+    					$sumURL = $sumURL + $data;
+    					$total_sumURL = $total_sumURL + $data;
+  					}
+		       		break;
+				case 'gp_competitions':
+					$post_title = 'Competitions';
+					$post_url = '/competitions';
+					$post_price = '$250.00';
+		       		break;
+		   		case 'gp_events':
+		   			$post_title = 'Events';
+		   			$post_url = '/events';
+		   			$post_price = 'N/A';
+		     		break;
+		     	case 'gp_news':
+				   	$post_title = 'News';
+		   			$post_url = '/news';
+		   			$post_price = 'N/A';		   			
+		     		break;
+		     	case 'gp_ngocampaign':
+			    	$post_title = 'Campaigns';
+			    	$post_url = '/ngo-campaign';
+			    	$post_price = 'N/A';
+			        break;
+			}
+			
+		  	if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    			$sumClick = 'Unavailable';
+    		}
+			
+											# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
+			echo '<tr>				
+					<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
+					esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>				
+					<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>					
+					<td class="author_analytics_cost">' . $post_price . '</td>				
+					<td class="author_analytics_date">' . $post_date_au . '</td>
+					<td class="author_analytics_category_impressions">' . $sumType . '</td>
+					<td class="author_analytics_page_impressions">' . $sumURL . '</td>	
+					<td class="author_analytics_clicks">' . $sumClick . '</td>								
+				</tr>';
+		}
+	}	
+	?>
+		</table>			
+		<?php theme_homecreate_post(); ?>
+		<p>Your posts have been viewed a total of</p> 
+		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
+		<p></p>
+		
+		
+		<?php 	# FOR ADVERTISERS WHO HAVE (OR HAVE HAD) A DIRECTORY PAGE
+		$old_crm_id = $profile_author->old_crm_id;
+		$directory_page_url = $profile_author->directory_page_url;
+		if (!empty($old_crm_id)) {
+		?>
+			<h2>Directory Page Analytics</h2>
+			<table class="author_analytics">
+				<tr>
+					<td class="author_analytics_title">Title</td>
+					<td class="author_analytics_cost">Value</td>
+					<td class="author_analytics_page_impressions">Page views</td>
+					<td class="author_analytics_clicks">Clicks</td>
+				</tr>	
+
+				<?php 		
+				# SET AND RESET SOME VARIABLES AND GET DIRECTORY PAGE DATA FROM GA
+				$start_date = '2012-01-01'; 	// Click tracking of Directory Pages began just after this Date
+				$today_date = date('Y-m-d'); 	// Todays Date
+				
+	  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+				
+	  			# GET IMPRESSIONS DATA - PLACEHOLDER FROM PRODUCTS INDEX PAGE AT THE MOMENT	  			
+	  			$dir_post_url_end = 'eco-friendly-products';
+	  			$dir_pageViewURL = ($analytics->getPageviewsURL($dir_post_url_end));	//Page views for specific URL
+  				$dir_sumURL = 0;
+  				foreach ($dir_pageViewURL as $data) {
+    				$dir_sumURL = $dir_sumURL + $data;
+    				$total_sumURL = $total_sumURL + $data;
+  				}	  			
+	  			
+	  			# GET CLICK DATA	  			
+				$click_track_tag = 'outbound/directory/' . $profile_author_id;
+  				$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  				$sumClick = 0;
+				foreach ($clickURL as $data) {
+    				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
+	  			}
+	  			
+	  			# ADD CLICKS FROM PROFILE PAGE WEBSITE LINK TO CLICKS (TEMPORARY?)
+	  			
+	  			$authorwww_click_track_tag = '\'/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/\'';
+	  			$authorwww_clickURL = ($analytics->getPageviewsURL($authorwww_click_track_tag));
+	  			
+				foreach ($authorwww_clickURL as $data) {
+    				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
+	  			}
+	  			
+  				if ($sumClick == 0) {					#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    				$sumClick = 'Unavailable';
+    			}
+    			?>
+    			<tr>
+    				<td class="author_analytics_title"><a href="<?php echo $directory_page_url; ?>">Directory Page</a></td>
+    				<td class="author_analytics_cost">$39 per month</td>
+    				<td class="author_analytics_page_impressions"><?php echo $dir_sumURL; ?></td>
+    				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
+    			</tr>
+    		</table>
+    		<div id="post-filter">The ability to edit your Directory Page details yourself will be ready soon! In the meantime:</div>
+    		<div id="post-filter">
+    			<a href="mailto:jesse.browne@thegreenpages.com.au?Subject=Please%20Update%20My%20Directory%20Page%20Details" >Update my Directory Page details here</a>
+    		</div>
+    		<div id="post-filter"></div>
+    		<?php 		
+		}	
+		?>
+		
+		<?php   # FOR CONTRIBUTORS / CONTENT PARTNERS - DISPLAY ACTIVIST BAR / DONATE JOIN BUTTON ANALYTICS DATA
+		if ( get_user_role( array('contributor') ) || get_user_role( array($rolecontributor, 'administrator') ) ) {
+			
+			# SET AND RESET SOME VARIABLES AND GET ACTIVIST BAR DATA FROM GA
+			$start_date = '2012-01-01'; 	// Click tracking of activist buttons began just after this Date
+			$today_date = date('Y-m-d'); 	// Todays Date
+				
+  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+
+  			$donate_url = $profile_author->contributors_donate_url;
+			$join_url = $profile_author->contributors_join_url;
+			$letter_url = $profile_author->contributors_letter_url;
+			$petition_url = $profile_author->contributors_petition_url;
+			$volunteer_url = $profile_author->contributors_volunteer_url;
+			
+  			$button_labels = array('donate' => $donate_url, 
+  									'join' =>  $join_url, 
+  									'letter' =>  $letter_url, 
+  									'petition' =>  $petition_url, 
+  									'volunteer' =>  $volunteer_url);
+  			$activist_clicks_sum = 0;
+  			  			
+			?>
+			<h2>Activist Bar Analytics</h2>
+			<table class="author_analytics">
+				<tr>
+					<td class="author_analytics_title">Activist Buttons</td>
+					<td class="author_analytics_activist">Donate</td>
+					<td class="author_analytics_activist">Join</td>
+					<td class="author_analytics_activist">Send Letter</td>
+					<td class="author_analytics_clicks">Sign Petition</td>
+					<td class="author_analytics_clicks">Volunteer</td>	
+				</tr>
+				<tr>
+					<td class="author_analytics_title">Clicks</td>
+					<?php #DISPLAY TABLE CELLS WITH CLICK DATA FOR ACTIVIST BAR BUTTONS
+		  			foreach ($button_labels as $label => $label_url) {
+  						$click_track_tag = 'outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url;
+						#var_dump($click_track_tag);
+  						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  						$sumClick = 0;
+						foreach ($clickURL as $data) {
+    						$sumClick = $sumClick + $data;							// Clicks for that button from all posts
+    						$activist_clicks_sum = $activist_clicks_sum + $data;	// Total clicks for all activist bar buttons
+  						}
+  						if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    						$sumClick = 'Unavailable';
+    					}
+  						echo '<td class="author_analytics_activist">' . $sumClick . '</td>';
+  					}
+		  			if ($activist_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    					$activist_clicks_sum = 'Unavailable';
+    				}
+					?>		
+				</tr>
+			</table>
+			<?php
+			theme_profilecreate_post();
+			if($activist_clicks_sum != 0) { 	#IF CLICKS DATA RETURNED, DISPLAY TOTAL
+			?>
+				<p>Your activist buttons have been clicked a total of</p> 
+				<p><span class="big-number"><?php echo $activist_clicks_sum;?></span> times!</p>	
+				<br />
+			<?php
+			}
+			?>
+			<div class="post-details"><a href="/wp-admin/profile.php">Enter or update urls for Activist Bar buttons</a></div>
+			<br />
+			<div id="post-details"></div>
+			<?php 
+		} 
+		?>
+		<div class="post-details">Why are Clicks showing as 'Unavailable'?</div>
+		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
+		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>	
+	</div>
+<?php 
+}
+
+function theme_homecreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_homecreate_post(); ?></span><div class="clear"></div></div><?php
+}
+
+function theme_insert_homecreate_post(){
+	echo '<a href="/wp-admin/index.php" class="new-post-action">Create a Post</a>';
+	#theme_insert_newscreate_post();
+	#theme_insert_eventcreate_post();
+	#theme_insert_advertorialcreate_post();
+	#theme_insert_competitioncreate_post();
+	#theme_insert_campaigncreate_post();
+}
+
+function theme_profilecreate_post(){
+	#echo "<div id=\"post-filter\"><span class=\"right\">" . theme_insert_profilecreate_post() . "</span><div class=\"clear\"></div></div>";
+	theme_insert_profilecreate_post();
+}
+
+function theme_insert_profilecreate_post(){
+	// if user is logged in link to their own profile back end page, otherwise links to become a member page
+	if ( is_user_logged_in() ) {
+		#echo '<a href="/wp-admin/profile.php"><input type="button" value="Edit My Profile" /></a>';
+	} else {
+		#echo '<a href="/get-involved/become-a-member/"><input type="button" value="Sign up & create your own profile now!" /></a>';
+		echo "
+			<div class=\"profile-join-dialogue\">
+				<a href=\"/wp-login.php?action=register\" class=\"simplemodal-register profile-action-join\">Sign up & create your profile now!</a>
+				<br />
+				<a href=\"/get-involved/become-a-member/\" class=\"profile-action-why\">Why join? Find out more about us.</a>
+			</div>
+		";
+	}	
+}
 ?>

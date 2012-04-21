@@ -55,51 +55,51 @@
 				<ul>
 					<li>Home &amp; Building
 						<ul>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4330">Appliances</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4331">Building Products</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4332">Building Services</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4333">Cleaning</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4334">Energy Efficiency</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4337">Gardening</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4336">Home Products &amp; Furnishings</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4338">Information &amp; Tools</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4335">Solar</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4339">Water Savings</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4330"); ?>">Appliances</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4331"); ?>">Building Products</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4332"); ?>">Building Services</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4333"); ?>">Cleaning</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4334"); ?>">Energy Efficiency</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4337"); ?>">Gardening</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4336"); ?>">Home Products &amp; Furnishings</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4338"); ?>">Information &amp; Tools</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4335"); ?>">Solar</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4339"); ?>">Water Savings</a></li>
 						</ul>
 					</li>
 					<li>Business
 						<ul>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4340">Associations &amp; Certifications</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4341">Carbon Trading &amp; Offsets</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4343">Design &amp; Marketing</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4350">Environmental Services & Consultants</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4348">Finance</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4349">Industrial Water Products</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4345">Landscape</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4344">Office Products &amp; Fitout</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4347">Printing &amp; Paper</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4346">Professional Training</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4351">Recycling &amp; Waste</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4342">Technology</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4340"); ?>">Associations &amp; Certifications</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4341"); ?>">Carbon Trading &amp; Offsets</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4343"); ?>">Design &amp; Marketing</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4350"); ?>">Environmental Services & Consultants</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4348"); ?>">Finance</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4349"); ?>">Industrial Water Products</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4345"); ?>">Landscape</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4344"); ?>">Office Products &amp; Fitout</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4347"); ?>">Printing &amp; Paper</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4346"); ?>">Professional Training</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4351"); ?>">Recycling &amp; Waste</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4342"); ?>">Technology</a></li>
 						</ul>
 					</li>
 					<li>Life &amp; Style
 						<ul>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4352">Beauty &amp; Organic Health</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4359">Books, Mags &amp; DVD's</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4362">Cars, Bikes &amp; Scooters</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4353">Children &amp; Baby</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4358">Consumer Electronics</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4355">Eco Retail Stores</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4361">Eco Travel</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4363">Education &amp; Short Courses</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4354">Fashion &amp; Clothing</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4360">Green Organisations</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4364">Money</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4357">Organic Food &amp; Beverage Products</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4356">Organic Stores, Cafes &amp; Markets</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4365">Pet Care</a></li>
-							<li><a href="http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4366">Weddings &amp; Events</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4352"); ?>">Beauty &amp; Organic Health</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4359"); ?>">Books, Mags &amp; DVD's</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4362"); ?>">Cars, Bikes &amp; Scooters</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4353"); ?>">Children &amp; Baby</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4358"); ?>">Consumer Electronics</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4355"); ?>">Eco Retail Stores</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4361"); ?>">Eco Travel</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4363"); ?>">Education &amp; Short Courses</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4354"); ?>">Fashion &amp; Clothing</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4360"); ?>">Green Organisations</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4364"); ?>">Money</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4357"); ?>">Organic Food &amp; Beverage Products</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4356"); ?>">Organic Stores, Cafes &amp; Markets</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4365"); ?>">Pet Care</a></li>
+							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4366"); ?>">Weddings &amp; Events</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -120,9 +120,10 @@
          */
 		
         wp_footer();
-        global $current_user;
+        global $current_user, $wpdb;
         #$current_user = wp_get_current_user();
-        if ($current_user->subscription["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
+
+        if ($current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
         ?>
 		<script type='text/javascript'>
 			var allDialogs = [];
