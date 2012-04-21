@@ -399,18 +399,22 @@ function theme_like() {
 function theme_index_feed_item() {
 	global $post;
 
-/** DISPLAY FEATURED IMAGE IF SET **/           
-        if ( has_post_thumbnail() ) {
-                $imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-                $imageURL = $imageArray[0];
-                echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-        }
+	$post_author = get_userdata($post->post_author);
+	$post_author_url = get_author_posts_url($post->post_author);	
+	
+	/** DISPLAY FEATURED IMAGE IF SET **/           
+    if ( has_post_thumbnail() ) {
+		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+		$imageURL = $imageArray[0];
+		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+    }
+    else {	/** DISPLAY LOGO INSTEAD **/
+		echo '<span class="profile_minithumb"><a href="' . $post_author_url . '">' . 
+    		  get_avatar( $post_author->ID, '142', '', $post_author->display_name ) . '</a></span>';
+	}
 	
 	echo '<div class="profile-postbox">';
 			?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php 		
-
-			$post_author = get_userdata($post->post_author);
-			$post_author_url = get_author_posts_url($post->post_author);
 			
 			/** CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE AND URL **/
 			switch (get_post_type()) {
@@ -489,15 +493,6 @@ function theme_index_feed_item() {
 					<div class="clear"></div>
 				</div>
 			</div>';
-
-	/** DISPLAY FEATURED IMAGE IF SET **/		
-/*	if ( has_post_thumbnail() ) {
-		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-		$imageURL = $imageArray[0];
-		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-	}
-*/
-
 	echo '<div class="clear"></div>';
 }
 
