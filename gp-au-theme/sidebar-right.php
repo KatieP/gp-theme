@@ -7,7 +7,12 @@
 						</script>
 						<span class="icon-advertisement">Advertisement</span>
 				</div>
-				
+				<?php 
+				/** CREATE YOUTUBE URL FROM VARIABLE IN KATIES PROFILE USERMETA, DISPLAY VIDEO NEWS **/
+				$video_news_youtube_id = get_the_author_meta( 'video_news_youtube_id', '2' );
+				$video_news_youtube_url = 'http://www.youtube.com/embed/' . $video_news_youtube_id;
+				?>
+				<iframe width="300" height="177" src="<?php echo $video_news_youtube_url; ?>" frameborder="0" allowfullscreen></iframe>				
 				<?php
 				/**SHOWS THE NEXT 5 UP AND COMING EVENTS UNDER THE EVENT CALENDAR**/ 				
 				coming_events();
