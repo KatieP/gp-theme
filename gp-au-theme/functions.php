@@ -3596,6 +3596,8 @@ function theme_profile_analytics($profile_pid) {
 <?php 
 }
 
+/** BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES **/
+
 function theme_homecreate_post(){
 	?><div class="new-action"><span class="right"><?php theme_insert_homecreate_post(); ?></span><div class="clear"></div></div><?php
 }
@@ -3628,5 +3630,74 @@ function theme_insert_profilecreate_post(){
 			</div>
 		";
 	}	
+}	
+
+function theme_singlecreate_post() {
+	switch (get_post_type()) {
+		case 'gp_news':
+			theme_newscreate_post();
+			break;
+		case 'gp_ngocampaign':
+			theme_campaigncreate_post();
+			break;
+		case 'gp_advertorial':
+			theme_advertorialcreate_post();
+			break;
+		case 'gp_competitions':
+			theme_competitioncreate_post();
+			break;
+		case 'gp_events':
+			theme_eventcreate_post();
+			break;
+		case 'gp_people':
+			theme_profilecreate_post();
+			break;
+	}
 }
+
+function theme_newscreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_newscreate_post(); ?></span><div class="clear"></div></div><?php
+}
+
+function theme_insert_newscreate_post(){
+	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
+	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
+		echo '<a href="/wp-admin/post-new.php?post_type=gp_news" class="new-post-action">Post a News Story</a>';
+	} else {
+		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';
+	}
+}
+
+function theme_campaigncreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_campaigncreate_post(); ?></span><div class="clear"></div></div><?php
+}
+
+function theme_insert_campaigncreate_post(){
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_ngocampaign" class="new-post-action">Post a Campaign</a>';
+}
+
+function theme_advertorialcreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_advertorialcreate_post(); ?></span><div class="clear"></div></div><?php 
+}
+
+function theme_insert_advertorialcreate_post(){
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial" class="new-post-action">Post a Product Ad</a>';
+}
+
+function theme_competitioncreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_competitioncreate_post(); ?></span><div class="clear"></div></div><?php
+}
+
+function theme_insert_competitioncreate_post(){
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_competitions" class="new-post-action">Post a Competition</a>';
+}
+
+function theme_eventcreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_eventcreate_post(); ?></span><div class="clear"></div></div><?php
+}
+
+function theme_insert_eventcreate_post(){
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_events" class="new-post-action">Post an Event</a>';
+}
+
 ?>
