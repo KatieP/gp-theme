@@ -3227,6 +3227,23 @@ function theme_profile_advertise($profile_pid) {
 	";
 }
 
+/** SHOW MEMBERS DIRECTORY OPTIONS **/
+function theme_profile_directory($profile_pid) {
+	$profile_author = get_user_by('slug', $profile_pid);
+	$profile_author_id = $profile_author->ID;
+	$directory_page_url = $profile_author->directory_page_url;
+
+	echo "
+	<div id=\"my-directory\">
+		<div id=\"post-filter\"><a href=\"" . $directory_page_url . "\" target=\"_new\" >View My Directory Page</a></div>
+		<div id=\"post-filter\">The ability to edit your Directory Page details yourself will be ready soon! In the meantime:</div>
+		<div id=\"post-filter\">
+   			<a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Please%20Update%20My%20Directory%20Page%20Details\">Update my Directory Page details here</a>
+		</div>
+	</div>
+	";
+}
+
 /** SHOW MEMBERS POST ANALYTICS **/
 function theme_profile_analytics($profile_pid) {
 	global $wpdb, $post, $current_user, $post_type_to_url_part;

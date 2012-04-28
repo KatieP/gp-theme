@@ -21,16 +21,14 @@ if (!isset($post_pid)) {
 	return false;
 }
 
-$post_tab_types = array('posts', 'favourites', 'analytics', 'advertise', 'following', 'topics');
+$post_tab_types = array('posts', 'favourites', 'analytics', 'advertise', 'following', 'topics', 'directory');
 
 if ( !in_array(strtolower($post_tab), $post_tab_types) ) {
 	$post_tab = "posts";
 }
 
 if ( !in_array(strtolower($post_type), $post_type_to_url_part, true) ) {
-	if ( strtolower($post_type) != "directory" ) {
-		$post_type = "all";
-	}
+	$post_type = "all";
 }
 
 if (!$post_page || !is_numeric($post_page)) {$post_page = 1;}
@@ -57,6 +55,10 @@ if ($post_tab == "analytics") {
 
 if ($post_tab == "advertise") {
 	theme_profile_advertise($post_pid);
+}
+
+if ($post_tab == "directory") {
+	theme_profile_directory($post_pid);
 }
 
 ?>

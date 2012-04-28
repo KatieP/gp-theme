@@ -1602,8 +1602,9 @@ function theme_subscribertabs($profile_author) {
 	$template_path = get_bloginfo('template_url') . "/template/";
 	
 	if (get_the_author_meta( 'directory_page_url', $profile_author->ID )) {
-		$directory_page_url = get_the_author_meta( 'directory_page_url', $profile_author->ID );
-		$directory_page_url = "<li><a href=\"{$directory_page_url}\">Directory</a></li>";
+		$directory_page_url_redirect = get_the_author_meta( 'directory_page_url', $profile_author->ID );
+		$directory_page_url_redirect = "<li><a href=\"{$directory_page_url_redirect}\">Directory</a></li>";
+		$directory_page_url = "<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>";
 	}
 	
 	# User is logged in and IS viewing their own profile
@@ -1657,7 +1658,7 @@ function theme_subscribertabs($profile_author) {
 			<div class=\"clear\"></div>
 			<nav class=\"profile-tab-posts\"><ul>
 				<li><a href=\"{$post_author_url}#tab:posts;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
-				{$directory_page_url}
+				{$directory_page_url_redirect}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
@@ -1691,8 +1692,9 @@ function theme_editortabs($profile_author) {
 	$template_path = get_bloginfo('template_url') . "/template/";
 	
 	if (get_the_author_meta( 'directory_page_url', $profile_author->ID )) {
-		$directory_page_url = get_the_author_meta( 'directory_page_url', $profile_author->ID );
-		$directory_page_url = "<li><a href=\"{$directory_page_url}\">Directory</a></li>";
+		$directory_page_url_redirect = get_the_author_meta( 'directory_page_url', $profile_author->ID );
+		$directory_page_url_redirect = "<li><a href=\"{$directory_page_url_redirect}\">Directory</a></li>";
+		$directory_page_url = "<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>";
 	}
 	
 	# User is logged in and IS viewing their own profile
@@ -1750,7 +1752,7 @@ function theme_editortabs($profile_author) {
 	        <div class=\"clear\"></div>
 	        <nav class=\"profile-tab-posts\"><ul>
 				<li><a href=\"{$post_author_url}#tab:posts;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
-				{$directory_page_url}
+				{$directory_page_url_redirect}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
@@ -1783,8 +1785,9 @@ function theme_contributortabs($profile_author) {
 	$template_path = get_bloginfo('template_url') . "/template/";
 	
 	if (get_the_author_meta( 'directory_page_url', $profile_author->ID )) {
-		$directory_page_url = get_the_author_meta( 'directory_page_url', $profile_author->ID );
-		$directory_page_url = "<li><a href=\"{$directory_page_url}\">Directory</a></li>";
+		$directory_page_url_redirect = get_the_author_meta( 'directory_page_url', $profile_author->ID );
+		$directory_page_url_redirect = "<li><a href=\"{$directory_page_url_redirect}\">Directory</a></li>";
+		$directory_page_url = "<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>";
 	}
 	
 	# User is logged in and IS viewing their own profile
@@ -1842,7 +1845,7 @@ function theme_contributortabs($profile_author) {
 	        <div class=\"clear\"></div>
 	        <nav class=\"profile-tab-posts\"><ul>
 				<li><a href=\"{$post_author_url}#tab:posts;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
-				{$directory_page_url}
+				{$directory_page_url_redirect}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
