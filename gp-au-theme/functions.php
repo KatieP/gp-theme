@@ -3198,6 +3198,8 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 /** SHOW MEMBERS ADVERTISING OPTIONS **/
 function theme_profile_advertise($profile_pid) {
+	global $current_user;
+
 	$profile_author = get_user_by('slug', $profile_pid);
 	
 	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
