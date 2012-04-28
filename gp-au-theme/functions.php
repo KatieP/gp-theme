@@ -1799,7 +1799,6 @@ add_action('admin_menu','hideUpdateNag');
 		unset($menu[31]); # katie patrick
 		unset($menu[32]); # product review
 		unset($menu[35]); # green gurus
-		unset($menu[34]); # projects
 		unset($menu[26]); # news
 		unset($menu[10]); # media
 	}
@@ -1832,7 +1831,7 @@ function change_post_menu_label() {
                 unset($menu[2]); # dashboard
                 unset($menu[4]); # seperator
                 unset($menu[29]); # people
-                unset($menu[31]); # projects
+                #unset($menu[31]); # projects
                 unset($menu[26]); # news
                 #unset($menu[27]); # events
                 #unset($menu[30]); # advertorials
@@ -2007,8 +2006,8 @@ function my_remove_meta_boxes(){
 	}
 	
 	if ( get_user_role( array('subscriber') ) ) {
-		$disallowed_posttypes = array('gp_news', 'gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_projects', 'gp_greengurus');
-		$allowed_posttypes = array('gp_advertorial', 'gp_competitions', 'gp_events');
+		$disallowed_posttypes = array('gp_news', 'gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus');
+		$allowed_posttypes = array('gp_advertorial', 'gp_competitions', 'gp_events', 'gp_projects');
 		$disallowed_metaboxes = array('wordbook_sectionid', 'tagsdiv-post_tag', 'gp_advertorial_categorydiv', 'gp_events_categorydiv', 'gp_competitions_categorydiv', 'pageparentdiv', 'postexcerpt', 'trackbacksdiv', 'postcustom', 'postexcerpt', 'commentstatusdiv', 'slugdiv', 'revisionsdiv');
 		
 		foreach ($disallowed_posttypes as $posttype) {
@@ -2141,7 +2140,9 @@ function redirect_disallowed_pages () {
 			$admin_url . 'edit.php?post_type=gp_competitions', 
 			$admin_url . 'post-new.php?post_type=gp_competitions', 
 			$admin_url . 'edit.php?post_type=gp_advertorial', 
-			$admin_url . 'post-new.php?post_type=gp_advertorial'
+			$admin_url . 'post-new.php?post_type=gp_advertorial',
+			$admin_url . 'edit.php?post_type=gp_projects', 
+			$admin_url . 'post-new.php?post_type=gp_projects'
 		);
 		
 		$current_url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
