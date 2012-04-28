@@ -190,10 +190,9 @@ function add_jquery_data() {
 			$(".tfdate").datepicker({
 			    dateFormat: 'D, M d, yy',
 			    showOn: 'button',
-			    buttonImage: '/yourpath/icon-datepicker.png',
+			    buttonImage: '<?php echo get_bloginfo('template_url'); ?>/template/icon-datepicker.png',
 			    buttonImageOnly: true,
 			    numberOfMonths: 3,
-
 			});
 		});		
 	</script>
