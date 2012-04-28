@@ -2809,7 +2809,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	global $wpdb, $post, $current_user, $post_type_to_url_part, $newposttypes;
 	
 	if ( strtolower($post_type) == "directory" ) {
-		theme_profile_directory($profile_pid)
+		theme_profile_directory($profile_pid);
 		return;	
 	}
 	
