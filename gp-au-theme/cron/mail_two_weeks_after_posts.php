@@ -12,7 +12,7 @@ $post_type_to_url_part = array("gp_news" => "news",
                                "gp_advertorial" => "eco-friendly-products",
                                "gp_competitions" => "competitions",
                                "gp_people" => "people",
-                               "gp_ngocampaign" => "ngo-campaign");
+                               "gp_projects" => "projects");
 
 //Mysql commands
 mysql_connect("localhost", "s1-wordpress", "7BXmxPmwy4LJZNhR") or die(mysql_error());

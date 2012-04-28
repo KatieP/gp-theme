@@ -46,7 +46,7 @@
 							<li><a href="/eco-friendly-products">New Stuff</a></li>
 							<li><a href="/competitions">Competitions</a></li>
 							<li><a href="/people">People</a></li>
-							<li><a href="/ngo-campaign">Campaigns</a></li>
+							<li><a href="/projects">Projects</a></li>
 						</ul>
 					</li>
 				</ul>

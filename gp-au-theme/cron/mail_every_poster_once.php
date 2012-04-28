@@ -62,7 +62,7 @@ function email_post($row, $count, $total) {
 		"gp_advertorial" => "eco-friendly-products", 
 		"gp_competitions" => "competitions", 
 		"gp_people" => "people", 
-		"gp_ngocampaign" => "ngo-campaign"
+		"gp_projects" => "projects"
 	);
 
 	//sign in and grab profile

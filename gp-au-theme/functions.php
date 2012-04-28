@@ -1304,21 +1304,21 @@ $advertorialtaxonomy = array(
 );
 
 
-/* NGO Campaigns */
+/* Projects */
     
-$ngocampaignargs = array(
-    'label' => __( 'NGO Campaigns' ),
+$projectsargs = array(
+    'label' => __( 'Projects' ),
     'labels' => array(
-	    'name' => _x( 'NGO Campaigns', 'post type general name' ),
-	    'singular_name' => _x( 'Campaign', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'Campaign' ),
-	    'add_new_item' => __( 'Add New Campaign' ),
-	    'edit_item' => __( 'Edit Campaign' ),
-	    'new_item' => __( 'New Campaign' ),
-	    'view_item' => __( 'View Campaign' ),
-	    'search_items' => __( 'Search Campaign' ),
-	    'not_found' =>  __( 'No campaigns found' ),
-	    'not_found_in_trash' => __( 'No campaigns found in Trash' ),
+	    'name' => _x( 'Projects', 'post type general name' ),
+	    'singular_name' => _x( 'Project', 'post type singular name' ),
+	    'add_new' => _x( 'Add New', 'Project' ),
+	    'add_new_item' => __( 'Add New Project' ),
+	    'edit_item' => __( 'Edit Project' ),
+	    'new_item' => __( 'New Project' ),
+	    'view_item' => __( 'View Project' ),
+	    'search_items' => __( 'Search Projects' ),
+	    'not_found' =>  __( 'No projects found' ),
+	    'not_found_in_trash' => __( 'No projects found in Trash' ),
 	    'parent_item_colon' => ''
 	),
     'public' => true,
@@ -1329,15 +1329,15 @@ $ngocampaignargs = array(
     'capability_type' => 'post',
     'menu_icon' => get_bloginfo( 'template_url' ).'/template/transmit.png',
     'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'ngo-campaign' ,'with_front' => FALSE ),
+    'rewrite' => array( 'slug' => 'projects' ,'with_front' => FALSE ),
     'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
     'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_ngocampaign_category', 'post_tag'),
+    'taxonomies' => array( 'gp_projects_category', 'post_tag'),
 	'has_archive' => true
 );
 
-$ngocampaigntaxonomy = array(
-	'label' => __( 'Campaign Category' ),
+$projectstaxonomy = array(
+	'label' => __( 'Project Category' ),
 	'labels' => array(
 		'name' => _x( 'Categories', 'taxonomy general name' ),
 		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
@@ -1357,7 +1357,7 @@ $ngocampaigntaxonomy = array(
 	'hierarchical' => true,
 	'show_ui' => true,
 	'query_var' => true,
-	'rewrite' => array( 'slug' => 'ngocampaign-category' )
+	'rewrite' => array( 'slug' => 'projects-category' )
 );
 
 
@@ -1423,10 +1423,10 @@ global $wp_role;
 /* Modify widgets for 'add new' based on user role  */
 if ( get_user_role( array('contributor') ) ) {
 	unset($newsargs['supports']);
-	unset($ngocampaignargs['supports']);
+	unset($projectsargs['supports']);
 	unset($eventargs['supports']);
 	$newsargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' ) ;
-	$ngocampaignargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' );
+	$projectsargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' );
 	$eventargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' );
 } 
 
@@ -1444,7 +1444,7 @@ $newposttypes = array(
 	array('id' => 'gp_katiepatrick', 'name' => 'Katie Patrick', 'plural' => false, 'addmeta' => false, 'args' => $katiepatrickargs, 'taxonomy' => $katiepatricktaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_productreview', 'name' => 'Product Review', 'plural' => false, 'addmeta' => false, 'args' => $productreviewargs, 'taxonomy' => $productreviewtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_advertorial', 'name' => 'Product', 'plural' => true, 'addmeta' => true, 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_ngocampaign', 'name' => 'Campaign', 'plural' => true, 'addmeta' => false, 'args' => $ngocampaignargs, 'taxonomy' => $ngocampaigntaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_projects', 'name' => 'Project', 'plural' => true, 'addmeta' => false, 'args' => $projectsargs, 'taxonomy' => $projectstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
 	array('id' => 'gp_greengurus', 'name' => 'Green Gurus', 'plural' => false, 'addmeta' => false, 'args' => $greengurusargs, 'taxonomy' => $greengurustaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment')
 );
 
@@ -1460,7 +1460,7 @@ function my_get_posts( $query ) {
 /** ADD THUMBNAILS SUPPORT **/
 # note: http://emrahgunduz.com/categories/development/wordpress/wordpress-how-to-show-the-featured-image-of-posts-in-social-sharing-sites/
 # note: http://markjaquith.wordpress.com/2009/12/23/new-in-wordpress-2-9-post-thumbnail-images/
-add_theme_support( 'post-thumbnails', array( 'post', 'gp_news', 'gp_events', 'gp_competitions', 'gp_jobs', 'gp_people', 'gp_advertorial', 'gp_ngocampaign', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus' ) );
+add_theme_support( 'post-thumbnails', array( 'post', 'gp_news', 'gp_events', 'gp_competitions', 'gp_jobs', 'gp_people', 'gp_advertorial', 'gp_projects', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus' ) );
 add_image_size('homepage-thumbnail', 140, 105, true);
 add_image_size('icon-thumbnail', 50, 50, true);
 add_image_size('dash-thumbnail', 35, 35, true);
@@ -1799,7 +1799,7 @@ add_action('admin_menu','hideUpdateNag');
 		unset($menu[31]); # katie patrick
 		unset($menu[32]); # product review
 		unset($menu[35]); # green gurus
-		unset($menu[34]); # ngo campaigns
+		unset($menu[34]); # projects
 		unset($menu[26]); # news
 		unset($menu[10]); # media
 	}
@@ -1832,7 +1832,7 @@ function change_post_menu_label() {
                 unset($menu[2]); # dashboard
                 unset($menu[4]); # seperator
                 unset($menu[29]); # people
-                unset($menu[31]); # ngo campaigns
+                unset($menu[31]); # projects
                 unset($menu[26]); # news
                 #unset($menu[27]); # events
                 #unset($menu[30]); # advertorials
@@ -1927,7 +1927,7 @@ function menu_order_filter($menu) {
 		6 => 'edit.php?post_type=gp_people',
 		7 => 'edit.php?post_type=gp_advertorial',
 		8 => 'edit.php?post_type=gp_productreview',
-		9 => 'edit.php?post_type=gp_ngocampaign',
+		9 => 'edit.php?post_type=gp_projects',
 		10 => 'edit.php?post_type=gp_greengurus',
 		11 => 'edit.php?post_type=gp_katiepatrick',
 		12 => 'edit-comments.php',
@@ -2007,7 +2007,7 @@ function my_remove_meta_boxes(){
 	}
 	
 	if ( get_user_role( array('subscriber') ) ) {
-		$disallowed_posttypes = array('gp_news', 'gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_ngocampaign', 'gp_greengurus', 'gp_ngocampaign');
+		$disallowed_posttypes = array('gp_news', 'gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_projects', 'gp_greengurus');
 		$allowed_posttypes = array('gp_advertorial', 'gp_competitions', 'gp_events');
 		$disallowed_metaboxes = array('wordbook_sectionid', 'tagsdiv-post_tag', 'gp_advertorial_categorydiv', 'gp_events_categorydiv', 'gp_competitions_categorydiv', 'pageparentdiv', 'postexcerpt', 'trackbacksdiv', 'postcustom', 'postexcerpt', 'commentstatusdiv', 'slugdiv', 'revisionsdiv');
 		
@@ -2034,7 +2034,7 @@ function my_remove_meta_boxes(){
 	
 	if ( get_user_role( array('contributor') ) ) {
 		$disallowed_posttypes = array('gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus');
-		$allowed_posttypes = array('gp_news', 'gp_advertorial', 'gp_competitions', 'gp_events', 'gp_ngocampaign');
+		$allowed_posttypes = array('gp_news', 'gp_advertorial', 'gp_competitions', 'gp_events', 'gp_projects');
 		$disallowed_metaboxes = array('wordbook_sectionid', 'tagsdiv-post_tag', 'gp_advertorial_categorydiv', 'gp_events_categorydiv', 'gp_competitions_categorydiv', 'pageparentdiv', 'postexcerpt', 'trackbacksdiv', 'postcustom', 'postexcerpt', 'commentstatusdiv', 'slugdiv', 'revisionsdiv');
 		
 		foreach ($disallowed_posttypes as $posttype) {
@@ -2047,7 +2047,7 @@ function my_remove_meta_boxes(){
 			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_advertorial_categorydiv'] );
 			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_events_categorydiv'] );
 			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_competitions_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_ngocampaign_categorydiv'] );
+			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_projects_categorydiv'] );
 			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_news_categorydiv'] );
 			unset( $wp_meta_boxes[$posttype]['side']['core']['pageparentdiv'] );
 			unset( $wp_meta_boxes[$posttype]['normal']['core']['postexcerpt'] );
@@ -2380,7 +2380,7 @@ function relevant_posts() {
 	 * Todo: 
 	 * 1. relevance by tag
 	 * 2. relevance by category
-	 * 3. add age to relevance score (you don't want posts that are too old? except maybe campaigns?)
+	 * 3. add age to relevance score (you don't want posts that are too old? except maybe Projects?)
 	 * 4. find better way to get $posttype_title and $posttype_url (and then make sure this applies everywhere)
 	 */
 	if ( !is_single() ) {
@@ -2392,7 +2392,7 @@ function relevant_posts() {
 	$post_id = $post->ID;
 	$post_type = $post->post_type;
 	$post_title = $post->post_title;
-	$allowed_posttypes = array('gp_news', 'gp_ngocampaign', 'gp_advertorial', 'gp_people');
+	$allowed_posttypes = array('gp_news', 'gp_projects', 'gp_advertorial', 'gp_people');
 	
 	if ( !in_array($post_type, $allowed_posttypes) ) {
 		return false;
@@ -2403,9 +2403,9 @@ function relevant_posts() {
 	        $posttype_title = 'news';
 	        $posttype_url = '/news';
 	        break;
-	    case 'gp_ngocampaign':
-	      	$posttype_title = 'campaigns';
-	      	$posttype_url = '/ngo-campaign';
+	    case 'gp_projects':
+	      	$posttype_title = 'projects';
+	      	$posttype_url = '/projects';
 	        break;
 		case 'gp_advertorial':
 	       	$posttype_title = 'stuff';
@@ -2886,7 +2886,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 							<li><a href=\"/wp-admin/post-new.php?post_type=gp_events\">Event (Free)</a></li>
 							<li><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\">Product Feature ($89)</a></li>
 							<li><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\">Competition ($250)</a></li>
-							<li><a href=\"/wp-admin/post-new.php?post_type=gp_ngocampaign\">Campaign (Free)</a></li>
+							<li><a href=\"/wp-admin/post-new.php?post_type=gp_projects\">Project (Free)</a></li>
 						</ul>
 					</div>
 				</div>
@@ -2907,9 +2907,9 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 				        $post_title = 'News';
 				        $post_url = '/news';
 				        break;
-				    case 'gp_ngocampaign':
-				    	$post_title = 'Campaigns';
-				    	$post_url = '/ngo-campaign';
+				    case 'gp_projects':
+				    	$post_title = 'Projects';
+				    	$post_url = '/projects';
 				        break;
 					case 'gp_advertorial':
 						$post_title = 'Products';
@@ -3122,9 +3122,9 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 			        $post_title = 'News';
 			        $post_url = '/news';
 			        break;
-			    case 'gp_ngocampaign':
-			    	$post_title = 'Campaigns';
-			    	$post_url = '/ngo-campaign';
+			    case 'gp_projects':
+			    	$post_title = 'Projects';
+			    	$post_url = '/projects';
 			        break;
 				case 'gp_advertorial':
 					$post_title = 'Products';
@@ -3271,7 +3271,7 @@ function theme_profile_analytics($profile_pid) {
 					$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
 					$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
 					$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
-					$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+					$wpdb->prefix . "posts.post_type = 'gp_projects' or " . 
 					$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
 					$wpdb->prefix . "posts.post_type = 'gp_people') 
 				and " . 
@@ -3300,7 +3300,7 @@ function theme_profile_analytics($profile_pid) {
 						$wpdb->prefix . "posts.post_type = 'gp_news' or " . 
 						$wpdb->prefix . "posts.post_type = 'gp_events' or " . 
 						$wpdb->prefix . "posts.post_type = 'gp_advertorial' or " . 
-						$wpdb->prefix . "posts.post_type = 'gp_ngocampaign' or " . 
+						$wpdb->prefix . "posts.post_type = 'gp_projects' or " . 
 						$wpdb->prefix . "posts.post_type = 'gp_competitions' or " . 
 						$wpdb->prefix . "posts.post_type = 'gp_people') 
 					and " . 
@@ -3442,9 +3442,9 @@ function theme_profile_analytics($profile_pid) {
 		   			$post_url = '/news';
 		   			$post_price = 'N/A';		   			
 		     		break;
-		     	case 'gp_ngocampaign':
-			    	$post_title = 'Campaigns';
-			    	$post_url = '/ngo-campaign';
+		     	case 'gp_projects':
+			    	$post_title = 'Projects';
+			    	$post_url = '/projects';
 			    	$post_price = 'N/A';
 			        break;
 			}
@@ -3630,7 +3630,7 @@ function theme_insert_homecreate_post(){
 	#theme_insert_eventcreate_post();
 	#theme_insert_advertorialcreate_post();
 	#theme_insert_competitioncreate_post();
-	#theme_insert_campaigncreate_post();
+	#theme_insert_projectcreate_post();
 }
 
 function theme_profilecreate_post(){
@@ -3659,8 +3659,8 @@ function theme_singlecreate_post() {
 		case 'gp_news':
 			theme_newscreate_post();
 			break;
-		case 'gp_ngocampaign':
-			theme_campaigncreate_post();
+		case 'gp_projects':
+			theme_projectcreate_post();
 			break;
 		case 'gp_advertorial':
 			theme_advertorialcreate_post();
@@ -3690,12 +3690,12 @@ function theme_insert_newscreate_post(){
 	}
 }
 
-function theme_campaigncreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_campaigncreate_post(); ?></span><div class="clear"></div></div><?php
+function theme_projectcreate_post(){
+	?><div class="new-action"><span class="right"><?php theme_insert_projectcreate_post(); ?></span><div class="clear"></div></div><?php
 }
 
-function theme_insert_campaigncreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_ngocampaign" class="new-post-action">Post a Campaign</a>';
+function theme_insert_projectcreate_post(){
+	echo '<a href="/wp-admin/post-new.php?post_type=gp_projects" class="new-post-action">Post a Project</a>';
 }
 
 function theme_advertorialcreate_post(){

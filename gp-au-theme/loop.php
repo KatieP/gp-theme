@@ -6,7 +6,7 @@ function get_posttemplate($template='default_index') {
     $current_page_id = $wp_query->get_queried_object_id();
 	$profile_author = get_profile_author();
 	
-	$templates = array('default_index', 'default_single', 'default_page', 'home_index', 'author_index', 'author_edit', 'author_account', 'author_notifications', 'author_locale', 'author_newsletters', 'author_privacy', 'author_password', 'author_admin', 'search_index', 'events_index', 'competitions_index', 'news_index', 'people_index', 'jobs_index', 'advertorial_index', 'ngocampaign_index', 'katiepatrick_index', 'productreview_index', 'greengurus_index', 'attachment_single');
+	$templates = array('default_index', 'default_single', 'default_page', 'home_index', 'author_index', 'author_edit', 'author_account', 'author_notifications', 'author_locale', 'author_newsletters', 'author_privacy', 'author_password', 'author_admin', 'search_index', 'events_index', 'competitions_index', 'news_index', 'people_index', 'jobs_index', 'advertorial_index', 'projects_index', 'katiepatrick_index', 'productreview_index', 'greengurus_index', 'attachment_single');
 	
 	$templateRoutes = array(
 		'home' => 'home_index',								/* Home Page */
@@ -18,7 +18,7 @@ function get_posttemplate($template='default_index') {
 		'gp_people' => 'people_index', 						/* People */
 		'gp_competitions' => 'competitions_index',			/* Competitions */
 		'gp_advertorial' => 'advertorial_index',			/* Advertorials */
-		'gp_ngocampaign' => 'ngocampaign_index',			/* Campaigns */
+		'gp_projects' => 'projects_index',					/* Projects */
 		'gp_katiepatrick' => 'katiepatrick_index',			/* Katie Patrick Editorial */
 		'gp_productreview' => 'productreview_index',		/* Product Reviews */
 		'gp_greengurus' => 'greengurus_index',				/* Green Gurus */
@@ -347,9 +347,9 @@ function theme_index_feed_item() {
 			        $post_title = 'News';
 			        $post_url = '/news';
 			        break;
-			    case 'gp_ngocampaign':
-			    	$post_title = 'Campaigns';
-			    	$post_url = '/ngo-campaign';
+			    case 'gp_projects':
+			    	$post_title = 'Projects';
+			    	$post_url = '/projects';
 			        break;
 				case 'gp_advertorial':
 					$post_title = 'Products';
@@ -504,7 +504,7 @@ function home_index() {
 	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR 
 						post_type='gp_advertorial' AND post_status='publish' OR 
 						post_type='gp_competitions' AND post_status='publish' OR 
-						post_type='gp_ngocampaign' AND post_status='publish' 
+						post_type='gp_projects' AND post_status='publish' 
 						ORDER BY post_date DESC LIMIT 20)";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
@@ -517,12 +517,12 @@ function home_index() {
 
 		foreach ($pageposts as $post) {						# DISPLAY MOST RECENT POSTS 
 			setup_postdata($post);
-			if (get_post_type() != 'gp_ngocampaign') {
+			if (get_post_type() != 'gp_projects') {
 				theme_index_feed_item();					# DISPLAY INDIVIDUAL POST TITLE, IMAGE, EXCERPT AND LINK 
 			} 
 			else {
 				theme_index_feed_item();		 
-				theme_index_contributor_donate_join_bar();	# CAMPAIGNS ALSO DISPLAY DONATE JOIN BUTTONS
+				theme_index_contributor_donate_join_bar();	# PROJECTS ALSO DISPLAY DONATE JOIN BUTTONS
 			}
 		}
 	}														# THAT'S IT!
@@ -540,7 +540,7 @@ function home_index() {
 	#$querystr .= " union (" . $qrystart . " post_type='gp_advertorial' ORDER BY post_date DESC LIMIT 3)";
 	#$querystr .= " union (" . $qrystart . " post_type='gp_people' ORDER BY post_date DESC LIMIT 3)";
 	#$querystr .= " union (" . $qrystart . " post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_enddate ASC LIMIT 3)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_ngocampaign' ORDER BY post_date DESC LIMIT 3)";
+	#$querystr .= " union (" . $qrystart . " post_type='gp_projects' ORDER BY post_date DESC LIMIT 3)";
 	
 	
 	/** OLD LIST VIEW OF 3 MOST RECENT POSTS FROM EACH CATEGORY **/
@@ -575,8 +575,8 @@ function home_index() {
 					    #case 'gp_news':
 					    #   echo '<span class="hp_minitype"><a href="/news">News</a>:</span>';
 					    #   break;
-	#				    case 'gp_ngocampaign':
-	#				        echo '<span class="hp_minitype"><a href="/ngo-campaign">Campaigns</a>:</span>';
+	#				    case 'gp_projects':
+	#				        echo '<span class="hp_minitype"><a href="/projects">Projects</a>:</span>';
 	#				        break;
 	#					case 'gp_advertorial':
 	#				        echo '<span class="hp_minitype"><a href="/eco-friendly-products">Products</a>:</span>';
@@ -599,7 +599,7 @@ function home_index() {
 	#				theme_index_feed_item();		# DISPLAY POSTS
 	#			}
 	#			else {
-	#				theme_index_feed_item();		# CAMPAIGNS ALSO DISPLAY DONATE JOIN BUTTONS 
+	#				theme_index_feed_item();		# PROJECTS ALSO DISPLAY DONATE JOIN BUTTONS 
 	#				theme_index_contributor_donate_join_bar();
 	#			}
 				
@@ -875,8 +875,8 @@ function advertorial_index() {
 	default_index();
 }
 
-function ngocampaign_index() {
-	theme_campaigncreate_post();
+function projects_index() {
+	theme_projectscreate_post();
 	if ( have_posts() ) {
 		while ( have_posts() ) { 
 			the_post(); 
@@ -1626,7 +1626,7 @@ function theme_subscribertabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
@@ -1635,7 +1635,7 @@ function theme_subscribertabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
 			<div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
@@ -1663,7 +1663,7 @@ function theme_subscribertabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
@@ -1672,7 +1672,7 @@ function theme_subscribertabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
 			<div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
@@ -1718,7 +1718,7 @@ function theme_editortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
@@ -1727,7 +1727,7 @@ function theme_editortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
@@ -1757,7 +1757,7 @@ function theme_editortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
@@ -1766,7 +1766,7 @@ function theme_editortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
@@ -1811,7 +1811,7 @@ function theme_contributortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
@@ -1820,7 +1820,7 @@ function theme_contributortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
@@ -1850,7 +1850,7 @@ function theme_contributortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:all;\" class=\"profile-tab-secondary-active\">All</a></li>
@@ -1859,7 +1859,7 @@ function theme_contributortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:ngo-campaign;\">Campaigns</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
 	        <div class=\"profile-timeout top\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>

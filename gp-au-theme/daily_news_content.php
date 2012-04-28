@@ -32,7 +32,7 @@ $the_query = new WP_Query(array('post_status' => 'publish',
                                 'post_type' => array('gp_news', 'gp_events', 
                                                      'gp_advertorial', 
                                                      'gp_competitions', 
-                                                     'gp_ngocampaign')));
+                                                     'gp_projects')));
 remove_filter('posts_where', 'filter_where');
 
 # print posts in html or txt format
@@ -62,12 +62,12 @@ if ($format == "html" || $format == "") {
 						<table cellpadding="0" cellspacing="0" border="0" width="95%">
 							<tr>
 								<td align="center"><a href="http://directory.thegreenpages.com.au/" style="text-decoration:none; font-weight:; color:#fff; font-size: 13px;">Directory</a></td>
-                <td align="center"><a href="<?php echo site_url(); ?>/news/" style="text-decoration:none;font-weight:; color:#fff;font-size: 13px;">News</a></td>
+                <td align="center"><a href="<?php echo site_url(); ?>/news" style="text-decoration:none;font-weight:; color:#fff;font-size: 13px;">News</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/events" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Events</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/eco-friendly-products" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">New Stuff</a></td>
                 <td align="center"><a href="<?php echo site_url(); ?>/competitions" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Competitions</a></td>
-                <td align="center"><a href="<?php echo site_url(); ?>/people/" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">People</a></td>
-                <td align="center"><a href="<?php echo site_url(); ?>/ngo-campaign" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Campaigns</a></td>
+                <td align="center"><a href="<?php echo site_url(); ?>/people" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">People</a></td>
+                <td align="center"><a href="<?php echo site_url(); ?>/projects" style="text-decoration:none; font-weight:; color:#fff;font-size: 13px;">Projects</a></td>
 							</tr>
 						</table>
 					</td>

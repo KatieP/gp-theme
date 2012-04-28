@@ -196,7 +196,7 @@ if ( is_single() ) {
 					<li><a href="/eco-friendly-products"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
 					<li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
 					<li><a href="/people"<?php if ( $post_type == 'gp_people' ) {echo ' class="active"';} ?>>People</a></li>
-					<li><a href="/ngo-campaign"<?php if ( $post_type == 'gp_ngocampaign' ) {echo ' class="active"';} ?>>Campaigns</a></li>
+					<li><a href="/projects"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
 				</ul>
 			</nav>
 			
