@@ -2807,7 +2807,12 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	$profile_author = get_user_by('slug', $profile_pid);
 	
 	global $wpdb, $post, $current_user, $post_type_to_url_part, $newposttypes;
-
+	
+	if ( strtolower($post_type) == "directory" ) {
+		theme_profile_directory($profile_pid)
+		return;	
+	}
+	
 	$post_type_filter = "";
 	$post_type_key = array_search($post_type, $post_type_to_url_part);
 	if ( $post_type_key ) {
