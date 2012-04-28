@@ -876,7 +876,7 @@ function advertorial_index() {
 }
 
 function projects_index() {
-	theme_projectscreate_post();
+	theme_projectcreate_post();
 	if ( have_posts() ) {
 		while ( have_posts() ) { 
 			the_post(); 
