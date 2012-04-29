@@ -3493,6 +3493,19 @@ function theme_profile_analytics($profile_pid) {
 
 				$dir_sumURL = 0;
 				$directory_trails = '';
+				
+				if (array_key_exists('listing_title', $results)) {
+					$listing_title = $results['listing_title'];
+				}
+			
+				if (array_key_exists('listing_expired', $results)) {
+					if (!$results['listing_expired']) {
+						$listing_expired = ' <span class="listing_status expired">(Expired)</span>';
+					} else {
+						$listing_expired = ' <span class="listing_status expired">(' . $results['listing_expired'] . ')</span>';
+					}
+				}
+				
 				foreach ($results as $key => $value) {
 					if ($value["directory_path"]) {
 						$dir_pageViewURL = ($analytics->getPageviewsURL(urlencode($value["directory_path"])));
@@ -3503,10 +3516,7 @@ function theme_profile_analytics($profile_pid) {
 					}
 					if (is_array($value["directory_trail"])) {
 						$directory_trails = $directory_trails . '<br /><a href="http://directory.thegreenpages.com.au' . $value["directory_path"] . '">' . implode(' &gt; ', $value["directory_trail"]) . '</a>';		
-					}
-					if ($key["listing_title"]) {
-						$listing_title = $value;
-					}
+					}				
 				} 			
 	  			
 	  			# GET CLICK DATA	  			
@@ -3531,7 +3541,7 @@ function theme_profile_analytics($profile_pid) {
     			}
     			?>
     			<tr>
-    				<td class="author_analytics_title"><?php echo $listing_title . $directory_trails; ?></td>
+    				<td class="author_analytics_title"><?php echo $listing_title . $listing_expired . $directory_trails; ?></td>
     				<td class="author_analytics_cost">$39 per month</td>
     				<td class="author_analytics_page_impressions"><?php echo $dir_sumURL; ?></td>
     				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
