@@ -48,8 +48,8 @@ function email_post($row) {
 
   global $post_type_to_url_part;
 	
-	$post_url_end = $post_type_to_url_part[$type] . "/" . $post_url;
- 	$post_url = "http://www.thegreenpages.com.au/" . $post_url_end;
+	$post_url_end = "/" . $post_type_to_url_part[$type] . "/" . $post_url . "/";
+ 	$post_url = "http://www.thegreenpages.com.au" . $post_url_end;
 
 
   //Google Analytics API
@@ -72,7 +72,7 @@ function email_post($row) {
   }
 
   //Page views for the section landing page, e.g., the news page
-  $pageViewType = ($analytics->getPageviewsURL($post_type_to_url_part[$type]));
+  $pageViewType = ($analytics->getPageviewsURL('/' . $post_type_to_url_part[$type] . '/'));
   $sumType = 0;
   foreach ($pageViewType as $data) {
       $sumType = $sumType + $data;

@@ -3348,6 +3348,9 @@ function theme_profile_analytics($profile_pid) {
 				<td class="author_analytics_clicks">Clicks</td>
 			</tr>
 	<?php	
+	
+	$analytics = new analytics('greenpagesadserving@gmail.com', 'greenpages01'); //sign in and grab profile			
+  	$analytics->setProfileById('ga:42443499'); 			//$analytics->setProfileByName('Stage 1 - Green Pages');
 				
 	if ($pageposts) {		
 	 	
@@ -3359,11 +3362,10 @@ function theme_profile_analytics($profile_pid) {
 				
 			$post_type_map = $post_type_to_url_part;
 				
-			$post_url_end = $post_type_map[$type] . '/' . $post_url_ext;
+			$post_url_end = '/' . $post_type_map[$type] . '/' . $post_url_ext . '/';
 			#echo $post_url_end . '<br />$post_url_end<br />';
 				
-			$analytics = new analytics('greenpagesadserving@gmail.com', 'greenpages01'); //sign in and grab profile			
-  			$analytics->setProfileById('ga:42443499'); 			//$analytics->setProfileByName('Stage 1 - Green Pages');
+			
 			$post_date = get_the_time('Y-m-d'); 				//Post Date
 			#echo $post_date . ' ';
 			$today_date = date('Y-m-d'); 						//Todays Date
@@ -3383,7 +3385,7 @@ function theme_profile_analytics($profile_pid) {
   			}
   			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';			
 			
-  			$pageViewType = ($analytics->getPageviewsURL($post_type_map[$type]));	//Page views for the section landing page, e.g. the news page
+  			$pageViewType = ($analytics->getPageviewsURL('/' . $post_type_map[$type] . '/'));	//Page views for the section landing page, e.g. the news page
   			$sumType = 0;
   			foreach ($pageViewType as $data) {
       			$sumType = $sumType + $data;
@@ -3399,7 +3401,7 @@ function theme_profile_analytics($profile_pid) {
           	#SET UP POST ID AND AUTHOR ID DATA, POST DATE, GET LINK CLICKS DATA FROM GA 
           	$post_date_au = get_the_time('j-m-y');
 	 		$post_id = $post->ID;
-	 		$click_track_tag = 'yoast-ga/' . $post_id . '/' . $profile_author_id . '/outbound-article';
+	 		$click_track_tag = '/yoast-ga/' . $post_id . '/' . $profile_author_id . '/outbound-article/';
 			$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   			$sumClick = 0;
 			foreach ($clickURL as $data) {
@@ -3415,14 +3417,14 @@ function theme_profile_analytics($profile_pid) {
 			  		$custom = get_post_custom($post->ID);
 	 				$product_url = $custom["gp_advertorial_product_url"][0];	
 	 				if ( !empty($product_url) ) {		# IF 'BUY IT' BUTTON ACTIVATED, GET CLICKS
-	 					$click_track_tag_product_button = 'outbound/product-button/' . $post_id . '/' . $profile_author_id . '/' . $product_url; 
+	 					$click_track_tag_product_button = '/outbound/product-button/' . $post_id . '/' . $profile_author_id . '/' . $product_url . '/'; 
   						$clickURL_product_button = ($analytics->getPageviewsURL($click_track_tag_product_button));
   						foreach ($clickURL_product_button as $data) {
     						$sumClick = $sumClick + $data;
   						}
 	 				}
 	 				# GET PAGE IMPRESSIONS FOR OLD PRODUCT POSTS FROM BEFORE WE CHANGED URL AND ADD TO TOTAL
-				 	$old_post_url_end = 'new-stuff/' . $post_url_ext;
+				 	$old_post_url_end = '/new-stuff/' . $post_url_ext . '/';
 	 				$old_PageViewURL = ($analytics->getPageviewsURL($old_post_url_end));	//Page views for specific old URL
   					foreach ($old_PageViewURL as $data) {
     					$sumURL = $sumURL + $data;
@@ -3494,18 +3496,21 @@ function theme_profile_analytics($profile_pid) {
 				$today_date = date('Y-m-d'); 	// Todays Date
 				
 	  			$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
+	  			
+				$gp_legacy = new gp_legacy();
+				$results = $gp_legacy->getDirectoryPages($old_crm_id);
 				
-	  			# GET IMPRESSIONS DATA - PLACEHOLDER FROM PRODUCTS INDEX PAGE AT THE MOMENT	  			
-	  			$dir_post_url_end = 'eco-friendly-products';
-	  			$dir_pageViewURL = ($analytics->getPageviewsURL($dir_post_url_end));	//Page views for specific URL
-  				$dir_sumURL = 0;
-  				foreach ($dir_pageViewURL as $data) {
-    				$dir_sumURL = $dir_sumURL + $data;
-    				$total_sumURL = $total_sumURL + $data;
-  				}	  			
+				$dir_sumURL = 0;
+				foreach ($results as $result) {
+					$dir_pageViewURL = ($analytics->getPageviewsURL(urlencode($result)));
+					foreach ($dir_pageViewURL as $data) {
+    					$dir_sumURL = $dir_sumURL + $data;
+    					$total_sumURL = $total_sumURL + $data;
+  					}
+				}  			
 	  			
 	  			# GET CLICK DATA	  			
-				$click_track_tag = 'outbound/directory/' . $profile_author_id;
+				$click_track_tag = '/outbound/directory/' . $profile_author_id . '/';
   				$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   				$sumClick = 0;
 				foreach ($clickURL as $data) {
@@ -3513,14 +3518,14 @@ function theme_profile_analytics($profile_pid) {
 	  			}
 	  			
 	  			# ADD CLICKS FROM PROFILE PAGE WEBSITE LINK TO CLICKS (TEMPORARY?)
-	  			
-	  			$authorwww_click_track_tag = '\'/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/\'';
+	  			/*
+	  			$authorwww_click_track_tag = '/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/';
 	  			$authorwww_clickURL = ($analytics->getPageviewsURL($authorwww_click_track_tag));
 	  			
 				foreach ($authorwww_clickURL as $data) {
     				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
 	  			}
-	  			
+	  			*/
   				if ($sumClick == 0) {					#IF NO CLICKS YET, DISPLAY 'Unavailable'
     				$sumClick = 'Unavailable';
     			}
@@ -3578,7 +3583,7 @@ function theme_profile_analytics($profile_pid) {
 					<td class="author_analytics_title">Clicks</td>
 					<?php #DISPLAY TABLE CELLS WITH CLICK DATA FOR ACTIVIST BAR BUTTONS
 		  			foreach ($button_labels as $label => $label_url) {
-  						$click_track_tag = 'outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url;
+  						$click_track_tag = '/outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url . '/';
 						#var_dump($click_track_tag);
   						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
   						$sumClick = 0;

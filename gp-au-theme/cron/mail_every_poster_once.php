@@ -80,7 +80,7 @@ function email_post($row, $count, $total) {
   	
   		$mysqldate = @strtotime($date);
   
-		$post_url_end = $post_type_map[$type] . "/" . $post_url;
+		$post_url_end = "/" . $post_type_map[$type] . "/" . $post_url . "/";
 		$post_url = "http://www.thegreenpages.com.au/" . $post_type_map[$type] . "/" . $post_url;
 		
 		$post_date = @date('Y-m-d', $mysqldate);

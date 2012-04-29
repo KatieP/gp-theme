@@ -457,7 +457,7 @@
         return $this->getData(array( 'dimensions' => 'ga:day',
                                      'metrics'    => 'ga:pageviews',
                                      'sort'       => 'ga:day',
-        							 'filters'	  => 'ga:pagePath==/' . $post_url . '/'));
+        							 'filters'	  => 'ga:pagePath==' . $post_url));
         
     }
     
