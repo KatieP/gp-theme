@@ -2876,21 +2876,9 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 		}
 		
 		if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
-			echo "
-				<div class=\"total-posts\">
-					<span>{$wp_query->found_posts}</span>{$post_type_name} Posts
-					<div class=\"profile-action-container no-js\">
-						<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
-						<ul class=\"profile-action-items\">
-							<li><a href=\"/wp-admin/post-new.php?post_type=gp_news\">News (Free)</a></li>
-							<li><a href=\"/wp-admin/post-new.php?post_type=gp_events\">Event (Free)</a></li>
-							<li><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\">Product Feature ($89)</a></li>
-							<li><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\">Competition ($250)</a></li>
-							<li><a href=\"/wp-admin/post-new.php?post_type=gp_projects\">Project (Free)</a></li>
-						</ul>
-					</div>
-				</div>
-			";
+			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span>{$post_type_name} Posts";
+			gp_select_createpost();
+			echo "</div>";
 		} else {
 			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span>{$post_type_name} Posts</div>";
 		}
@@ -3336,7 +3324,10 @@ function theme_profile_analytics($profile_pid) {
 	# TABLE HEADINGS FOR POST ANALYTICS
 	?>
 	<div id="my-analytics">
-		<h2>Post Analytics</h2>
+		<?php gp_select_createpost(); ?>
+	
+		<h2>Post Analytics</h2>		
+		
 		<table class="author_analytics">
 			<tr>
 				<td class="author_analytics_title">Title</td>		
@@ -3472,7 +3463,7 @@ function theme_profile_analytics($profile_pid) {
 	}	
 	?>
 		</table>			
-		<?php theme_homecreate_post(); ?>
+
 		<p>Your posts have been viewed a total of</p> 
 		<p><span class="big-number"><?php echo $total_sumURL;?></span> times!</p>	
 		<p></p>
@@ -3499,15 +3490,24 @@ function theme_profile_analytics($profile_pid) {
 	  			
 				$gp_legacy = new gp_legacy();
 				$results = $gp_legacy->getDirectoryPages($old_crm_id);
-				
+
 				$dir_sumURL = 0;
-				foreach ($results as $result) {
-					$dir_pageViewURL = ($analytics->getPageviewsURL(urlencode($result)));
-					foreach ($dir_pageViewURL as $data) {
-    					$dir_sumURL = $dir_sumURL + $data;
-    					$total_sumURL = $total_sumURL + $data;
-  					}
-				}  			
+				$directory_trails = '';
+				foreach ($results as $key => $value) {
+					if ($value["directory_path"]) {
+						$dir_pageViewURL = ($analytics->getPageviewsURL(urlencode($value["directory_path"])));
+						foreach ($dir_pageViewURL as $data) {
+							$dir_sumURL = $dir_sumURL + $data;
+							$total_sumURL = $total_sumURL + $data;
+						}
+					}
+					if (is_array($value["directory_trail"])) {
+						$directory_trails = $directory_trails . '<br /><a href="' . $value["directory_path"] . '">' . implode(' &gt; ', $value["directory_trail"]) . '</a>';		
+					}
+					if ($key["listing_title"]) {
+						$listing_title = $value;
+					}
+				} 			
 	  			
 	  			# GET CLICK DATA	  			
 				$click_track_tag = '/outbound/directory/' . $profile_author_id . '/';
@@ -3531,7 +3531,7 @@ function theme_profile_analytics($profile_pid) {
     			}
     			?>
     			<tr>
-    				<td class="author_analytics_title"><a href="<?php echo $directory_page_url; ?>">Directory Page</a></td>
+    				<td class="author_analytics_title"><?php echo $listing_title . $directory_trails; ?></td>
     				<td class="author_analytics_cost">$39 per month</td>
     				<td class="author_analytics_page_impressions"><?php echo $dir_sumURL; ?></td>
     				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
@@ -3729,4 +3729,18 @@ function theme_insert_eventcreate_post(){
 	echo '<a href="/wp-admin/post-new.php?post_type=gp_events" class="new-post-action">Post an Event</a>';
 }
 
+function gp_select_createpost() {
+	echo "
+	<div class=\"profile-action-container no-js\">
+		<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
+		<ul class=\"profile-action-items\">
+			<li><a href=\"/wp-admin/post-new.php?post_type=gp_news\">News (Free)</a></li>
+			<li><a href=\"/wp-admin/post-new.php?post_type=gp_events\">Event (Free)</a></li>
+			<li><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\">Product Feature ($89)</a></li>
+			<li><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\">Competition ($250)</a></li>
+			<li><a href=\"/wp-admin/post-new.php?post_type=gp_projects\">Project (Free)</a></li>
+		</ul>
+	</div>
+	";
+}
 ?>

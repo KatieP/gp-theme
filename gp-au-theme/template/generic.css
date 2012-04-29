@@ -2710,7 +2710,7 @@ ul.categorieslistmain {
 
 #content .author_analytics {
 	margin-bottom: 10px;	
-	width: 636px;
+	width: 100%;
 }
 
 #content .author_analytics .author_analytics_activist,
@@ -2720,10 +2720,6 @@ ul.categorieslistmain {
 #content .author_analytics .author_analytics_clicks, 
 #content .author_analytics .author_analytics_category_impressions {
 	text-align: center;
-}
-
-#content .author_analytics .author_analytics_title {
-	width: 25%;
 }
 
 #content .author_analytics .author_analytics_activist {
