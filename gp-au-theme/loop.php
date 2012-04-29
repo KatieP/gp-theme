@@ -856,13 +856,20 @@ function people_index() {
   		
     	foreach($subscribers as $subscriber) {
       		$thisuser = get_userdata($subscriber->ID);
-      		$member_string .= '<a href="' . get_author_posts_url($thisuser->ID) . '" title="Posts by "' . esc_attr($thisuser->display_name) . '">'; 
-      		$member_string .= get_avatar( $thisuser->ID, '100', '', $thisuser->display_name );
-      		$member_string .= '<span><div><h1>' . $thisuser->display_name .'</h1></div>';
-      		$member_string .= '<div>' . $thisuser->employment_jobtitle . '</div>';
-      		$member_string .= '<div>' . $thisuser->employment_currentemployer . '</div>';
-      		$member_string .= insert_memberslist_projects_excerpt($thisuser);
-      		$member_string .= '</span></a>';
+      		/**
+      		 * DISPLAY PROFILE ONLY IF AT LEAST ONE OF EITHER:
+ 			 * PROJECTS I NEED HELP WITH, GREEN STUFF I'M INTO OR HOW I'D CHANGE THE WORLD
+ 			 * HAVE BEEN FILLED IN 
+ 			*/ 
+    	    if (!empty($thisuser->bio_projects) || !empty($thisuser->bio_change) || !empty($thisuser->bio_stuff)) {
+	      		$member_string .= '<a href="' . get_author_posts_url($thisuser->ID) . '" title="Posts by "' . esc_attr($thisuser->display_name) . '">'; 
+    	  		$member_string .= get_avatar( $thisuser->ID, '100', '', $thisuser->display_name );
+      			$member_string .= '<span><div><h1>' . $thisuser->display_name .'</h1></div>';
+	      		$member_string .= '<div>' . $thisuser->employment_jobtitle . '</div>';
+    	  		$member_string .= '<div>' . $thisuser->employment_currentemployer . '</div>';
+      			$member_string .= insert_memberslist_excerpt($thisuser);
+      			$member_string .= '</span></a>';
+      		}
     	}
    	
     $member_string .= '</div><div class="clear"></div>';
@@ -1581,12 +1588,6 @@ function theme_authorsprojects($profile_author) {
 	}	
 }
 
-function insert_memberslist_projects_excerpt($member) {
-	if (!empty($member->bio_projects)) {	
-		return '<div><p><strong>Needs Help With: </strong>' . substr($member->bio_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
-	}
-}
-
 function theme_authorsstuff($profile_author) {
 	if (!empty($profile_author->bio_stuff)) {
 		echo '<h1>Green Stuff I\'m Into</h1>';
@@ -1594,6 +1595,17 @@ function theme_authorsstuff($profile_author) {
 	}	
 }
 
+function insert_memberslist_excerpt($member) {
+	if (!empty($member->bio_projects)) {	
+		return '<div><p><strong>Needs Help With: </strong>' . substr($member->bio_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
+	}
+	else if (!empty($member->bio_change)) {	
+		return '<div><p><strong>Would Change World By: </strong>' . substr($member->bio_change, 0, 130) . ' <strong>... Learn More ...</strong></p></div>';
+	}
+	else if (!empty($member->bio_stuff)) {	
+		return '<div><p><strong>Is Into: </strong>' . substr($member->bio_stuff, 0, 140) . ' <strong>... Learn More ...</strong></p></div>';
+	}
+}
 
 function theme_subscribertabs($profile_author) {
 	global $current_user;
