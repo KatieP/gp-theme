@@ -3502,7 +3502,7 @@ function theme_profile_analytics($profile_pid) {
 						}
 					}
 					if (is_array($value["directory_trail"])) {
-						$directory_trails = $directory_trails . '<br /><a href="' . $value["directory_path"] . '">' . implode(' &gt; ', $value["directory_trail"]) . '</a>';		
+						$directory_trails = $directory_trails . '<br /><a href="http://directory.thegreenpages.com.au' . $value["directory_path"] . '">' . implode(' &gt; ', $value["directory_trail"]) . '</a>';		
 					}
 					if ($key["listing_title"]) {
 						$listing_title = $value;
