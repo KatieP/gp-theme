@@ -738,7 +738,7 @@ function my_show_extra_profile_fields( $user ) {
 		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
 		$wp_id = $user->ID;
 		$directory_page_url = get_the_author_meta( 'directory_page_url', $user->ID );
-		$video_news_youtube_id = get_the_author_meta( 'video_news_youtube_id', $user->ID );		
+		$video_news_id = get_the_author_meta( 'video_news_id', $user->ID );		
 		echo ('
 		<h3>Miscellaneous</h3>
 		
@@ -759,9 +759,9 @@ function my_show_extra_profile_fields( $user ) {
 				<span class="description">This is used to provide a link to the members Directory Page from their profile page</span></td>
 			</tr>
 			<tr>
-				<th><label for="video_news_youtube_id">Video News YouTube ID</label></th>
-				<td><input type="text" 	name="video_news_youtube_id" id="video_news_youtube_id" class="regular-text" maxlength="255" value="' . esc_attr($video_news_youtube_id) . '" /><br />
-				<span class="description">This is used to insert the YouTube ID into the iframe that displays the video news</span></td>
+				<th><label for="video_news_id">Video News ID</label></th>
+				<td><input type="text" 	name="video_news_id" id="video_news_id" class="regular-text" maxlength="255" value="' . esc_attr($video_news_id) . '" /><br />
+				<span class="description">This is used to insert the ID into the iframe that displays the video news on right sidebar</span></td>
 			</tr>			
 		</table>
 		');
@@ -826,7 +826,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
 	update_usermeta($user_id, 'old_crm_id', $_POST['old_crm_id'] );
 	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
-	update_usermeta($user_id, 'video_news_youtube_id', $_POST['video_news_youtube_id'] );
+	update_usermeta($user_id, 'video_news_id', $_POST['video_news_id'] );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
 	$subscription_post = array();

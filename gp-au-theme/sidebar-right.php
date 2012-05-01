@@ -7,13 +7,16 @@
 						</script>
 						<span class="icon-advertisement">Advertisement</span>
 				</div>
-				<?php 
-				/** CREATE YOUTUBE URL FROM VARIABLE IN KATIES PROFILE USERMETA, DISPLAY VIDEO NEWS **/
-				$video_news_youtube_id = get_the_author_meta( 'video_news_youtube_id', '2' );
-				$video_news_youtube_url = 'http://www.youtube.com/embed/' . $video_news_youtube_id;
-				?>
-				<iframe width="300" height="177" src="<?php echo $video_news_youtube_url; ?>" frameborder="0" allowfullscreen></iframe>				
+				<div id="video">
+					<?php 
+					/** CREATE VIDEO URL FROM VARIABLE IN KATIES PROFILE USERMETA, DISPLAY VIDEO NEWS **/
+					$video_news_id = get_the_author_meta( 'video_news_id', '2' );
+					$video_news_url = 'http://player.vimeo.com/video/' . $video_news_id;
+					?>
+					<iframe src="<?php echo $video_news_url; ?>" width="300" height="177" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>				
+				</div>
 				<?php
+				
 				/**SHOWS THE NEXT 5 UP AND COMING EVENTS UNDER THE EVENT CALENDAR**/ 				
 				coming_events();
 				
@@ -37,11 +40,14 @@
 				}
 				
 				#if ( is_home() ) {
-				?>		
+				?>
+				<div id="twitter">
+					<a href="https://twitter.com/GreenPagesAu" class="twitter-follow-button" data-show-count="true" data-size="large">Follow @GreenPagesAu</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				</div>
 				<div id="facebook">
 					<!-- <span class="title">Find us on Facebook</span>  -->
-					<iframe src="http://www.facebook.com/plugins/likebox.php?id=135951849770296&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=274" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>
-					<a href="http://www.facebook.com/pages/Green-Pages-Community/135951849770296" target="_blank" class="moreinfo">Click here to visit our Facebook page</a>
+					<iframe src="http://www.facebook.com/plugins/likebox.php?id=135951849770296&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>
 				</div>
 				<?php
 				#}
@@ -145,18 +151,20 @@
 						<td></td>							
 					</tr>
 				</table>
+				<!--  
 				<div id="toolbox">
 					<script type="text/javascript">
-					<!--
+
 						google_ad_client = "ca-pub-5276108711751681";
 						/* Col3 text ads */
 						google_ad_slot = "3620435405";
 						google_ad_width = 300;
 						google_ad_height = 250;
-					//-->
+
 					</script>
 					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 				</div>
+				-->
 				<div class="col3-ad" style="margin-top:20px;">
 					<div>
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec2.html" class="medrec"></iframe> -->

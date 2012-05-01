@@ -1520,8 +1520,8 @@ margin-top: 16px;
 			border: 0px;
 			overflow: hidden;
 			width: 300px;
-			height: 274px;
-			margin-top: 10px;
+			height: 200px;
+			margin-top: 0px;
 		}
 		
 		/** LIST YOU BUSINESS / ADVERTISE WITH US / FOLLOW US **/
@@ -1673,7 +1673,7 @@ margin-top: 16px;
 		
 		/** VIDEO **/
 		
-		#map {margin: 25px 0 0 0;}
+		#video {margin: 25px 0 0 0;}
 
 	/** ADVERTISEMENTS **/
 	
