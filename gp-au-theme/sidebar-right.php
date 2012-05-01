@@ -110,32 +110,11 @@
 						<td>
 							<nav id="advertisewus">
 								<?php $click_track_tag_awu = '/internal/advertising/advertise-with-us/'; ?>
-								<?php if ( !is_user_logged_in() ) { ?>
-								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
-								<?php } 
-								else { ?>
-								<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-cover-logged-in.html" rel="iframe-820-460" class="pirobox_gall1" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
-								<?php } ?>
+								<a href="<?php bloginfo('template_url'); ?>/about/rate-card/" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
 									<span class="title">Advertise</span>
 									<span class="content">Explore the options</span>
 								</a>
 							</nav>
-							<div class="hidden">
-								<?php if ( !is_user_logged_in() ) { ?>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-display-ad.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-								<?php } 
-								else { ?>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-directory-page-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-new-stuff-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-display-ad-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-competition-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>
-									<a href="<?php bloginfo('template_url'); ?>/gp-rate-card-exclusive-email-logged-in.html" rel="iframe-820-460"  class="pirobox_gall1"></a>								
-								<?php }?>								
-							</div>
 						</td>
 					</tr>
 					<tr>
