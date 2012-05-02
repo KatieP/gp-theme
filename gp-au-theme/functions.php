@@ -3500,9 +3500,9 @@ function theme_profile_analytics($profile_pid) {
 			
 				if (array_key_exists('listing_expired', $results)) {
 					if (!$results['listing_expired']) {
-						$listing_expired = ' <span class="listing_status expired">(Expired)</span>';
+						$listing_expired = ' <span class="listing_status active">(Active)</span>';
 					} else {
-						$listing_expired = ' <span class="listing_status expired">(' . $results['listing_expired'] . ')</span>';
+						$listing_expired = ' <span class="listing_status expired">(Expired on ' . date("d/m/Y", $results['listing_expired']) . ')</span>';
 					}
 				}
 				
