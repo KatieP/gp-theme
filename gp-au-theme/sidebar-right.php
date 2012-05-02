@@ -127,7 +127,15 @@
 								</a>
 							</nav>
 						</td>
-						<td></td>							
+						<td>
+							<nav id="media-kit">
+								<?php $click_track_tag_media_kit = '/internal/media-kit/'; ?>
+								<a href="<?php bloginfo('template_url'); ?>/about/media-kit/" target="_blank" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_media_kit; ?>']);">
+									<span class="title">Media Kit</span>
+									<span class="content">About the members</span>
+								</a>
+							</nav>						
+						</td>							
 					</tr>
 				</table>
 				<!--  

@@ -1524,7 +1524,7 @@ margin-top: 16px;
 			margin-top: 0px;
 		}
 		
-		/** LIST YOU BUSINESS / ADVERTISE WITH US / FOLLOW US **/
+		/** LIST YOU BUSINESS / ADVERTISE WITH US / FOLLOW US / MEDIA KIT**/
 		
 		.hidden {
 			display: none;
@@ -1534,12 +1534,12 @@ margin-top: 16px;
 			width: 320px;
 		}
 		
-		#lyb, #advertisewus, #followus, #renew-directory {
+		#lyb, #advertisewus, #followus, #renew-directory, #media-kit {
 			margin: 22px 0 0 0;
 			width: 140px;
 		}
 		
-		#lyb a, #advertisewus a, #renew-directory a, #followus {
+		#lyb a, #advertisewus a, #renew-directory a, #followus, #media-kit a {
 			background-color: #f2f2f2;	
 			color: #666;
 			font-size: 11px;
@@ -1556,8 +1556,11 @@ margin-top: 16px;
 		}
 		
 		#renew-directory a {
-			border: 1px solid #61C201;
-			
+			border: 1px solid #61C201;	
+		}
+		
+		#media-kit a {
+			border: 1px solid #00AED7;
 		}
 		
 		#followus {
@@ -1565,7 +1568,7 @@ margin-top: 16px;
 			padding-bottom:6px;
 		}
 	
-		#lyb .title, #advertisewus .title, #followus .title, #renew-directory .title{
+		#lyb .title, #advertisewus .title, #followus .title, #renew-directory .title, #media-kit .title {
 			margin: -1px -1px 0px -1px;
 			display: block;
 			color: #fff;
@@ -1579,7 +1582,7 @@ margin-top: 16px;
 			text-transform: capitalize;
 		}
 		
-		#lyb .content, #advertisewus .content, #renew-directory .content {
+		#lyb .content, #advertisewus .content, #renew-directory .content, #media-kit .content {
 			line-height: 25px;
 			padding: 0px 6px 0px 6px;
 			display: block;
@@ -1589,8 +1592,9 @@ margin-top: 16px;
 		#advertisewus .title {background-color: #fc0d6b;}
 		#followus .title {background-color: #00aed7;}
 		#renew-directory .title {background-color: #61C201;}
+		#media-kit .title {background-color: #00AED7;}
 		
-		#lyb .content:hover, #advertisewus .content:hover, #renew-directory .content:hover {
+		#lyb .content:hover, #advertisewus .content:hover, #renew-directory .content:hover, #media-kit .content:hover {
 			text-decoration:underline;
 		}	
 		
