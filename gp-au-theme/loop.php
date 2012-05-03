@@ -204,28 +204,18 @@ function theme_singlesocialbar() {
 		<div id="gp_share">
 		    <div id="gp_sharebar">
 		    	<div id="gp_sharebox">
-			    	<div class="wdt title">Share</div>
+			    	<div class="wdt title">Share</div>			    	
 			        <div class="wdt twitter">
 			            <a href="http://twitter.com/share" class="twitter-share-button" data-url="' . get_permalink($post->ID) . '" data-text="' . esc_attr(get_the_title($post->ID)) . '"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
 			            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 			        </div>
-			        <div class="wdt google-plus">
-			            <g:plusone size="tall" href="' . get_permalink($post->ID) . '"></g:plusone>
-			            <script type="text/javascript">
-			                (function() {
-			                var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
-			                po.src = \'https://apis.google.com/js/plusone.js\';
-			                var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
-			                })();
-			            </script>
-			        </div>
 			        <div class="wdt linkedin">
 			        	<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
 						<script type="IN/Share" data-url="' . get_permalink($post->ID) . '" data-counter="top"></script>
-			        </div>
+			        </div>			        		        		        	
 			        <div class="wdt facebook">
 			            <div class="fb-like" data-href="' . get_permalink($post->ID) . '" data-send="true" data-layout="box_count"></div>
-			        </div>
+			        </div>			        
 			        <div class="wdt stumbleupon">
 			            <script type="text/javascript">
   							(function() {
@@ -238,7 +228,7 @@ function theme_singlesocialbar() {
 			        </div>
 			        <div class="wdt pinterest">
 			            <a href="http://pinterest.com/pin/create/button/?url='. get_permalink($post->ID) .'" class="pin-it-button" count-layout="vertical"><img border="0" src="' . get_permalink($post->ID) . '" title="Pin It" width="50px" /></a>
-			        </div>			        			        
+			        </div>
 			        <div class="clear"></div>
 		        </div>';
 				/*if ( comments_open() ) {
