@@ -168,7 +168,7 @@
 			function setTitle() { recent().setTitle(prompt("Enter new title:")); }
 		</script>
 		<?php } ?>
-		
+		<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
 	</body>
 	
 </html>
