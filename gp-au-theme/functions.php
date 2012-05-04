@@ -263,16 +263,6 @@ function gp_after_scripts() {
 			 });*/
 		</script>
 		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$().piroBox_ext({
-				piro_speed : 700,
-				bg_alpha : 0.5,
-				piro_scroll : true // pirobox always positioned at the center of the page
-				});
-			});
-		</script>
-		
 		<!--[if lte IE 6]>
 			<link type="text/css" rel="stylesheet" media="all" href="<?php echo $template_url; ?>/template/ie6.css" />
 		<![endif]-->
