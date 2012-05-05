@@ -824,7 +824,7 @@ function my_save_extra_profile_fields( $user_id ) {
 		foreach ( $gp->campaignmonitor as $key => $value ) {
 			if ($key == $current_site->id) {
 				foreach ( $value['lists'] as $list_key => $list_value ) {
-					if (!cm_subscribe($list_key, $_POST[$list_key])) {
+					if (!cm_subscribe($list_key, $_POST[$list_key], $user_id)) {
 						$_POST[$list_key] = false;
 					}
 					$subscription_post = $subscription_post + array($list_key => $_POST[$list_key]);
