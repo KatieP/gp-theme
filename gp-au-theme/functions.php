@@ -3467,6 +3467,7 @@ function theme_profile_analytics($profile_pid) {
 				<tr>
 					<td class="author_analytics_title">Title</td>
 					<td class="author_analytics_cost">Value</td>
+					<td class="author_analytics_category_impressions">Category Impressions</td>
 					<td class="author_analytics_page_impressions">Page views</td>
 					<td class="author_analytics_clicks">Clicks</td>
 				</tr>	
@@ -3482,12 +3483,20 @@ function theme_profile_analytics($profile_pid) {
 				$results = $gp_legacy->getDirectoryPages($old_crm_id);
 
 				$dir_sumURL = 0;
+				$list_sumURL = 0;
+				$totaldir_sumURL = 0;
+				$totallist_sumURL = 0;
+				$directory_trail = '';
 				$directory_trails = '';
 				
 				if (array_key_exists('listing_title', $results)) {
 					$listing_title = $results['listing_title'];
 				}
 			
+				if (array_key_exists('listing_path_example', $results)) {
+					$listing_path = '<a href="http://directory.thegreenpages.com.au' . $results["listing_path_example"] . '">' . $listing_title . '</a>';
+				}
+				
 				if (array_key_exists('listing_expired', $results)) {
 					if (!$results['listing_expired']) {
 						$listing_expired = ' <span class="listing_status active">(Active)</span>';
@@ -3496,18 +3505,43 @@ function theme_profile_analytics($profile_pid) {
 					}
 				}
 				
-				foreach ($results as $key => $value) {
-					if ($value["directory_path"]) {
-						$dir_pageViewURL = ($analytics->getPageviewsURL(urlencode($value["directory_path"])));
-						foreach ($dir_pageViewURL as $data) {
-							$dir_sumURL = $dir_sumURL + $data;
-							$total_sumURL = $total_sumURL + $data;
+				if (array_key_exists('directory', $results)) {
+					$i = 0;
+					foreach ($results["directory"] as $value) {
+						if ($value["directory_path"]) {
+							$dir_pageViewURL = ($analytics->getPageviewsURL(urlencode($value["directory_path"])));
+							$dir_sumURL = 0;
+							foreach ($dir_pageViewURL as $data) {
+								$dir_sumURL = $dir_sumURL + (int)$data;
+							}
+							$totaldir_sumURL = $totaldir_sumURL + $dir_sumURL;
+	 					}
+	 					
+						if ($value["listing_path"]) {
+							$list_pageViewURL = ($analytics->getPageviewsURL(urlencode($value["listing_path"])));
+							$list_sumURL = 0;
+							foreach ($list_pageViewURL as $data) {
+								$list_sumURL = $list_sumURL + (int)$data;
+							}
+							$totallist_sumURL = $totallist_sumURL + $list_sumURL;
+	 					}
+	
+						if (is_array($value["directory_trail"])) {
+							$j = 0;
+							foreach ($value["directory_trail"] as $crumb) {
+								if (is_array($crumb)) {
+									if (++$j > 1) {
+										$directory_trail = $directory_trail . $crumb['title'] . " &gt; ";
+									}
+								}
+							}
+							if ($directory_trail != '') {
+								$directory_trails = $directory_trails . '<br />&nbsp;&nbsp;<a href="http://directory.thegreenpages.com.au' . $value["directory_path"] . '">' . substr($directory_trail, 0, -6) . '</a>';
+							}
+							$directory_trail = '';
 						}
 					}
-					if (is_array($value["directory_trail"])) {
-						$directory_trails = $directory_trails . '<br /><a href="http://directory.thegreenpages.com.au' . $value["directory_path"] . '">' . implode(' &gt; ', $value["directory_trail"]) . '</a>';		
-					}				
-				} 			
+				}		
 	  			
 	  			# GET CLICK DATA	  			
 				$click_track_tag = '/outbound/directory/' . $profile_author_id . '/';
@@ -3531,9 +3565,10 @@ function theme_profile_analytics($profile_pid) {
     			}
     			?>
     			<tr>
-    				<td class="author_analytics_title"><?php echo $listing_title . $listing_expired . $directory_trails; ?></td>
+    				<td class="author_analytics_title"><?php echo $listing_path . $listing_expired . "<br /><span class=\"author-analytics-featuredin\">Featured in:</span>" . $directory_trails; ?></td>
     				<td class="author_analytics_cost">$39 per month</td>
-    				<td class="author_analytics_page_impressions"><?php echo $dir_sumURL; ?></td>
+    				<td class="author_analytics_category_impressions"><?php echo $totaldir_sumURL; ?></td>
+    				<td class="author_analytics_page_impressions"><?php echo $totallist_sumURL; ?></td>
     				<td class="author_analytics_clicks"><?php echo $sumClick; ?></td>
     			</tr>
     		</table>
