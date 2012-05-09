@@ -219,12 +219,14 @@ function theme_singlesocialbar() {
 			        <div class="wdt stumbleupon">
 			            <script type="text/javascript">
   							(function() {
-    							var li = document.createElement(\'script\'); li.type = \'text/javascript\'; li.async = true;
+    							var li = document.createElement(\'script\'); 
+    							li.type = \'text/javascript\'; 
+    							li.async = true;
     							li.src = \'https://platform.stumbleupon.com/1/widgets.js\';
     							var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(li, s);
   							})();
 						</script>
-						<su:badge layout="5"></su:badge>
+						<su:badge layout="5" location="' . get_permalink($post->ID) . '"></su:badge>
 			        </div>
 			        <div class="wdt pinterest">
 			            <a href="http://pinterest.com/pin/create/button/?url='. get_permalink($post->ID) .'" class="pin-it-button" count-layout="vertical"><img border="0" src="' . get_permalink($post->ID) . '" title="Pin It" width="50px" /></a>
