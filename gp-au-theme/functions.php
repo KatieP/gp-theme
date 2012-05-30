@@ -69,7 +69,7 @@ function custom_excerpt_length( $length ) {
 }
 
 function add_jquery_data() { 
-	global $current_user;
+	global $current_user, $post;
 	if ( parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/profile.php" || parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/user-edit.php" ) {
 		if ( parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/profile.php" ) { ?>
 			<script type="text/javascript">
@@ -230,7 +230,7 @@ function add_jquery_data() {
 		.subsubsub {display: none;}
 	</style>
 	<?php }
-	if ((get_post_type() == 'gp_advertorial' || get_post_type() == 'gp_competitions') && (get_post_status( $ID ) == 'auto-draft' || get_post_status( $ID ) == 'draft')) {
+	if ((get_post_type() == 'gp_advertorial' || get_post_type() == 'gp_competitions') && (get_post_status( $post->ID ) == 'auto-draft' || get_post_status( $post->ID ) == 'draft')) {
 		if ( get_user_role( array('subscriber', 'contributor') ) ) {
 	?>
 	<script type="text/javascript">
@@ -264,7 +264,7 @@ function gp_after_scripts() {
 		</script>
 		
 		<!--[if lte IE 6]>
-			<link type="text/css" rel="stylesheet" media="all" href="<?php echo $template_url; ?>/template/ie6.css" />
+			<link type="text/css" rel="stylesheet" media="all" href="<?php echo get_bloginfo('template_url'); ?>/template/ie6.css" />
 		<![endif]-->
 		<?php
 	}
@@ -1425,16 +1425,16 @@ $sitemaptypes = array(
 );
 
 $newposttypes = array(
-	array('id' => 'gp_news', 'name' => 'News', 'plural' => false, 'addmeta' => false, 'args' => $newsargs, 'taxonomy' => $newstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '1', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_events', 'name' => 'Event', 'plural' => true, 'addmeta' => true, 'args' => $eventargs, 'taxonomy' => $eventtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date', 'dates'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_jobs', 'name' => 'Job', 'plural' => true, 'addmeta' => false, 'args' => $jobargs, 'taxonomy' => $jobtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_competitions', 'name' => 'Competition', 'plural' => true, 'addmeta' => true, 'args' => $competitionargs, 'taxonomy' => $competitiontaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date', 'dates'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_people', 'name' => 'People', 'plural' => false, 'addmeta' => false, 'args' => $peopleargs, 'taxonomy' => $peopletaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_katiepatrick', 'name' => 'Katie Patrick', 'plural' => false, 'addmeta' => false, 'args' => $katiepatrickargs, 'taxonomy' => $katiepatricktaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_productreview', 'name' => 'Product Review', 'plural' => false, 'addmeta' => false, 'args' => $productreviewargs, 'taxonomy' => $productreviewtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_advertorial', 'name' => 'Product', 'plural' => true, 'addmeta' => true, 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_projects', 'name' => 'Project', 'plural' => true, 'addmeta' => false, 'args' => $projectsargs, 'taxonomy' => $projectstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_greengurus', 'name' => 'Green Gurus', 'plural' => false, 'addmeta' => false, 'args' => $greengurusargs, 'taxonomy' => $greengurustaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment')
+	array('id' => 'gp_news', 'name' => 'News', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $newsargs, 'taxonomy' => $newstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '1', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_events', 'name' => 'Event', 'plural' => true, 'GPmeta' => array(array('id' => 'postEventDate', 'title' => 'Event Date'), array('id' => 'postGeoLoc', 'title' => 'Event Location')), 'args' => $eventargs, 'taxonomy' => $eventtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date', 'dates'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_jobs', 'name' => 'Job', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $jobargs, 'taxonomy' => $jobtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_competitions', 'name' => 'Competition', 'plural' => true, 'GPmeta' => array(array('id' => 'postCompetitionDate', 'title' => 'Competition Date'), array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $competitionargs, 'taxonomy' => $competitiontaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date', 'dates'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_people', 'name' => 'People', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $peopleargs, 'taxonomy' => $peopletaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_katiepatrick', 'name' => 'Katie Patrick', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $katiepatrickargs, 'taxonomy' => $katiepatricktaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_productreview', 'name' => 'Product Review', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $productreviewargs, 'taxonomy' => $productreviewtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_advertorial', 'name' => 'Product', 'plural' => true, 'GPmeta' => array(array('id' => 'postProductURL', 'title' => 'Purchase URL'), array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_projects', 'name' => 'Project', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $projectsargs, 'taxonomy' => $projectstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
+	array('id' => 'gp_greengurus', 'name' => 'Green Gurus', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $greengurusargs, 'taxonomy' => $greengurustaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment')
 );
 
 /** SET NEWS POST TYPE FOR DISPLAY ON THE HOME PAGE **/
@@ -1465,8 +1465,6 @@ for($index = 0; $index < count($newposttypes); $index++) {
 	# add_action( 'manage_posts_custom_column', $newposttypes[$index]['id'] . '_custom_columns' );
 }
 add_action( 'manage_posts_custom_column', 'new_custom_columns' );
-add_action( 'admin_init', 'createPostMeta' );
-add_action( 'save_post', 'savePostType' );
 add_filter( 'post_updated_messages', 'updated_messages' );
 
 function createPostOptions () {
@@ -1479,81 +1477,6 @@ function createPostOptions () {
 	}	
 	flush_rewrite_rules();
 }
-
-function getPluralName ($newposttype) {
-	if ($newposttype['plural'] == true) {
-		return $newposttype['name'] . 's';
-	} else {
-		return $newposttype['name'];
-	}
-}
-
-function createPostMeta () {
-	global $newposttypes;
-	for($index = 0; $index < count($newposttypes); $index++) {
-		if ($newposttypes[$index]['enabled'] == true) {
-			if ( $newposttypes[$index]['addmeta'] == true && function_exists($newposttypes[$index]['id'] . '_meta') ) {
-				$getPostName = getPluralName( $newposttypes[$index] );
-				add_meta_box( $newposttypes[$index]['id'] . '_meta', $getPostName , $newposttypes[$index]['id'] . '_meta', $newposttypes[$index]['id'] );
-			}
-			/* WORDBOOK PLUGIN SUPPORT FOR CUSTOM POST TYPES */
-			if (get_option('wordbooker_settings')) { 
-				if (current_user_can(WORDBOOKER_MINIMUM_ADMIN_LEVEL)) {
-					add_meta_box( 'wordbook_sectionid', __('WordBooker Options'),'wordbooker_inner_custom_box', $newposttypes[$index]['id'] , 'advanced' );
-				}
-			}
-		}
-	}
-}
-
-
-function savePostType () {
-	global $post, $newposttypes;
-		$thisposttype = get_post_type();
-
-	    if ( !wp_verify_nonce( $_POST[$thisposttype . '-nonce'], $thisposttype . '-nonce' )) {
-	        return $post->ID;
-	    }
-	    
-	    if ( !current_user_can( 'edit_post', $post->ID )) {
-	        return $post->ID;
-	    }
-	    
-	    /* set your custom fields */
-	    if(isset($_POST[$thisposttype . '_startdate'])) {
-	    	$updatestartd = strtotime ( $_POST[$thisposttype . '_startdate'] . $_POST[$thisposttype . '_starttime'] );
-	    	update_post_meta($post->ID, $thisposttype . '_startdate', $updatestartd );
-	    }
-	
-	    if(isset($_POST[$thisposttype . '_enddate'])) {
-	    	$updateendd = strtotime ( $_POST[$thisposttype . '_enddate'] . $_POST[$thisposttype . '_endtime']);
-	    	update_post_meta($post->ID, $thisposttype . '_enddate', $updateendd );
-	    }
-	    
-		if(isset($_POST[$thisposttype . '_drawdate'])) {
-	    	$updatedrawd = strtotime ( $_POST[$thisposttype . '_drawdate'] . $_POST[$thisposttype . '_drawtime']);
-	    	update_post_meta($post->ID, $thisposttype . '_drawdate', $updatedrawd );
- 	    }
-	    
-		if(isset($_POST[$thisposttype . '_loccountry'])) {
-	    	update_post_meta($post->ID, $thisposttype . '_loccountry', $_POST[$thisposttype . '_loccountry'] );
-	    }
-	    
-		if(isset($_POST[$thisposttype . '_locstate'])) {
-	    	update_post_meta($post->ID, $thisposttype . '_locstate', $_POST[$thisposttype . '_locstate'] );
-	    }
-	    
-		if(isset($_POST[$thisposttype . '_locsuburb'])) {
-	    	update_post_meta($post->ID, $thisposttype . '_locsuburb', $_POST[$thisposttype . '_locsuburb'] );
-	    }
-	    
-		if(isset($_POST[$thisposttype . '_product_url'])) {		# gp_advertorial meta - url for 'Buy It!' button
-	    	update_post_meta($post->ID, $thisposttype . '_product_url', $_POST[$thisposttype . '_product_url'] );
-	    }
-	    
-	    return $post;
-}
-
 
 function editColumns($columns) {
 	global $newposttypes;
@@ -1617,11 +1540,9 @@ function new_custom_columns( $column ) {
 		    		echo mysql2date('Y/m/d', $post->post_date);
 		    	break;
 	            case 'col_' . $newposttypes[$index]['id'] . '_dates':
-	                $startd = $custom[$newposttypes[$index]['id'] . '_startdate'][0];
-	                $endd = $custom[$newposttypes[$index]['id'] . '_enddate'][0];
-	                $startdate = date("F j, Y", $startd);
-	                $enddate = date("F j, Y", $endd);
-	                echo $startdate . '<br /><em>' . $enddate . '</em>';
+	                $startd = isset($custom[$newposttypes[$index]['id'] . '_startdate'][0]) ? date("F j, Y", $custom[$newposttypes[$index]['id'] . '_startdate'][0]) : "";
+	                $endd = isset($custom[$newposttypes[$index]['id'] . '_enddate'][0]) ? date("F j, Y", $custom[$newposttypes[$index]['id'] . '_enddate'][0]) : "";
+	                echo $startd . '<br /><em>' . $endd . '</em>';
 	            break;
 			}
     	}
@@ -1653,120 +1574,6 @@ function updated_messages( $messages ) {
   }
   
   return $messages;
-}
-
-/***  META ***/
-
-function gp_advertorial_meta () {
-	 global $post;
-	 $custom = get_post_custom($post->ID);
-	 $meta_product_url = $custom["gp_advertorial_product_url"][0];
-	 
-	 echo '<input type="hidden" name="gp_advertorial-nonce" id="gp_advertorial-nonce" value="' . wp_create_nonce( 'gp_advertorial-nonce' ) . '" />';
-	 ?>	 
-	 <div class="gp-meta">
-	 	<label>Enter the url your product can be purchased from:  </label><input id="gp_advertorial_product_url" type="text" name="gp_advertorial_product_url" value="<?php 
-	 	if ( !empty($meta_product_url) ) {
-	 		echo $meta_product_url; 
-	 	} 
-	 	else {
-			echo 'http://';
-	 	}	
-	 ?>">
-	 </div>
-	 <?php 	  
-}
-
-function gp_events_meta () {
-    global $post, $states_au;
-    $custom = get_post_custom($post->ID);
-
-    $meta_sd = $custom["gp_events_startdate"][0];
-    $meta_ed = $custom["gp_events_enddate"][0];
-    $meta_st = $meta_sd;
-    $meta_et = $meta_ed;
-    
-    $meta_loccountry = 'AU';
-    $meta_locstate = $custom["gp_events_locstate"][0];
-    $meta_locsuburb = $custom["gp_events_locsuburb"][0];
-
-    $date_format = get_option('date_format');
-    $time_format = get_option('time_format');
-
-    if ($meta_sd == null) { $meta_sd = time(); $meta_ed = $meta_sd; $meta_st = 0; $meta_et = 0;}
-    
-    $clean_sd = date("D, M d, Y", $meta_sd);
-    $clean_ed = date("D, M d, Y", $meta_ed);
-    $clean_st = date($time_format, $meta_st);
-    $clean_et = date($time_format, $meta_et);
-
-    echo '<input type="hidden" name="gp_events-nonce" id="gp_events-nonce" value="' . wp_create_nonce( 'gp_events-nonce' ) . '" />';
-    ?>
-    <div class="tf-meta">
-        <ul>
-            <li><label>Start Date</label><input name="gp_events_startdate" class="tfdate" value="<?php echo $clean_sd; ?>" /></li>
-            <li><label>Start Time</label><input name="gp_events_starttime" value="<?php echo $clean_st; ?>" /></li>
-            <li><label>End Date</label><input name="gp_events_enddate" class="tfdate" value="<?php echo $clean_ed; ?>" /></li>
-            <li><label>End Time</label><input name="gp_events_endtime" value="<?php echo $clean_et; ?>" /></li>
-        </ul>
-    </div>
-    <div class="gp-meta">
-        <ul>
-            <li>
-            	<label>State</label>
-            		<select name="gp_events_locstate">
-						<?php
-						foreach ($states_au as $state) {
-							if ($state == $meta_locstate) {$state_selected = ' selected';} else {$state_selected = '';}
-		  					echo '<option value="' . $state . '"' . $state_selected . '>' . $state . '</option>';
-						}
-		  				?> 									
-					</select>
-            
-            </li>
-            <li><label>Suburb</label><input name="gp_events_locsuburb" value="<?php echo $meta_locsuburb; ?>" /></li>
-        </ul>
-        <input type="hidden" name="gp_events_loccountry" value="<?php echo $meta_loccountry; ?>" />
-    </div>
-    <?php
-}
-
-function gp_competitions_meta () {
-    global $post;
-    $custom = get_post_custom($post->ID);
-
-    $meta_sd = $custom["gp_competitions_startdate"][0];
-    $meta_ed = $custom["gp_competitions_enddate"][0];
-    $meta_dd = $custom["gp_competitions_drawdate"][0];
-    $meta_st = $meta_sd;
-    $meta_et = $meta_ed;
-    $meta_dt = $meta_dd;
-
-    $date_format = get_option('date_format');
-    $time_format = get_option('time_format');
-
-    if ($meta_sd == null) { $meta_sd = time(); $meta_ed = $meta_sd; $meta_dd = $meta_sd; $meta_st = 0; $meta_et = 0; $meta_dt = 0;}
-    
-    $clean_sd = date("D, M d, Y", $meta_sd);
-    $clean_ed = date("D, M d, Y", $meta_ed);
-    $clean_dd = date("D, M d, Y", $meta_dd);
-    $clean_st = date($time_format, $meta_st);
-    $clean_et = date($time_format, $meta_et);
-    $clean_dt = date($time_format, $meta_dt);
-
-    echo '<input type="hidden" name="gp_competitions-nonce" id="gp_competitions-nonce" value="' . wp_create_nonce( 'gp_competitions-nonce' ) . '" />';
-    ?>
-    <div class="tf-meta">
-        <ul>
-            <li><label>Start Date</label><input name="gp_competitions_startdate" class="tfdate" value="<?php echo $clean_sd; ?>" /></li>
-            <li><label>Start Time</label><input name="gp_competitions_starttime" value="<?php echo $clean_st; ?>" /></li>
-            <li><label>Close Date</label><input name="gp_competitions_enddate" class="tfdate" value="<?php echo $clean_ed; ?>" /></li>
-            <li><label>Close Time</label><input name="gp_competitions_endtime" value="<?php echo $clean_et; ?>" /></li>
-            <li><label>Draw Date</label><input name="gp_competitions_drawdate" class="tfdate" value="<?php echo $clean_dd; ?>" /></li>
-            <li><label>Draw Time</label><input name="gp_competitions_drawtime" value="<?php echo $clean_dt; ?>" /></li>
-        </ul>
-    </div>
-    <?php
 }
 
 function hideUpdateNag() {
@@ -2444,6 +2251,8 @@ function coming_events() {
 
 	if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
 		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
+    } else {
+    	$filterby_state = "";
     }
     
 	/** SQL QUERY FOR COMING 5 EVENTS **/
