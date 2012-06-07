@@ -716,10 +716,18 @@ function my_show_extra_profile_fields( $user ) {
 			
 			echo ('</table>');
 		}
-		
-		if ( get_the_author_meta( 'reg_advertiser', $user->ID ) == true ) {$checkthis = ' checked="checked"';} else {$checkthis = '';}
-		echo ('
-		<h3>Accounts Types</h3>
+	}
+
+
+    /** HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
+     ** OTHERWISE EVERYTIME A NON ADMIN UPDATES THEIR PROFILE PAGE THE META DATA IS LOST **/
+	if ( !get_user_role( array('administrator') ) ) {
+		echo '<div class="hidden">';
+	}
+	
+	if ( get_the_author_meta( 'reg_advertiser', $user->ID ) == true ) {$checkthis = ' checked="checked"';} else {$checkthis = '';}
+	echo ('
+    	<h3>Accounts Types</h3>
 		<table class="form-table">
 			<tr><th>Advertiser</th><td><input type="checkbox" name="reg_advertiser" id="reg_advertiser" value="reg_advertiser"' . $checkthis . ' /></td></tr>
 		</table>
@@ -754,7 +762,10 @@ function my_show_extra_profile_fields( $user ) {
 				<span class="description">This is used to insert the ID into the iframe that displays the video news on right sidebar</span></td>
 			</tr>			
 		</table>
-		');
+	');
+
+	if ( !get_user_role( array('administrator') ) ) {	
+		echo '</div>';
 	}
 	?>
 
