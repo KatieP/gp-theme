@@ -1387,7 +1387,7 @@ function theme_single_product_button() {
 	 	$post_id = $post->ID;
 	 	$post_author_id = $post_author->ID;
 	 	
-	 	if ( !empty($product_url) ) {
+	 	if ( !empty($product_url) && ($product_url != 'http://')) {
 		?>
 		<div id="post-product-button-bar">
 			<?php
