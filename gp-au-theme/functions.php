@@ -3040,6 +3040,7 @@ function theme_profile_directory($profile_pid) {
 
 	echo "
 	<div id=\"my-directory\">
+	    <br />
 		<div id=\"post-filter\"><a href=\"" . $directory_page_url . "\" target=\"_new\" >View My Directory Page</a></div>
 		<div id=\"post-filter\">The ability to edit your Directory Page details yourself will be ready soon! In the meantime:</div>
 		<div id=\"post-filter\">
@@ -3111,12 +3112,19 @@ function theme_profile_analytics($profile_pid) {
 					
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
+	# Profile meta variables for getting specific analytics data
 	$old_crm_id = $profile_author->old_crm_id;
 	$directory_page_url = $profile_author->directory_page_url;
+	$facebook = $profile_author->facebook;
+	$linkedin = $profile_author->linkedin;
+	$twitter = $profile_author->twitter;
+	$skype = $profile_author->skype;
+	$url = $profile_author->user_url;
 	
 	if (!$pageposts && !empty($old_crm_id) ) {
 		?>
 		<div id="my-analytics">
+		    <br />
 			<?php theme_advertorialcreate_post(); ?>
 			<p>Create your complementary Product of the Week Advertorial to unlock your Analytics.</p>
 		</div>
@@ -3279,7 +3287,7 @@ function theme_profile_analytics($profile_pid) {
 		<p></p>
 		
 		
-		<?php 	# FOR ADVERTISERS WHO HAVE (OR HAVE HAD) A DIRECTORY PAGE
+		<?php 	# DIRECTORY PAGE ANALYTICS FOR ADVERTISERS WHO HAVE (OR HAVE HAD) A DIRECTORY PAGE
 		if (!empty($old_crm_id)) {
 		?>
 			<h2>Directory Page Analytics</h2>
@@ -3371,15 +3379,6 @@ function theme_profile_analytics($profile_pid) {
     				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
 	  			}
 	  			
-	  			# ADD CLICKS FROM PROFILE PAGE WEBSITE LINK TO CLICKS (TEMPORARY?)
-	  			/*
-	  			$authorwww_click_track_tag = '/outbound/profile-user-url/' . $profile_author_id . '/' . $profile_author_url .'/';
-	  			$authorwww_clickURL = ($analytics->getPageviewsURL($authorwww_click_track_tag));
-	  			
-				foreach ($authorwww_clickURL as $data) {
-    				$sumClick = $sumClick + $data;		// Clicks for that button from all posts
-	  			}
-	  			*/
   				if ($sumClick == 0) {					#IF NO CLICKS YET, DISPLAY 'Unavailable'
     				$sumClick = 'Unavailable';
     			}
@@ -3428,34 +3427,34 @@ function theme_profile_analytics($profile_pid) {
 			<table class="author_analytics">
 				<tr>
 					<td class="author_analytics_title">Activist Buttons</td>
-					<td class="author_analytics_activist">Donate</td>
-					<td class="author_analytics_activist">Join</td>
-					<td class="author_analytics_activist">Send Letter</td>
-					<td class="author_analytics_clicks">Sign Petition</td>
-					<td class="author_analytics_clicks">Volunteer</td>	
+					<td class="author_analytics_activist">Clicks</td>	
 				</tr>
-				<tr>
-					<td class="author_analytics_title">Clicks</td>
-					<?php #DISPLAY TABLE CELLS WITH CLICK DATA FOR ACTIVIST BAR BUTTONS
-		  			foreach ($button_labels as $label => $label_url) {
-  						$click_track_tag = '/outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url . '/';
-						#var_dump($click_track_tag);
-  						$clickURL = ($analytics->getPageviewsURL($click_track_tag));
-  						$sumClick = 0;
-						foreach ($clickURL as $data) {
-    						$sumClick = $sumClick + $data;							// Clicks for that button from all posts
-    						$activist_clicks_sum = $activist_clicks_sum + $data;	// Total clicks for all activist bar buttons
-  						}
-  						if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
-    						$sumClick = 'Unavailable';
-    					}
-  						echo '<td class="author_analytics_activist">' . $sumClick . '</td>';
-  					}
-		  			if ($activist_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
-    					$activist_clicks_sum = 'Unavailable';
-    				}
-					?>		
-				</tr>
+
+				<?php #DISPLAY TABLE ROWS WITH CLICK DATA FOR ACTIVIST BAR BUTTONS
+		  		foreach ($button_labels as $label => $label_url) {
+		  			if (!empty($label_url)) {
+  					    $click_track_tag = '/outbound/activist-' . $label .'-button/' . $profile_author_id . '/' . $label_url . '/';
+					    #var_dump($click_track_tag);
+  					    $clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  					    $sumClick = 0;
+					    foreach ($clickURL as $data) {
+    					    $sumClick = $sumClick + $data;							// Clicks for that button from all posts
+    					    $activist_clicks_sum = $activist_clicks_sum + $data;	// Total clicks for all activist bar buttons
+  					    }
+  					    if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    					    $sumClick = 'Unavailable';
+    				    }
+  					    echo '<tr>
+  					   	         <td class="author_analytics_title">' . $label . '</td>
+  					       	     <td class="author_analytics_activist">' . $sumClick . '</td>
+  					   	      </tr>';
+		  			}
+  				}
+		  		if ($activist_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    				$activist_clicks_sum = 'Unavailable';
+    			}
+				?>
+						
 			</table>
 			<?php
 			theme_profilecreate_post();
@@ -3473,6 +3472,71 @@ function theme_profile_analytics($profile_pid) {
 			<?php 
 		} 
 		?>
+		
+		<?php # Profile page analytics if profile contact fields data present
+				
+		if (!empty($facebook) || !empty($linkedin) || !empty($twitter) || !empty($skype) || !empty($url)) {
+
+		# SET AND RESET SOME VARIABLES AND GET PROFILE PAGE DATA FROM GA
+		$start_date = '2012-07-01'; 	// Click tracking of profile page contact fields began just after this Date
+		$today_date = date('Y-m-d'); 	// Todays Dat		
+  		$analytics->setDateRange($start_date, $today_date); //Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));			
+		?>
+			<h2>Profile Page Analytics</h2>
+			<table class="author_analytics">
+				<tr>
+					<td class="author_analytics_title">Profile Page </td>
+					<td class="author_analytics_activist">Clicks</td>	
+				</tr>
+
+				<?php 				  			
+  				$profile_labels = array('facebook' => $facebook, 
+  										'linkedin' =>  $linkedin, 
+  										'twitter' =>  $twitter, 
+  										'skype' =>  $skype, 
+  										'user-url' =>  $url);
+  				$profile_clicks_sum = 0;
+		     
+				foreach ($profile_labels as $label => $label_url) {
+					if (!empty($label_url)) {
+					    $click_track_tag = '/outbound/profile-' . $label .'/' . $profile_author_id .'/';
+					    #var_dump($click_track_tag);
+  					    $clickURL = ($analytics->getPageviewsURL($click_track_tag));
+  					    $sumClick = 0;
+					    foreach ($clickURL as $data) {
+    					    $sumClick = $sumClick + $data;							// Clicks for that button from all posts
+    					    $profile_clicks_sum = $profile_clicks_sum + $data;	// Total clicks for all activist bar buttons
+  					    }
+  					    if ($sumClick == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    					    $sumClick = 'Unavailable';
+    				    }
+    					echo '<tr>
+  					    	     <td class="author_analytics_title">' . $label . '</td>
+  					        	 <td class="author_analytics_activist">' . $sumClick . '</td>
+  					      	  </tr>';
+					}
+  				}
+		  		if ($profile_clicks_sum == 0) {			#IF NO CLICKS YET, DISPLAY 'Unavailable'
+    				$profile_clicks_sum = 'Unavailable';
+    			}
+  			 ?>           
+            </table>
+            <?php 
+            if($profile_clicks_sum != 0) { 	#IF CLICKS DATA RETURNED, DISPLAY TOTAL
+				?>
+				<p>Your Profile Page contact buttons have been clicked a total of</p> 
+				<p><span class="big-number"><?php echo $profile_clicks_sum;?></span> times!</p>	
+				<br />
+				<?php
+			}
+			?>
+			<div class="post-details"><a href="/wp-admin/profile.php">Enter or update urls/ids for Profile Page contact buttons</a></div>
+			<br />
+			<div id="post-details"></div>   
+        <?php     
+		}
+    	?>
+		
 		<div class="post-details">Why are Clicks showing as 'Unavailable'?</div>
 		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
 		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>	
