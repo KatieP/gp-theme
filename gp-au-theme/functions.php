@@ -2303,11 +2303,11 @@ function coming_events() {
 			if ( has_post_thumbnail() ) { 	# DISPLAY EVENTS FEATURED IMAGE 
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
 				$imageURL = $imageArray[0];
-				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="50" height="50" /></a>';
 			} else {						# DISPLAY DEFAULT EVENT IMAGE 
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(7740), 'icon-thumbnail' );	# DEFAULT IMAGE STORED IN POST WHERE ID = 7740							
 				$imageURL = $imageArray[0];
-				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="50" height="50" /></a>';
 			}
 			?>
 			<div class="relevant-content">
@@ -3608,6 +3608,8 @@ function theme_newscreate_post(){
 }
 
 function theme_insert_newscreate_post(){
+	global $user;
+	
 	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
 	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
 		echo '<a href="/wp-admin/post-new.php?post_type=gp_news" class="new-post-action">Post a News Story</a>';

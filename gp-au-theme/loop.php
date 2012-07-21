@@ -336,7 +336,7 @@ function theme_index_feed_item() {
     if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 		$imageURL = $imageArray[0];
-		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="140" /></a>';
     }
     else {	/** DISPLAY LOGO INSTEAD **/
 		echo '<span class="profile_minithumb"><a href="' . $post_author_url . '">' . 
@@ -386,6 +386,8 @@ function theme_index_feed_item() {
 			}
 			
 			global $current_user, $current_site;
+			
+			$likedclass = '';
 			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 				$likedclass = ' favorited';
 			}
