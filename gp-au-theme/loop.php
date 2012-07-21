@@ -1354,7 +1354,7 @@ function theme_authorwww($profile_author) {
 	if ( !empty($profile_author->user_url) ) {
 		$profile_author_id = $profile_author->ID;
 		$profile_author_url = $profile_author->user_url;
-		$click_track_tag = '\'/outbound/profile-user-url/' . $profile_author_id .'/\'';
+		$click_track_tag = '\'/outbound/profile-website/' . $profile_author_id .'/\'';
 		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);">' . $profile_author->user_url . '</a></div>';
 	}	
 }

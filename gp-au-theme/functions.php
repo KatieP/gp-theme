@@ -3494,7 +3494,7 @@ function theme_profile_analytics($profile_pid) {
   										'linkedin' =>  $linkedin, 
   										'twitter' =>  $twitter, 
   										'skype' =>  $skype, 
-  										'user-url' =>  $url);
+  										'website' =>  $url);
   				$profile_clicks_sum = 0;
 		     
 				foreach ($profile_labels as $label => $label_url) {
