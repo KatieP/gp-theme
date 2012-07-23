@@ -3005,27 +3005,27 @@ function theme_profile_advertise($profile_pid) {
 	echo "
 	<div id=\"my-advertise\">
 		<div id=\"advertorial\">
-			<span><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
+			<span><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
 			<div class=\"clear\"></div>			
-			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-new-stuff-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"competition\">
-			<span><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
+			<span><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
 			<div class=\"clear\"></div>				
-			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-competition-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#competition\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"listing\">
-			<span><a href=\"" . get_permalink(472) . "\"><input type=\"button\" value=\"Directory Page $39/m\" /></a></span>
+			<span><a href=\"" . get_permalink(472) . "\" target=\"_blank\"><input type=\"button\" value=\"Directory Page $39/m\" /></a></span>
 			<div class=\"clear\"></div>
-			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-directory-page-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#directory\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"email\">
 			<span><a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry\" ><input type=\"button\" value=\"Exclusive Email $3500\" /></a></span>
 			<div class=\"clear\"></div>
-			<span><a href=\"" . get_bloginfo('template_url') . "/gp-rate-card-exclusive-email-logged-in.html\" rel=\"iframe-820-460\"  class=\"pirobox_gall1\">Learn more</a></span>
+			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#email\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 	</div>
