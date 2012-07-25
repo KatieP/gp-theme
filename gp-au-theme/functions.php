@@ -736,6 +736,7 @@ function my_show_extra_profile_fields( $user ) {
 		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
 		$wp_id = $user->ID;
 		$directory_page_url = get_the_author_meta( 'directory_page_url', $user->ID );
+		$chargify_self_service_page_url = get_the_author_meta( 'chargify_self_service_page_url', $user->ID );
 		$video_news_id = get_the_author_meta( 'video_news_id', $user->ID );		
 		echo ('
 		<h3>Miscellaneous</h3>
@@ -756,6 +757,11 @@ function my_show_extra_profile_fields( $user ) {
 				<td><input type="text" 	name="directory_page_url" id="directory_page_url" class="regular-text" maxlength="255" value="' . esc_attr($directory_page_url) . '" /><br />
 				<span class="description">This is used to provide a link to the members Directory Page from their profile page</span></td>
 			</tr>
+			<tr>
+				<th><label for="chargify_self_service_page_url">Chargify Self-Service Page Url</label></th>
+				<td><input type="text" 	name="chargify_self_service_page_url" id="chargify_self_service_page_url" class="regular-text" maxlength="255" value="' . esc_attr($chargify_self_service_page_url) . '" /><br />
+				<span class="description">This is used to provide a link to the members Chargify self service from their profile page</span></td>
+			</tr>			
 			<tr>
 				<th><label for="video_news_id">Video News ID</label></th>
 				<td><input type="text" 	name="video_news_id" id="video_news_id" class="regular-text" maxlength="255" value="' . esc_attr($video_news_id) . '" /><br />
@@ -827,6 +833,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
 	update_usermeta($user_id, 'old_crm_id', $_POST['old_crm_id'] );
 	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
+	update_usermeta($user_id, 'chargify_self_service_page_url', $_POST['chargify_self_service_page_url'] );
 	update_usermeta($user_id, 'video_news_id', $_POST['video_news_id'] );
 	
 	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
@@ -3037,15 +3044,17 @@ function theme_profile_directory($profile_pid) {
 	$profile_author = get_user_by('slug', $profile_pid);
 	$profile_author_id = $profile_author->ID;
 	$directory_page_url = $profile_author->directory_page_url;
-
+    $chargify_self_service_page_url = $profile_author->chargify_self_service_page_url;
+	
 	echo "
 	<div id=\"my-directory\">
 	    <br />
-		<div id=\"post-filter\"><a href=\"" . $directory_page_url . "\" target=\"_new\" >View My Directory Page</a></div>
+		<a href=\"" . $directory_page_url . "\" target=\"_blank\"><h3>View My Directory Page</h3></a>
 		<div id=\"post-filter\">The ability to edit your Directory Page details yourself will be ready soon! In the meantime:</div>
-		<div id=\"post-filter\">
-   			<a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Please%20Update%20My%20Directory%20Page%20Details\">Update my Directory Page details here</a>
-		</div>
+		<a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Please%20Update%20My%20Directory%20Page%20Details\">
+		    <h3>Update my Directory Page details here</h3>
+		</a>
+		<a href=\"" . $chargify_self_service_page_url . "\" target=\"_blank\"><h3>Update my credit card payment details here</h3></a>
 	</div>
 	";
 }
