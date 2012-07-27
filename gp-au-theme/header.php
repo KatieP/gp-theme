@@ -211,14 +211,19 @@ if ( is_single() ) {
 				<?php if (!isset($_GET['noscript'])) { ?>
 				<ul id="auth-tools">
 					<li id="auth-youraccount"> 
-						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
+					<!--  Temporarily disabling simple-modal login as register and login are breaking for many users 
+						<a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
 							<span class="bullet2"></span>Sign in
 						</a>
+					-->	
+					<span class="bullet2"></span>
 					</li>
 				</ul>
 				<div class="clear"></div>
 				<div id="auth-forgot">
-					Don't have an account? <a href="/wp-login.php?action=register" class="simplemodal-register">Sign Up!</a>
+					<!-- This is an interim fix as simple modal login is breaking registration and login for IE and firefox -->
+					<a href="/wp-login">Sign in</a>					
+					Don't have an account? <a href="/wp-login.php?action=register">Sign Up!</a>
 				</div>
 				<?php } ?>
 			</nav>
