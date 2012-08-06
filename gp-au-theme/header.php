@@ -222,7 +222,7 @@ if ( is_single() ) {
 				<div class="clear"></div>
 				<div id="auth-forgot">
 					<!-- This is an interim fix as simple modal login is breaking registration and login for IE and firefox -->
-					<a href="/wp-login">Sign in</a>					
+					<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>">Sign in</a>					
 					Don't have an account? <a href="/wp-login.php?action=register">Sign Up!</a>
 				</div>
 				<?php } ?>
