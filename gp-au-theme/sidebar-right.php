@@ -1,12 +1,33 @@
 			<div id="col3"  class="set3col">
+				<!-- 
 				<div class="col3-ad">
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec1.html" class="medrec"></iframe> -->
 						<!-- stg1_medrec -->
+						<!--
 						<script type='text/javascript'>
 							GA_googleFillSlot("stg1_medrec");
 						</script>
 						<span class="icon-advertisement">Advertisement</span>
 				</div>
+				 -->
+				 
+				<!-- Event Calendar -->
+				<style>
+				    #eventCalendar>.ui-datepicker{width: auto; left: 0px; right: 0px;}
+
+				    /*Add to plugin!*/
+				    .ui-datepicker-calendar th{width: 14%;}
+				</style>
+				<div id="eventCalendar"></div>
+				<div id="event-dialog" title="Event Details" class="hidden"></div> 
+				<!-- BookAd -->
+				<!--  
+				<div id='div-gpt-ad-1344935271926-0' style='width:300px; height:150px;'>
+					<script type='text/javascript'>
+						googletag.cmd.push(function() { googletag.display('div-gpt-ad-1344935271926-0'); });
+					</script>
+				</div>
+				-->
 				<?php 
 				$video_news_id = get_the_author_meta( 'video_news_id', '2' );
 				if ( !empty($video_news_id) ) {

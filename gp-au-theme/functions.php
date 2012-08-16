@@ -299,6 +299,29 @@ function my_new_contactmethods( $contactmethods ) {
 }
 add_filter('user_contactmethods','my_new_contactmethods',10,1);
 
+/** ADD CUSTOM JQUERY THEME FOR DATEPICKER / CALENDAR AND DIALOG  **/
+function gp_theme_scripts() {
+	if(!is_admin()){
+		wp_deregister_script('jquery-ui-core');
+		wp_register_script('jquery-ui-core', get_bloginfo('template_url') . '/template/jquery.ui.core.js');
+	    wp_enqueue_script('jquery-ui-core');
+	    
+	    wp_deregister_script('jquery-ui-widget');
+	    wp_register_script('jquery-ui-widget', get_bloginfo('template_url') . '/template/jquery.ui.widget.js');
+	    wp_enqueue_script('jquery-ui-widget');
+		
+		wp_register_script('jquery-ui-datepicker', get_bloginfo('template_url') . '/template/jquery.ui.datepicker.js');
+	    wp_enqueue_script('jquery-ui-datepicker');
+
+		wp_register_script('jquery-ui-dialog', get_bloginfo('template_url') . '/template/jquery.ui.dialog.js');
+	    wp_enqueue_script('jquery-ui-dialog');	    
+	    
+		wp_register_style('jquery-ui-custom-css', get_bloginfo('template_url') . '/template/custom-theme/jquery-ui-1.8.22.custom.css');
+    	wp_enqueue_style('jquery-ui-custom-css');  	
+	}
+}
+add_action('init', 'gp_theme_scripts');
+
 /** ADD REWRITE RULES **/
 function change_author_permalinks() {
     global $wp_rewrite;
@@ -2266,70 +2289,159 @@ function coming_events() {
 	global $states_au;
 	
 	$epochtime = strtotime('now');
-
+	
 	if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
 		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
     } else {
     	$filterby_state = "";
     }
     
-	/** SQL QUERY FOR COMING 5 EVENTS **/
+	/** SQL QUERY FOR COMING EVENTS **/
 	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
 	foreach ($metas as $i=>$meta_key) {
         $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
         $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
     }
     
-    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " FROM $wpdb->posts ";
+    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
+    			 FROM $wpdb->posts ";
     $querystr .=  join(' ', $meta_joins);
-    $querystr .= " WHERE post_status='publish' AND post_type='gp_events' AND m5.meta_value='AU' " . $filterby_state . " AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_events_startdate ASC LIMIT 5;";
-						
+    $querystr .= "WHERE post_status='publish' 
+    					AND post_type='gp_events' 
+    					AND m5.meta_value='AU' " . $filterby_state . " 
+    					AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " 
+    			  ORDER BY gp_events_startdate;";
+					
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
-		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a></span>'; 
-		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
-		foreach ($states_au as $state) {
-			if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
-  			echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
+		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
+			
+		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
+		foreach ($states_us as $key => $value) {
+			if ($key == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
+  			echo '<option value="/events/US/' . $key . '"' . $state_selected . '>' . $value . '</option>';
 		}									
 		?></select></span><div class="clear"></div></div><?php
+		
+		$i = 0;
+		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR 
+		$event_str = '[';
 		
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			
+			$event_title =  get_the_title($post->ID);
+			
 			$displayday = date('j', $post->gp_events_startdate);
 			$displaymonth = date('M', $post->gp_events_startdate);
+			$str_month = date('m', $post->gp_events_startdate);
 			$displayyear = date('y', $post->gp_events_startdate);
 			
 			$displayendday = date('j', $post->gp_events_enddate);
 			$displayendmonth = date('M', $post->gp_events_enddate);
+			$str_endmonth = date('m', $post->gp_events_enddate);
 			
-			echo '<div class="relevant-item">';
-			if ( has_post_thumbnail() ) { 	# DISPLAY EVENTS FEATURED IMAGE 
-				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
-				$imageURL = $imageArray[0];
-				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="50" height="50" /></a>';
-			} else {						# DISPLAY DEFAULT EVENT IMAGE 
-				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(7740), 'icon-thumbnail' );	# DEFAULT IMAGE STORED IN POST WHERE ID = 7740							
-				$imageURL = $imageArray[0];
-				echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="50" height="50" /></a>';
-			}
-			?>
-			<div class="relevant-content">
-			<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
-			<?php echo '<div class="post-details">';
-			if ($displayday == $displayendday) {
-				echo $displayday . ' ' . $displaymonth;
-			} else {
-				echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
-			}
-			echo '<br />' . $post->gp_events_locsuburb . ', <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a>'; 	
-			echo '</div></div><div class="clear"></div></div>';
+			$displaysuburb = $post->gp_events_locsuburb;
+			$displaystate = $post->gp_events_locstate;
+			
+			$event_link_url = get_permalink($post->ID);
+			$post_id = $post->ID;
+			
+			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"Permalink to '. $event_title .'\">'. $event_title .'</a>';
+						
+			$event_date_string = 'new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'")';
+			$event_str .= '{ Title: "'. $displaytitle .'", Date: new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'") },';
+			
+			/** DISPLAY NEXT 5 EVENTS BELOW CALENDAR  **/
+			if ($i < 5) {
+				echo '<div class="relevant-item">';
+				if ( has_post_thumbnail() ) {	# DISPLAY EVENTS FEATURED IMAGE 
+					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
+					$imageURL = $imageArray[0];
+					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+				} else {						# DISPLAY DEFAULT EVENT IMAGE 
+					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(322), 'icon-thumbnail' ); 	# DEFAULT IMAGE STORED IN POST WHERE ID = 322
+					$imageURL = $imageArray[0];
+					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+				}
+				?>
+				<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
+				<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/US/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
+				if ($displayday == $displayendday) {
+					echo $displayday . ' ' . $displaymonth;
+				} else {
+					echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
+				}	
+				echo '</div><div class="clear"></div></div>';	
+				$i++;
+			}		
 		}
 		echo '</div>';
-	}			
+	}
+	$event_str .= ']';
+	#echo $event_str;
+	
+	/** RUN JAVASCRIPT THAT DISPLAYS EVENT CALENDAR AND HIGHLIGHTS DATES WITH EVENTS 
+	 *  USING JQUERY DATEPICKER 
+	 *  CLICKING ON A HIGHLIGHTED DATE WILL DISPLAY LINKS TO EVENT PAGES IN JQUERY DIALOG BOX
+	 *  **/
+	
+	echo '<script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+				var events = '. $event_str .';
+				console.log(events);
+				$("#eventCalendar").datepicker({
+    				beforeShowDay: function(date) {
+    					var result = [true, \'\', null];
+    					var matching = $.grep(events, function(event) {
+       						return event.Date.valueOf() === date.valueOf();
+   						});
+       
+   						if (matching.length) {
+       						result = [true, \'ui-datepicker-cell-over ui-state-active\', null];
+   						}
+   						return result;
+   					},
+   					onSelect: function(dateText) {
+   						var date,
+       					selectedDate = new Date(dateText),
+       					i = 0,
+       					j = 0;
+       					event = [];
+       					event[j] = null;
+      
+	        			while (i < events.length && !event[j]) {
+       						date = events[i].Date;
+       						
+	            			if (selectedDate.valueOf() === date.valueOf()) {
+       			    			event[j] = events[i];
+       			    			j++;
+       						}
+       						i++;
+   						}
+   						if (event[0]) {
+   							k = 0;
+   							l = event.length;
+   							
+   							dialog_str = \'\';
+   							for (k = 0; k < l; k++) {
+   								next_str = \'<p>\'+event[k].Title+\'</p><br />\';
+   								dialog_str = dialog_str.concat(next_str);
+   							}
+   							
+
+							$(function() {
+								$( "#event-dialog" ).html(dialog_str);
+								$( "#event-dialog" ).dialog({ position: [848,200], minHeight: 142, width: 288 });
+							});   							
+       						//alert(event.Title);
+   						}
+					}
+				});
+				//--><!]]>
+			</script>';	
 }
 
 /** SUBMIT POSTS AND REDIRECT TO CHARGIFY **/

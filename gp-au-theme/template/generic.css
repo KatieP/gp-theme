@@ -1423,6 +1423,26 @@ margin-top: 16px;
 
 	/** RIGHT SIDEBAR **/
 	
+	    /** EVENT CALENDAR **/
+	    
+	    #eventCalendar {
+	    	width: 300px;
+	    }
+	    
+	    #col3 #eventCalendar table {
+			width: 292px;
+		}
+		
+		#event-dialog a {
+			color: #01aed8;
+			text-decoration: none;
+		}
+		
+		#event-dialog a:hover {
+			color: #01aed8;
+			text-decoration: underline;
+		}
+	
 		/** SUBSCRIBE **/
 	
 		#subscribe {margin: 25px 0 0 0;}
@@ -2850,7 +2870,7 @@ line-height:17px;
 color:grey;
 background-color:#F2F2F2;
 border:1px solid #CCC;
-margin:0 10px 0 10px;
+margin:0 0 0 10px;
 padding:1px 10px;
 font-weight: bold;
 font-size: 11px;

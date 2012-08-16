@@ -740,12 +740,13 @@ function events_index() {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	#please fix this and make it accessable to non js users
-	?><div id="new-action"><span class="right"> <?php theme_insert_eventcreate_post(); ?> </span><span class="right" id="post-filter">Filter by State:&nbsp;&nbsp;<select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
+	theme_eventcreate_post();
+	?><span id="post-filter"><select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
 	foreach ($states_au as $state) {
 		if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
   		echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
 	}									
-	?></select></span><div class="clear"></div></div><?php 
+	?></select></span><div class="clear"></div><?php 
 
 	if ($pageposts) {
 		foreach ($pageposts as $post) {
