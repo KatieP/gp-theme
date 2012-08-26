@@ -322,6 +322,13 @@ function gp_theme_scripts() {
 }
 add_action('init', 'gp_theme_scripts');
 
+/** ADD WEB FONT FONTFACES **/
+function gp_theme_load_fonts() {
+    wp_register_style('gp_web_fonts', get_bloginfo('template_url') . '/template/styles/fontfaces.css');
+    wp_enqueue_style( 'gp_web_fonts');
+}
+add_action('init', 'gp_theme_load_fonts');
+
 /** ADD REWRITE RULES **/
 function change_author_permalinks() {
     global $wp_rewrite;

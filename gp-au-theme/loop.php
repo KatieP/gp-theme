@@ -519,7 +519,6 @@ function home_index() {
 	
 	/** NEW LIST VIEW OF 20 MOST RECENT POSTS **/
 	if ($pageposts) {
-
 		theme_homecreate_post();							# DISPLAY CREATE NEW POST BUTTON
 
 		foreach ($pageposts as $post) {						# DISPLAY MOST RECENT POSTS 

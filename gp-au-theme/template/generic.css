@@ -3558,4 +3558,13 @@ height:auto;
 	font-size: 24px;
 	margin: 10px 4px 24px 4px;
 	color: #134;
+	
+}
+
+/**WEBFONTS FOR ICONS (WEBDINGS) TO REPRESENT POST TYPES FOR NEW USERS ON WELCOME PAGE**/
+
+.big-webdings-entypoRegular {
+    font-family: EntypoRegular;
+    font-size: 100px;
+    line-height: 120px;
 }
