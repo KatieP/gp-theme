@@ -3568,3 +3568,9 @@ height:auto;
     font-size: 100px;
     line-height: 120px;
 }
+
+.icon-party-balloon, .icon-trophy-2, .icon-edit, .icon-light-on, .icon-bbq1, .icon-thunderbolt, .icon-gift-alt {
+    font-family: pictonic;
+    font-size: 100px;
+    line-height: 120px;
+}

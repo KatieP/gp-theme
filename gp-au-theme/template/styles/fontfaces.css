@@ -16,3 +16,38 @@
 
 }
 
+@font-face
+{ 
+	font-family: "pictonic";
+	src: url("../fonts/pictonic/font/pictonic.eot");
+	src: url("../fonts/pictonic/font/pictonic.eot?#iefix") format("eot");
+	src: local("☺"),
+	url("../fonts/pictonic/font/pictonic.woff") format("woff"),
+	url("../fonts/pictonic/font/pictonic.ttf") format("truetype"),
+	url("../fonts/pictonic/font/pictonic.svg") format("svg");
+	font-weight: normal; 
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family:"pictonic";
+	font-weight: normal; font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+ 
+a[class^="icon-"], a[class*=" icon-"], span[class^="icon-"], span[class*=" icon-"], small[class^="icon-"], small[class*=" icon-"] {
+	display: -moz-inline-stack;
+	display:inline-block;
+	zoom: 1;
+	*display: inline;
+}
+  
+.icon-party-balloon:before { content:""; } 
+.icon-edit:before { content:""; } 
+.icon-light-on:before { content:""; } 
+.icon-bbq1:before { content:""; } 
+.icon-trophy-2:before { content:""; } 
+.icon-thunderbolt:before { content:""; } 
+.icon-gift-alt:before { content:""; }
