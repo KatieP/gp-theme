@@ -3569,8 +3569,32 @@ height:auto;
     line-height: 120px;
 }
 
-.icon-party-balloon, .icon-trophy-2, .icon-edit, .icon-light-on, .icon-bbq1, .icon-thunderbolt, .icon-gift-alt {
+/* Pictonic webdings */
+.icon-party-balloon, .icon-party-balloon a, .icon-trophy-2, .icon-trophy-2 a, 
+.icon-edit, .icon-edit a, .icon-light-on, .icon-light-on a, .icon-bbq1, .icon-bbq1 a, 
+.icon-thunderbolt, .icon-thunderbolt a, .icon-gift-alt, .icon-gift-alt a {
     font-family: pictonic;
     font-size: 100px;
-    line-height: 120px;
+    line-height: 100px;
+    letter-spacing:25px;
+    margin-top: 70px;
+    color: grey;
 }
+
+.icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover, 
+.icon-light-on:hover, .icon-bbq1:hover {
+    color: #01aed8;
+}
+
+/* Containers for webding icon display */
+
+.icon-container, .icon-container-row {
+    width: 100%;
+}
+
+.inner-icon-container {
+    width: 20%;
+    float: left;
+    text-align: center;
+}
+
