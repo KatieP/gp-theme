@@ -3131,13 +3131,13 @@ function theme_profile_advertise($profile_pid) {
 	echo "
 	<div id=\"my-advertise\">
 		<div id=\"advertorial\">
-			<span><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
+			<span><a href=\"/forms/create-product-post/\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
 			<div class=\"clear\"></div>			
 			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"competition\">
-			<span><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
+			<span><a href=\"/forms/create-competition-post/\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
 			<div class=\"clear\"></div>				
 			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#competition\" target=\"_blank\">Learn more</a></span>
 		</div>
@@ -3740,7 +3740,7 @@ function theme_insert_newscreate_post(){
 	
 	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
 	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
-		echo '<a href="/wp-admin/post-new.php?post_type=gp_news" class="new-post-action">Post a News Story</a>';
+		echo '<a href="/forms/create-news-post/" class="new-post-action">Post a News Story</a>';
 	} else {
 		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';
 	}
@@ -3751,7 +3751,7 @@ function theme_projectcreate_post(){
 }
 
 function theme_insert_projectcreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_projects" class="new-post-action">Post a Project</a>';
+	echo '<a href="/forms/create-project-post/" class="new-post-action">Post a Project</a>';
 }
 
 function theme_advertorialcreate_post(){
@@ -3759,7 +3759,7 @@ function theme_advertorialcreate_post(){
 }
 
 function theme_insert_advertorialcreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_advertorial" class="new-post-action">Post a Product Ad</a>';
+	echo '<a href="/forms/create-product-post/" class="new-post-action">Post a Product Ad</a>';
 }
 
 function theme_competitioncreate_post(){
@@ -3767,7 +3767,7 @@ function theme_competitioncreate_post(){
 }
 
 function theme_insert_competitioncreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_competitions" class="new-post-action">Post a Competition</a>';
+	echo '<a href="/forms/create-competition-post/" class="new-post-action">Post a Competition</a>';
 }
 
 function theme_eventcreate_post(){
@@ -3775,7 +3775,7 @@ function theme_eventcreate_post(){
 }
 
 function theme_insert_eventcreate_post(){
-	echo '<a href="/wp-admin/post-new.php?post_type=gp_events" class="new-post-action">Post an Event</a>';
+	echo '<a href="/forms/create-event-post/" class="new-post-action">Post an Event</a>';
 }
 
 function gp_select_createpost() {
@@ -3783,11 +3783,11 @@ function gp_select_createpost() {
 	<div class=\"profile-action-container no-js\">
 		<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
 		<ul class=\"profile-action-items\">
-			<li><a href=\"/wp-admin/post-new.php?post_type=gp_news\">News (Free)</a></li>
-			<li><a href=\"/wp-admin/post-new.php?post_type=gp_events\">Event (Free)</a></li>
-			<li><a href=\"/wp-admin/post-new.php?post_type=gp_advertorial\">Product Feature ($89)</a></li>
-			<li><a href=\"/wp-admin/post-new.php?post_type=gp_competitions\">Competition ($250)</a></li>
-			<li><a href=\"/wp-admin/post-new.php?post_type=gp_projects\">Project (Free)</a></li>
+			<li><a href=\"/forms/create-news-post/\">News (Free)</a></li>
+			<li><a href=\"/forms/create-event-post/\">Event (Free)</a></li>
+			<li><a href=\"/forms/create-product-post/\">Product Feature ($89)</a></li>
+			<li><a href=\"/forms/create-competition-post/\">Competition ($250)</a></li>
+			<li><a href=\"/forms/create-project-post/\">Project (Free)</a></li>
 		</ul>
 	</div>
 	";
