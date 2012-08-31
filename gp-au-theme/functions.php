@@ -3164,16 +3164,20 @@ function theme_profile_directory($profile_pid) {
 	$profile_author_id = $profile_author->ID;
 	$directory_page_url = $profile_author->directory_page_url;
     $chargify_self_service_page_url = $profile_author->chargify_self_service_page_url;
+	$chargify_self_service_page_link = '';
 	
+    if (!empty($chargify_self_service_page_url)) {
+        $chargify_self_service_page_link = "<a href=\"" . $chargify_self_service_page_url . "\" target=\"_blank\"><h3>Update my credit card payment details here</h3></a>";
+    }
+   
 	echo "
 	<div id=\"my-directory\">
 	    <br />
 		<a href=\"" . $directory_page_url . "\" target=\"_blank\"><h3>View My Directory Page</h3></a>
-		<div id=\"post-filter\">The ability to edit your Directory Page details yourself will be ready soon! In the meantime:</div>
-		<a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Please%20Update%20My%20Directory%20Page%20Details\">
+		<a href=\"/forms/update-my-directory-page/\">
 		    <h3>Update my Directory Page details here</h3>
 		</a>
-		<a href=\"" . $chargify_self_service_page_url . "\" target=\"_blank\"><h3>Update my credit card payment details here</h3></a>
+		" . $chargify_self_service_page_link . "
 	</div>
 	";
 }
