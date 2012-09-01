@@ -2361,8 +2361,8 @@ function coming_events() {
 			$event_date_string = 'new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'")';
 			$event_str .= '{ Title: "'. $displaytitle .'", Date: new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'") },';
 			
-			/** DISPLAY NEXT 5 EVENTS BELOW CALENDAR  **/
-			if ($i < 5) {
+			/** DISPLAY NEXT 3 EVENTS BELOW CALENDAR  **/
+			if ($i < 3) {
 				echo '<div class="relevant-item">';
 				if ( has_post_thumbnail() ) {	# DISPLAY EVENTS FEATURED IMAGE 
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );

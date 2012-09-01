@@ -12,12 +12,6 @@
 				 -->
 				 
 				<!-- Event Calendar -->
-				<style>
-				    #eventCalendar>.ui-datepicker{width: auto; left: 0px; right: 0px;}
-
-				    /*Add to plugin!*/
-				    .ui-datepicker-calendar th{width: 14%;}
-				</style>
 				<div id="eventCalendar"></div>
 				<div id="event-dialog" title="Event Details" class="hidden"></div> 
 				<!-- BookAd -->

@@ -1540,6 +1540,16 @@ hgroup, menu, nav, section, time {
 	width: 300px;
 }
 
+#eventCalendar>.ui-datepicker {
+    width: auto; 
+    left: 0px; 
+    right: 0px;
+}
+
+.ui-datepicker-calendar th {
+	width: 14%;
+}
+
 #col3 #eventCalendar table {
 	width: 292px;
 }
