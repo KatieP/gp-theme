@@ -3911,3 +3911,18 @@ ul.categorieslistmain {
 	float: left;
 	text-align: center;
 }
+
+/**GOOGLE MAPS STYLING**/
+
+/* Google maps that go under each post */
+
+#post_google_map_canvas {
+    width 636px; 
+    height:300px;
+    margin-top: 30px;
+}
+
+
+
+
+
