@@ -3796,4 +3796,5 @@ function gp_select_createpost() {
 	</div>
 	";
 }
+
 ?>

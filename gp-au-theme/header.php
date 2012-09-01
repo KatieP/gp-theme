@@ -132,6 +132,12 @@ if ( is_single() ) {
         if ( is_singular() && get_option( 'thread_comments' ) )
                 wp_enqueue_script( 'comment-reply' );
 
+        # Add google geo location javascript to pages so location autocomplete works on Gravity forms 
+        if (is_page()) {
+            add_action('wp_head', 'js_GPMeta');
+            add_action('wp_head', 'gp_js_postGeoLoc_meta');
+        }
+                
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which
          * generally use this hook to add elements to <head> such
