@@ -708,15 +708,36 @@ function news_index() {
 	default_index();
 }
 
+//Function that calls upcoming 20 events on events page with pagination
 function events_index() {
 	global $wpdb, $post, $states_au;
+
+    # set variables for location data for later use with js
+ 	$lat_event_key = 'gp_events_google_geo_latitude';
+    $long_event_key = 'gp_events_google_geo_longitude';
 	
 	$epochtime = strtotime('now');
     if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
 		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
     }
 
-    $querytotal = "SELECT COUNT(*) as count FROM $wpdb->posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' left join " . $wpdb->prefix . "postmeta as m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_loccountry' left join " . $wpdb->prefix . "postmeta as m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_locstate' WHERE post_status='publish' AND post_type='gp_events' AND m4.meta_value='AU' " . $filterby_state . " AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . ";";
+    $querytotal = "SELECT COUNT(*) as count 
+                   FROM $wpdb->posts left join " . 
+                        $wpdb->prefix . "postmeta as m0 on m0.post_id=" . 
+                        $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . 
+                        $wpdb->prefix . "postmeta as m1 on m1.post_id=" . 
+                        $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' left join " . 
+                        $wpdb->prefix . "postmeta as m2 on m2.post_id=" . 
+                        $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' left join " . 
+                        $wpdb->prefix . "postmeta as m4 on m4.post_id=" . 
+                        $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_loccountry' left join " . 
+                        $wpdb->prefix . "postmeta as m3 on m3.post_id=" . 
+                        $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_locstate' 
+                   WHERE post_status='publish' 
+                       AND post_type='gp_events' 
+                       AND m4.meta_value='AU' " . $filterby_state . " 
+                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . ";";
+                       
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
 
 	#$ppp = intval(get_query_var('posts_per_page'));
@@ -749,6 +770,9 @@ function events_index() {
 	}									
 	?></select></span><div class="clear"></div><?php 
 
+    # Construct event location data in JSON and store as string for later use
+    $event_location_json_str = '[';
+
 	if ($pageposts) {
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
@@ -756,6 +780,19 @@ function events_index() {
 			$displayday = date('j', $post->gp_events_startdate);
 			$displaymonth = date('M', $post->gp_events_startdate);
 			$displayyear = date('y', $post->gp_events_startdate);
+			
+			$post_id = $post->ID;
+			$event_title =  get_the_title($post->ID);
+			$event_link_url = get_permalink($post->ID);
+			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"Permalink to '. $event_title .'\">'. $event_title .'</a>';
+			
+			# get post location meta (post id, key, true/false)
+            $lat_event = get_post_meta($post_id, $lat_event_key, true);
+            $long_event = get_post_meta($post_id, $long_event_key, true);
+            
+            # add event title, lat and long to json string
+            $event_location_json_str .= '{ Title: "'. $displaytitle .'", Event_lat: "'. $lat_event .'", Event_long: "'. $long_event .'" },';
+			
 			echo '<div class="event-archive-item">';
 			#$displaydate = get_absolutedate( $post->gp_events_startdate, $post->gp_events_enddate, 'jS F Y', '', true, true );
 			#if ( $displayyear ) {
@@ -785,7 +822,13 @@ function events_index() {
 			</nav>
 		<?php
 		}
-	}   
+	}
+	$event_location_json_str .= ']';
+	
+	display_google_map_posts($event_location_json_str);
+	echo  '<h3>Like to post an environmental event here? 
+	       <a href="/register">Sign up for an account</a> and 
+	       <a href="/forms/create-event-post/">upload</a> - it\'s free!<h3>';
 }
 
 function jobs_index() {

@@ -2676,7 +2676,84 @@ function email_after_post_approved($post_ID) {
 }
 add_action('pending_to_publish', 'email_after_post_approved');
 
+/** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP **/
+
+function display_google_map_posts($json) {
+    
+    /** 
+    * Accepts json structured string holding post title link, lat and long data on each relevant post
+    * Construcs google map and places marker on each post location, 
+    * Each marker shows a lightbox with a link to post on click
+    * TODO: add excerpt in future
+    **/
+
+    // replace these lat/long values with user location when we work out how to do it, sydney for now.
+    $default_lat = -32;
+    $default_long = 134;   
+    
+    ?>
+    <script type="text/javascript">
+        //Event Objects to make surrounding markers
+        var json = <?php echo $json; ?>;
+      
+        //Function that calls map, centres map around post location, styles map
+        function initialize() {
+            var myLatlng = new google.maps.LatLng(<?php echo $default_lat; ?>, <?php echo $default_long; ?> );
+            var mapOptions = {
+                zoom: 4,
+                center: myLatlng,          
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+        
+            //Adds map to map_canvas div in DOM to it is visible
+            var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
+                      mapOptions);
+            
+            // Creating a global infoWindow object that will be reused by all markers
+		    var infoWindow = new google.maps.InfoWindow();
+		
+		        		
+    		//Loop through the json surrounding event objects
+	    	for (var i = 0, length = json.length; i < length; i++) {
+		        var data = json[i],
+		                   eventlatlong = new google.maps.LatLng(data.Event_lat, data.Event_long);
+		    		    
+                //Adds surrounding markers from the json object and loop for surrounding events
+                var marker2 = new google.maps.Marker({
+            	    position: eventlatlong,
+            	    map: map,
+        	        title: data.Title
+                });		    
+		
+		 	    // Creating a closure to retain the correct data, notice how I pass the current 
+            	// data in the loop into the closure (marker, data)
+	    		(function(marker2, data) {
+
+		        	// Attaching a click event to the current marker
+		        	google.maps.event.addListener(marker2, "click", function(e) {
+			        	infoWindow.setContent(data.Title);
+			    	    infoWindow.open(map, marker2);
+    				});
+	    		})(marker2, data);       	
+		    } 
+        }
+     
+        function loadScript() {
+  	        var script = document.createElement("script");
+      	    script.type = "text/javascript";
+  		    script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
+      		document.body.appendChild(script);
+	    }
+	    window.onload = loadScript;
+   </script>
+   <?php
+   echo '<div onload="initialize()"></div>
+         <div id="post_google_map_canvas"></div>'; 
+	
+}	
+
 /** GET USER IP ADDRESS FROM SIMPLEGEO API **/
+#Simple GEO has gone out of business! This code will need to be replaced.
 #https://github.com/simplegeo/php-simplegeo
 #https://github.com/simplegeo/php-simplegeo/blob/master/README.md
 
