@@ -2726,11 +2726,12 @@ function display_google_map_posts($json) {
                                }
                                ?>
                            );
+            
             var mapOptions = {
                 zoom: 4,
                 center: myLatlng,          
                 mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
+            };
         
             //Adds map to map_canvas div in DOM to it is visible
             var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
