@@ -2687,8 +2687,8 @@ function display_google_map_posts($json) {
     * TODO: add excerpt in future
     **/
 
-	//Grabs user's IP address and gets lat and long via geoplugin free website.
-	//TO DO: Script is loading the map really slowly, not sure how to fix, but needs to be fixed!
+	// Grabs user's IP address and gets lat and long via geoplugin free website.
+	// TO DO: Script is loading the map really slowly, not sure how to fix, but needs to be fixed!
 	
 	$ip_addr = $_SERVER['REMOTE_ADDR'];
 	$geoplugin = unserialize( file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_addr) );
@@ -2699,14 +2699,15 @@ function display_google_map_posts($json) {
 		$user_long = $geoplugin['geoplugin_longitude'];
 	}
 	
-	//For testing
-	//echo $ip_addr.';'.$user_lat.';'.$user_long;  
-	//note $_SERVER['REMOTE_ADDR']; doesn't work on local host dev environment so I explicitly declare the IP for various use locations who have sign up, and it works well.
+	// For testing
+	// echo $ip_addr.';'.$user_lat.';'.$user_long;  
+	// note $_SERVER['REMOTE_ADDR']; doesn't work on local host dev environment so I explicitly declare 
+	// the IP for various use locations who have sign up, and it works well.
 
 
-    //Syndey's default lat and long in case remote IP does not load.
-    //$default_lat = -32;
-    //$default_long = 134;   
+    //Centre of Australia default lat and long in case remote IP does not load.
+    $default_lat = -32;
+    $default_long = 134;   
     
 	?>   
     <script type="text/javascript">
@@ -2715,7 +2716,16 @@ function display_google_map_posts($json) {
       
         //Function that calls map, centres map around post location, styles map
         function initialize() {
-            var myLatlng = new google.maps.LatLng(<?php echo $user_lat; ?>, <?php echo $user_long; ?> );
+            var myLatlng = new google.maps.LatLng(
+                               <?php
+                               # If user ip grab successful centre map on user location, otherwise default to Australia
+                               if ( isset($user_lat) && isset($user_long) ) {
+                                   echo $user_lat .','. $user_long; 
+                               } else {
+                                   echo $default_lat .','. $default_long;
+                               }
+                               ?>
+                           );
             var mapOptions = {
                 zoom: 4,
                 center: myLatlng,          
