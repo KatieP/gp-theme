@@ -2678,7 +2678,7 @@ add_action('pending_to_publish', 'email_after_post_approved');
 
 /** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP, CENTERED BY USER IP LOCATION **/
 
-function display_google_map_posts($json) {
+function theme_display_google_map_posts($json) {
     
     /** 
     * Accepts json structured string holding post title link, lat and long data on each relevant post
@@ -2694,7 +2694,6 @@ function display_google_map_posts($json) {
 	$geoplugin = unserialize( file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_addr) );
 
 	if ( is_numeric($geoplugin['geoplugin_latitude']) && is_numeric($geoplugin['geoplugin_longitude']) ) {
-
 		$user_lat = $geoplugin['geoplugin_latitude'];
 		$user_long = $geoplugin['geoplugin_longitude'];
 	}
@@ -2744,11 +2743,11 @@ function display_google_map_posts($json) {
     		//Loop through the json surrounding event objects
 	    	for (var i = 0, length = json.length; i < length; i++) {
 		        var data = json[i],
-		                   eventlatlong = new google.maps.LatLng(data.Event_lat, data.Event_long);
+		                   postlatlong = new google.maps.LatLng(data.Post_lat, data.Post_long);
 		    		    
                 //Adds surrounding markers from the json object and loop for surrounding events
                 var marker2 = new google.maps.Marker({
-            	    position: eventlatlong,
+            	    position: postlatlong,
             	    map: map,
         	        title: data.Title
                 });		    
@@ -2777,8 +2776,92 @@ function display_google_map_posts($json) {
    <?php
    echo '<div onload="initialize()"></div>
          <div id="post_google_map_canvas"></div>'; 
-	
-}	
+}
+
+/** GOOGLE MAP FOR INDIVIDUAL POSTS **/
+// This function grabs meta data for lat and long from each posts and displays them in a google map.
+
+function theme_single_google_map() {
+    if (get_post_type() != "page") { 
+        global $post;
+        
+        # Find ID 
+        $post_id = $post->ID;
+                
+        # Set location meta keys depending on post type
+        switch (get_post_type()) {
+		    case 'gp_news':
+                $lat_key = 'gp_news_google_geo_latitude';
+                $long_key = 'gp_news_google_geo_longitude';
+		        break;
+		    case 'gp_projects':
+		    	$lat_key = 'gp_projects_google_geo_latitude';
+                $long_key = 'gp_projects_google_geo_longitude';
+		        break;
+			case 'gp_advertorial':
+				$lat_key = 'gp_advertorial_google_geo_latitude';
+                $long_key = 'gp_advertorial_google_geo_longitude';
+		        break;
+			case 'gp_competitions':
+				$lat_key = 'gp_competitions_google_geo_latitude';
+                $long_key = 'gp_competitions_google_geo_longitude';
+		        break;
+		    case 'gp_events':
+		    	$lat_key = 'gp_events_google_geo_latitude';
+                $long_key = 'gp_events_google_geo_longitude';
+		        break;
+		}
+                
+        # get post location meta (post id, key, true/false)
+        $lat = get_post_meta($post_id, $lat_key, true);
+        $long = get_post_meta($post_id, $long_key, true);
+        
+        # display google map if proper location data found
+        if (!empty($lat) && !empty($long)) {
+            ?>        
+            <script type="text/javascript"
+                    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
+            </script>
+            <script type="text/javascript">
+      
+                var lat = <?php echo $lat; ?>;
+                var long = <?php echo $long; ?>;
+        
+                function initialize() {
+                    var myLatlng = new google.maps.LatLng(lat,long);
+                    var mapOptions = {
+                        zoom: 10,
+                        center: myLatlng,          
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+        
+                    var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
+                          mapOptions);
+        
+                    var marker = new google.maps.Marker({
+        	            position: myLatlng,
+      		            map: map,
+      		            title:"<?php echo $post->title; ?>"
+                    })  
+                }
+      
+                function loadScript() {
+  		            var script = document.createElement("script");
+  		            script.type = "text/javascript";
+  		            script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
+  		            document.body.appendChild(script);
+                }
+
+		        window.onload = loadScript;
+
+		    </script>
+
+            <div onload="initialize()">
+            <div id="post_google_map_canvas"></div>
+	    <?php 
+	    }
+	}
+}
 
 /** GET USER IP ADDRESS FROM SIMPLEGEO API **/
 #Simple GEO has gone out of business! This code will need to be replaced.

@@ -432,18 +432,38 @@ function theme_index_feed_item() {
 
 function default_index() {
 	if ( have_posts() ) {
+    global $post;
+    # set variables for location data for later use with js
+    $post_type = get_post_type();
+    $lat_post_key = $post_type .'_google_geo_latitude';
+    $long_post_key = $post_type .'_google_geo_longitude';
+    # Construct location data in JSON and store as string for later use
+    $json = '[';	    
 		while ( have_posts() ) { 
-			the_post();
-			theme_index_feed_item();
-			#theme_indextitle();
-			#theme_indexdetails();
-		    #the_content('Continue reading...');
-		    #theme_indexsocialbar();    
+            $post_id = $post->ID;
+            $post_title =  get_the_title($post->ID);
+            $post_link_url = get_permalink($post->ID);
+            $displaytitle = '<a href=\"'. $post_link_url . '\" title=\"Permalink to '. $post_title .'\">'. $post_title .'</a>';
+			
+            # get post location meta (post id, key, true/false)
+            $lat_post = get_post_meta($post_id, $lat_post_key, true);
+            $long_post = get_post_meta($post_id, $long_post_key, true);
+
+            # add event title, lat and long to json string
+            $json .= '{ Title: "'. $displaytitle .'", Post_lat: "'. $lat_post .'", Post_long: "'. $long_post .'" },';		    
+            the_post();
+            theme_index_feed_item();
+            #theme_indextitle();
+            #theme_indexdetails();
+            #the_content('Continue reading...');
+            #theme_indexsocialbar();    
 	    }
+        $json .= ']';
+        theme_display_google_map_posts($json);	    
 	    theme_indexpagination();	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
-			<p>No there\'s nothing wrong. It just means there\'s no posts for this section yet! Which is admittedly a little strange but if you\'d like to help and write for us (In a volunteer capacity at this stage.) send us a email to info[at]thegreenpages.com.au and we\'ll be in touch.</p>';
+			  <p>No there\'s nothing wrong. It just means there\'s no posts for this section yet! Which is admittedly a little strange but if you\'d like to help and write for us (In a volunteer capacity at this stage.) send us a email to info[at]thegreenpages.com.au and we\'ll be in touch.</p>';
 	}
 }
 
@@ -474,7 +494,7 @@ function default_single() {
 			theme_singlepagination();
 			theme_single_contributor_donate_join_bar();
 			theme_single_product_button();
-			theme_single_map();
+			theme_single_google_map();
 			theme_singlecomments();
 		echo '</article>';
 	}
@@ -713,8 +733,8 @@ function events_index() {
 	global $wpdb, $post, $states_au;
 
     # set variables for location data for later use with js
- 	$lat_event_key = 'gp_events_google_geo_latitude';
-    $long_event_key = 'gp_events_google_geo_longitude';
+ 	$lat_post_key = 'gp_events_google_geo_latitude';
+    $long_post_key = 'gp_events_google_geo_longitude';
 	
 	$epochtime = strtotime('now');
     if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
@@ -771,7 +791,7 @@ function events_index() {
 	?></select></span><div class="clear"></div><?php 
 
     # Construct event location data in JSON and store as string for later use
-    $event_location_json_str = '[';
+    $json = '[';
 
 	if ($pageposts) {
 		foreach ($pageposts as $post) {
@@ -782,16 +802,16 @@ function events_index() {
 			$displayyear = date('y', $post->gp_events_startdate);
 			
 			$post_id = $post->ID;
-			$event_title =  get_the_title($post->ID);
-			$event_link_url = get_permalink($post->ID);
-			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"Permalink to '. $event_title .'\">'. $event_title .'</a>';
+			$post_title =  get_the_title($post->ID);
+			$post_link_url = get_permalink($post->ID);
+			$displaytitle = '<a href=\"'. $post_link_url . '\" title=\"Permalink to '. $post_title .'\">'. $post_title .'</a>';
 			
 			# get post location meta (post id, key, true/false)
-            $lat_event = get_post_meta($post_id, $lat_event_key, true);
-            $long_event = get_post_meta($post_id, $long_event_key, true);
+            $lat_post = get_post_meta($post_id, $lat_post_key, true);
+            $long_post = get_post_meta($post_id, $long_post_key, true);
             
             # add event title, lat and long to json string
-            $event_location_json_str .= '{ Title: "'. $displaytitle .'", Event_lat: "'. $lat_event .'", Event_long: "'. $long_event .'" },';
+            $json .= '{ Title: "'. $displaytitle .'", Post_lat: "'. $lat_post .'", Post_long: "'. $long_post .'" },';
 			
 			echo '<div class="event-archive-item">';
 			#$displaydate = get_absolutedate( $post->gp_events_startdate, $post->gp_events_enddate, 'jS F Y', '', true, true );
@@ -823,9 +843,9 @@ function events_index() {
 		<?php
 		}
 	}
-	$event_location_json_str .= ']';
+	$json .= ']';
 	
-	display_google_map_posts($event_location_json_str);
+	theme_display_google_map_posts($json);
 	echo  '<h3>Like to post an environmental event here? 
 	       <a href="/register">Sign up for an account</a> and 
 	       <a href="/forms/create-event-post/">upload</a> - it\'s free!<h3>';
@@ -1264,8 +1284,7 @@ function author_newsletters() {
 				   	echo ('
 				   	 /></td>
 					</tr>
-					');
-			
+					');	
 				}
 			}
 			?>
@@ -1448,91 +1467,7 @@ function theme_single_product_button() {
 	}
 }
 
-/** GOOGLE MAP FOR POSTS **/
-// This function grabs meta data for lat and long from each posts and displays them in a google map.
 
-function theme_single_map() {
-    if (get_post_type() != "page") { 
-        global $post;
-        
-        # Find ID 
-        $post_id = $post->ID;
-                
-        # Set location meta keys depending on post type
-        switch (get_post_type()) {
-		    case 'gp_news':
-                $lat_key = 'gp_news_google_geo_latitude';
-                $long_key = 'gp_news_google_geo_longitude';
-		        break;
-		    case 'gp_projects':
-		    	$lat_key = 'gp_projects_google_geo_latitude';
-                $long_key = 'gp_projects_google_geo_longitude';
-		        break;
-			case 'gp_advertorial':
-				$lat_key = 'gp_advertorial_google_geo_latitude';
-                $long_key = 'gp_advertorial_google_geo_longitude';
-		        break;
-			case 'gp_competitions':
-				$lat_key = 'gp_competitions_google_geo_latitude';
-                $long_key = 'gp_competitions_google_geo_longitude';
-		        break;
-		    case 'gp_events':
-		    	$lat_key = 'gp_events_google_geo_latitude';
-                $long_key = 'gp_events_google_geo_longitude';
-		        break;
-		}
-                
-        # get post location meta (post id, key, true/false)
-        $lat = get_post_meta($post_id, $lat_key, true);
-        $long = get_post_meta($post_id, $long_key, true);
-        
-        # display google map if proper location data found
-        if (!empty($lat) && !empty($long)) {
-            ?>        
-            <script type="text/javascript"
-                    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
-            </script>
-            <script type="text/javascript">
-      
-                var lat = <?php echo $lat; ?>;
-                var long = <?php echo $long; ?>;
-        
-                function initialize() {
-                    var myLatlng = new google.maps.LatLng(lat,long);
-                    var mapOptions = {
-                        zoom: 10,
-                        center: myLatlng,          
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }
-        
-                    var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
-                          mapOptions);
-        
-                    var marker = new google.maps.Marker({
-        	            position: myLatlng,
-      		            map: map,
-      		            title:"<?php echo $post->title; ?>"
-                    })  
-                }
-      
-                function loadScript() {
-  		            var script = document.createElement("script");
-  		            script.type = "text/javascript";
-  		            script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
-  		            document.body.appendChild(script);
-                }
-
-		        window.onload = loadScript;
-            </script>
-       
-            <div onload="initialize()">
- 
-            <div id="post_google_map_canvas"></div>
-
-	    <?php 
-	    }
-	}
-}
 
 
 
