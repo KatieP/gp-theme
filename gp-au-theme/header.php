@@ -129,15 +129,16 @@ if ( is_single() ) {
         /* We add some JavaScript to pages with the comment form
          * to support sites with threaded comments (when in use).
          */
-        if ( is_singular() && get_option( 'thread_comments' ) )
+        if ( is_singular() && get_option( 'thread_comments' ) ) {
                 wp_enqueue_script( 'comment-reply' );
-
-        # Add google geo location javascript to pages so location autocomplete works on Gravity forms 
+        }
+        
+        # Add google geo location javascript to pages so location autocomplete works on Gravity forms
         if (is_page()) {
             add_action('wp_head', 'js_GPMeta');
             add_action('wp_head', 'gp_js_postGeoLoc_meta');
         }
-                
+
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which
          * generally use this hook to add elements to <head> such
@@ -216,20 +217,19 @@ if ( is_single() ) {
 			<nav id="header-auth">
 				<?php if (!isset($_GET['noscript'])) { ?>
 				<ul id="auth-tools">
-					<li id="auth-youraccount"> 
-					<!--  Temporarily disabling simple-modal login as register and login are breaking for many users 
-						<a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
+					<li id="auth-youraccount">
+						<!--
+						Temporarily disabling simple-modal login as register and login are breaking for many users
+						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
+						-->
+						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>">
 							<span class="bullet2"></span>Sign in
 						</a>
-					-->	
-					<span class="bullet2"></span>
 					</li>
 				</ul>
 				<div class="clear"></div>
 				<div id="auth-forgot">
-					<!-- This is an interim fix as simple modal login is breaking registration and login for IE and firefox -->
-					<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>">Sign in</a>					
-					Don't have an account? <a href="/wp-login.php?action=register">Sign Up!</a>
+					Don't have an account? <a href="/wp-login.php?action=register" class="simplemodal-register">Sign Up!</a>
 				</div>
 				<?php } ?>
 			</nav>

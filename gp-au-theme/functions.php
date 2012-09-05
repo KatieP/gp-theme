@@ -1,6 +1,30 @@
 <?php
+/**
+ * Green Pages Theme functions and definitions
+ * 
+ * Green Pages theme or themes are dependant on the Green Pages plugin to run. A theme 
+ * contains all necessary functions and definitions that are unique to a single 
+ * Green Pages site e.g., greenpages.com.au. In other words, there is one theme per
+ * site. Any functions and definitions that are not unique to the theme and are reusable 
+ * belong in the Green Pages plugin, not here.
+ * 
+ * @package WordPress
+ * @subpackage gp-au-theme
+ * @since Green Pages Theme 1.0
+ * 
+ * @global array $wp_roles
+ * @var array $states_au
+ * @var array $sitemaptypes
+ */
+
+global $wp_role;
 
 $states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
+
+$sitemaptypes = array(
+	array('id' => 'sitemap', 'name' => 'Sitemap'),
+	array('id' => 'googlenews', 'name' => 'Google News')
+);
 
 /*
  * TIPS:
@@ -62,7 +86,7 @@ function yoursite_wp_mail_from_name($name) {
 	return 'Green Pages';
 }
 
-/*** MANUALLY SETS WORD LENGTH OF EXCERPT FROM POST SHOWN IN INDEX AND PROFILE PAGES ***/
+/* MANUALLY SETS WORD LENGTH OF EXCERPT FROM POST SHOWN IN INDEX AND PROFILE PAGES */
 add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 function custom_excerpt_length( $length ) {
 	return 25;
@@ -270,13 +294,13 @@ function gp_after_scripts() {
 	}
 }
 
-/** REMOVE WORDPRESS (in 3.1+) ADMIN BAR **/
+/* REMOVE WORDPRESS (in 3.1+) ADMIN BAR */
 function my_function_admin_bar(){
     return false;
 }
 add_filter( 'show_admin_bar' , 'my_function_admin_bar');
 
-/** ADD & REMOVE CONTACT METHODS **/
+/* ADD & REMOVE CONTACT METHODS */
 function my_new_contactmethods( $contactmethods ) {
 	// Remove
 	unset($contactmethods['aim']);
@@ -299,7 +323,7 @@ function my_new_contactmethods( $contactmethods ) {
 }
 add_filter('user_contactmethods','my_new_contactmethods',10,1);
 
-/** ADD CUSTOM JQUERY THEME FOR DATEPICKER / CALENDAR AND DIALOG  **/
+/* ADD CUSTOM JQUERY THEME FOR DATEPICKER / CALENDAR AND DIALOG  */
 function gp_theme_scripts() {
 	if(!is_admin()){
 		wp_deregister_script('jquery-ui-core');
@@ -322,14 +346,14 @@ function gp_theme_scripts() {
 }
 add_action('init', 'gp_theme_scripts');
 
-/** ADD WEB FONT FONTFACES **/
+/* ADD WEB FONT FONTFACES */
 function gp_theme_load_fonts() {
     wp_register_style('gp_web_fonts', get_bloginfo('template_url') . '/template/styles/fontfaces.css');
     wp_enqueue_style( 'gp_web_fonts');
 }
 add_action('init', 'gp_theme_load_fonts');
 
-/** ADD REWRITE RULES **/
+/* ADD REWRITE RULES */
 function change_author_permalinks() {
     global $wp_rewrite;
    	$wp_rewrite->author_base = 'profile'; # see this for changing slug by role - http://wordpress.stackexchange.com/questions/17106/change-author-base-slug-for-different-roles
@@ -337,7 +361,7 @@ function change_author_permalinks() {
 }
 add_action('init','change_author_permalinks');
 
-/** AUTHOR EDIT REWRITE RULE **/
+/* AUTHOR EDIT REWRITE RULE */
 add_action( 'author_rewrite_rules', 'edit_author_slug' ); #new-edit
 function edit_author_slug( $author_rules )
 {
@@ -352,10 +376,10 @@ function edit_author_slug( $author_rules )
     return $author_rules;
 }
 
-/** EVENTS FILTER BY STATE REWRITE RULES **/
+/* EVENTS FILTER BY STATE REWRITE RULES */
 #add_rewrite_rule('^AU/([^/]*)/?','index.php?p=12&filterby_state=$matches[1]','top');
 
-/** REGISTER CUSTOM QUERY VARS **/
+/* REGISTER CUSTOM QUERY VARS */
 # I'm assuming that query vars are registered in order to ensure rewrite rules work properly - in other words, don't change the order of the query vars.
 add_filter( 'query_vars', 'register_query_vars' );
 function register_query_vars( $query_vars )
@@ -374,7 +398,7 @@ function register_query_vars( $query_vars )
     #return $author_template;
 #}
 
-/** ADD CUSTOM REWRITE RULES **/
+/* ADD CUSTOM REWRITE RULES */
 # see: http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
 function my_rewrite_rules( $wp_rewrite ) {
   global $states_au;
@@ -390,7 +414,7 @@ function my_rewrite_rules( $wp_rewrite ) {
 }
 add_filter('generate_rewrite_rules','my_rewrite_rules');
 
-/** SWITCH TEMPLATES **/
+/* SWITCH TEMPLATES */
 
 function twocolumn_template() {
 	if ( get_query_var( 'author_edit' ) ) {
@@ -404,7 +428,7 @@ function twocolumn_template() {
 add_action('template_redirect', 'twocolumn_template'); #new-edit
 
 
-/** CHECK USER ROLES **/
+/* CHECK USER ROLES */
 function get_user_role($roles_to_check = array('subscriber'), $user_id = 0) {
 	global $wp_roles;
 	global $current_user;
@@ -432,7 +456,7 @@ function get_user_role($roles_to_check = array('subscriber'), $user_id = 0) {
 	return $role;	
 }
 
-/** GET PROFILE USER **/
+/* GET PROFILE USER */
 function get_profile_user () {
 	
 }
@@ -504,7 +528,7 @@ function my_show_extra_profile_fields( $user ) {
 		');
 	}
 	
-/**	
+/*
 	
 	$locale_postcode = get_the_author_meta( 'locale_postcode', $user->ID );
 	echo ('
@@ -519,7 +543,7 @@ function my_show_extra_profile_fields( $user ) {
 	</table>
 	');
 
-**/	
+*/	
 	
 	if ( get_user_role( array($rolesubscriber, 'administrator') ) ) {
 		$employment_jobtitle = get_the_author_meta( 'employment_jobtitle', $user->ID );
@@ -615,7 +639,7 @@ function my_show_extra_profile_fields( $user ) {
 		</table>		');
 	}
 
-/**		
+/*		
 	echo ('
 	<h3>Notification Settings</h3>
 
@@ -658,7 +682,7 @@ function my_show_extra_profile_fields( $user ) {
 		
 			}
 		}
-**/
+*/
 	?>
 	
 	<!-- </table> -->
@@ -749,8 +773,9 @@ function my_show_extra_profile_fields( $user ) {
 	}
 
 
-    /** HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
-     ** OTHERWISE EVERYTIME A NON ADMIN UPDATES THEIR PROFILE PAGE THE META DATA IS LOST **/
+    /* HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
+     * OTHERWISE EVERYTIME A NON ADMIN UPDATES THEIR PROFILE PAGE THE META DATA IS LOST 
+     */
 	if ( !get_user_role( array('administrator') ) ) {
 		echo '<div class="hidden">';
 	}
@@ -762,7 +787,7 @@ function my_show_extra_profile_fields( $user ) {
 			<tr><th>Advertiser</th><td><input type="checkbox" name="reg_advertiser" id="reg_advertiser" value="reg_advertiser"' . $checkthis . ' /></td></tr>
 		</table>
 		');
-		/** SET AND DISPLAY DIRECTORY ID AND URL STRINGS AND YOUTUBE ID FOR VIDEO NEWS IFRAME**/
+		/* SET AND DISPLAY DIRECTORY ID AND URL STRINGS AND YOUTUBE ID FOR VIDEO NEWS IFRAME*/
 		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
 		$wp_id = $user->ID;
 		$directory_page_url = get_the_author_meta( 'directory_page_url', $user->ID );
@@ -866,7 +891,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'chargify_self_service_page_url', $_POST['chargify_self_service_page_url'] );
 	update_usermeta($user_id, 'video_news_id', $_POST['video_news_id'] );
 	
-	/*** UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION ***/
+	/* UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION */
 	$subscription_post = array();
 	if ( is_array( $gp->campaignmonitor ) ) {
 		foreach ( $gp->campaignmonitor as $key => $value ) {
@@ -885,607 +910,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'profiletypes', $profiletypes_post );
 }
 
-
-/*** NEW POST TYPES ***/
-
-/* news */
-
-$newsargs = array(
-    'label' => __( 'News' ),
-    'labels' => array(
-	    'name' => _x( 'News', 'post type general name' ),
-	    'singular_name' => _x( 'News', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'news' ),
-	    'add_new_item' => __( 'Add New News' ),
-	    'edit_item' => __( 'Edit News' ),
-	    'new_item' => __( 'New News' ),
-	    'view_item' => __( 'View News' ),
-	    'search_items' => __( 'Search News' ),
-	    'not_found' =>  __( 'No news found' ),
-	    'not_found_in_trash' => __( 'No news found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/newspaper.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'news', 'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_jobs_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$newstaxonomy = array(
-	'label' => __( 'News Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'news-category' )
-);
-
-/* events */
-$eventargs = array(
-    'label' => __( 'Events' ),
-    'labels' => array(
-	    'name' => _x( 'Events', 'post type general name' ),
-	    'singular_name' => _x( 'Event', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'events' ),
-	    'add_new_item' => __( 'Add New Event' ),
-	    'edit_item' => __( 'Edit Event' ),
-	    'new_item' => __( 'New Event' ),
-	    'view_item' => __( 'View Event' ),
-	    'search_items' => __( 'Search Events' ),
-	    'not_found' =>  __( 'No events found' ),
-	    'not_found_in_trash' => __( 'No events found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/date.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'events', 'with_front' => FALSE ),
-	'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_events_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$eventtaxonomy = array(
-	'label' => __( 'Event Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'event-category' )
-);
-
-/* jobs */
-
-$jobargs = array(
-    'label' => __( 'Jobs' ),
-    'labels' => array(
-	    'name' => _x( 'Jobs', 'post type general name' ),
-	    'singular_name' => _x( 'Job', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'jobs' ),
-	    'add_new_item' => __( 'Add New Job' ),
-	    'edit_item' => __( 'Edit Job' ),
-	    'new_item' => __( 'New Job' ),
-	    'view_item' => __( 'View Job' ),
-	    'search_items' => __( 'Search Jobs' ),
-	    'not_found' =>  __( 'No jobs found' ),
-	    'not_found_in_trash' => __( 'No jobs found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/user_gray.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'jobs', 'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_jobs_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$jobtaxonomy = array(
-	'label' => __( 'Job Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'job-category' )
-);
-
-/* competitions */
-
-$competitionargs = array(
-    'label' => __( 'Competitions' ),
-    'labels' => array(
-	    'name' => _x( 'Competitions', 'post type general name' ),
-	    'singular_name' => _x( 'Competition', 'post type singular name' ),
-	    'add_new' => _x( 'Add New ($250)', 'competitions' ),
-	    'add_new_item' => __( 'Add New Competition - Price $250 (Charged only when post is approved for publication.)' ),
-	    'edit_item' => __( 'Edit Competition' ),
-	    'new_item' => __( 'New Competition' ),
-	    'view_item' => __( 'View Competition' ),
-	    'search_items' => __( 'Search Competitions' ),
-	    'not_found' =>  __( 'No competitions found' ),
-	    'not_found_in_trash' => __( 'No competitions found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/rosette.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'competitions' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_competitions_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$competitiontaxonomy = array(
-	'label' => __( 'Competition Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'competition-category' )
-);
-
-    
-/* interviews */
-    
-$peopleargs = array(
-    'label' => __( 'Interviews' ),
-    'labels' => array(
-	    'name' => _x( 'Interviews', 'post type general name' ),
-	    'singular_name' => _x( 'Interview', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'Interview' ),
-	    'add_new_item' => __( 'Add New Interview' ),
-	    'edit_item' => __( 'Edit Interview' ),
-	    'new_item' => __( 'New Interview' ),
-	    'view_item' => __( 'View Interview' ),
-	    'search_items' => __( 'Search Interviews' ),
-	    'not_found' =>  __( 'No interviews found' ),
-	    'not_found_in_trash' => __( 'No interviews found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/cup.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'people' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_interviews_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$peopletaxonomy = array(
-	'label' => __( 'Interviews Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'interview-category' )
-);
-
-
-
-/* Katie Patrick */
-    
-$katiepatrickargs = array(
-    'label' => __( 'Katie Patrick' ),
-    'labels' => array(
-	    'name' => _x( 'Katie Patrick', 'post type general name' ),
-	    'singular_name' => _x( 'Katie Patrick', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'Story' ),
-	    'add_new_item' => __( 'Add New Story' ),
-	    'edit_item' => __( 'Edit Story' ),
-	    'new_item' => __( 'New Story' ),
-	    'view_item' => __( 'View Story' ),
-	    'search_items' => __( 'Search Stories' ),
-	    'not_found' =>  __( 'No stories found' ),
-	    'not_found_in_trash' => __( 'No stories found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/katiepatrick.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'katie-patrick' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_katiepatrick_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$katiepatricktaxonomy = array(
-	'label' => __( 'Katie Patrick Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'katie-patrick-category' )
-);
-
-
-/* Product Review */
-    
-$productreviewargs = array(
-    'label' => __( 'Product Reviews' ),
-    'labels' => array(
-	    'name' => _x( 'Product Review', 'post type general name' ),
-	    'singular_name' => _x( 'Product Review', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'Product Review' ),
-	    'add_new_item' => __( 'Add New Product Review' ),
-	    'edit_item' => __( 'Edit Product Review' ),
-	    'new_item' => __( 'New Product Review' ),
-	    'view_item' => __( 'View Product Review' ),
-	    'search_items' => __( 'Search Product Reviews' ),
-	    'not_found' =>  __( 'No product reviews found' ),
-	    'not_found_in_trash' => __( 'No product reviews found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/icon-productreview.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'product-review' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_productreview_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$productreviewtaxonomy = array(
-	'label' => __( 'Product Review Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'product-review-category' )
-);
-
-
-/* Advertorial */
-    
-$advertorialargs = array(
-    'label' => __( 'Products' ),
-    'labels' => array(
-	    'name' => _x( 'Products', 'post type general name' ),
-	    'singular_name' => _x( 'Product', 'post type singular name' ),
-	    'add_new' => _x( 'Add New ($89)', 'Product' ),
-	    'add_new_item' => __( 'Post your eco friendly product here for $89! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All posts are approved within 24 hours.' ),
-	    'edit_item' => __( 'Edit Product' ),
-	    'new_item' => __( 'New Product' ),
-	    'view_item' => __( 'View Product' ),
-	    'search_items' => __( 'Search Products' ),
-	    'not_found' =>  __( 'No Products Found' ),
-	    'not_found_in_trash' => __( 'No Products Found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/icon-advertorial.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'eco-friendly-products' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_advertorial_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$advertorialtaxonomy = array(
-	'label' => __( 'Product Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'advertorial-category' )
-);
-
-
-/* Projects */
-    
-$projectsargs = array(
-    'label' => __( 'Projects' ),
-    'labels' => array(
-	    'name' => _x( 'Projects', 'post type general name' ),
-	    'singular_name' => _x( 'Project', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'Project' ),
-	    'add_new_item' => __( 'Add New Project' ),
-	    'edit_item' => __( 'Edit Project' ),
-	    'new_item' => __( 'New Project' ),
-	    'view_item' => __( 'View Project' ),
-	    'search_items' => __( 'Search Projects' ),
-	    'not_found' =>  __( 'No projects found' ),
-	    'not_found_in_trash' => __( 'No projects found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/transmit.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'projects' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_projects_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$projectstaxonomy = array(
-	'label' => __( 'Project Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'projects-category' )
-);
-
-
-/* Green Gurus */
-    
-$greengurusargs = array(
-    'label' => __( 'Green Gurus' ),
-    'labels' => array(
-	    'name' => _x( 'Green Gurus', 'post type general name' ),
-	    'singular_name' => _x( 'Green Guru', 'post type singular name' ),
-	    'add_new' => _x( 'Add New', 'Guru Story' ),
-	    'add_new_item' => __( 'Add New Guru Story' ),
-	    'edit_item' => __( 'Edit Guru Story' ),
-	    'new_item' => __( 'New Guru Story' ),
-	    'view_item' => __( 'View Guru Stories' ),
-	    'search_items' => __( 'Search Guru Stories' ),
-	    'not_found' =>  __( 'No guru stories found' ),
-	    'not_found_in_trash' => __( 'No guru stories found in Trash' ),
-	    'parent_item_colon' => ''
-	),
-    'public' => true,
-    'can_export' => true,
-    'show_ui' => true,
-    '_builtin' => false,
-    '_edit_link' => 'post.php?post=%d', // ?
-    'capability_type' => 'post',
-    'menu_icon' => get_bloginfo( 'template_url' ).'/template/icon-greenguru.png',
-    'hierarchical' => false,
-    'rewrite' => array( 'slug' => 'green-gurus' ,'with_front' => FALSE ),
-    'supports'=> array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'page-attributes', 'custom-fields' ),
-    'show_in_nav_menus' => true,
-    'taxonomies' => array( 'gp_greengurus_category', 'post_tag'),
-	'has_archive' => true
-);
-
-$greengurustaxonomy = array(
-	'label' => __( 'Green Gurus Category' ),
-	'labels' => array(
-		'name' => _x( 'Categories', 'taxonomy general name' ),
-		'singular_name' => _x( 'Category', 'taxonomy singular name' ),
-		'search_items' =>  __( 'Search Categories' ),
-		'popular_items' => __( 'Popular Categories' ),
-		'all_items' => __( 'All Categories' ),
-		'parent_item' => null,
-		'parent_item_colon' => null,
-		'edit_item' => __( 'Edit Category' ),
-		'update_item' => __( 'Update Category' ),
-		'add_new_item' => __( 'Add New Category' ),
-		'new_item_name' => __( 'New Category Name' ),
-		'separate_items_with_commas' => __( 'Separate categories with commas' ),
-		'add_or_remove_items' => __( 'Add or remove categories' ),
-		'choose_from_most_used' => __( 'Choose from the most used categories' )
-	),
-	'hierarchical' => true,
-	'show_ui' => true,
-	'query_var' => true,
-	'rewrite' => array( 'slug' => 'green-gurus-category' )
-);
-
-/* get new post types */
-global $wp_role;
-
-/* Modify widgets for 'add new' based on user role  */
-if ( get_user_role( array('contributor') ) ) {
-	unset($newsargs['supports']);
-	unset($projectsargs['supports']);
-	unset($eventargs['supports']);
-	$newsargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' ) ;
-	$projectsargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' );
-	$eventargs['supports'] = array( 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' );
-} 
-
-$sitemaptypes = array(
-	array('id' => 'sitemap', 'name' => 'Sitemap'),
-	array('id' => 'googlenews', 'name' => 'Google News')
-);
-
-$newposttypes = array(
-	array('id' => 'gp_news', 'name' => 'News', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $newsargs, 'taxonomy' => $newstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '1', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_events', 'name' => 'Event', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Event Location'), array('id' => 'postEventDate', 'title' => 'Event Date')), 'args' => $eventargs, 'taxonomy' => $eventtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date', 'dates'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_jobs', 'name' => 'Job', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $jobargs, 'taxonomy' => $jobtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_competitions', 'name' => 'Competition', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location'), array('id' => 'postCompetitionDate', 'title' => 'Competition Date')), 'args' => $competitionargs, 'taxonomy' => $competitiontaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date', 'dates'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_people', 'name' => 'People', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $peopleargs, 'taxonomy' => $peopletaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_katiepatrick', 'name' => 'Katie Patrick', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $katiepatrickargs, 'taxonomy' => $katiepatricktaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_productreview', 'name' => 'Product Review', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $productreviewargs, 'taxonomy' => $productreviewtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_advertorial', 'name' => 'Product', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location'), array('id' => 'postProductURL', 'title' => 'Purchase URL')), 'args' => $advertorialargs, 'taxonomy' => $advertorialtaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_projects', 'name' => 'Project', 'plural' => true, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $projectsargs, 'taxonomy' => $projectstaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => true, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment'),
-	array('id' => 'gp_greengurus', 'name' => 'Green Gurus', 'plural' => false, 'GPmeta' => array(array('id' => 'postGeoLoc', 'title' => 'Post Location')), 'args' => $greengurusargs, 'taxonomy' => $greengurustaxonomy, 'columns' => array('author', 'categories', 'tags', 'comments', 'date'), 'enabled' => false, 'priority' => '0.6', 'changefreq' => 'monthly', 'keywords' => 'science, environment')
-);
-
-/** SET NEWS POST TYPE FOR DISPLAY ON THE HOME PAGE **/
+/* SET NEWS POST TYPE FOR DISPLAY ON THE HOME PAGE */
 add_filter( 'pre_get_posts', 'my_get_posts' );
 function my_get_posts( $query ) {
 	if ( is_home() ) {
@@ -1494,7 +919,7 @@ function my_get_posts( $query ) {
 	return $query;
 }
 
-/** ADD THUMBNAILS SUPPORT **/
+/* ADD THUMBNAILS SUPPORT */
 # note: http://emrahgunduz.com/categories/development/wordpress/wordpress-how-to-show-the-featured-image-of-posts-in-social-sharing-sites/
 # note: http://markjaquith.wordpress.com/2009/12/23/new-in-wordpress-2-9-post-thumbnail-images/
 add_theme_support( 'post-thumbnails', array( 'post', 'gp_news', 'gp_events', 'gp_competitions', 'gp_jobs', 'gp_people', 'gp_advertorial', 'gp_projects', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus' ) );
@@ -1503,36 +928,37 @@ add_image_size('icon-thumbnail', 50, 50, true);
 add_image_size('dash-thumbnail', 35, 35, true);
 # add_image_size('homepage-featured', 240, 180, true);
 
-/*** combined ***/
+/* combined */
 add_action( 'init', 'createPostOptions' );
 
-for($index = 0; $index < count($newposttypes); $index++) {
-	if ($newposttypes[$index]['enabled'] == true) {
-		add_filter( 'manage_edit-' . $newposttypes[$index]['id'] . '_columns', 'editColumns' );
+$posttypes = Config::getPostTypes();
+for($index = 0; $index < count($posttypes); $index++) {
+	if ($posttypes[$index]['enabled'] == true) {
+		add_filter( 'manage_edit-' . $posttypes[$index]['id'] . '_columns', 'editColumns' );
 	}
-	# add_action( 'manage_posts_custom_column', $newposttypes[$index]['id'] . '_custom_columns' );
+	# add_action( 'manage_posts_custom_column', $posttypes[$index]['id'] . '_custom_columns' );
 }
 add_action( 'manage_posts_custom_column', 'new_custom_columns' );
 add_filter( 'post_updated_messages', 'updated_messages' );
 
 function createPostOptions () {
-	global $newposttypes;
-	for($index = 0; $index < count($newposttypes); $index++) {
-		if ($newposttypes[$index]['enabled'] == true) {
-			register_post_type( $newposttypes[$index]['id'] , $newposttypes[$index]['args'] );
-			register_taxonomy( $newposttypes[$index]['id'] . '_category', $newposttypes[$index]['id'], $newposttypes[$index]['taxonomy'] );
+	$posttypes = Config::getPostTypes();
+	for($index = 0; $index < count($posttypes); $index++) {
+		if ($posttypes[$index]['enabled'] == true) {
+			register_post_type( $posttypes[$index]['id'] , $posttypes[$index]['args'] );
+			register_taxonomy( $posttypes[$index]['id'] . '_category', $posttypes[$index]['id'], $posttypes[$index]['taxonomy'] );
 		}
 	}	
 	flush_rewrite_rules();
 }
 
 function editColumns($columns) {
-	global $newposttypes;
-	for($index = 0; $index < count($newposttypes); $index++) {
-		if ($newposttypes[$index]['enabled'] == true) {
-			if ( substr(current_filter(), 12, -8) == $newposttypes[$index]['id'] ) {
-				$mycolumns = $newposttypes[$index]['columns'];
-				$myname = $newposttypes[$index]['id'];
+	$posttypes = Config::getPostTypes();
+	for($index = 0; $index < count($posttypes); $index++) {
+		if ($posttypes[$index]['enabled'] == true) {
+			if ( substr(current_filter(), 12, -8) == $posttypes[$index]['id'] ) {
+				$mycolumns = $posttypes[$index]['columns'];
+				$myname = $posttypes[$index]['id'];
 			}
 		}
 	}
@@ -1549,16 +975,17 @@ function editColumns($columns) {
 }
 
 function new_custom_columns( $column ) {
-	global $post, $newposttypes;
+	global $post;
+	$posttypes = Config::getPostTypes();
     $custom = get_post_custom();
-    for($index = 0; $index < count($newposttypes); $index++) {
-    	if ($newposttypes[$index]['enabled'] == true) {
+    for($index = 0; $index < count($posttypes); $index++) {
+    	if ($posttypes[$index]['enabled'] == true) {
 		    switch ($column) {
-		    	case 'col_' . $newposttypes[$index]['id'] . '_author':
+		    	case 'col_' . $posttypes[$index]['id'] . '_author':
 		    		echo get_userdata($post->post_author)->display_name;
 		    	break;
-	            case 'col_' . $newposttypes[$index]['id'] . '_categories':
-	                $categories = get_the_terms($post->ID, $newposttypes[$index]['id'] . '_category');
+	            case 'col_' . $posttypes[$index]['id'] . '_categories':
+	                $categories = get_the_terms($post->ID, $posttypes[$index]['id'] . '_category');
 	                $categories_html = array();
 		            if ( is_array($categories) && !array_key_exists( 'errors', $categories ) ) {
 		            	foreach ($categories as $category) {
@@ -1569,8 +996,8 @@ function new_custom_columns( $column ) {
 		            	echo 'None';
 		         	}
 	            break;
-	            case 'col_' . $newposttypes[$index]['id'] . '_tags':
-	            	$tags = get_the_tags($post->ID, $newposttypes[$index]['id'] . '_tags');
+	            case 'col_' . $posttypes[$index]['id'] . '_tags':
+	            	$tags = get_the_tags($post->ID, $posttypes[$index]['id'] . '_tags');
 	                $tags_html = array();
 		            if ( is_array($tags) && !array_key_exists( 'errors', $tags ) ) {
 		            	foreach ($tags as $tag) {
@@ -1581,15 +1008,15 @@ function new_custom_columns( $column ) {
 	                	echo 'No Tags';
 	                }
 	            break;
-	            case 'col_' . $newposttypes[$index]['id'] . '_comments':
+	            case 'col_' . $posttypes[$index]['id'] . '_comments':
 		    		echo $post->comment_count;
 		    	break;
-		    	case 'col_' . $newposttypes[$index]['id'] . '_date':
+		    	case 'col_' . $posttypes[$index]['id'] . '_date':
 		    		echo mysql2date('Y/m/d', $post->post_date);
 		    	break;
-	            case 'col_' . $newposttypes[$index]['id'] . '_dates':
-	                $startd = isset($custom[$newposttypes[$index]['id'] . '_startdate'][0]) ? date("F j, Y", $custom[$newposttypes[$index]['id'] . '_startdate'][0]) : "";
-	                $endd = isset($custom[$newposttypes[$index]['id'] . '_enddate'][0]) ? date("F j, Y", $custom[$newposttypes[$index]['id'] . '_enddate'][0]) : "";
+	            case 'col_' . $posttypes[$index]['id'] . '_dates':
+	                $startd = isset($custom[$posttypes[$index]['id'] . '_startdate'][0]) ? date("F j, Y", $custom[$posttypes[$index]['id'] . '_startdate'][0]) : "";
+	                $endd = isset($custom[$posttypes[$index]['id'] . '_enddate'][0]) ? date("F j, Y", $custom[$posttypes[$index]['id'] . '_enddate'][0]) : "";
 	                echo $startd . '<br /><em>' . $endd . '</em>';
 	            break;
 			}
@@ -1598,25 +1025,25 @@ function new_custom_columns( $column ) {
 }
 
 function updated_messages( $messages ) {
-  global $post, $post_ID, $newposttypes;
-
-  for($index = 0; $index < count($newposttypes); $index++) {
-  	if ($newposttypes[$index]['enabled'] == true) {
-	  	$messages[$newposttypes[$index]['id']] = array(
+  global $post, $post_ID;
+  $posttypes = Config::getPostTypes();
+  for($index = 0; $index < count($posttypes); $index++) {
+  	if ($posttypes[$index]['enabled'] == true) {
+	  	$messages[$posttypes[$index]['id']] = array(
 		    0 => '', // Unused. Messages start at index 1.
-		    1 => sprintf( __($newposttypes[$index]['name'] . ' updated. <a href="%s">View post</a>'), esc_url( get_permalink($post_ID) ) ),
+		    1 => sprintf( __($posttypes[$index]['name'] . ' updated. <a href="%s">View post</a>'), esc_url( get_permalink($post_ID) ) ),
 		    2 => __('Custom field updated.'),
 		    3 => __('Custom field deleted.'),
-		    4 => __($newposttypes[$index]['name'] . ' updated.'),
+		    4 => __($posttypes[$index]['name'] . ' updated.'),
 		    /* translators: %s: date and time of the revision */
-		    5 => isset($_GET['revision']) ? sprintf( __($newposttypes[$index]['name'] . ' restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-		    6 => sprintf( __($newposttypes[$index]['name'] . ' published. <a href="%s">View ' . $newposttypes[$index]['name'] . '</a>'), esc_url( get_permalink($post_ID) ) ),
-		    7 => __($newposttypes[$index]['name'] . ' saved.'),
-		    8 => sprintf( __($newposttypes[$index]['name'] . ' submitted. <a target="_blank" href="%s">Preview ' . $newposttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
-		    9 => sprintf( __($newposttypes[$index]['name'] . ' scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview ' . $newposttypes[$index]['name'] . $newposttypes[$index]['name'] . '</a>'),
+		    5 => isset($_GET['revision']) ? sprintf( __($posttypes[$index]['name'] . ' restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+		    6 => sprintf( __($posttypes[$index]['name'] . ' published. <a href="%s">View ' . $posttypes[$index]['name'] . '</a>'), esc_url( get_permalink($post_ID) ) ),
+		    7 => __($posttypes[$index]['name'] . ' saved.'),
+		    8 => sprintf( __($posttypes[$index]['name'] . ' submitted. <a target="_blank" href="%s">Preview ' . $posttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+		    9 => sprintf( __($posttypes[$index]['name'] . ' scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview ' . $posttypes[$index]['name'] . $posttypes[$index]['name'] . '</a>'),
 		      // translators: Publish box date format, see http://php.net/date
 		      date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
-		    10 => sprintf( __($newposttypes[$index]['name'] . ' draft updated. <a target="_blank" href="%s">Preview ' . $newposttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+		    10 => sprintf( __($posttypes[$index]['name'] . ' draft updated. <a target="_blank" href="%s">Preview ' . $posttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
 	  	);
   	}
   }
@@ -1631,7 +1058,7 @@ function hideUpdateNag() {
 }
 add_action('admin_menu','hideUpdateNag');
 
-/** MODIFY GENERIC POST TYPE VALUES **/
+/* MODIFY GENERIC POST TYPE VALUES */
 /* function change_post_menu_label() {
 	global $menu;
 
@@ -1758,7 +1185,7 @@ add_action( 'init', 'change_post_object_label' );
  */
 
 
-/** RE-ORDER ADMIN MENU **/
+/* RE-ORDER ADMIN MENU */
 function menu_order_filter($menu) {
 	$menu = array (
 		0 => 'index.php',
@@ -1823,7 +1250,7 @@ function modify_dashboardwidgets () {
 }
 add_action( 'wp_dashboard_setup', 'modify_dashboardwidgets' );
 
-/** REDIRECT USER AFTER LOGIN **/
+/* REDIRECT USER AFTER LOGIN */
 function redirect_user_to( $redirect_to, $user ) {
 	if ( get_user_role( array('subscriber') ) ) {
 		wp_safe_redirect('/wp-admin/profile.php');
@@ -1831,13 +1258,13 @@ function redirect_user_to( $redirect_to, $user ) {
 }
 //add_filter( 'login_redirect', 'redirect_user_to', 10, 3 );
 
-/** REMOVE FAVOURITE ACTIONS MENU **/
+/* REMOVE FAVOURITE ACTIONS MENU */
 function remove_favorite_actions() {
     	return array();
 }
 add_filter( 'favorite_actions', 'remove_favorite_actions' );
 
-/** SCREEN OPTIONS / HIDE WIDGETS FROM CUSTOM POST TYPES **/
+/* SCREEN OPTIONS / HIDE WIDGETS FROM CUSTOM POST TYPES */
 # http://w-shadow.com/blog/2010/06/29/adding-stuff-to-wordpress-screen-options/
 # http://w-shadow.com/blog/2010/06/30/add-new-buttons-alongside-screen-options-and-help/
 
@@ -1906,7 +1333,7 @@ function my_remove_meta_boxes(){
 add_action( 'add_meta_boxes', 'my_remove_meta_boxes', 0 );
 
 
-/** DISABLE FLASH UPLOADER **/
+/* DISABLE FLASH UPLOADER */
 function disable_flash_uploader() {
 	if ( !get_user_role( array('administrator') ) ) {
 		return false;
@@ -1916,7 +1343,7 @@ function disable_flash_uploader() {
 }
 add_filter( 'flash_uploader', 'disable_flash_uploader', 1 );
 
-/** ALLOWABLE FILE EXTENSION UPLOADS **/
+/* ALLOWABLE FILE EXTENSION UPLOADS */
 function yoursite_wp_handle_upload_prefilter($file) {
 	if ( get_user_role( array('subscriber') ) ) {
 	  // This bit is for the flash uploader
@@ -1941,7 +1368,7 @@ function yoursite_wp_handle_upload_prefilter($file) {
 }
 add_filter('wp_handle_upload_prefilter', 'yoursite_wp_handle_upload_prefilter');
 
-/** RESTRICT VIEWING OTHER USERS POSTS & MEDIA LIBRARY **/
+/* RESTRICT VIEWING OTHER USERS POSTS & MEDIA LIBRARY */
 function query_set_only_author( $wp_query ) {
 	global $current_user;
 	$the_admin_url = get_admin_url();
@@ -1955,7 +1382,7 @@ function query_set_only_author( $wp_query ) {
 add_action('pre_get_posts', 'query_set_only_author' );
 
 
-/** REMOVE "QUICK EDIT" MENU FROM /WP-ADMIN/EDIT.PHP **/
+/* REMOVE "QUICK EDIT" MENU FROM /WP-ADMIN/EDIT.PHP */
 function remove_quick_edit( $actions ) {
 	if ( get_user_role( array('subscriber', 'contributor') ) ) {
 		unset($actions['inline hide-if-no-js']);
@@ -1969,7 +1396,7 @@ function my_default_editor() {
 }
 add_filter( 'wp_default_editor', 'my_default_editor' );
 
-/** ONLY ALLOW CERTAIN PAGES FOR SUBSCRIBERS (very hacky!) **/
+/* ONLY ALLOW CERTAIN PAGES FOR SUBSCRIBERS (very hacky!) */
 function redirect_disallowed_pages () {
 	if ( get_user_role( array('subscriber') ) ) {
 		$admin_url = get_admin_url();
@@ -2005,7 +1432,7 @@ function redirect_disallowed_pages () {
 }
 add_action( 'admin_init', 'redirect_disallowed_pages' );
 
-/** OVERRIDE 404 ON EMPTY ARCHIVE **/
+/* OVERRIDE 404 ON EMPTY ARCHIVE */
 function override_404() {
 	global $wp_query;
 	$args = array( 'public' => true, '_builtin' => false );
@@ -2028,7 +1455,7 @@ function override_template() {
 	}
 }
 
-/** RECORD DATE/TIME OF LAST TIME USER LOGGED IN **/
+/* RECORD DATE/TIME OF LAST TIME USER LOGGED IN */
 function user_last_login($login) {
     global $user_ID;
     $user = get_userdatabylogin($login);
@@ -2036,7 +1463,7 @@ function user_last_login($login) {
 }
 add_action('wp_login','user_last_login');
 
-/** REDIRECT USER AFTER LOGIN/LOGOUT **/
+/* REDIRECT USER AFTER LOGIN/LOGOUT */
 function redirect_login() {
 	wp_redirect($_SERVER['HTTP_REFERER']);
 }
@@ -2047,19 +1474,19 @@ function redirect_logout() {
 }
 #add_action('wp_logout ','redirect_logout');
 
-/** CHANGE EXCERPT LENGTH **/
+/* CHANGE EXCERPT LENGTH */
 function new_excerpt_length($length) {
 	return 20;
 }
 add_filter('excerpt_length', 'new_excerpt_length');
 
-/** CHANGE END OF EXCERPT **/
+/* CHANGE END OF EXCERPT */
 function new_excerpt_more($more) {
 	return '...';
 }
 add_filter('excerpt_more', 'new_excerpt_more');
 
-/** GET RELATIVE DATE **/
+/* GET RELATIVE DATE */
 function get_competitiondate($start, $end, $format = 2) {
 	# A completely incomplete function
 
@@ -2131,7 +1558,7 @@ function get_competitiondate($start, $end, $format = 2) {
 	return '<div class="competition-enddate">'.$displaydate.'</div>';
 }
 
-/** GET ABSOLUTE DATE **/
+/* GET ABSOLUTE DATE */
 function get_absolutedate( $start, $end, $dateformat = 'jS F Y', $timeformat = 'g:i a', $abreviate = true, $dropyear = true, $join = array(' to ', ' at ', ' - ') ) {
 	# A completely incomplete function
 	
@@ -2288,7 +1715,7 @@ function relevant_posts() {
 	}
 }
 
-/** SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT **/ 
+/* SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
 function coming_events() {
 					
 	global $wpdb;
@@ -2296,14 +1723,14 @@ function coming_events() {
 	global $states_au;
 	
 	$epochtime = strtotime('now');
-	
+
 	if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
 		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
     } else {
     	$filterby_state = "";
     }
     
-	/** SQL QUERY FOR COMING EVENTS **/
+	/* SQL QUERY FOR COMING EVENTS */
 	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
 	foreach ($metas as $i=>$meta_key) {
         $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
@@ -2311,20 +1738,20 @@ function coming_events() {
     }
     
     $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
-    			 FROM $wpdb->posts ";
+    				FROM $wpdb->posts ";
     $querystr .=  join(' ', $meta_joins);
-    $querystr .= "WHERE post_status='publish' 
-    					AND post_type='gp_events' 
-    					AND m5.meta_value='AU' " . $filterby_state . " 
-    					AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " 
-    			  ORDER BY gp_events_startdate;";
-					
+	$querystr .= "WHERE post_status='publish'
+						AND post_type='gp_events'
+						AND m5.meta_value='AU' " . $filterby_state . " 
+						AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . "
+					ORDER BY gp_events_startdate;";
+	
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
-			
+		
 		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
 		foreach ($states_us as $key => $value) {
 			if ($key == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
@@ -2333,7 +1760,7 @@ function coming_events() {
 		?></select></span><div class="clear"></div></div><?php
 		
 		$i = 0;
-		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR 
+		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR
 		$event_str = '[';
 		
 		foreach ($pageposts as $post) {
@@ -2357,18 +1784,18 @@ function coming_events() {
 			$post_id = $post->ID;
 			
 			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"Permalink to '. $event_title .'\">'. $event_title .'</a>';
-						
+			
 			$event_date_string = 'new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'")';
 			$event_str .= '{ Title: "'. $displaytitle .'", Date: new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'") },';
 			
 			/** DISPLAY NEXT 3 EVENTS BELOW CALENDAR  **/
 			if ($i < 3) {
 				echo '<div class="relevant-item">';
-				if ( has_post_thumbnail() ) {	# DISPLAY EVENTS FEATURED IMAGE 
+				if ( has_post_thumbnail() ) {	# DISPLAY EVENTS FEATURED IMAGE
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
 					$imageURL = $imageArray[0];
 					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-				} else {						# DISPLAY DEFAULT EVENT IMAGE 
+				} else {
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(322), 'icon-thumbnail' ); 	# DEFAULT IMAGE STORED IN POST WHERE ID = 322
 					$imageURL = $imageArray[0];
 					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
@@ -2380,21 +1807,22 @@ function coming_events() {
 					echo $displayday . ' ' . $displaymonth;
 				} else {
 					echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
-				}	
-				echo '</div><div class="clear"></div></div>';	
+				}
+				echo '</div><div class="clear"></div></div>';
 				$i++;
-			}		
+			}
 		}
 		echo '</div>';
 	}
+	
 	$event_str .= ']';
 	#echo $event_str;
 	
-	/** RUN JAVASCRIPT THAT DISPLAYS EVENT CALENDAR AND HIGHLIGHTS DATES WITH EVENTS 
-	 *  USING JQUERY DATEPICKER 
+	/** RUN JAVASCRIPT THAT DISPLAYS EVENT CALENDAR AND HIGHLIGHTS DATES WITH EVENTS
+	 *  USING JQUERY DATEPICKER
 	 *  CLICKING ON A HIGHLIGHTED DATE WILL DISPLAY LINKS TO EVENT PAGES IN JQUERY DIALOG BOX
-	 *  **/
-	
+	 **/
+	 
 	echo '<script type="text/javascript">
 			<!--//--><![CDATA[//><!--
 				var events = '. $event_str .';
@@ -2448,10 +1876,10 @@ function coming_events() {
 					}
 				});
 				//--><!]]>
-			</script>';	
+			</script>';
 }
 
-/** SUBMIT POSTS AND REDIRECT TO CHARGIFY **/
+/* SUBMIT POSTS AND REDIRECT TO CHARGIFY */
 add_filter('redirect_post_location', 'redirect_to_chargify');
 function redirect_to_chargify() {
 	global $current_user;
@@ -2508,7 +1936,7 @@ function redirect_to_chargify() {
 
 
 
-/** EXTRA SPECIAL STUFF **/
+/* EXTRA SPECIAL STUFF */
 
 /* Calculate years, months, days between dates.
  *  
@@ -2679,36 +2107,36 @@ add_action('pending_to_publish', 'email_after_post_approved');
 /** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP, CENTERED BY USER IP LOCATION **/
 
 function theme_display_google_map_posts($json) {
-    
-    /** 
-    * Accepts json structured string holding post title link, lat and long data on each relevant post
-    * Construcs google map and places marker on each post location, 
-    * Each marker shows a lightbox with a link to post on click
-    * TODO: add excerpt in future
-    **/
 
-	// Grabs user's IP address and gets lat and long via geoplugin free website.
-	// TO DO: Script is loading the map really slowly, not sure how to fix, but needs to be fixed!
-	
-	$ip_addr = $_SERVER['REMOTE_ADDR'];
-	$geoplugin = unserialize( file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_addr) );
+    /**
+     * Accepts json structured string holding post title link, lat and long data on each relevant post
+     * Construcs google map and places marker on each post location,
+     * Each marker shows a lightbox with a link to post on click
+     * TODO: add excerpt in future
+     **/
 
-	if ( is_numeric($geoplugin['geoplugin_latitude']) && is_numeric($geoplugin['geoplugin_longitude']) ) {
-		$user_lat = $geoplugin['geoplugin_latitude'];
-		$user_long = $geoplugin['geoplugin_longitude'];
-	}
-	
-	// For testing
-	// echo $ip_addr.';'.$user_lat.';'.$user_long;  
-	// note $_SERVER['REMOTE_ADDR']; doesn't work on local host dev environment so I explicitly declare 
-	// the IP for various use locations who have sign up, and it works well.
+    // Grabs user's IP address and gets lat and long via geoplugin free website.
+    // TO DO: Script is loading the map really slowly, not sure how to fix, but needs to be fixed!
+
+    $ip_addr = $_SERVER['REMOTE_ADDR'];
+    $geoplugin = unserialize( file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_addr) );
+
+    if ( is_numeric($geoplugin['geoplugin_latitude']) && is_numeric($geoplugin['geoplugin_longitude']) ) {
+        $user_lat = $geoplugin['geoplugin_latitude'];
+        $user_long = $geoplugin['geoplugin_longitude'];
+    }
+
+    // For testing
+    // echo $ip_addr.';'.$user_lat.';'.$user_long;
+    // note $_SERVER['REMOTE_ADDR']; doesn't work on local host dev environment so I explicitly declare
+    // the IP for various use locations who have sign up, and it works well.
 
 
     //Centre of Australia default lat and long in case remote IP does not load.
     $default_lat = -32;
-    $default_long = 134;   
-    
-	?>   
+    $default_long = 134;
+
+    ?>
     <script type="text/javascript">
         //Event Objects to make surrounding markers
         var json = <?php echo $json; ?>;
@@ -2863,7 +2291,7 @@ function theme_single_google_map() {
 	}
 }
 
-/** GET USER IP ADDRESS FROM SIMPLEGEO API **/
+/* GET USER IP ADDRESS FROM SIMPLEGEO API */
 #Simple GEO has gone out of business! This code will need to be replaced.
 #https://github.com/simplegeo/php-simplegeo
 #https://github.com/simplegeo/php-simplegeo/blob/master/README.md
@@ -2914,7 +2342,7 @@ function simplegeo_ip_user_location() {
 	return $user_location;									#SUBURB AND CITY IN STRING
 }
 
-/** LOCATION TAG LINE STYLE **/
+/* LOCATION TAG LINE STYLE */
 
 function theme_location_tag_line() {						#DISPLAY TAGLINE ENDING WITH USERS STATE AND COUNTRY
 	$location = simplegeo_ip_user_location();
@@ -2924,13 +2352,14 @@ function theme_location_tag_line() {						#DISPLAY TAGLINE ENDING WITH USERS STA
 }
 
 
-/** SHOW MEMBERS POSTS **/
+/* SHOW MEMBERS POSTS */
 function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	// note: Favourites are viewable by everyone!
 	
 	$profile_author = get_user_by('slug', $profile_pid);
 	
-	global $wpdb, $post, $current_user, $post_type_to_url_part, $newposttypes;
+	global $wpdb, $post, $current_user, $post_type_to_url_part;
+	$posttypes = Config::getPostTypes();
 	
 	if ( strtolower($post_type) == "directory" ) {
 		theme_profile_directory($profile_pid);
@@ -2994,7 +2423,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 		$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 		if ( $post_type_key ) {
-			foreach ($newposttypes as $newposttype) {
+			foreach ($posttypes as $newposttype) {
 				if ($newposttype['id'] == $post_type_key) {$post_type_name = " " . $newposttype['name'];}
 			}
 		}
@@ -3127,7 +2556,7 @@ function theme_tagnumpagination ($on_page, $post_pages, $post_tab, $post_type) {
 	echo "</div></div>";
 }
 
-/** SHOW MEMBERS FOLLOWING MEMBERSHIP **/
+/* SHOW MEMBERS FOLLOWING MEMBERSHIP */
 function theme_profile_following($profile_pid) {
 	// note: Favourites are viewable by everyone!
 	
@@ -3138,7 +2567,7 @@ function theme_profile_following($profile_pid) {
 	";
 }
 
-/** SHOW MEMBERS TOPIC MEMBERSHIP **/
+/* SHOW MEMBERS TOPIC MEMBERSHIP */
 function theme_profile_topics($profile_pid) {
 	// note: Favourites are viewable by everyone!
 	
@@ -3149,14 +2578,15 @@ function theme_profile_topics($profile_pid) {
 	";	
 }
 
-/** SHOW MEMBERS FAVOURITE POSTS **/
+/* SHOW MEMBERS FAVOURITE POSTS */
 function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_type) {
 
 	// note: Favourites are viewable by everyone!
 	
 	$profile_author = get_user_by('slug', $profile_pid);
 
-	global $wpdb, $post, $current_user, $current_site, $post_type_to_url_part, $newposttypes;
+	global $wpdb, $post, $current_user, $current_site, $post_type_to_url_part;
+	$posttypes = Config::getPostTypes();
 	
 	$post_type_filter = "";
 	$post_type_key = array_search($post_type, $post_type_to_url_part);
@@ -3209,7 +2639,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 	$pageposts = $wpdb->get_results($querystr, OBJECT);	
 			
 		if ( $post_type_key ) {
-			foreach ($newposttypes as $newposttype) {
+			foreach ($posttypes as $newposttype) {
 				if ($newposttype['id'] == $post_type_key) {
 					if ($newposttype['plural'] == true) {
 						$post_type_name = " " . $newposttype['name'] . "s";
@@ -3308,7 +2738,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 		}
 }
 
-/** SHOW MEMBERS ADVERTISING OPTIONS **/
+/* SHOW MEMBERS ADVERTISING OPTIONS */
 function theme_profile_advertise($profile_pid) {
 	global $current_user;
 
@@ -3346,18 +2776,18 @@ function theme_profile_advertise($profile_pid) {
 	";
 }
 
-/** SHOW MEMBERS DIRECTORY OPTIONS **/
+/* SHOW MEMBERS DIRECTORY OPTIONS */
 function theme_profile_directory($profile_pid) {
 	$profile_author = get_user_by('slug', $profile_pid);
 	$profile_author_id = $profile_author->ID;
 	$directory_page_url = $profile_author->directory_page_url;
     $chargify_self_service_page_url = $profile_author->chargify_self_service_page_url;
-	$chargify_self_service_page_link = '';
-	
+    $chargify_self_service_page_link = '';
+    
     if (!empty($chargify_self_service_page_url)) {
         $chargify_self_service_page_link = "<a href=\"" . $chargify_self_service_page_url . "\" target=\"_blank\"><h3>Update my credit card payment details here</h3></a>";
     }
-   
+	
 	echo "
 	<div id=\"my-directory\">
 	    <br />
@@ -3370,7 +2800,7 @@ function theme_profile_directory($profile_pid) {
 	";
 }
 
-/** SHOW MEMBERS POST ANALYTICS **/
+/* SHOW MEMBERS POST ANALYTICS */
 function theme_profile_analytics($profile_pid) {
 	global $wpdb, $post, $current_user, $post_type_to_url_part;
 
@@ -3864,7 +3294,7 @@ function theme_profile_analytics($profile_pid) {
 <?php 
 }
 
-/** BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES **/
+/* BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES */
 
 function theme_homecreate_post(){
 	?><div class="new-action"><span class="right"><?php theme_insert_homecreate_post(); ?></span><div class="clear"></div></div><?php
@@ -3975,14 +3405,13 @@ function gp_select_createpost() {
 	<div class=\"profile-action-container no-js\">
 		<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
 		<ul class=\"profile-action-items\">
-			<li><a href=\"/forms/create-news-post/\">News (Free)</a></li>
-			<li><a href=\"/forms/create-event-post/\">Event (Free)</a></li>
-			<li><a href=\"/forms/create-product-post/\">Product Feature ($89)</a></li>
-			<li><a href=\"/forms/create-competition-post/\">Competition ($250)</a></li>
-			<li><a href=\"/forms/create-project-post/\">Project (Free)</a></li>
+            <li><a href=\"/forms/create-news-post/\">News (Free)</a></li>
+            <li><a href=\"/forms/create-event-post/\">Event (Free)</a></li>
+            <li><a href=\"/forms/create-product-post/\">Product Feature ($89)</a></li>
+            <li><a href=\"/forms/create-competition-post/\">Competition ($250)</a></li>
+            <li><a href=\"/forms/create-project-post/\">Project (Free)</a></li>
 		</ul>
 	</div>
 	";
 }
-
 ?>

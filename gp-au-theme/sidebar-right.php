@@ -1,6 +1,6 @@
 			<div id="col3"  class="set3col">
 				<!-- 
-				<div class="col3-ad">
+				<div class="col3-ad"> -->
 						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec1.html" class="medrec"></iframe> -->
 						<!-- stg1_medrec -->
 						<!--
