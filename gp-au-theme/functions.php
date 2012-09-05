@@ -288,7 +288,7 @@ function gp_after_scripts() {
 		</script>
 		
 		<!--[if lte IE 6]>
-			<link type="text/css" rel="stylesheet" media="all" href="<?php echo get_bloginfo('template_url'); ?>/template/ie6.css" />
+			<link type="text/css" rel="stylesheet" media="all" href="<?php echo get_bloginfo('template_url'); ?>/template/css/ie6.css" />
 		<![endif]-->
 		<?php
 	}
@@ -322,36 +322,6 @@ function my_new_contactmethods( $contactmethods ) {
     return $contactmethods;
 }
 add_filter('user_contactmethods','my_new_contactmethods',10,1);
-
-/* ADD CUSTOM JQUERY THEME FOR DATEPICKER / CALENDAR AND DIALOG  */
-function gp_theme_scripts() {
-	if(!is_admin()){
-		wp_deregister_script('jquery-ui-core');
-		wp_register_script('jquery-ui-core', get_bloginfo('template_url') . '/template/jquery.ui.core.js');
-	    wp_enqueue_script('jquery-ui-core');
-	    
-	    wp_deregister_script('jquery-ui-widget');
-	    wp_register_script('jquery-ui-widget', get_bloginfo('template_url') . '/template/jquery.ui.widget.js');
-	    wp_enqueue_script('jquery-ui-widget');
-		
-		wp_register_script('jquery-ui-datepicker', get_bloginfo('template_url') . '/template/jquery.ui.datepicker.js');
-	    wp_enqueue_script('jquery-ui-datepicker');
-
-		wp_register_script('jquery-ui-dialog', get_bloginfo('template_url') . '/template/jquery.ui.dialog.js');
-	    wp_enqueue_script('jquery-ui-dialog');	    
-	    
-		wp_register_style('jquery-ui-custom-css', get_bloginfo('template_url') . '/template/custom-theme/jquery-ui-1.8.22.custom.css');
-    	wp_enqueue_style('jquery-ui-custom-css');  	
-	}
-}
-add_action('init', 'gp_theme_scripts');
-
-/* ADD WEB FONT FONTFACES */
-function gp_theme_load_fonts() {
-    wp_register_style('gp_web_fonts', get_bloginfo('template_url') . '/template/styles/fontfaces.css');
-    wp_enqueue_style( 'gp_web_fonts');
-}
-add_action('init', 'gp_theme_load_fonts');
 
 /* ADD REWRITE RULES */
 function change_author_permalinks() {
