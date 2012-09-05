@@ -123,7 +123,7 @@
         global $current_user, $wpdb;
         #$current_user = wp_get_current_user();
 
-        if ($current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] != "true" || !is_user_logged_in()) {
+        if ( ( isset( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] ) && $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] != "true" ) || !is_user_logged_in()) {
         ?>
 		<script type='text/javascript'>
 			var allDialogs = [];
@@ -137,19 +137,19 @@
 								if ( $.trim(subemail).length > 0 ) {
 									formInner = formInner + '<input type="text" name="cm-jhdkdh-jhdkdh" id="jhdkdh-jhdkdh" value="' + subemail + '" />';
         						} else {
-        							formInner = formInner + '<input type="text" name="cm-jhdkdh-jhdkdh" id="jhdkdh-jhdkdh" value="<?php echo esc_attr($current_user->user_email); ?>" />';
+        							formInner = formInner + '<input type="text" name="cm-jhdkdh-jhdkdh" id="jhdkdh-jhdkdh" value="<?php if ( isset($current_user->user_email) ) echo esc_attr($current_user->user_email); ?>" />';
         						}
         						<?php 
 								if (!is_user_logged_in()) { ?>
 									formInner = formInner + '<label for="name">Name:</label>' +
 									'<input type="text" name="cm-name" id="name" />';
 								<?php } else { ?>
-									formInner = formInner + '<input type="hidden" name="cm-name" id="name" value="<?php echo esc_attr($current_user->display_name); ?>" />';
+									formInner = formInner + '<input type="hidden" name="cm-name" id="name" value="<?php if ( isset($current_user->display_name) ) echo esc_attr($current_user->display_name); ?>" />';
 								<?php } ?>
 								formInner = formInner + '<label for="Postcode">Postcode:</label>' +
-								'<input type="text" name="cm-f-ulaut" id="Postcode" maxlength="4" value="<?php echo esc_attr($current_user->locale_postcode); ?>" />';
+								'<input type="text" name="cm-f-ulaut" id="Postcode" maxlength="4" value="<?php if ( isset($current_user->locale_postcode) ) echo esc_attr($current_user->locale_postcode); ?>" />';
 								<?php if (is_user_logged_in()) { ?>
-									formInner = formInner + '<input type="hidden" name="cm-f-otyqu" id="Wordpress-id" value="<?php echo esc_attr($current_user->ID); ?>" />';
+									formInner = formInner + '<input type="hidden" name="cm-f-otyqu" id="Wordpress-id" value="<?php if ( isset($current_user->ID) ) echo esc_attr($current_user->ID); ?>" />';
 								<?php } ?>
 								formInner = formInner + '<input type="submit" value="Subscribe Now" />' +
 								'<input type="button" value="Cancel" class="close" />' +

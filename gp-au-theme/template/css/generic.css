@@ -3977,10 +3977,12 @@ ul.categorieslistmain {
     height: 100%;
 }
 
+/* Breaks events jquery calendar
 .hidden {
     display: none !important;
     visibility: hidden;
 }
+*/
 
 .visuallyhidden {
     border: 0;
