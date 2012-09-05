@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 
 <?php
 if ( is_user_logged_in() ) {
@@ -21,10 +21,19 @@ if ( is_single() ) {
 } else {
 	$schematype = '';
 }
-?>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="ltr"<?php echo $schematype; ?> xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 
-	<head>
+$htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="ltr"' . $schematype . ' xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml"';
+?>
+
+<!--[if lt IE 7]>      <html <?php echo $htmlattr; ?> class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html <?php echo $htmlattr; ?> class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html <?php echo $htmlattr; ?> class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html <?php echo $htmlattr; ?> class="no-js"> <!--<![endif]-->
+
+    <head>
+	
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
 		<?php
 		/*
@@ -45,8 +54,6 @@ if ( is_single() ) {
 		</noscript>-->
 		*/
 		?>
-		
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		
 		<script type="text/javascript">
 			window.google_analytics_uacct = "UA-2619469-9";
@@ -74,6 +81,8 @@ if ( is_single() ) {
                 echo ' | ' . sprintf( __( 'Page %s', 'greenpages' ), max( $paged, $page ) );
 
         ?></title>
+		
+        <meta name="viewport" content="width=device-width">
 		
 		<?php
 			$out_excerpt = "";

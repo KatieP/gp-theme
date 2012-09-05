@@ -106,7 +106,7 @@
 			</nav>
 			<nav id="footer-about">
 				<ul>
-					<?php wp_list_pages('show_count=0&hide_empty=0&depth=2&title_li=About Us&child_of=2') ?>
+					<?php wp_list_pages('show_count=0&hide_empty=0&depth=1&title_li=About Us&child_of=2') ?>
 				</ul>
 			</nav>
 			<div class="clear"></div>
