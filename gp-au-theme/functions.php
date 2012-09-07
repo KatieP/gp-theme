@@ -86,6 +86,20 @@ function yoursite_wp_mail_from_name($name) {
 	return 'Green Pages';
 }
 
+function remove_toolbar_new_menu() {
+    global $wp_admin_bar;
+    
+    if(!is_admin()){
+        $wp_admin_bar->remove_menu('new-content');
+        $wp_admin_bar->remove_menu('comments');
+        $wp_admin_bar->remove_menu('updates');
+        $wp_admin_bar->remove_menu('w3tc');
+        $wp_admin_bar->remove_menu('my-sites');
+        $wp_admin_bar->remove_menu('wp-logo');
+    }
+}
+add_action('wp_before_admin_bar_render', 'remove_toolbar_new_menu');
+
 /* MANUALLY SETS WORD LENGTH OF EXCERPT FROM POST SHOWN IN INDEX AND PROFILE PAGES */
 add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 function custom_excerpt_length( $length ) {
