@@ -1839,7 +1839,7 @@ function coming_events() {
 
 							$(function() {
 								$( "#event-dialog" ).html(dialog_str);
-								$( "#event-dialog" ).dialog({ position: [848,200], minHeight: 142, width: 288 });
+								$( "#event-dialog" ).dialog({ position: [800,129], minHeight: 142, width: 288 });
 							});   							
        						//alert(event.Title);
    						}
