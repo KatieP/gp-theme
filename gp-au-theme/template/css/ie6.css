@@ -18,7 +18,7 @@
 #auth-youraccount a {display: block;width:100px;}
 #auth-youraccount .bullet {float:left; display:inline;}
 
-#header-nav a {display:inline;padding: 4px 19px 4px 19px;}
+#header-nav a {display:inline;padding: 0 8px 0 8px;}
 
 
 #dir-l1 ul li {border: 1px solid #f2f2f2;margin:0;}

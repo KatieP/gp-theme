@@ -190,34 +190,33 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 		</script>
 		<!-- End Facebook JavaScript SDK -->
 	
-		<header class="pos">
-			<nav id="header-mast">
-				<a href="<?php echo get_option('home'); ?>">
-					<span class="header-slogan"><?php echo str_replace(':', ':<br />', get_option('gp_slogan')); ?></span>
-					<img src="<?php echo $template_url; ?>/template/mast.gif" width="234" height="38" alt="Green Pages" />
-				</a>
-			</nav>
-      <!-- Google CSE Search Box -->
-        <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
-				<div id="search-tag"><span>Search For:</span> products, news, people, events, tips, forums.</div>
-				<div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
-				<div id="search-button"><input type="submit" name="sa" value="Search" /></div>
-			</form>
-      <!-- Google CSE Search Box Ends -->
-			<nav id="header-nav">
-				<ul>
-					<?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
-					$post_type = get_post_type($post->ID);
-					?>
-					<li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>
-					<li><a href="/news"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
-					<li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
-					<li><a href="/eco-friendly-products"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
-					<li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
-					<li><a href="/people"<?php if ( $post_type == 'gp_people' ) {echo ' class="active"';} ?>>People</a></li>
-					<li><a href="/projects"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-				</ul>
-			</nav>
+		<header>
+    		<div class="pos"> 
+                <a id="header-logo" href="/">greenpag.es</a>
+			    <nav id="header-nav">
+				    <ul>
+					    <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
+					    $post_type = get_post_type($post->ID);
+					    ?>
+					    <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>
+					    <li><a href="/news"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
+					    <li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
+					    <li><a href="/eco-friendly-products"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
+					    <li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
+					    <li><a href="/people"<?php if ( $post_type == 'gp_people' ) {echo ' class="active"';} ?>>People</a></li>
+					    <li><a href="/projects"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
+				    </ul>
+			    </nav>
+			    
+                <!-- Google CSE Search Box -->
+                <div id="header-search">
+                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
+				        <div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
+				        <div id="search-button"><input type="submit" value=""/></div>
+			        </form>
+			    </div>
+                <!-- Google CSE Search Box Ends -->
+
 			
 			<?php 
 			#if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
@@ -225,27 +224,31 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			?>
 			<nav id="header-auth">
 				<?php if (!isset($_GET['noscript'])) { ?>
+
 				<ul id="auth-tools">
 					<li id="auth-youraccount">
 						<!--
 						Temporarily disabling simple-modal login as register and login are breaking for many users
 						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
 						-->
-						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>">
-							<span class="bullet2"></span>Sign in
-						</a>
+						
+						<a href="/wp-login.php?action=register" id="lower">Sign Up </a>
+						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" id="lower">
+						    <span class="bullet2"></span>Sign in
+						</a>			
 					</li>
 				</ul>
 				<div class="clear"></div>
-				<div id="auth-forgot">
-					Don't have an account? <a href="/wp-login.php?action=register" class="simplemodal-register">Sign Up!</a>
-				</div>
 				<?php } ?>
 			</nav>
 			<?php 
 			} else { 
 			?>
+
 			<nav id="header-auth">
+			  	<div id="auth-forgot">
+					<?php echo "Signed in as <a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
+				</div>
 				<ul id="auth-tools">
 					<li id="auth-yourfavourites" class="no-js">
 							<?php
@@ -291,9 +294,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 						</ul>
 					</li>
 					<li id="auth-youraccount" class="no-js">
-						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
-							<span class="bullet2"></span>
-							Your Account
+						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start" id="right-justify">
+							My Account
 						</a>
 						<ul id="auth-dash-account" class="auth-dash">
 							<li class="auth-dash-title">Account Options</li>
@@ -341,9 +343,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					</li>
 				</ul>
 				<div class="clear"></div>
-				<div id="auth-forgot">
-					<?php echo "Signed in as <a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
-				</div>
 			</nav>
 			<?php } ?>
 			<?php #theme_location_tag_line(); ?>	

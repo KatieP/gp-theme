@@ -2,29 +2,40 @@
 
 /** Remember to add ../../fonts/<font-folder-name>/ prefix to file urls **/
 
+/** VAG RundschriftEF for logo **/
+
+@font-face {
+	font-family: 'VAGRundschriftEF';
+	src: url('../fonts/vag-rundschrift-ef/webfonts/23F940_0_0.eot');
+	src: url('../fonts/vag-rundschrift-ef/webfonts/23F940_0_0.eot?#iefix') format('embedded-opentype'),
+	     url('../fonts/vag-rundschrift-ef/webfonts/23F940_0_0.woff') format('woff'),
+	     url('../fonts/vag-rundschrift-ef/webfonts/23F940_0_0.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;	     
+}
+
 /* ENTYPO WEBDINGS ICONS FOR SIGN UP PAGE */
 
 @font-face {
     font-family: 'EntypoRegular';
-    src: url('../../fonts/entypo-fontfacekit/Entypo-webfont.eot');
-    src: url('../../fonts/entypo-fontfacekit/Entypo-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../fonts/entypo-fontfacekit/Entypo-webfont.woff') format('woff'),
-         url('../../fonts/entypo-fontfacekit/Entypo-webfont.ttf') format('truetype'),
-         url('../../fonts/entypo-fontfacekit/Entypo-webfont.svg#EntypoRegular') format('svg');
+    src: url('../fonts/entypo-fontfacekit/Entypo-webfont.eot');
+    src: url('../fonts/entypo-fontfacekit/Entypo-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/entypo-fontfacekit/Entypo-webfont.woff') format('woff'),
+         url('../fonts/entypo-fontfacekit/Entypo-webfont.ttf') format('truetype'),
+         url('../fonts/entypo-fontfacekit/Entypo-webfont.svg#EntypoRegular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face
 { 
 	font-family: "pictonic";
-	src: url("../../fonts/pictonic/font/pictonic.eot");
-	src: url("../../fonts/pictonic/font/pictonic.eot?#iefix") format("eot");
+	src: url("../fonts/pictonic/font/pictonic.eot");
+	src: url("../fonts/pictonic/font/pictonic.eot?#iefix") format("eot");
 	src: local("☺"),
-	url("../../fonts/pictonic/font/pictonic.woff") format("woff"),
-	url("../../fonts/pictonic/font/pictonic.ttf") format("truetype"),
-	url("../../fonts/pictonic/font/pictonic.svg") format("svg");
+	     url("../fonts/pictonic/font/pictonic.woff") format("woff"),
+	     url("../fonts/pictonic/font/pictonic.ttf") format("truetype"),
+	     url("../fonts/pictonic/font/pictonic.svg") format("svg");
 	font-weight: normal; 
 	font-style: normal;
 }
