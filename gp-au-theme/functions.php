@@ -1463,7 +1463,7 @@ function redirect_logout() {
 function new_excerpt_length($length) {
 	return 20;
 }
-add_filter('excerpt_length', 'new_excerpt_length');
+add_filter('excerpt_length', 'new_excerpt_length', 125);
 
 /* CHANGE END OF EXCERPT */
 function new_excerpt_more($more) {

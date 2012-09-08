@@ -331,6 +331,8 @@ function theme_index_feed_item() {
 
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);	
+
+	?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php
 	
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {
@@ -343,8 +345,8 @@ function theme_index_feed_item() {
     		  get_avatar( $post_author->ID, '142', '', $post_author->display_name ) . '</a></span>';
 	}
 	
-	echo '<div class="profile-postbox">';
-			?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php 		
+	
+	echo '<div class="profile-postbox">';			 		
 			
 			/** CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE AND URL **/
 			switch (get_post_type()) {
@@ -379,7 +381,7 @@ function theme_index_feed_item() {
 					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
 					'</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</span>';
 			the_excerpt();			
-			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Continue Reading...</a>';
+			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Learn More</a>';
 			
 			if ( comments_open($post->ID) ) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';

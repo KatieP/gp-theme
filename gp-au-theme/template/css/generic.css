@@ -100,7 +100,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content h1, #content h2 {
-    margin: 30px 0 10px 0;
+    margin: 0 0 7px 0;
     line-height: 24px;
 }
 
@@ -2797,7 +2797,7 @@ ul.categorieslistmain {
 }
 
 #content .hp_miniauthor {
-    margin: 8px 0 4px 0;
+    margin: 0 0 4px 0;
 }
 
 #content .hp_miniauthor img, #content .post-details img {
@@ -2939,9 +2939,9 @@ ul.categorieslistmain {
 #content .profile-postbox {
     float: right;
     /** width: 310px;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
-    width: 462px;
-    margin-left: 20px;
-    padding: 6px;
+    width: 472px;
+    margin-left: 10px;
+    padding: 0 6px 0 6px;
     background-color: #f8f8f8;
     position: relative;
 }
@@ -3210,6 +3210,9 @@ ul.categorieslistmain {
     padding: 1px 10px;
     font-weight: bold;
     font-size: 11px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
 }
 
 #content .new-action .new-post-action:hover {
@@ -3347,9 +3350,9 @@ ul.categorieslistmain {
     margin: 2px;
     color: #666666;
     font-weight: bold;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
     border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px; 
 }
 
 #content .contentpartnerslist img.avatar, #content .memberslist img.avatar
@@ -3674,9 +3677,9 @@ ul.categorieslistmain {
     position: relative;
     background-color: #eee;
     min-height: 5px;
-    width: 474px;
+    width: 636px;
     float: right;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 #content .topic-content {
