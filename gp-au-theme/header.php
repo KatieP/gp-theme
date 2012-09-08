@@ -198,25 +198,16 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
 					    $post_type = get_post_type($post->ID);
 					    ?>
-					    <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>
 					    <li><a href="/news"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
 					    <li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
 					    <li><a href="/eco-friendly-products"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
 					    <li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
 					    <li><a href="/people"<?php if ( $post_type == 'gp_people' ) {echo ' class="active"';} ?>>People</a></li>
 					    <li><a href="/projects"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
+					    <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>					    
 				    </ul>
 			    </nav>
-			    
-                <!-- Google CSE Search Box -->
-                <div id="header-search">
-                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
-				        <div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
-				        <div id="search-button"><input type="submit" value=""/></div>
-			        </form>
-			    </div>
-                <!-- Google CSE Search Box Ends -->
-
+			   
 			
 			<?php 
 			#if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
@@ -294,7 +285,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 						</ul>
 					</li>
 					<li id="auth-youraccount" class="no-js">
-						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start" id="right-justify">
+						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
 							My Account
 						</a>
 						<ul id="auth-dash-account" class="auth-dash">
@@ -345,5 +336,13 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 				<div class="clear"></div>
 			</nav>
 			<?php } ?>
-			<?php #theme_location_tag_line(); ?>	
+			<!-- Google CSE Search Box -->
+                <div id="header-search">
+                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
+				        <div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
+				        <div id="search-button"><input type="submit" value=""/></div>
+			        </form>
+			    </div>
+            <!-- Google CSE Search Box Ends -->
+            <?php #theme_location_tag_line(); ?>				
 		</header>

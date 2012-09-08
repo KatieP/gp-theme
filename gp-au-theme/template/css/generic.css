@@ -707,10 +707,6 @@ header a {
 header a:hover {
 	color: #fff;
 }
-
-#header-logo {
-    margin-top: 20px;
-} 
 	
 #header-nav, #header-search, #header-auth #lower {
     margin-top: 18px;
@@ -722,14 +718,11 @@ header a:hover {
     background-color: transparent;
 }
 
-#header-auth {
-    margin-top: 3px;	
-}
-
 #header-logo {
     font-family: VAGRundschriftEF;
     font-size: 24px;
-    width: 152px;
+    margin-top: 20px;
+    width: 158px;
 }
 
 #header-logo, #header-nav, #header-search, #header-auth {
@@ -738,18 +731,15 @@ header a:hover {
     height: 42px;
 }
 
-#header-nav {
-    margin-right: 25px;
-    width: 495px;
-}
-
 #header-search {
 	width: 160px;
+	float: right;
 }
 
 #header-auth {
     width: 140px;
-	float:right;
+	float: right;
+	margin-top: 3px;
 }
 
 .header-slogan {
@@ -791,7 +781,7 @@ header a:hover {
     height: 23px;
     line-height: 23px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 13px;
     padding: 0 8px 0 8px; /* don't forget to change this in ie6.css */
 }
 
