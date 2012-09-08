@@ -909,7 +909,7 @@ header a:hover {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     border-radius: 2px;
-    padding: 0 10px 0 10px;
+    padding: 0 0 0 10px;
 }
 
 #auth-tools .bullet1, #auth-tools-dir .bullet1 {
@@ -995,12 +995,12 @@ header a:hover {
     background-color: red;
 }
 
-auth-youraccount-start {
-   padding-right: 0px;
+#auth-tools #auth-youraccount a.auth-youraccount-start {
+   padding: 0px;
 }
 
-auth-youraccount-start:hover {
-    text-decoration: none;
+#auth-tools #auth-youraccount .auth-youraccount-start:hover {
+    text-decoration: underline;
     background-color: transparent;   	
 }
 
@@ -1059,10 +1059,6 @@ auth-youraccount-start:hover {
 
 #auth-youraccount .moreinfo:hover {
     text-decoration: underline;
-}
-
-#auth-tools #auth-youraccount, #auth-tools #auth-youraccount a, #auth-tools {
-    padding-right: 0px;	
 }
 
 #auth-tools .auth-dash li, #auth-tools .auth-dash li a {

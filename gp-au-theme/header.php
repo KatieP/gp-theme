@@ -235,7 +235,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			<?php 
 			} else { 
 			?>
-
 			<nav id="header-auth">
 			  	<div id="auth-forgot">
 					<?php echo "Signed in as <a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
@@ -337,12 +336,12 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			</nav>
 			<?php } ?>
 			<!-- Google CSE Search Box -->
-                <div id="header-search">
-                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
-				        <div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
-				        <div id="search-button"><input type="submit" value=""/></div>
-			        </form>
-			    </div>
+            <div id="header-search">
+                <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
+			        <div id="search-field"><input type="text" maxlength="255" size="40" name="q"/></div>
+			        <div id="search-button"><input type="submit" value=""/></div>
+			    </form>
+			</div>
             <!-- Google CSE Search Box Ends -->
             <?php #theme_location_tag_line(); ?>				
 		</header>
