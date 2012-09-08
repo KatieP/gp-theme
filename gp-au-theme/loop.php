@@ -1698,7 +1698,7 @@ function theme_subscribertabs($profile_author) {
 	if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
 		echo "
 			<nav class=\"profile-tabs\"><ul>
-				<li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">Your Posts</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 				<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
 				<li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
@@ -1789,7 +1789,7 @@ function theme_editortabs($profile_author) {
 		echo "
 	        <nav class=\"profile-tabs\">
 	            <ul>
-	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">Your Posts</a></li>
+	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 	                <li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
 	                <li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
@@ -1882,7 +1882,7 @@ function theme_contributortabs($profile_author) {
 		echo "
 	        <nav class=\"profile-tabs\">
 	            <ul>
-	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">Your Posts</a></li>
+	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 	                <li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
 	                <li><a href=\"{$post_author_url}#tab:following\">Following</a></li>

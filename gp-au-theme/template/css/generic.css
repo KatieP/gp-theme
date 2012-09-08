@@ -126,11 +126,11 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content h1 a,#content h2 a {
-    color: #134;
+    color: #2f3a3f;
 }
 
 #content h1 a:hover, #content h2 a:hover {
-    color: #134;
+    color: #2f3a3f;
 }
 
 #content em, #content i {
@@ -681,7 +681,7 @@ ul, ol {margin:0;padding:0;}
 
 header {
     color: #FAFAFA;
-    height: 52px;
+    height: 48px;
     min-width: 972px;
     margin-bottom: 2em;
     margin-top: 0;
@@ -709,7 +709,7 @@ header a:hover {
 }
 	
 #header-nav, #header-search, #header-auth #lower {
-    margin-top: 18px;
+    margin-top: 14px;
     padding-right: 0px;	
 }
 
@@ -721,7 +721,7 @@ header a:hover {
 #header-logo {
     font-family: VAGRundschriftEF;
     font-size: 24px;
-    margin-top: 20px;
+    margin-top: 16px;
     width: 158px;
 }
 
@@ -739,7 +739,7 @@ header a:hover {
 #header-auth {
     width: 140px;
 	float: right;
-	margin-top: 3px;
+	margin-top: 1px;
 }
 
 .header-slogan {
@@ -1007,7 +1007,7 @@ header a:hover {
 .auth-dash {
     position: absolute;
     z-index: 2;
-    top: 52px;
+    top: 48px;
     right: 0px;
     width: 285px;
     height: 278px;
@@ -1288,7 +1288,7 @@ header a:hover {
 /** BODY **/
 #col, #col1, #col2, #col3 {
     float: left;
-    margin: 72px 0 13px 0;
+    margin: 68px 0 13px 0;
 }
 
 /** COLUMN 1 **/
