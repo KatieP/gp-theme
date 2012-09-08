@@ -1007,7 +1007,7 @@ header a:hover {
 .auth-dash {
     position: absolute;
     z-index: 2;
-    top: 85px;
+    top: 52px;
     right: 0px;
     width: 285px;
     height: 278px;
@@ -1113,6 +1113,7 @@ header a:hover {
 }
 
 #auth-tools .auth-dash li.auth-dash-title {
+	color: #666;
     height: 19px;
     font-weight: bold;
     font-size: 14px;
