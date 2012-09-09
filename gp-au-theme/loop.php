@@ -434,13 +434,13 @@ function theme_index_feed_item() {
 
 function default_index() {
 	if ( have_posts() ) {
-    global $post;
-    # set variables for location data for later use with js
-    $post_type = get_post_type();
-    $lat_post_key = $post_type .'_google_geo_latitude';
-    $long_post_key = $post_type .'_google_geo_longitude';
-    # Construct location data in JSON and store as string for later use
-    $json = '[';	    
+        global $post;
+        # set variables for location data for later use with js
+        $post_type = get_post_type();
+        $lat_post_key = $post_type .'_google_geo_latitude';
+        $long_post_key = $post_type .'_google_geo_longitude';
+        # Construct location data in JSON and store as string for later use
+        $json = '[';	    
 		while ( have_posts() ) { 
             $post_id = $post->ID;
             $post_title =  get_the_title($post->ID);

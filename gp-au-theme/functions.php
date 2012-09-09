@@ -2238,10 +2238,10 @@ function theme_single_google_map() {
             <script type="text/javascript">
       
                 var lat = <?php echo $lat; ?>;
-                var long = <?php echo $long; ?>;
+                var lng = <?php echo $long; ?>;
         
                 function initialize() {
-                    var myLatlng = new google.maps.LatLng(lat,long);
+                    var myLatlng = new google.maps.LatLng(lat,lng);
                     var mapOptions = {
                         zoom: 10,
                         center: myLatlng,          
