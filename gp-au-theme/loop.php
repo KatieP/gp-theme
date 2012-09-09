@@ -435,33 +435,25 @@ function theme_index_feed_item() {
 function default_index() {
 	if ( have_posts() ) {
         global $post;
-        # set variables for location data for later use with js
-        $post_type = get_post_type();
-        $lat_post_key = $post_type .'_google_geo_latitude';
-        $long_post_key = $post_type .'_google_geo_longitude';
-        # Construct location data in JSON and store as string for later use
-        $json = '[';	    
-		while ( have_posts() ) { 
-            $post_id = $post->ID;
-            $post_title =  get_the_title($post->ID);
-            $post_link_url = get_permalink($post->ID);
-            $displaytitle = '<a href=\"'. $post_link_url . '\" title=\"Permalink to '. $post_title .'\">'. $post_title .'</a>';
-			
-            # get post location meta (post id, key, true/false)
-            $lat_post = get_post_meta($post_id, $lat_post_key, true);
-            $long_post = get_post_meta($post_id, $long_post_key, true);
 
-            # add event title, lat and long to json string
-            $json .= '{ Title: "'. $displaytitle .'", Post_lat: "'. $lat_post .'", Post_long: "'. $long_post .'" },';		    
+        # Construct location data in JSON for google map display
+        $json = '[';
+            
+		while ( have_posts() ) { 					        
             the_post();
             theme_index_feed_item();
-            #theme_indextitle();
-            #theme_indexdetails();
-            #the_content('Continue reading...');
-            #theme_indexsocialbar();    
+
+			# Add post location data to JSON string
+			$json .= get_post_location_json_data();
 	    }
-        $json .= ']';
-        theme_display_google_map_posts($json);	    
+
+      	# Close JSON string
+	    $json .= ']';	    
+	    
+     	# Define map canvas id and display google map with custom markers for each post
+	    $map_canvas = 'post_google_map_canvas';
+	    theme_display_google_map_posts($json, $map_canvas);
+		    
 	    theme_indexpagination();	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
@@ -541,184 +533,47 @@ function home_index() {
 	#$numPosts = $wpdb->num_rows-1;
 	
 	/** NEW LIST VIEW OF 20 MOST RECENT POSTS **/
-	if ($pageposts) {
-
-		theme_homecreate_post();							# DISPLAY CREATE NEW POST BUTTON
-
-		foreach ($pageposts as $post) {						# DISPLAY MOST RECENT POSTS 
+	if ($pageposts) {   
+	    
+	    # Display create new post button
+		theme_homecreate_post();
+        
+		# Construct location data in JSON for google map display
+        $json = '[';
+		
+		# Display most recent posts
+		foreach ($pageposts as $post) { 
 			setup_postdata($post);
+			
+			# Display post, if project display activist bar also
 			if (get_post_type() != 'gp_projects') {
-				theme_index_feed_item();					# DISPLAY INDIVIDUAL POST TITLE, IMAGE, EXCERPT AND LINK 
+				theme_index_feed_item();
 			} 
 			else {
 				theme_index_feed_item();		 
-				theme_index_contributor_donate_join_bar();	# PROJECTS ALSO DISPLAY DONATE JOIN BUTTONS
+				theme_index_contributor_donate_join_bar();
 			}
+			
+			# Add post location data to JSON string
+			$json .= get_post_location_json_data();
 		}
-	}														# THAT'S IT!
+	}
+	
+	# Close JSON string
+	$json .= ']';
+
+	# Define map canvas id and display google map with custom markers for each post
+	$map_canvas = 'post_google_map_canvas';
+	theme_display_google_map_posts($json, $map_canvas);
 	?>
-	<nav id="post-nav">										<!-- LINK TO NEWS/PAGE/3 AT BOTTOM OF FEED -->
+	
+	<!-- Link to News/page/3 at bottom of feed -->
+	<nav id="post-nav">										
 		<ul>
-				<li class="post-previous"><a href="/news/page/3/"><div class="arrow-previous"></div>More Posts</a></li>
+			<li class="post-previous"><a href="/news/page/3/"><div class="arrow-previous"></div>More Posts</a></li>
 		</ul>
 	</nav>
 	<?php 
-	/** OLD SQL QUERIES SHOW 3 MOST RECENT POSTS FROM EACH CATEGORY **/
-	#$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . $wpdb->prefix . "postmeta as m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
-	#$querystr = "(" . $qrystart ." post_type='gp_news' ORDER BY post_date DESC LIMIT 4)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_events' and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_startdate ASC LIMIT 3)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_advertorial' ORDER BY post_date DESC LIMIT 3)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_people' ORDER BY post_date DESC LIMIT 3)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_enddate ASC LIMIT 3)";
-	#$querystr .= " union (" . $qrystart . " post_type='gp_projects' ORDER BY post_date DESC LIMIT 3)";
-	
-	
-	/** OLD LIST VIEW OF 3 MOST RECENT POSTS FROM EACH CATEGORY **/
-	#if ($pageposts) {
-	#	$counterA = -1;
-	#	$counterB = -2;
-	#	$counterC = -1;
-	#	foreach ($pageposts as $post) {
-	#		setup_postdata($post);
-			
-	#		if ($counterA == -1) {
-	#			$counterA++;
-				#echo '<div class="hp_featured">';
-				#theme_indextitle();
-				#theme_indexdetails();
-		    	#the_content('Continue reading...');
-		    	#theme_indexsocialbar();
-				#echo '<div class="clear"></div></div>';				
-				
-	#			theme_index_feed_item();
-	#			theme_homecreate_post();
-				
-	#		} else {
-				
-				#if ($counterA == 0) {				
-					#theme_index_feed_item();
-				#}
-				
-	#			$counterC++;
-	#			if($counterC % 3 == 0) {
-	#				switch (get_post_type()) {
-					    #case 'gp_news':
-					    #   echo '<span class="hp_minitype"><a href="/news">News</a>:</span>';
-					    #   break;
-	#				    case 'gp_projects':
-	#				        echo '<span class="hp_minitype"><a href="/projects">Projects</a>:</span>';
-	#				        break;
-	#					case 'gp_advertorial':
-	#				        echo '<span class="hp_minitype"><a href="/eco-friendly-products">Products</a>:</span>';
-	#				        break;
-						#case 'gp_competitions':
-					    #   echo '<span class="hp_minitype"><a href="/competitions">Competitions</a>:</span>';
-					    #   break;
-	#				    case 'gp_events':
-	#				        echo '<span class="hp_minitype"><a href="/events">Events</a>:</span>';
-	#				        break;
-	#				    case 'gp_people':
-	#				        echo '<span class="hp_minitype"><a href="/people">People</a>:</span>';
-	#				        break;
-	#				}
-	#			}
-				
-	#			$counterB++;				
-
-	#			if ($counterA < 12) {       		 
-	#				theme_index_feed_item();		# DISPLAY POSTS
-	#			}
-	#			else {
-	#				theme_index_feed_item();		# PROJECTS ALSO DISPLAY DONATE JOIN BUTTONS 
-	#				theme_index_contributor_donate_join_bar();
-	#			}
-				
-	#			$counterA++;						# Delete or comment out these four lines if code block below is ever uncommented otherwise will be duplicated 
-	#			if($counterA % 3 == 0) {
-	#				echo '<div class="clear"></div>';
-	#			}
-
-/**				COMPETITION POSTS - HAVE COMMENTED OUT AS WE DON'T ALWAYS HAVE 3 COMPETITIONS RUNNING AND OFTEN THROWS HOMEPAGE OUT OF WHACK		
-				if ( has_post_thumbnail() ) { # we're doing this check twice and we don't have too?
-					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-					$imageURL = $imageArray[0];
-					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-				}
-				
-				$post_author = get_userdata($post->post_author);
-				$post_author_url = get_author_posts_url($post->post_author);
-				echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a></span>';
-				
-				?>
-				<!-- <span class="hp_miniauthor">By <?php #the_author_posts_link() ?></span> //-->
-				<h1><a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
-				
-				<?php 
-
-				
-				if ( get_post_type() == 'gp_competitions' ) {
-					$epochtime = strtotime('now');
-					$competitions_enddate = $post->gp_enddate;
-					$competitions_enddate_diff = _date_diff((int)$competitions_enddate, $epochtime);
-					$hplinkclass = 'hp_link';
-					if (date('Y', $epochtime) - $competitions_enddate_diff['y'] != 1970) {
-					if ($competitions_enddate_diff['h'] <= 0 && $competitions_enddate_diff['i'] > 0) {
-						if ($competitions_enddate_diff['i'] > 1) {$plural = 's';} else {$plural = '';}
-							$competitions_enddate = $competitions_enddate_diff['i'] . ' minute' . $plural . ' to go...';
-							$hplinkclass = 'hp_linkcompetitions';
-						}
-						
-						if ($competitions_enddate_diff['d'] <= 0 && $competitions_enddate_diff['h'] > 0) {
-							if ($competitions_enddate_diff['h'] > 1) {$plural = 's';} else {$plural = '';}
-							$competitions_enddate = $competitions_enddate_diff['h'] . ' hour' . $plural . ' left...';
-							$hplinkclass = 'hp_linkcompetitions';
-						}
-						
-						if ($competitions_enddate_diff['m'] <= 0 && $competitions_enddate_diff['d'] > 0) {
-							if ($competitions_enddate_diff['d'] > 1) {$plural = 's';} else {$plural = '';}
-							$competitions_enddate = $competitions_enddate_diff['d'] . ' day' . $plural . ' left...';
-							$hplinkclass = 'hp_linkcompetitions';
-							
-						}
-						 
-						if ($competitions_enddate_diff['y'] <= 0 && $competitions_enddate_diff['m'] > 0) {
-							if ($competitions_enddate_diff['m'] > 1) {$plural = 's';} else {$plural = '';}
-							$competitions_enddate = $competitions_enddate_diff['m'] . ' month' . $plural . ' left...';
-							$hplinkclass = 'hp_linkcompetitions';
-						}
-						
-						if ($competitions_enddate_diff['y'] > 0) {
-							$competitions_enddate = 'Read more...';
-						}
-					} else {
-						$competitions_enddate = 'Read more...';
-					} 
-				?>
-					<a href="<?php the_permalink(); ?>" class="hp_linkcompetitions"><?php echo $competitions_enddate; ?></a>
-				<?php } else {?>
-					<a href="<?php the_permalink(); ?>" class="hp_link">Read more...</a>
-				<?php } ?>
-				
-				
-				<?php if ( comments_open() ) { ?>
-					<div class="comment-hp"><a href="<?php the_permalink(); ?>#comments"><span class="comment-mini"></span></a><a href="<?php the_permalink(); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><fb:comments-count href="<?php the_permalink(); ?>"></fb:comments-count></span></a></div>
-				<?php
-				}
-				echo '</div>';
-
-				
-				$counterA++;
-				if($counterA % 3 == 0) {
-					echo '<div class="clear"></div>';
-				}
-
-				#if ($counterA == $numPosts) {
-				#	echo '</div>';
-				#}				
-**/				
-	#		}
-	#	}
-	#}
 }
 
 function search_index() {
@@ -733,10 +588,6 @@ function news_index() {
 //Function that calls upcoming 20 events on events page with pagination
 function events_index() {
 	global $wpdb, $post, $states_au;
-
-    # set variables for location data for later use with js
- 	$lat_post_key = 'gp_events_google_geo_latitude';
-    $long_post_key = 'gp_events_google_geo_longitude';
 	
 	$epochtime = strtotime('now');
     if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
@@ -777,9 +628,14 @@ function events_index() {
         $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
         $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
     }
-    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " FROM $wpdb->posts ";
+    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
+                 FROM $wpdb->posts ";
     $querystr .=  join(' ', $meta_joins);
-    $querystr .= " WHERE post_status='publish' AND post_type='gp_events' AND m5.meta_value='AU' " . $filterby_state . " AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_events_startdate ASC LIMIT $ppp OFFSET $offset;";
+    $querystr .= " WHERE post_status='publish' 
+                       AND post_type='gp_events' 
+                       AND m5.meta_value='AU' " . $filterby_state . " 
+                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " 
+                   ORDER BY gp_events_startdate ASC LIMIT $ppp OFFSET $offset;";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
@@ -792,28 +648,17 @@ function events_index() {
 	}									
 	?></select></span><div class="clear"></div><?php 
 
-    # Construct event location data in JSON and store as string for later use
-    $json = '[';
-
 	if ($pageposts) {
+	    
+	    # Construct location data in JSON for google map display
+        $json = '[';	    
+	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			
 			$displayday = date('j', $post->gp_events_startdate);
 			$displaymonth = date('M', $post->gp_events_startdate);
 			$displayyear = date('y', $post->gp_events_startdate);
-			
-			$post_id = $post->ID;
-			$post_title =  get_the_title($post->ID);
-			$post_link_url = get_permalink($post->ID);
-			$displaytitle = '<a href=\"'. $post_link_url . '\" title=\"Permalink to '. $post_title .'\">'. $post_title .'</a>';
-			
-			# get post location meta (post id, key, true/false)
-            $lat_post = get_post_meta($post_id, $lat_post_key, true);
-            $long_post = get_post_meta($post_id, $long_post_key, true);
-            
-            # add event title, lat and long to json string
-            $json .= '{ Title: "'. $displaytitle .'", Post_lat: "'. $lat_post .'", Post_long: "'. $long_post .'" },';
 			
 			echo '<div class="event-archive-item">';
 			#$displaydate = get_absolutedate( $post->gp_events_startdate, $post->gp_events_enddate, 'jS F Y', '', true, true );
@@ -834,7 +679,18 @@ function events_index() {
 			#the_content('Continue reading...');
 			echo '</div><div class="clear"></div>';
 		    #theme_indexsocialbar();
+		    
+			# Add post location data to JSON string
+			$json .= get_post_location_json_data();			
 		}
+
+	    # Close JSON string
+	    $json .= ']'; 
+
+	    # Define map canvas id and display google map with custom markers for each post
+	    $map_canvas = 'post_google_map_canvas';
+	    theme_display_google_map_posts($json, $map_canvas);			
+		
 		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
 			<nav id="post-nav">
 				<ul>
@@ -845,9 +701,7 @@ function events_index() {
 		<?php
 		}
 	}
-	$json .= ']';
 	
-	theme_display_google_map_posts($json);
 	echo  '<h3>Like to post an environmental event here? 
 	       <a href="/register">Sign up for an account</a> and 
 	       <a href="/forms/create-event-post/">upload</a> - it\'s free!<h3>';
@@ -882,27 +736,39 @@ function competitions_index() {
         $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
         $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
     }
-    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " FROM $wpdb->posts ";
+    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
+                 FROM $wpdb->posts ";
     $querystr .=  join(' ', $meta_joins);
-    $querystr .= " WHERE post_status='publish' AND post_type='gp_competitions' and CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " and CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " ORDER BY gp_competitions_enddate ASC LIMIT $ppp OFFSET $offset;";
+    $querystr .= " WHERE post_status='publish' 
+                       AND post_type='gp_competitions' 
+                       AND CAST(CAST(m2.meta_value AS UNSIGNED) AS SIGNED) <= " . $epochtime . " 
+                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " 
+                   ORDER BY gp_competitions_enddate ASC LIMIT $ppp OFFSET $offset;";
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
-
+	
 	if ($pageposts) {
+	    
+	    # Construct location data in JSON for google map display
+        $json = '[';	    
+	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			$displaydate = get_competitiondate( strtotime('now'), $post->gp_competitions_enddate );
 			theme_index_feed_item();
 			echo $displaydate.'<div class="clear"></div>';
-			#theme_indextitle();
-			#theme_indexdetails();
-			#if ( !$displaydate ) {
-			#	the_content('Continue reading...');
-			#} else {
-			#	the_content($displaydate);
-			#}
-		    #theme_indexsocialbar();
+
+			# Add post location data to JSON string
+			$json .= get_post_location_json_data();			
 		}
+
+      	# Close JSON string
+	    $json .= ']';  
+
+	    # Define map canvas id and display google map with custom markers for each post
+	    $map_canvas = 'post_google_map_canvas';
+	    theme_display_google_map_posts($json, $map_canvas);	    
+
 		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
 			<nav id="post-nav">
 				<ul>
@@ -959,11 +825,26 @@ function advertorial_index() {
 function projects_index() {
 	theme_projectcreate_post();
 	if ( have_posts() ) {
+	    
+		# Construct location data in JSON for google map display
+        $json = '[';	    
+	    
 		while ( have_posts() ) { 
 			the_post(); 
 			theme_index_feed_item();
 			theme_index_contributor_donate_join_bar();
+			
+			# Add post location data to JSON string
+			$json .= get_post_location_json_data();			
 	    }
+
+      	# Close JSON string
+	    $json .= ']';  
+
+	    # Define map canvas id and display google map with custom markers for each post
+	    $map_canvas = 'post_google_map_canvas';
+	    theme_display_google_map_posts($json, $map_canvas);	    
+	    
 	    theme_indexpagination();	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>

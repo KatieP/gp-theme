@@ -2089,15 +2089,74 @@ function email_after_post_approved($post_ID) {
 }
 add_action('pending_to_publish', 'email_after_post_approved');
 
+/** CONSTRUCT POST LOCATION OBJECT DATA IN JSON **/
+
+function get_post_location_json_data() {
+    /**
+     * Returns a single JSON structured string holding post data:
+     * title, link, lat, long and custom marker of an indivdual post.
+     * TODO: add excerpt
+     **/
+
+    global $post;
+    $template_url = get_bloginfo('template_url');
+    
+    # Set post data
+    $post_type = get_post_type();	
+    $post_id = $post->ID;
+    $post_title =  get_the_title($post->ID);
+    $post_link_url = get_permalink($post->ID);
+    $displaytitle = '<a href=\"'. $post_link_url . '\" title=\"'. $post_title .'\">'. $post_title .'</a>';
+    
+    # Set location keys
+    $lat_post_key = $post_type .'_google_geo_latitude';
+    $long_post_key = $post_type .'_google_geo_longitude';
+    
+	# Assign icon for custom marker depending on post type
+	switch ($post_type) {
+	    case 'gp_news':
+	        $post_icon = $template_url .'/template/icons/post-type-icons/news-icon.png';
+	        break;
+	    case 'gp_projects':
+	    	$post_icon = $template_url .'/template/icons/post-type-icons/project-icon.png';
+	        break;
+		case 'gp_advertorial':
+			$post_icon = $template_url .'/template/icons/post-type-icons/product-icon.png';
+	        break;
+		case 'gp_competitions':
+			$post_icon = $template_url .'/template/icons/post-type-icons/competition-icon.png';
+	        break;
+	    case 'gp_events':
+	    	$post_icon = $template_url .'/template/icons/post-type-icons/event-icon.png';
+	        break;
+	    case 'gp_people':
+	    	$post_icon = '';
+	        break;
+	}
+    
+	# Get post location meta (post id, key, true/false)
+    $lat_post = get_post_meta($post_id, $lat_post_key, true);
+    $long_post = get_post_meta($post_id, $long_post_key, true);
+
+	# Construct json data and return for google map marker display
+	$json = '{ 
+	             Title: "'. $displaytitle .'", 
+	             Post_lat: "'. $lat_post .'", 
+	             Post_long: "'. $long_post .'", 
+	             Post_icon: "'. $post_icon .'" 
+             },';
+	
+	return $json;
+}
+
 /** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP, CENTERED BY USER IP LOCATION **/
 
-function theme_display_google_map_posts($json) {
+function theme_display_google_map_posts($json, $map_canvas) {
 
     /**
      * Accepts json structured string holding post title link, lat and long data on each relevant post
      * Construcs google map and places marker on each post location,
      * Each marker shows a lightbox with a link to post on click
-     * TODO: add excerpt in future
      **/
 
     // Grabs user's IP address and gets lat and long via geoplugin free website.
@@ -2159,22 +2218,23 @@ function theme_display_google_map_posts($json) {
 		                   postlatlong = new google.maps.LatLng(data.Post_lat, data.Post_long);
 		    		    
                 //Adds surrounding markers from the json object and loop for surrounding events
-                var marker2 = new google.maps.Marker({
+                var custom_marker = new google.maps.Marker({
             	    position: postlatlong,
             	    map: map,
-        	        title: data.Title
+        	        title: data.Title,
+        	        icon: data.Post_icon
                 });		    
 		
 		 	    // Creating a closure to retain the correct data, notice how I pass the current 
             	// data in the loop into the closure (marker, data)
-	    		(function(marker2, data) {
+	    		(function(custom_marker, data) {
 
 		        	// Attaching a click event to the current marker
-		        	google.maps.event.addListener(marker2, "click", function(e) {
+		        	google.maps.event.addListener(custom_marker, "click", function(e) {
 			        	infoWindow.setContent(data.Title);
-			    	    infoWindow.open(map, marker2);
+			    	    infoWindow.open(map, custom_marker);
     				});
-	    		})(marker2, data);       	
+	    		})(custom_marker, data);       	
 		    } 
         }
      
@@ -2188,8 +2248,8 @@ function theme_display_google_map_posts($json) {
    </script>
    <?php
    echo '<div onload="initialize()"></div>
-         <div id="post_google_map_canvas"></div>'; 
-}
+         <div id="'. $map_canvas .'"></div>'; 
+} 
 
 /** GOOGLE MAP FOR INDIVIDUAL POSTS **/
 // This function grabs meta data for lat and long from each posts and displays them in a google map.
