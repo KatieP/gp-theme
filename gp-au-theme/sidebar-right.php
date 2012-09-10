@@ -63,11 +63,11 @@
 					<a href="https://twitter.com/GreenPagesAu" class="twitter-follow-button" data-show-count="true" data-size="large">Follow @GreenPagesAu</a>
 					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 				</div>
-				<div id="facebook">
-					<!-- <span class="title">Find us on Facebook</span>  -->
-					<iframe src="http://www.facebook.com/plugins/likebox.php?id=135951849770296&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>
-				</div>
-				<?php
+				
+				<?php show_facebook_by_location() ?>
+			
+		
+			<?php
 				#}
 				
 				if ( get_post_type() == 'gp_news' && !is_author() && !is_single() && !wp_title("",0)==" Search") {

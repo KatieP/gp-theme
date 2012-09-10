@@ -2358,6 +2358,98 @@ function theme_single_google_map() {
 	}
 }
 
+
+/** SHOWS DIFFERENT COUNTRY FACEBOOK PAGES ON RIGHT SIDEBAR BASED ON USER'S LOCATION BY IP**/
+function show_facebook_by_location() {
+    global $post,$wpdb;
+	
+	//Get User's IP Address
+	#$ip_addr = $_SERVER['REMOTE_ADDR'];
+	
+	//TO DO: Call user's IP with TBC function
+
+	$ip_addr = '121.218.165.228';
+
+	//Convert User's IP Address to Decimal
+	$user_ip_decimal = ip2long($ip_addr);
+	
+	//Query database table wp_maxmind_geolitecityblocks for range that IP Decimal occurs in and return LocID
+	$user_ip_query = "SELECT locID 
+	                  FROM " . $wpdb->prefix . "maxmind_geolitecityblocks 
+	                  WHERE startIPNum <= " . $user_ip_decimal . " 
+	                      AND endIPNum >= " . $user_ip_decimal . " limit 1";
+  	
+  	//echo 'user_ip_query: <br />';
+  	//var_dump($user_ip_query);                       
+	//echo '<br />';
+	
+	$user_ip_locid_result = $wpdb->get_results($user_ip_query, ARRAY_N);
+
+	//echo 'user_ip_locid: <br />';
+    //var_dump($user_ip_locid_result);
+   	//echo '<br />';
+   	
+   	//echo 'Object Attribute: <br />';
+   	//echo $user_ip_locid_result[0][0];
+ 	//echo '&nbsp;';
+   	
+   	$user_ip_locid = $user_ip_locid_result[0][0];	
+
+	//Query database table wp_maxmind_geolitecitylocation wth LocID and return alphabetic country code
+	$user_ip_country_query = "SELECT  country 
+	                          FROM " . $wpdb->prefix . "maxmind_geolitecitylocation 
+	                          WHERE locID=" . $user_ip_locid . " limit 1";
+	                          
+	//echo 'user_ip_country_query: <br />';
+	//var_dump($user_ip_country_query);
+   	//echo '<br />';	                          
+	                          
+	$user_ip_country_result = $wpdb->get_results($user_ip_country_query, ARRAY_N);
+
+    $user_ip_country = $user_ip_country_result[0][0];
+
+	//echo 'user_ip_country: <br />';
+	//var_dump($user_ip_country);
+   	//echo '<br />';
+	//$user_ip_country_code = 'NZ';
+
+	// Switch statement to assign facebook page ID for country page based on user's country code
+	switch ($user_ip_country) {
+		case 'AU';
+			$fb_page_id = '135951849770296';
+		break;
+		case 'US';
+			$fb_page_id = '243282385705362';
+		break;
+		case 'NZ';
+			$fb_page_id = '111993925617124';
+		break;
+		case 'CA';
+			$fb_page_id = '257648914354781';
+		break;
+		case 'GB';
+			$fb_page_id = '195318640600833';
+		break;
+		case 'IE';
+			$fb_page_id = '151586314981693';
+		break;
+		case 'IN';
+			$fb_page_id = '421791361201309';
+		break;
+		case 'FR';
+			$fb_page_id = '268597359918650';
+		break;
+		default:
+			$fb_page_id = '243282385705362';
+		break;
+		}
+
+	// Echo facebook iframe with country based facebook page ID inserted into iframe
+	echo '<div id="facebook"><iframe src="http://www.facebook.com/plugins/likebox.php?id='.$fb_page_id.'&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe><div';
+	
+}	
+
+
 /* GET USER IP ADDRESS FROM SIMPLEGEO API */
 #Simple GEO has gone out of business! This code will need to be replaced.
 #https://github.com/simplegeo/php-simplegeo
