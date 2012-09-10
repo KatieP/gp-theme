@@ -332,7 +332,7 @@ function theme_index_feed_item() {
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);	
 
-	?><h1><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php
+	?><h1 class="profile-title"><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php
 	
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {

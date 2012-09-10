@@ -1851,15 +1851,37 @@ function coming_events() {
    								dialog_str = dialog_str.concat(next_str);
    							}
    							
-
+   							var x = $(this).offset().left - $(document).scrollLeft() - $(this).outerWidth() - 4;
+                            var y = $(this).offset().top - $(document).scrollTop();
+   							
 							$(function() {
 								$( "#event-dialog" ).html(dialog_str);
-								$( "#event-dialog" ).dialog({ position: [800,129], minHeight: 142, width: 288 });
+								$( "#event-dialog" ).dialog({ 
+								    position: [x,y], 
+								    minHeight: 142, 
+								    width: 288, 
+								    dialogClass: "event-dialog-wrap",
+								    open: function(e, ui) { 
+								        $(document).bind(\'click\', function(e) {
+								            if ($(e.target).parents(".event-dialog-wrap").length == 0) {
+								                $("#event-dialog").dialog(\'close\');
+                                            }
+                                        }); 
+                                    } 
+                                }).delay(20000).hide(function() { $( "#event-dialog" ).dialog(\'close\') });
 							});   							
        						//alert(event.Title);
    						}
 					}
 				});
+				
+				$(window).resize(function() {
+                    if( $("#event-dialog").is(\':visible\') ) {
+    				    var x = $("#eventCalendar").offset().left - $(document).scrollLeft() - $("#eventCalendar").outerWidth() - 4;
+                        var y = $("#eventCalendar").offset().top - $(document).scrollTop();
+                        $("#event-dialog").dialog({ position: [x,y] });
+                    }
+                });
 				//--><!]]>
 			</script>';
 }

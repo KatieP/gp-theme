@@ -686,7 +686,7 @@ header {
     margin-bottom: 2em;
     margin-top: 0;
     position: fixed;
-    z-index: 5;
+    z-index: 9999;
     width: 100%;
     background: #6eb83f; /* Old browsers */
     /* IE9 SVG, needs conditional override of 'filter' to 'none' */
@@ -705,12 +705,12 @@ header a {
 }
 
 header a:hover {
-	color: #fff;
+    color: #fff;
 }
-	
+    
 #header-nav, #header-search, #header-auth #lower {
     margin-top: 14px;
-    padding-right: 0px;	
+    padding-right: 0px; 
 }
 
 #header-auth #lower:hover {
@@ -732,14 +732,14 @@ header a:hover {
 }
 
 #header-search {
-	width: 160px;
-	float: right;
+    width: 160px;
+    float: right;
 }
 
 #header-auth {
     width: 140px;
-	float: right;
-	margin-top: 1px;
+    float: right;
+    margin-top: 1px;
 }
 
 .header-slogan {
@@ -1001,7 +1001,7 @@ header a:hover {
 
 #auth-tools #auth-youraccount .auth-youraccount-start:hover {
     text-decoration: underline;
-    background-color: transparent;   	
+    background-color: transparent;      
 }
 
 .auth-dash {
@@ -1113,7 +1113,7 @@ header a:hover {
 }
 
 #auth-tools .auth-dash li.auth-dash-title {
-	color: #666;
+    color: #666;
     height: 19px;
     font-weight: bold;
     font-size: 14px;
@@ -1638,6 +1638,14 @@ header a:hover {
 #event-dialog a {
     color: #01aed8;
     text-decoration: none;
+}
+
+#event-dialog br {
+    display: none;
+}
+
+#event-dialog p {
+    margin: 8px 0;
 }
 
 #event-dialog a:hover {
@@ -2927,21 +2935,16 @@ ul.categorieslistmain {
     background-color: #ccc;
 }
 
-#content .profile-tabs li.profile-tab-man a:hover, #content .profile-tabs li.profile-tab-man .profile-tab-active
-    {
+#content .profile-tabs li.profile-tab-man a:hover, #content .profile-tabs li.profile-tab-man .profile-tab-active {
     background-color: #333;
-}
-
-#content .profile-postbox h1 {
-    margin-bottom: 0;
 }
 
 #content .profile-postbox {
     float: right;
     /** width: 310px;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
     width: 472px;
-    margin-left: 10px;
-    padding: 0 6px 0 6px;
+    margin: 4px 0 0 10px;
+    padding: 6px 6px 0 6px;
     background-color: #f8f8f8;
     position: relative;
 }
@@ -2950,16 +2953,13 @@ ul.categorieslistmain {
     margin: 6px 0 6px 0;
 }
 
-#content .profile-postbox h1, #content .profile_minithumb img {
-    margin: 0 0 0 0;
+#content .profile_minithumb img {
+    margin: 4px 0 18px 0;
+    float: left;
 }
 
 #content .profile-postbox .post-details {
     float: none;
-}
-
-#content .profile_minithumb img {
-    float: left;
 }
 
 #content .profile_postlink {
@@ -3677,7 +3677,7 @@ ul.categorieslistmain {
     position: relative;
     background-color: #eee;
     min-height: 5px;
-    width: 636px;
+    width: 484px;
     float: right;
     margin-bottom: 18px;
 }
@@ -4154,5 +4154,3 @@ ul.categorieslistmain {
         page-break-after: avoid;
     }
 }
-
-
