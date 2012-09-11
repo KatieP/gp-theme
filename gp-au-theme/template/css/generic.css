@@ -79,7 +79,7 @@ ul, ol {margin:0;padding:0;}
     outline-width: 0pt;
 }
 
-.pos {
+.pos, .widecolumn {
     width: 972px;
     margin: 0 auto;
     position: relative;
@@ -4005,6 +4005,55 @@ ul.categorieslistmain {
     margin-top: 30px;
 }
 
+
+/* ==========================================================================
+   Wordpress specific querks
+   ========================================================================== */
+
+.widecolumn {
+    padding: 100px 0;
+}
+
+form#setupform {
+    display: block;
+    position: relative;
+    width: 292px;
+    margin: 20px auto 0;
+    padding: 0px 24px 0px 24px;
+    background-color: #f2f2f2;
+    border: 8px solid #d5e8c2;
+    border-radius: 2px;
+    font-size: 11px;
+}
+
+.mu_register input[type="submit"], .mu_register #blog_title, .mu_register #user_email, .mu_register #blogname, .mu_register #user_name {
+    width: auto!important;
+}
+
+form#setupform input[type="text"] {
+    background-color: #fff;
+    min-width: 0!important;
+    width: 268px!important;
+    margin-bottom: 4px;
+}
+
+form#setupform input[type="submit"] {
+    float: right;
+    margin-top: 10px
+}
+
+form#setupform label {
+    font-weight: 600;
+    color: #01aed8!important;
+    display: block;
+    font-size: 12px!important;
+    clear: both;
+    margin: 0;
+}
+
+form#setupform br {display: none;}
+
+form#setupform p.submit {display:block;height:44px;}
 
 /* ==========================================================================
    Media Queries
