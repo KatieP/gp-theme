@@ -2368,7 +2368,9 @@ function show_facebook_by_location() {
 	
 	//TO DO: Call user's IP with TBC function
 
-	$ip_addr = '121.218.165.228';
+	//$ip_addr = '121.218.165.228';
+	
+    $ip_addr = $_SERVER['REMOTE_ADDR'];
 
 	//Convert User's IP Address to Decimal
 	$user_ip_decimal = ip2long($ip_addr);
@@ -2417,36 +2419,37 @@ function show_facebook_by_location() {
 	switch ($user_ip_country) {
 		case 'AU';
 			$fb_page_id = '135951849770296';
-		break;
+		    break;
 		case 'US';
 			$fb_page_id = '243282385705362';
-		break;
+		    break;
 		case 'NZ';
 			$fb_page_id = '111993925617124';
-		break;
+		    break;
 		case 'CA';
 			$fb_page_id = '257648914354781';
-		break;
+		    break;
 		case 'GB';
 			$fb_page_id = '195318640600833';
-		break;
+		    break;
 		case 'IE';
 			$fb_page_id = '151586314981693';
-		break;
+		    break;
 		case 'IN';
 			$fb_page_id = '421791361201309';
-		break;
+		    break;
 		case 'FR';
 			$fb_page_id = '268597359918650';
-		break;
+		    break;
 		default:
 			$fb_page_id = '243282385705362';
-		break;
-		}
+		    break;
+	}
 
 	// Echo facebook iframe with country based facebook page ID inserted into iframe
-	echo '<div id="facebook"><iframe src="http://www.facebook.com/plugins/likebox.php?id='.$fb_page_id.'&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe><div';
-	
+	echo '<iframe src="http://www.facebook.com/plugins/likebox.php?id='.$fb_page_id.
+	      '&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" 
+	      frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>';
 }	
 
 
