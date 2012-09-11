@@ -697,7 +697,7 @@ header {
     background: -o-linear-gradient(top,  #6eb83f 0%,#5db721 92%,#4bb703 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #6eb83f 0%,#5db721 92%,#4bb703 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #6eb83f 0%,#5db721 92%,#4bb703 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6eb83f', endColorstr='#4bb703',GradientType=0 ); /* IE6-8 */   
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6eb83f', endColorstr='#4bb703',GradientType=0 ); /* IE6-8 */  
 }
 
 header a {

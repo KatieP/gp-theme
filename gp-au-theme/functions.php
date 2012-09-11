@@ -2908,16 +2908,20 @@ function theme_profile_advertise($profile_pid) {
 	
 	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 
+	# Set form urls for creating ad posts for regular monthly subscription advertisers and non regular advertisers
+	$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+    $post_my_competition_form  = ($profile_author->reg_advertiser == 1) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
+    
 	echo "
 	<div id=\"my-advertise\">
 		<div id=\"advertorial\">
-			<span><a href=\"/forms/create-product-post/\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
+			<span><a href=\"". $post_my_product_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
 			<div class=\"clear\"></div>			
 			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"competition\">
-			<span><a href=\"/forms/create-competition-post/\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
+			<span><a href=\"". $post_my_competition_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
 			<div class=\"clear\"></div>				
 			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#competition\" target=\"_blank\">Learn more</a></span>
 		</div>
