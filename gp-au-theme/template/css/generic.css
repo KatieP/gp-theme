@@ -3580,7 +3580,6 @@ ul.categorieslistmain {
 /** SOCIALBAR **/
 #gp_share .fixed {
     position: fixed;
-    top: 20px;
 }
 
 #gp_sharebar {
@@ -4154,3 +4153,5 @@ ul.categorieslistmain {
         page-break-after: avoid;
     }
 }
+
+
