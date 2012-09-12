@@ -708,14 +708,31 @@ header a:hover {
     color: #fff;
 }
     
-#header-nav, #header-search, #header-auth #lower {
+#header-nav, #header-search, #header-auth .lower {
     margin-top: 14px;
     padding-right: 0px; 
 }
 
-#header-auth #lower:hover {
+#header-auth .lower:hover {
     text-decoration: underline;
     background-color: transparent;
+}
+
+#header-auth .lower {
+    padding: 0 2px;
+    width: auto;
+    float: right;
+    margin: 14px 0 0 0;
+}
+
+#header-auth .in-or-out {
+    font-style: italic;
+    font-size: 10px;
+    margin: 14px 5px 0 5px;
+    display: block;
+    float: right;
+    line-height: 22px;
+    font-weight: bold;
 }
 
 #header-logo {
@@ -918,6 +935,9 @@ header a:hover {
 
 #auth-youraccount {
     float: right;
+    overflow: hidden;
+    width: 140px;
+    height: 42px;
 }
 
 #auth-yourfavourites a, #auth-yournotifications a, #auth-youraccount a {
@@ -945,7 +965,7 @@ header a:hover {
 }
 
 #auth-youraccount .bullet2 {
-    margin: 10px 0 0 6px;
+    margin: 9px 0 0 6px;
     float: right;
     display: inline;
 }
@@ -4202,5 +4222,3 @@ form#setupform p.submit {display:block;height:44px;}
         page-break-after: avoid;
     }
 }
-
-
