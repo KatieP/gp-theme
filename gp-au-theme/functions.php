@@ -3547,7 +3547,9 @@ function theme_advertorialcreate_post(){
 }
 
 function theme_insert_advertorialcreate_post(){
-	echo '<a href="/forms/create-product-post/" class="new-post-action">Post a Product Ad</a>';
+    global $current_user;
+    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+	echo '<a href="'. $post_my_product_form .'" class="new-post-action">Post a Product Ad</a>';
 }
 
 function theme_competitioncreate_post(){
@@ -3555,7 +3557,9 @@ function theme_competitioncreate_post(){
 }
 
 function theme_insert_competitioncreate_post(){
-	echo '<a href="/forms/create-competition-post/" class="new-post-action">Post a Competition</a>';
+    global $current_user;
+    $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';    
+	echo '<a href="'. $post_my_competition_form .'" class="new-post-action">Post a Competition</a>';
 }
 
 function theme_eventcreate_post(){
@@ -3567,14 +3571,31 @@ function theme_insert_eventcreate_post(){
 }
 
 function gp_select_createpost() {
+    /**
+     * Display a drop down menu in profile page with links to create post forms,
+     * news posts are only available to Content Partners (contributors) and
+     * links to product and competition forms are determined by regular advertiser status
+     */
+    
+    global $current_user;
+    
+    # Set link to create news post for Content Partners
+    $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"/forms/create-news-post/\">News (Free)</a></li>" : "";
+    
+    # Set links to forms for monthly advertisers and non monthly advertisers
+    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+    $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($89)</a>"; 
+    $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
+    $post_my_competition_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". $post_my_competition_form ."\">Competition</a>" : "<a href=\"". $post_my_competition_form ."\">Competition ($250)</a>"; 
+    
 	echo "
 	<div class=\"profile-action-container no-js\">
 		<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
 		<ul class=\"profile-action-items\">
-            <li><a href=\"/forms/create-news-post/\">News (Free)</a></li>
+		    ". $post_my_news_link ."
             <li><a href=\"/forms/create-event-post/\">Event (Free)</a></li>
-            <li><a href=\"/forms/create-product-post/\">Product Feature ($89)</a></li>
-            <li><a href=\"/forms/create-competition-post/\">Competition ($250)</a></li>
+            <li>". $post_my_product_link ."</li>
+            <li>". $post_my_competition_link ."</li>
             <li><a href=\"/forms/create-project-post/\">Project (Free)</a></li>
 		</ul>
 	</div>
