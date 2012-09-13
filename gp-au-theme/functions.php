@@ -3547,8 +3547,21 @@ function theme_advertorialcreate_post(){
 }
 
 function theme_insert_advertorialcreate_post(){
+    /**
+     * Link to different forms for creating product posts depending on user status:
+     * - Not logged in : form that creates member account and continues to payment page
+     * - Logged in member & non-regular advertiser : continues to payment page
+     * - Logged in member & regular advertiser : confirmation message no payment required
+     **/
+    
     global $current_user;
-    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+    
+    # Check user status and display correct form
+    if ( !is_user_logged_in() ) {
+        $post_my_product_form = '/forms/create-my-product-post-public/';
+    } else {
+        $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+    }
 	echo '<a href="'. $post_my_product_form .'" class="new-post-action">Post a Product Ad</a>';
 }
 
@@ -3557,8 +3570,20 @@ function theme_competitioncreate_post(){
 }
 
 function theme_insert_competitioncreate_post(){
+    /**
+     * Link to different forms for creating competition posts depending on user status:
+     * - Not logged in : form that creates member account and continues to payment page
+     * - Logged in member & non-regular advertiser : continues to payment page
+     * - Logged in member & regular advertiser : confirmation message no payment required
+     **/    
+    
     global $current_user;
-    $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';    
+    
+    if ( !is_user_logged_in() ) {
+        $post_my_competition_form = '/forms/post-my-competition-public/';
+    } else {
+        $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
+    }    
 	echo '<a href="'. $post_my_competition_form .'" class="new-post-action">Post a Competition</a>';
 }
 
