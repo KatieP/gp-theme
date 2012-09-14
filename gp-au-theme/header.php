@@ -108,7 +108,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			}
 		
 			// Show required info for Facebook attach link functionality and open graph protocol
-			$permalink = ( isset($post) ? get_permalink($post->ID) : "" )
+			$permalink = ( isset($post) ? get_permalink($post->ID) : "" );
 			
 			echo '<meta property="fb:app_id" content="305009166210437" />';
             echo '<meta property="og:locale" content="en_US" />';
