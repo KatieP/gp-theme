@@ -3539,7 +3539,12 @@ function theme_projectcreate_post(){
 }
 
 function theme_insert_projectcreate_post(){
-	echo '<a href="/forms/create-project-post/" class="new-post-action">Post a Project</a>';
+    /**
+     * Display public facing form that will create user account on submission
+     * unless user is logged in, then display member form.
+     */ 
+    $post_my_project_form = ( is_user_logged_in() ) ? '/forms/create-project-post/' : '/forms/create-my-project-post-public/';
+	echo '<a href="'. $post_my_project_form .'" class="new-post-action">Post a Project</a>';
 }
 
 function theme_advertorialcreate_post(){
