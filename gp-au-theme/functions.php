@@ -3592,7 +3592,12 @@ function theme_eventcreate_post(){
 }
 
 function theme_insert_eventcreate_post(){
-	echo '<a href="/forms/create-event-post/" class="new-post-action">Post an Event</a>';
+    /**
+     * Display public facing form that will create user account on submission
+     * unless user is logged in, then display member form.
+     */
+    $post_my_event_form = ( is_user_logged_in() ) ? '/forms/create-event-post/' : '/forms/create-my-event-post-public/';
+    echo '<a href="'. $post_my_event_form .'" class="new-post-action">Post an Event</a>';
 }
 
 function gp_select_createpost() {
