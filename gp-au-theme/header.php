@@ -108,13 +108,13 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			}
 		
 			// Show required info for Facebook attach link functionality and open graph protocol
-			if ( is_single() || is_page() ) {
-    			echo '<meta property="fb:app_id" content="305009166210437" />';
-                echo '<meta property="og:locale" content="en_US" />';
-    			echo '<meta property="og:site_name" content="Green Pages" />';
-    			echo '<meta property="og:url" content="' . get_permalink($post->ID) . '"/>';
-    			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
-			}
+			$permalink = ( isset($post) ? get_permalink($post->ID) : "" )
+			
+			echo '<meta property="fb:app_id" content="305009166210437" />';
+            echo '<meta property="og:locale" content="en_US" />';
+			echo '<meta property="og:site_name" content="Green Pages" />';
+			echo '<meta property="og:url" content="' . $permalink . '"/>';
+			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
 	
 			if ( is_single() && function_exists('has_post_thumbnail') && has_post_thumbnail($post->ID) ) {
 				$socialThumb = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'thumbnail');
