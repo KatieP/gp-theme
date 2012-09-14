@@ -108,11 +108,13 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			}
 		
 			// Show required info for Facebook attach link functionality and open graph protocol
-			echo '<meta property="fb:app_id" content="305009166210437" />';
-            echo '<meta property="og:locale" content="en_US" />';
-			echo '<meta property="og:site_name" content="Green Pages" />';
-			echo '<meta property="og:url" content="' . get_permalink($post->ID) . '"/>';
-			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
+			if ( is_single() || is_page() ) {
+    			echo '<meta property="fb:app_id" content="305009166210437" />';
+                echo '<meta property="og:locale" content="en_US" />';
+    			echo '<meta property="og:site_name" content="Green Pages" />';
+    			echo '<meta property="og:url" content="' . get_permalink($post->ID) . '"/>';
+    			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
+			}
 	
 			if ( is_single() && function_exists('has_post_thumbnail') && has_post_thumbnail($post->ID) ) {
 				$socialThumb = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'thumbnail');
@@ -196,7 +198,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			    <nav id="header-nav">
 				    <ul>
 					    <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
-					    $post_type = get_post_type($post->ID);
+		                $post_type = ( isset($post) ? get_post_type($post->ID) : "" );
 					    ?>
 					    <li><a href="/news"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
 					    <li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
