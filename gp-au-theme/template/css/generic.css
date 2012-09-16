@@ -936,7 +936,6 @@ header a:hover {
 #auth-youraccount {
     float: right;
     overflow: hidden;
-    width: 140px;
     height: 42px;
 }
 
@@ -3988,9 +3987,24 @@ ul.categorieslistmain {
 }
 
 /* Pictonic webdings */
+
+.icon-bbq1:before { content:""; } 
+.icon-cog-semifull:before { content:""; } 
+.icon-party-balloon:before { content:""; } 
+.icon-trophy-2:before { content:""; } 
+.icon-edit:before { content:""; } 
+.icon-gift-alt:before { content:""; } 
+.icon-light-on:before { content:""; } 
+.icon-thunderbolt:before { content:""; } 
+.icon-cog-thick:before { content:""; } 
+.icon-cog-narrow:before { content:""; } 
+.icon-cog-full:before { content:""; }
+
 .icon-party-balloon, .icon-party-balloon a, .icon-trophy-2, .icon-trophy-2 a,
 .icon-edit, .icon-edit a, .icon-light-on, .icon-light-on a, .icon-bbq1, .icon-bbq1 a,
-.icon-thunderbolt, .icon-thunderbolt a, .icon-gift-alt, .icon-gift-alt a {
+.icon-thunderbolt, .icon-thunderbolt a, .icon-gift-alt, .icon-gift-alt a, .icon-cog-thick, 
+.icon-cog-thick a, .icon-cog-narrow, .icon-cog-narrow a, .icon-cog-full, .icon-cog-full a,
+.icon-cog-semifull, .icon-cog-semifull a {
     font-family: pictonic;
     font-size: 100px;
     line-height: 100px;
@@ -4000,7 +4014,8 @@ ul.categorieslistmain {
 }
 
 .icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover,
-.icon-light-on:hover, .icon-bbq1:hover {
+.icon-light-on:hover, .icon-bbq1:hover, .icon-cog-semifull:hover, .icon-cog-thick:hover,
+.icon-cog-narrow:hover, .icon-cog-full:hover {
     color: #01aed8;
 }
 
@@ -4020,7 +4035,7 @@ ul.categorieslistmain {
 /* Google maps that go under each post */
 
 #post_google_map_canvas {
-    width 636px; 
+    width: 636px; 
     height:300px;
     margin-top: 30px;
 }

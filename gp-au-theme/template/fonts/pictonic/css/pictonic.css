@@ -26,10 +26,14 @@ a[class^="icon-"], a[class*=" icon-"], span[class^="icon-"], span[class*=" icon-
 	*display: inline;
 }
   
-.icon-party-balloon:before { content:""; } 
-.icon-edit:before { content:""; } 
-.icon-light-on:before { content:""; } 
-.icon-bbq1:before { content:""; } 
-.icon-trophy-2:before { content:""; } 
-.icon-thunderbolt:before { content:""; } 
-.icon-gift-alt:before { content:""; }
+.icon-bbq1:before { content:""; } 
+.icon-cog-semifull:before { content:""; } 
+.icon-party-balloon:before { content:""; } 
+.icon-trophy-2:before { content:""; } 
+.icon-edit:before { content:""; } 
+.icon-gift-alt:before { content:""; } 
+.icon-light-on:before { content:""; } 
+.icon-thunderbolt:before { content:""; } 
+.icon-cog-thick:before { content:""; } 
+.icon-cog-narrow:before { content:""; } 
+.icon-cog-full:before { content:""; }

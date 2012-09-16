@@ -789,10 +789,16 @@ function people_index() {
 	
 	global $current_user, $wpdb, $wp_roles;
 
-	$query = "SELECT wp_users.ID FROM wp_users LEFT JOIN wp_usermeta on wp_usermeta.user_id=wp_users.ID WHERE wp_users.user_status = 0 AND wp_usermeta.meta_key = 'wp_capabilities' AND wp_usermeta.meta_value RLIKE '[[:<:]]subscriber[[:>:]]' ORDER BY wp_users.user_registered DESC;";
+	$query = "SELECT DISTINCT wp_users.ID 
+	          FROM wp_users 
+	              LEFT JOIN wp_usermeta on wp_usermeta.user_id=wp_users.ID 
+	          WHERE wp_users.user_status = 0 
+	              AND wp_usermeta.meta_key = 'wp_capabilities' 
+	              AND wp_usermeta.meta_value RLIKE '[[:<:]]subscriber[[:>:]]' 
+	          ORDER BY wp_users.user_registered DESC;";
   	$subscribers = $wpdb->get_results($query);
   	if ($subscribers) {
-  		$member_string .= '<div class="memberslist">';
+  		$member_string = '<div class="memberslist">';
   		
     	foreach($subscribers as $subscriber) {
       		$thisuser = get_userdata($subscriber->ID);
@@ -800,7 +806,7 @@ function people_index() {
       		 * DISPLAY PROFILE ONLY IF AT LEAST ONE OF EITHER:
  			 * PROJECTS I NEED HELP WITH, GREEN STUFF I'M INTO OR HOW I'D CHANGE THE WORLD
  			 * HAVE BEEN FILLED IN 
- 			*/ 
+ 			**/
     	    if (!empty($thisuser->bio_projects) || !empty($thisuser->bio_change) || !empty($thisuser->bio_stuff)) {
 	      		$member_string .= '<a href="' . get_author_posts_url($thisuser->ID) . '" title="Posts by "' . esc_attr($thisuser->display_name) . '">'; 
     	  		$member_string .= get_avatar( $thisuser->ID, '100', '', $thisuser->display_name );
@@ -813,7 +819,8 @@ function people_index() {
     	}
    	
     $member_string .= '</div><div class="clear"></div>';
-   	echo $member_string;	
+   	echo $member_string;
+   	$member_string = '';
   	}
 }
 

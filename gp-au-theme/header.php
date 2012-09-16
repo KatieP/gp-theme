@@ -289,7 +289,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					</li>
 					<li id="auth-youraccount" class="no-js">
 						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
-							My Account
+							<span>My Account</span>
 						</a>
 						<ul id="auth-dash-account" class="auth-dash">
 							<li class="auth-dash-title">Account Options</li>
