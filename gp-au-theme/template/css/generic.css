@@ -720,19 +720,15 @@ header a:hover {
 
 #header-auth .lower {
     padding: 0 2px;
-    width: auto;
+    width: auto; 
     float: right;
     margin: 14px 0 0 0;
 }
 
 #header-auth .in-or-out {
-    font-style: italic;
-    font-size: 10px;
     margin: 14px 5px 0 5px;
-    display: block;
     float: right;
     line-height: 22px;
-    font-weight: bold;
 }
 
 #header-logo {

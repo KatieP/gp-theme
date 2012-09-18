@@ -222,14 +222,13 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					<li id="auth-youraccount">
 						<!--
 						Temporarily disabling simple-modal login as register and login are breaking for many users
-						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
+						<a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
 						-->
-						
-						<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
-						    <span class="bullet2"></span>Sign in
-						</a>
-						<span class="in-or-out">or</span>
-						<a href="/wp-login.php?action=register" class="lower">Join Now!</a>		
+                        <a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
+                            <span class="bullet2"></span>Sign in
+                        </a>
+                        <span class="in-or-out">or</span>
+                        <a href="/wp-login.php?action=register" class="lower">Sign Up</a>
 					</li>
 				</ul>
 				<div class="clear"></div>
