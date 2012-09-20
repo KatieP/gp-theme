@@ -3978,8 +3978,8 @@ ul.categorieslistmain {
 /**WEBFONTS FOR ICONS (WEBDINGS) TO REPRESENT POST TYPES FOR NEW USERS ON WELCOME PAGE**/
 .big-webdings-entypoRegular {
     font-family: EntypoRegular;
-    font-size: 100px;
-    line-height: 120px;
+    font-size: 80px;
+    line-height: 100px;
 }
 
 /* Pictonic webdings */
@@ -4002,28 +4002,64 @@ ul.categorieslistmain {
 .icon-cog-thick a, .icon-cog-narrow, .icon-cog-narrow a, .icon-cog-full, .icon-cog-full a,
 .icon-cog-semifull, .icon-cog-semifull a {
     font-family: pictonic;
-    font-size: 100px;
+    font-size: 80px;
     line-height: 100px;
     letter-spacing: 25px;
     margin-top: 70px;
     color: grey;
+    padding-left: 22px;
 }
 
-.icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover,
+.inner-icon-container:hover, .icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover,
 .icon-light-on:hover, .icon-bbq1:hover, .icon-cog-semifull:hover, .icon-cog-thick:hover,
 .icon-cog-narrow:hover, .icon-cog-full:hover {
     color: #01aed8;
 }
 
 /* Containers for webding icon display */
-.icon-container, .icon-container-row {
-    width: 100%;
+
+#content .icon-container {
+    width: 80%;
+    margin: 33px 10% 20% 10%;
 }
 
-.inner-icon-container {
+#content .icon-container-row {
+    width: 100%;
+    margin-top: 33px;
+}
+
+#content .icon-container-row img {
+    margin: 0px;
+}
+
+#content .inner-icon-container {
+    color: grey;
     width: 20%;
     float: left;
     text-align: center;
+    display: inline;
+    margin: 0 0 60px 0;
+}
+
+#content .icon-heading-text {
+    font-size: 18px;
+}
+
+#content .icon-body-text {
+    font-size: 16px;
+    line-height: 1.5em;
+    color: grey;
+}
+
+#content .icon-body-text a {
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+
+#content .icon-container-row #post-product-button-bar {
+    width: 20%;
+    margin: 5% 40% 30% 40%;
 }
 
 /**GOOGLE MAPS STYLING**/
