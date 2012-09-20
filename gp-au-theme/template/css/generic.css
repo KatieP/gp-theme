@@ -4010,7 +4010,7 @@ ul.categorieslistmain {
     padding-left: 22px;
 }
 
-.inner-icon-container:hover, .icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover,
+#content .inner-icon-container:hover, .icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover,
 .icon-light-on:hover, .icon-bbq1:hover, .icon-cog-semifull:hover, .icon-cog-thick:hover,
 .icon-cog-narrow:hover, .icon-cog-full:hover {
     color: #01aed8;
@@ -4032,6 +4032,12 @@ ul.categorieslistmain {
     margin: 0px;
 }
 
+#content .icon-container .loop-title, #content .icon-container .loop-title a {
+	text-align: center; 
+	margin-top: 50px;
+	color: #666;	
+}
+
 #content .inner-icon-container {
     color: grey;
     width: 20%;
@@ -4043,6 +4049,7 @@ ul.categorieslistmain {
 
 #content .icon-heading-text {
     font-size: 18px;
+    display: block;
 }
 
 #content .icon-body-text {
