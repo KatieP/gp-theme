@@ -3632,7 +3632,7 @@ function theme_homecreate_post(){
 }
 
 function theme_insert_homecreate_post(){
-	echo '<a href="/wp-admin/index.php" class="new-post-action">Create a Post</a>';
+	echo '<a href="/welcome" class="new-post-action">Create a Post</a>';
 	#theme_insert_newscreate_post();
 	#theme_insert_eventcreate_post();
 	#theme_insert_advertorialcreate_post();
