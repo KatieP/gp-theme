@@ -2687,7 +2687,7 @@ function theme_location_tag_line() {
 	# $user_location = get user location from ip address and convert to 'City' string
 	
 	# Place holder text for my location, replace with get location from user ip address function	
-	$user_location = "my location";
+	$user_location = "user location";
 	
 	?>
     <script type="text/javascript">
