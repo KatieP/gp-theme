@@ -2539,9 +2539,9 @@ function show_facebook_by_location() {
 	
 	//TO DO: Call user's IP with TBC function
 
-	//$ip_addr = '121.218.165.228';
+	#$ip_addr = '121.218.165.228';
 	
-    $ip_addr = $_SERVER['REMOTE_ADDR'];
+    #$ip_addr = $_SERVER['REMOTE_ADDR'];
 
 	//Convert User's IP Address to Decimal
 	$user_ip_decimal = ip2long($ip_addr);
@@ -2677,11 +2677,50 @@ function simplegeo_ip_user_location() {
 
 /* LOCATION TAG LINE STYLE */
 
-function theme_location_tag_line() {						#DISPLAY TAGLINE ENDING WITH USERS STATE AND COUNTRY
-	$location = simplegeo_ip_user_location();
+function theme_location_tag_line() {
+	/**
+	 * Display tag line including user location and
+	 * link that shows field to enter new location that will filter
+	 * all post data for site
+	 */
+	
+	# $user_location = get user location from ip address and convert to 'City' string
+	
+	# Place holder text for my location, replace with get location from user ip address function	
+	$user_location = "my location";
+	
 	?>
-	<div class="pos"><div class="post-details" id="header-tagline">Everything environmental happening in <?php echo $location; ?></div></div>  
-	<?php
+    <script type="text/javascript">
+        function show_location_field() {
+            document.getElementById("header_location_field").className = "";
+        }
+    </script>
+    	
+	<div class="pos">
+	    <div class="post-details" id="header-tagline">
+	        Everything environmental happening in <a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>. 
+    	    <div id="gp_create_postGeoLoc_meta" class="postbox " >
+                <span class="hidden"><label class="gfield_label" for="gp_projects_google_geo_location">Location*</label></span>
+                <div class="inside">
+                    <input type="hidden" name="gp_postGeoLoc-nonce" id="gp_postGeoLoc-nonce" value="53c6d67000" />
+                    <div class="gp-meta">
+                        <span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
+                        <div class="hidden">
+                            <input name="gp_projects_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="" readonly="readonly" />
+                            <input name="gp_projects_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="" readonly="readonly" />
+                            <input name="gp_projects_google_geo_country" id="gp_google_geo_country" type="text" value="" readonly="readonly" />
+                            <input name="gp_projects_google_geo_administrative_area_level_1" id="gp_google_geo_administrative_area_level_1" type="text" value="" readonly="readonly" />
+                            <input name="gp_projects_google_geo_administrative_area_level_2" id="gp_google_geo_administrative_area_level_2" type="text" value="" readonly="readonly" />
+                            <input name="gp_projects_google_geo_administrative_area_level_3" id="gp_google_geo_administrative_area_level_3" type="text" value="" readonly="readonly" />
+                            <input name="gp_projects_google_geo_locality" id="gp_google_geo_locality" type="text" value="" readonly="readonly" />
+                        </div>
+                        <div id="map_canvas"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
 }
 
 

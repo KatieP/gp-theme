@@ -768,7 +768,7 @@ header a:hover {
     width: 100%;
     font-size: 10px;
     font-style: normal;
-    color: lightGrey;
+    color: grey;
     background-color: #fff;
 }
 
@@ -2338,6 +2338,7 @@ header a:hover {
 
 #content .post-details a:hover, .post-details a:hover {
     text-decoration: underline;
+    color: #134;
 }
 
 /** AUTHOR DETAILS **/

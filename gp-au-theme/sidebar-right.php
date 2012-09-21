@@ -9,7 +9,7 @@
 						</script>
 						<span class="icon-advertisement">Advertisement</span>
 				</div>
-				 -->
+				-->
 				 
 				<!-- Event Calendar -->
 				<div id="eventCalendar"></div>
@@ -35,6 +35,7 @@
 					</div>
 				<?php
 				}
+				
 				/**SHOWS THE NEXT 5 UP AND COMING EVENTS UNDER THE EVENT CALENDAR**/ 				
 				coming_events();
 				

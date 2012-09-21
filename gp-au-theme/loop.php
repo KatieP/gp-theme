@@ -533,7 +533,7 @@ function home_index() {
 	#$numPosts = $wpdb->num_rows-1;
 	
 	/** NEW LIST VIEW OF 20 MOST RECENT POSTS **/
-	if ($pageposts) {   
+	if ($pageposts) {
 	    
 	    # Display create new post button
 		theme_homecreate_post();
@@ -564,7 +564,7 @@ function home_index() {
 
 	# Define map canvas id and display google map with custom markers for each post
 	$map_canvas = 'post_google_map_canvas';
-	theme_display_google_map_posts($json, $map_canvas);
+	#theme_display_google_map_posts($json, $map_canvas);
 	?>
 	
 	<!-- Link to News/page/3 at bottom of feed -->

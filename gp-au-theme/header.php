@@ -144,11 +144,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 wp_enqueue_script( 'comment-reply' );
         }
         
-        # Add google geo location javascript to pages so location autocomplete works on Gravity forms
-        if (is_page()) {
+        # Add google geo location javascript to pages so location autocomplete works on Gravity forms and select location function in header
+        # if (is_page()) {
             add_action('wp_head', 'js_GPMeta');
             add_action('wp_head', 'gp_js_postGeoLoc_meta');
-        }
+        # }
 
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which
@@ -345,6 +345,9 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			        <div id="search-button"><input type="submit" value=""/></div>
 			    </form>
 			</div>
-            <!-- Google CSE Search Box Ends -->
-            <?php #theme_location_tag_line(); ?>				
+            <!-- Google CSE Search Box Ends -->			
+            <?php
+       	    # Display location tag line and change region option
+	        theme_location_tag_line();
+            ?>
 		</header>
