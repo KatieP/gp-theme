@@ -9,7 +9,7 @@ if (!$_POST) {
 	return false;
 }
 
-global $current_site, $current_user, $post_type_to_url_part;
+global $current_site, $current_user;
 
 $post_tab = $_POST['tab'];
 $post_type = $_POST['post'];
@@ -27,7 +27,7 @@ if ( !in_array(strtolower($post_tab), $post_tab_types) ) {
 	$post_tab = "posts";
 }
 
-if ( !in_array(strtolower($post_type), $post_type_to_url_part, true) ) {
+if ( !checkPostTypeSlug( strtolower($post_type) ) ) {
 	if ( strtolower($post_type) != "directory" ) {
 		$post_type = "all";
 	}

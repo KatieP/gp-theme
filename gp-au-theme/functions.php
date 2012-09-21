@@ -1701,22 +1701,25 @@ function relevant_posts() {
 }
 
 /* SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
-function coming_events() {
-					
-	global $wpdb;
-	global $post;
-	global $states_au;
+function coming_events() {			
+	global $wpdb, $post;
+	
+	$states = Config::getStates();
+	$state_subset = ( isset( $states[0]['subset_plural'] ) ? ucwords( $states[0]['subset_plural'] ) : "States" );
 	
 	$epochtime = strtotime('now');
 
-	if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
+	if ( in_array(get_query_var( 'filterby_state' ), $states) ) {
 		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
+		echo "true";
     } else {
     	$filterby_state = "";
+    	echo "false";
     }
     
 	/* SQL QUERY FOR COMING EVENTS */
 	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
+	
 	foreach ($metas as $i=>$meta_key) {
         $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
         $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
@@ -1737,11 +1740,20 @@ function coming_events() {
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
 		
-		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All States</option><?php 
-		foreach ($states_us as $key => $value) {
-			if ($key == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
-  			echo '<option value="/events/US/' . $key . '"' . $state_selected . '>' . $value . '</option>';
-		}									
+		?><div id="post-filter"><span class="left">Filter by State:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All <?php echo $state_subset; ?></option><?php
+		$optgroup = null;
+		foreach ($states as $row) {
+		    if ( !isset( $row['parent'] ) ) {
+		        if ( $optgroup !=  $row['subset'] ) { 
+		            if ($optgroup !== null) { echo '</optgroup>'; } 
+		            echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
+		            $optgroup = $row['subset']; 
+		        }
+			    if ($row['code'] == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
+  			    echo '<option value="/events/AU/' . $row['code'] . '"' . $state_selected . '>' . $row['name'] . '</option>';
+		    }
+		}
+		if ($optgroup !== null) { echo '</optgroup>'; }								
 		?></select></span><div class="clear"></div></div><?php
 		
 		$i = 0;
@@ -2074,13 +2086,13 @@ function makeIso8601TimeStamp ($dateTime = '') {
 
 function email_after_post_approved($post_ID) {
 
-  global $post_type_to_url_part;
+  $posttypeslug = getPostTypeSlug();
 
   $bcc = "katiepatrickgp@gmail.com, jesse.browne@thegreenpages.com.au";
 
   $post = get_post($post_ID);
   $user = get_userdata($post->post_author);
-  $post_url = site_url() . '/' . $post_type_to_url_part[$post->post_type] . '/' . $post->post_name;
+  $post_url = site_url() . '/' . $posttypeslug . '/' . $post->post_name;
 
   $headers  = 'Content-type: text/html' . "\r\n";
   $headers .= 'Bcc: ' . $bcc . "\r\n";
@@ -2204,12 +2216,6 @@ function theme_display_google_map_posts($json, $map_canvas) {
 
     ?>
     <script type="text/javascript">
-    
-    
-
-    
-
-    
         //Event Objects to make surrounding markers
         var json = <?php echo $json; ?>;
       
@@ -2224,170 +2230,170 @@ function theme_display_google_map_posts($json, $map_canvas) {
                                    echo $default_lat .','. $default_long;
                                }
                                ?>
-                           );               
-                           
+                           );
+
             var styles = [ 
-                             { 
-                                 "featureType": "water", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "saturation": 1 }, 
-                                                { "lightness": 1 }, 
-                                                { "gamma": 1 }, 
-                                                { "hue": "#00ffff" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi.park", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "visibility": "on" }, 
-                                                { "color": "#47c92c" }, 
-                                                { "invert_lightness": true } 
-                                            ] 
-                             },{   "featureType": "road.highway", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#808080" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "road.highway", 
-                                 "elementType": "geometry.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#808080" } 
-                                            ] 
-                             },{   "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#808080" } 
-                                            ] 
-                             },{ 
-                                 "elementType": "labels.text.fill", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "road.arterial", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#dcdcdc" } 
-                                            ] 
-                             },{ 
-                                 "elementType": "geometry.stroke", 
-                                 "stylers": [ 
-                                                { "weight": 0.1 } 
-                                            ] 
-                             },{ 
-                                 "featureType": "road.arterial", 
-                                 "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "elementType": "labels.text.fill", 
-                                 "stylers": [ 
-                                                { "color": "#646464" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "road.local", 
-                                 "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi.attraction", 
-                                 "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi", 
-                                 "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "landscape", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#e8e7df" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi.park", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#aed199" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "administrative", 
-                                 "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "elementType": "labels.text.stroke", 
-                                 "stylers": [ 
-                                                { "color": "#ffffff" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "road.highway", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#bebebe" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "water", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#badce1" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "road.local", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#fcfcfc" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "landscape", 
-                                 "stylers": [ 
-                                                { "color": "#f0f0f0" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi.school", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#e6e6e6" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi.sports_complex", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#e6e6e6" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "poi.medical", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#e6e6e6" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "transit", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#dcdcdc" } 
-                                            ] 
-                             },{ 
-                                 "featureType": "landscape", 
-                                 "elementType": "geometry.fill", 
-                                 "stylers": [ 
-                                                { "color": "#f8f8f5" } 
-                                            ] 
-                             },{ } 
-                         ];
-                 
+                          { 
+                              "featureType": "water", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "saturation": 1 }, 
+                                             { "lightness": 1 }, 
+                                             { "gamma": 1 }, 
+                                             { "hue": "#00ffff" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi.park", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "visibility": "on" }, 
+                                             { "color": "#47c92c" }, 
+                                             { "invert_lightness": true } 
+                                         ] 
+                          },{   "featureType": "road.highway", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#808080" } 
+                                         ] 
+                          },{ 
+                              "featureType": "road.highway", 
+                              "elementType": "geometry.stroke", 
+                              "stylers": [ 
+                                             { "color": "#808080" } 
+                                         ] 
+                          },{   "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#808080" } 
+                                         ] 
+                          },{ 
+                              "elementType": "labels.text.fill", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "featureType": "road.arterial", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#dcdcdc" } 
+                                         ] 
+                          },{ 
+                              "elementType": "geometry.stroke", 
+                              "stylers": [ 
+                                             { "weight": 0.1 } 
+                                         ] 
+                          },{ 
+                              "featureType": "road.arterial", 
+                              "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "elementType": "labels.text.fill", 
+                              "stylers": [ 
+                                             { "color": "#646464" } 
+                                         ] 
+                          },{ 
+                              "featureType": "road.local", 
+                              "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi.attraction", 
+                              "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi", 
+                              "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "featureType": "landscape", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#e8e7df" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi.park", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#aed199" } 
+                                         ] 
+                          },{ 
+                              "featureType": "administrative", 
+                              "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "elementType": "labels.text.stroke", 
+                              "stylers": [ 
+                                             { "color": "#ffffff" } 
+                                         ] 
+                          },{ 
+                              "featureType": "road.highway", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#bebebe" } 
+                                         ] 
+                          },{ 
+                              "featureType": "water", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#badce1" } 
+                                         ] 
+                          },{ 
+                              "featureType": "road.local", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#fcfcfc" } 
+                                         ] 
+                          },{ 
+                              "featureType": "landscape", 
+                              "stylers": [ 
+                                             { "color": "#f0f0f0" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi.school", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#e6e6e6" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi.sports_complex", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#e6e6e6" } 
+                                         ] 
+                          },{ 
+                              "featureType": "poi.medical", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#e6e6e6" } 
+                                         ] 
+                          },{ 
+                              "featureType": "transit", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#dcdcdc" } 
+                                         ] 
+                          },{ 
+                              "featureType": "landscape", 
+                              "elementType": "geometry.fill", 
+                              "stylers": [ 
+                                             { "color": "#f8f8f5" } 
+                                         ] 
+                          },{ } 
+                      ];
+            
             
             var mapOptions = {
                 zoom: 4,
                 center: myLatlng, 
-                styles: styles,         
+                styles: styles,          
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
         
@@ -2685,7 +2691,8 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	
 	$profile_author = get_user_by('slug', $profile_pid);
 	
-	global $wpdb, $post, $current_user, $post_type_to_url_part;
+	global $wpdb, $post, $current_user;
+	
 	$posttypes = Config::getPostTypes();
 	
 	if ( strtolower($post_type) == "directory" ) {
@@ -2694,12 +2701,14 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	}
 	
 	$post_type_filter = "";
-	$post_type_key = array_search($post_type, $post_type_to_url_part);
+	$post_type_key = getPostTypeID_by_Slug($post_type);
 	if ( $post_type_key ) {
 		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
 	} else {
-		foreach ($post_type_to_url_part as $key => $value) {
-			$post_type_filter .= $wpdb->prefix . "posts.post_type = '{$key}' or ";
+		foreach ($posttypes as $value) {
+		    if ( $value['enabled'] === true ) {
+			    $post_type_filter .= $wpdb->prefix . "posts.post_type = '{$value['id']}' or ";
+		    }
 		}
 		$post_type_filter = substr($post_type_filter, 0, -4);
 	}
@@ -2751,7 +2760,9 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 		
 		if ( $post_type_key ) {
 			foreach ($posttypes as $newposttype) {
-				if ($newposttype['id'] == $post_type_key) {$post_type_name = " " . $newposttype['name'];}
+			    if ( $newposttype['enabled'] === true ) {
+				    if ($newposttype['id'] == $post_type_key) {$post_type_name = " " . $newposttype['name'];}
+			    }
 			}
 		}
 		
@@ -2912,16 +2923,20 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 	
 	$profile_author = get_user_by('slug', $profile_pid);
 
-	global $wpdb, $post, $current_user, $current_site, $post_type_to_url_part;
+	global $wpdb, $post, $current_user, $current_site;
+	
 	$posttypes = Config::getPostTypes();
 	
 	$post_type_filter = "";
-	$post_type_key = array_search($post_type, $post_type_to_url_part);
+	$post_type_key = getPostTypeID_by_Slug($post_type);
+	
 	if ( $post_type_key ) {
 		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
 	} else {
-		foreach ($post_type_to_url_part as $key => $value) {
-			$post_type_filter .= $wpdb->prefix . "posts.post_type = '{$key}' or ";
+	    foreach ($posttypes as $value) {
+		    if ( $value['enabled'] === true ) {
+			    $post_type_filter .= $wpdb->prefix . "posts.post_type = '{$value['id']}' or ";
+		    }
 		}
 		$post_type_filter = substr($post_type_filter, 0, -4);
 	}
@@ -2967,13 +2982,15 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 			
 		if ( $post_type_key ) {
 			foreach ($posttypes as $newposttype) {
-				if ($newposttype['id'] == $post_type_key) {
-					if ($newposttype['plural'] == true) {
-						$post_type_name = " " . $newposttype['name'] . "s";
-					} else {
-						$post_type_name = " " . $newposttype['name'];
-					}
-				}
+			    if ( $newposttype['enabled'] === true ) {
+    				if ($newposttype['id'] == $post_type_key) {
+    					if ($newposttype['plural'] === true) {
+    						$post_type_name = " " . $newposttype['name'] . "s";
+    					} else {
+    						$post_type_name = " " . $newposttype['name'];
+    					}
+    				}
+			    }
 			}
 		}
 		
@@ -3133,7 +3150,7 @@ function theme_profile_directory($profile_pid) {
 
 /* SHOW MEMBERS POST ANALYTICS */
 function theme_profile_analytics($profile_pid) {
-	global $wpdb, $post, $current_user, $post_type_to_url_part;
+	global $wpdb, $post, $current_user;
 
 	$profile_author = get_user_by('slug', $profile_pid);
 	$profile_author_id = $profile_author->ID;
@@ -3244,15 +3261,17 @@ function theme_profile_analytics($profile_pid) {
 				
 	if ($pageposts) {		
 	 	
+	    $total_sumURL = 0;
+	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 		
 			$post_url_ext = $post->post_name; //Need to get post_name for URL. Gets ful URl, but we only need /url extention for Google API			
 			$type = get_post_type($post->ID);
 				
-			$post_type_map = $post_type_to_url_part;
+			$post_type_map = getPostTypeSlug($type);
 				
-			$post_url_end = '/' . $post_type_map[$type] . '/' . $post_url_ext . '/';
+			$post_url_end = '/' . $post_type_map . '/' . $post_url_ext . '/';
 			#echo $post_url_end . '<br />$post_url_end<br />';
 				
 			
@@ -3275,7 +3294,7 @@ function theme_profile_analytics($profile_pid) {
   			}
   			#echo ' <br />*** ' . $sumURL . ' ***<br /> ';			
 			
-  			$pageViewType = ($analytics->getPageviewsURL('/' . $post_type_map[$type] . '/'));	//Page views for the section landing page, e.g. the news page
+  			$pageViewType = ($analytics->getPageviewsURL('/' . $post_type_map . '/'));	//Page views for the section landing page, e.g. the news page
   			$sumType = 0;
   			foreach ($pageViewType as $data) {
       			$sumType = $sumType + $data;
@@ -3707,9 +3726,9 @@ function theme_insert_projectcreate_post(){
     /**
      * Display public facing form that will create user account on submission
      * unless user is logged in, then display member form.
-     */ 
+     */
     $post_my_project_form = ( is_user_logged_in() ) ? '/forms/create-project-post/' : '/forms/create-my-project-post-public/';
-	echo '<a href="'. $post_my_project_form .'" class="new-post-action">Post a Project</a>';
+    echo '<a href="'. $post_my_project_form .'" class="new-post-action">Post a Project</a>';
 }
 
 function theme_advertorialcreate_post(){

@@ -587,7 +587,7 @@ function news_index() {
 
 //Function that calls upcoming 20 events on events page with pagination
 function events_index() {
-	global $wpdb, $post, $states_au;
+	global $wpdb, $post;
 	
 	$epochtime = strtotime('now');
     if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
@@ -1935,4 +1935,3 @@ function contributor_index($profile_author) {
 } 
 
 ?>
- 
