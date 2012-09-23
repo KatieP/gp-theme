@@ -225,10 +225,10 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 						<a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
 						-->
                         <a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
-                            <span class="bullet2"></span>Sign in
+                            <span class="bullet2"></span>Log In
                         </a>
-                        <span class="in-or-out">or</span>
-                        <a href="/wp-login.php?action=register" class="lower">Sign Up</a>
+                        <span class="in-or-out"> | </span>
+                        <a href="/wp-login.php?action=register" class="lower">Register</a>
 					</li>
 				</ul>
 				<div class="clear"></div>
