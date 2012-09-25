@@ -2401,7 +2401,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
             };
         
             //Adds map to map_canvas div in DOM to it is visible
-            var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
+            var map = new google.maps.Map(document.getElementById($map_canvas),
                       mapOptions);
             
             // Creating a global infoWindow object that will be reused by all markers
