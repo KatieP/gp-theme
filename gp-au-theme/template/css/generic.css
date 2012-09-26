@@ -741,7 +741,7 @@ header a:hover {
     width: 158px;
 }
 
-#header-logo, #header-nav, #header-search, #header-auth {
+#header-logo, #header-nav, #header-search {
     overflow: hidden;
     float: left;
     height: 32px;
@@ -753,6 +753,7 @@ header a:hover {
 }
 
 #header-auth {
+	height: 36px;
     width: 140px;
     float: right;
     margin-top: 1px;
