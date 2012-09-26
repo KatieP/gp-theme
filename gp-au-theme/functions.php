@@ -13,13 +13,10 @@
  * @since Green Pages Theme 1.0
  * 
  * @global array $wp_roles
- * @var array $states_au
  * @var array $sitemaptypes
  */
 
 global $wp_role;
-
-$states_au = array('NSW', 'QLD', 'VIC', 'WA', 'SA', 'NT', 'ACT', 'TAS');
 
 $sitemaptypes = array(
 	array('id' => 'sitemap', 'name' => 'Sitemap'),
@@ -371,6 +368,7 @@ function register_query_vars( $query_vars )
 {
 	$query_vars[] = 'author_edit';
 	$query_vars[] = 'filterby_state';
+	$query_vars[] = 'filterby_country';
     return $query_vars;
 }
 
@@ -386,16 +384,21 @@ function register_query_vars( $query_vars )
 /* ADD CUSTOM REWRITE RULES */
 # see: http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
 function my_rewrite_rules( $wp_rewrite ) {
-  global $states_au;
-
 	$newrules = array();
 	
-	$newrules['events/AU/(' . implode($states_au, "|") . ')/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]&paged=$matches[2]';
-	$newrules['events/AU/(' . implode($states_au, "|") . ')/?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]';
-	$newrules['events/AU/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&paged=$matches[1]';
-	$newrules['events/AU/?'] = 'index.php?post_type=gp_events';
+	$newrules['events/([A-Za-z]{1,2})/([A-Za-z0-9]{1,3})/page/([0-9]{1,})'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]&filterby_state=$matches[2]&paged=$matches[3]';
+	$newrules['events/([A-Za-z]{1,2})/([A-Za-z0-9]{1,3})'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]&filterby_state=$matches[2]';
+	$newrules['events/([A-Za-z]{1,2})/page/([0-9]{1,})'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]&paged=$matches[2]';
+	$newrules['events/([A-Za-z]{1,2})/?'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]';
+	
+	#$newrules['events/AU/(' . implode($states_au, "|") . ')/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]&paged=$matches[2]';
+	#$newrules['events/AU/(' . implode($states_au, "|") . ')/?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]';
+	#$newrules['events/AU/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&paged=$matches[1]';
+	#$newrules['events/AU/?'] = 'index.php?post_type=gp_events';
 	#$newrules['sitemaps.xml?'] = 'sitemaps-xml/';
+	
 	$wp_rewrite->rules = $newrules+$wp_rewrite->rules;
+	#var_dump($wp_rewrite->rules);
 }
 add_filter('generate_rewrite_rules','my_rewrite_rules');
 
@@ -1675,7 +1678,7 @@ function relevant_posts() {
 	}
 	
 	$querystr = $wpdb->prepare( "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id FROM " . $wpdb->prefix . "posts left join " . $wpdb->prefix . "postmeta as m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' WHERE post_status='publish' AND m0.meta_value >= 1 AND post_type = %s AND ID != %d AND MATCH (post_content) AGAINST (%s) LIMIT 5;", $post_type, $post_id, $post_title );
-	$pageposts = $wpdb->get_results($querystr, OBJECT);
+	$pageposts = $wpdb->get_row($querystr);
 	$numPosts = $wpdb->num_rows-1;
 	
 	if ($pageposts && $numPosts != -1) {
@@ -1712,13 +1715,13 @@ function coming_events() {
 	
 	$epochtime = strtotime('now');
 
-	if ( in_array(get_query_var( 'filterby_state' ), $states) ) {
-		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
-		echo "true";
-    } else {
-    	$filterby_state = "";
-    	echo "false";
-    }
+    foreach ( $states as $value ) {
+	    $filterby_state = "";
+	    if ( $value['code'] ==  get_query_var( 'filterby_state' )) {
+	        $filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
+	        break;
+	    }
+	}
     
 	/* SQL QUERY FOR COMING EVENTS */
 	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
@@ -1741,7 +1744,7 @@ function coming_events() {
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
-		echo '<div id="relevant-posts"><span class="title"><a href="/events">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
+		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . $current_location . '">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
 		?><div id="post-filter"><span class="left">Filter by Region:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All regions</option><?php
 		$optgroup = null;
 		foreach ($states as $row) {
