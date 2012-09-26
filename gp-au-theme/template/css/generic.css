@@ -707,9 +707,9 @@ header a {
 header a:hover {
     color: #fff;
 }
-    
+
 #header-nav, #header-search, #header-auth .lower {
-    margin-top: 14px;
+    padding-top: 14px;
     padding-right: 0px; 
 }
 
@@ -726,7 +726,8 @@ header a:hover {
 }
 
 #header-auth .in-or-out {
-    margin: 14px 5px 0 5px;
+	padding-top: 14px;
+    margin: 0 5px 0 5px;
     float: right;
     line-height: 22px;
     font-size: 1.4em;
@@ -736,14 +737,14 @@ header a:hover {
 #header-logo {
     font-family: VAGRundschriftEF;
     font-size: 24px;
-    margin-top: 16px;
+    padding-top: 16px;
     width: 158px;
 }
 
 #header-logo, #header-nav, #header-search, #header-auth {
     overflow: hidden;
     float: left;
-    height: 42px;
+    height: 32px;
 }
 
 #header-search {
@@ -767,7 +768,9 @@ header a:hover {
 }
 
 .pos #header-tagline {
-    width: 100%;
+    min-width: 636px;
+    height: 2em;
+    line-height: 2em;
     font-size: 10px;
     font-style: normal;
     color: grey;

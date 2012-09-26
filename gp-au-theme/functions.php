@@ -2615,7 +2615,7 @@ function theme_location_tag_line() {
 	
 	# Place holder text for my location, replace with get location from user ip address function	
 	$user_location = "user location";
-	
+
 	?>
     <script type="text/javascript">
         function show_location_field() {
