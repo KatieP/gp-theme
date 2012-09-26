@@ -588,13 +588,62 @@ function news_index() {
 //Function that calls upcoming 20 events on events page with pagination
 function events_index() {
 	global $wpdb, $post;
-	
-	$epochtime = strtotime('now');
-    if ( in_array(get_query_var( 'filterby_state' ), $states_au) ) {
-		$filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
-    }
 
-    $querytotal = "SELECT COUNT(*) as count 
+	$states = Config::getStates();
+	$state_subset = ( isset( $states[0]['subset_plural'] ) ? ucwords( $states[0]['subset_plural'] ) : "States" );
+	
+	$current_location = Geo::getCurrentLocation();
+	
+	$selected_country = get_query_var( 'filterby_country' );
+	$selected_state = get_query_var( 'filterby_state' );
+	
+	if ( empty($selected_country) && isset($current_location['country_iso2']) ) {
+	    # Not sure if you should use permanent redirects in this way?
+	    wp_redirect( '/events/' . $current_location['country_iso2'] . '/', 301 ); 
+	    exit;
+	}
+	
+	$filterby_state = "";
+	$epochtime = strtotime('now');
+
+	if ( !isset($current_location['country_iso2']) || $current_location['country_iso2'] != $selected_country ) {
+	    // check county & state combination exists
+	    if ( isset($selected_state) && !empty($selected_state) ) {
+    	    $query = $wpdb->prepare(
+    	            "SELECT COUNT(*) as count 
+    	            FROM " . $wpdb->prefix . "debian_iso_3166_2 
+    	            WHERE id = concat(%s, '-', %s);", 
+    	            $selected_country, 
+    	            $selected_state
+    	            );
+    	    
+    	    $result = $wpdb->get_row( $query, ARRAY_A );
+    	    
+    	    if ($result['count'] >= 1) {
+    	        $filterby_state = $wpdb->prepare(" AND m3.meta_value=%s ", $selected_state);
+    	    }
+	    } else {
+	        $query = $wpdb->prepare(
+	                "SELECT COUNT(*) as count
+	                FROM " . $wpdb->prefix . "geonames_countryinfo
+	                WHERE iso_alpha2 = %s;",
+	                $selected_country
+	        );
+	        	
+	        $result = $wpdb->get_row( $query, ARRAY_A );
+	        $filterby_state = "";
+	    }
+	} else {
+        foreach ( $states as $value ) {
+            $filterby_state = "";
+            if ( $value['code'] == $selected_state) {
+                $filterby_state = $wpdb->prepare(" AND m3.meta_value=%s ", $selected_state);
+                break;
+            }
+        }
+	}
+
+    $querytotal = $wpdb->prepare("SELECT COUNT(*) as count 
                    FROM $wpdb->posts left join " . 
                         $wpdb->prefix . "postmeta as m0 on m0.post_id=" . 
                         $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . 
@@ -603,13 +652,16 @@ function events_index() {
                         $wpdb->prefix . "postmeta as m2 on m2.post_id=" . 
                         $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' left join " . 
                         $wpdb->prefix . "postmeta as m4 on m4.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_loccountry' left join " . 
+                        $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_google_geo_country' left join " . 
                         $wpdb->prefix . "postmeta as m3 on m3.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_locstate' 
+                        $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_google_geo_administrative_area_level_1' 
                    WHERE post_status='publish' 
                        AND post_type='gp_events' 
-                       AND m4.meta_value='AU' " . $filterby_state . " 
-                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . ";";
+                       AND m4.meta_value=%s" . $filterby_state . "
+                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d;",
+            $selected_country,
+            $epochtime
+            );
                        
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
 
@@ -623,7 +675,7 @@ function events_index() {
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
 	
-    $metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
+    $metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_google_geo_administrative_area_level_1', 'gp_events_google_geo_locality', 'gp_events_google_geo_country');
 	foreach ($metas as $i=>$meta_key) {
         $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
         $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
@@ -631,21 +683,35 @@ function events_index() {
     $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
                  FROM $wpdb->posts ";
     $querystr .=  join(' ', $meta_joins);
-    $querystr .= " WHERE post_status='publish' 
+    $querystr .= $wpdb->prepare("WHERE post_status='publish' 
                        AND post_type='gp_events' 
-                       AND m5.meta_value='AU' " . $filterby_state . " 
-                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . " 
-                   ORDER BY gp_events_startdate ASC LIMIT $ppp OFFSET $offset;";
+                       AND m5.meta_value=%s" . $filterby_state . " 
+                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
+                   ORDER BY gp_events_startdate ASC LIMIT %d OFFSET %d;",
+                   $selected_country,
+                   $epochtime,
+                   $ppp,
+                   $offset
+    );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	#please fix this and make it accessable to non js users
 	theme_eventcreate_post();
-	?><span id="post-filter"><select name="filterby_state" class="filterby_state"><option value="/events">All States</option><?php 
-	foreach ($states_au as $state) {
-		if ($state == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
-  		echo '<option value="/events/AU/' . $state . '"' . $state_selected . '>' . $state . '</option>';
-	}									
+	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state"><option value="/events/' . $selected_country . '">All regions</option>'; 
+        $optgroup = null;
+		foreach ($states as $row) {
+		    if ( !isset( $row['parent'] ) ) {
+		        if ( $optgroup !=  $row['subset'] ) { 
+		            if ($optgroup !== null) { echo '</optgroup>'; } 
+		            echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
+		            $optgroup = $row['subset']; 
+		        }
+			    if ($row['code'] == $selected_state) {$state_selected = ' selected';} else {$state_selected = '';}
+  			    echo '<option value="/events/' . $selected_country . '/' . $row['code'] . '"' . $state_selected . '>' . $row['name'] . '</option>';
+		    }
+		}
+		if ($optgroup !== null) { echo '</optgroup>'; }									
 	?></select></span><div class="clear"></div><?php 
 
 	if ($pageposts) {
@@ -655,6 +721,10 @@ function events_index() {
 	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
+			
+			if ( !isset($post->gp_events_google_geo_locality) || empty($post->gp_events_google_geo_locality) ) {
+			    continue;
+			}
 			
 			$displayday = date('j', $post->gp_events_startdate);
 			$displaymonth = date('M', $post->gp_events_startdate);
@@ -675,7 +745,7 @@ function events_index() {
 			echo '<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
 			echo '<a href="' . get_permalink($post->ID) . '" class="more-link">Continue reading...</a><div>';
 			theme_indexdetails('author');
-			echo '<div class="post-loc">' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a></div><div class="clear"></div></div>';
+			echo '<div class="post-loc">' . $post->gp_events_google_geo_locality . ' | <a href="/events/' . $selected_country . '/' . $post->gp_events_google_geo_administrative_area_level_1 . '/">' . $post->gp_events_google_geo_administrative_area_level_1 . '</a></div><div class="clear"></div></div>';
 			#the_content('Continue reading...');
 			echo '</div><div class="clear"></div>';
 		    #theme_indexsocialbar();
