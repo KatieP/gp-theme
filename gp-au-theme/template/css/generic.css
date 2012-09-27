@@ -240,8 +240,8 @@ ul, ol {margin:0;padding:0;}
 
 /** FORMS **/
 /** Note: Form style by type not compatible with IE6. Can use js to fix. **/
-#content input[type="text"], #content input[type="password"], #content textarea, 
-#content select, #relevant-posts select {
+#content input[type="text"], #content input[type="password"], #content input[type="email"],
+#content textarea, #content select, #relevant-posts select {
     display: block;
     height: 25px;
     min-width: 280px;
