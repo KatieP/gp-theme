@@ -65,6 +65,13 @@ function new_username_or_email_login() { ?>
 
 add_action( 'login_form', 'new_username_or_email_login' );
 
+# Set Minimum year for Gravity form year selector drop down menus
+add_filter("gform_date_min_year", "set_min_year");
+function set_min_year($min_year){
+    $current_year = date("Y");
+    return $current_year;
+}
+
 add_filter( 'admin_footer_text', 'gp_add_admin_footer' );
 function gp_add_admin_footer() {
 	echo 'Welcome to the Green Pages backend editor! Go back to <a href="http://www.thegreenpages.com.au/">front end</a>';
@@ -3786,4 +3793,5 @@ function gp_select_createpost() {
 	</div>
 	";
 }
+
 ?>
