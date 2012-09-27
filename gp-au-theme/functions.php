@@ -2620,25 +2620,28 @@ function theme_location_tag_line() {
 	
 	# $user_location = get user location from ip address and convert to 'City' string
 	
-	# Place holder text for my location, replace with get location from user ip address function	
-	$user_location = "user location";
+	# Get location from user ip address function	
+	$current_location = Geo::getCurrentLocation();
+	
+    $user_location = $current_location['city'];
 
 	?>
     <script type="text/javascript">
         function show_location_field() {
             document.getElementById("header_location_field").className = "";
+            document.getElementById("header_location_prompt").className = "";
         }
     </script>
     	
 	<div class="pos">
 	    <div class="post-details" id="header-tagline">
-	        Everything environmental happening in <a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>. 
+	        Everything environmental happening around <a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>. 
     	    <div id="gp_create_postGeoLoc_meta" class="postbox " >
                 <span class="hidden"><label class="gfield_label" for="gp_projects_google_geo_location">Location*</label></span>
                 <div class="inside">
                     <input type="hidden" name="gp_postGeoLoc-nonce" id="gp_postGeoLoc-nonce" value="53c6d67000" />
                     <div class="gp-meta">
-                        <span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
+                        <span class="hidden" id="header_location_prompt">Show me what's happening around </span><span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
                         <div class="hidden">
                             <input name="gp_projects_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="" readonly="readonly" />
                             <input name="gp_projects_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="" readonly="readonly" />
