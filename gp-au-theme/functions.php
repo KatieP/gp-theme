@@ -3684,11 +3684,15 @@ function theme_newscreate_post(){
 }
 
 function theme_insert_newscreate_post(){
-	global $user;
+	global $current_user;
 	
 	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
-	if ( is_user_logged_in() && get_user_role( array('contributor'), $user->ID ) ) {
-		echo '<a href="/forms/create-news-post/" class="new-post-action">Post a News Story</a>';
+	if( is_user_logged_in() ) {
+	    if ( is_user_logged_in() && get_user_role( array('contributor'), $current_user->ID ) ) {
+		    echo '<a href="/forms/create-news-post/" class="new-post-action">Post a News Story</a>';
+	    } else {
+	        echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';;
+	    }
 	} else {
 		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';
 	}
@@ -3797,4 +3801,58 @@ function gp_select_createpost() {
 	";
 }
 
+/** SHOW UPDATE-DELETE BUTTON TO SIGNED IN AUTHORS TO EDIT THEIR PUBLISHED POSTS **/
+function theme_update_delete_post() {
+    /**
+     *  Direct to appropriate update post form
+     *  based on post type
+     */
+    global $post, $current_user;
+    
+    # Check if this is users own post and show update button if appropriate
+	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $post->post_author ) ) ) {} else {return;}
+
+	# Route to appropriate form
+	switch (get_post_type()) {
+		case 'gp_news':
+			theme_update_delete_news_post();
+			break;
+		case 'gp_projects':
+			;
+			break;
+		case 'gp_advertorial':
+			;
+			break;
+		case 'gp_competitions':
+			;
+			break;
+		case 'gp_events':
+			;
+			break;
+		case 'gp_people':
+			;
+			break;
+	}	
+}
+
+function theme_update_delete_news_post() {
+    /**
+     * Allow users to edit their own posts by passing the post id
+     * to a gravity form embedded in a page. 
+     */
+    
+    global $post, $current_user;
+
+    # Construct link to appropriate form passing post id via gform_post_id
+    $update_post_page = 'forms/update-posts'; # this will need to be changed wwhen real form created
+    $gform_prefix = '?gform_post_id=';
+    $post_id = $post->ID;
+    $update_post_link =  $update_post_page . $gform_prefix . $post_id;
+	$button = '<div class="new-action">
+	               <span class="right">
+	                   <a href="'. $update_post_link .'" class="new-post-action">Edit My Post</a>
+	               </span>
+	           </div>';
+	echo $button;  
+}
 ?>

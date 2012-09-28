@@ -298,6 +298,8 @@ function theme_like() {
 	global $post;
 	global $current_user, $current_site;
 	
+	$likedclass = '';
+	
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
 	}
@@ -473,13 +475,15 @@ function default_page() {
 }
 
 function default_single() {
-	if ( have_posts() ) { 
+	if ( have_posts() ) {
+	    global $post; 
 		the_post();
 		echo '<article>';
 			theme_singlecreate_post();
+			theme_update_delete_post();
 			theme_singletitle();
 			theme_singlesocialbar();
-			if ( get_user_role( array('contributor'), $posts[0]->post_author) ) {
+			if ( get_user_role( array('contributor'), $post->post_author) ) {
 				theme_singlecontributorstagline();
 			} else {
 				theme_singledetails();
