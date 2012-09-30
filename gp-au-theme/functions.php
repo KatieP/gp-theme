@@ -3627,7 +3627,7 @@ function theme_homecreate_post(){
 }
 
 function theme_insert_homecreate_post(){
-	echo '<a href="/welcome" class="new-post-action">Create a Post</a>';
+	echo '<a href="/welcome" class="new-post-action">Create a post</a>';
 	#theme_insert_newscreate_post();
 	#theme_insert_eventcreate_post();
 	#theme_insert_advertorialcreate_post();
@@ -3689,12 +3689,12 @@ function theme_insert_newscreate_post(){
 	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
 	if( is_user_logged_in() ) {
 	    if ( is_user_logged_in() && get_user_role( array('contributor'), $current_user->ID ) ) {
-		    echo '<a href="/forms/create-news-post/" class="new-post-action">Post a News Story</a>';
+		    echo '<a href="/forms/create-news-post/" class="new-post-action">Post a news story</a>';
 	    } else {
-	        echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';;
+	        echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';;
 	    }
 	} else {
-		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a News Story</a>';
+		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';
 	}
 }
 
@@ -3708,7 +3708,7 @@ function theme_insert_projectcreate_post(){
      * unless user is logged in, then display member form.
      */
     $post_my_project_form = ( is_user_logged_in() ) ? '/forms/create-project-post/' : '/forms/create-my-project-post-public/';
-    echo '<a href="'. $post_my_project_form .'" class="new-post-action">Post a Project</a>';
+    echo '<a href="'. $post_my_project_form .'" class="new-post-action">Post a project</a>';
 }
 
 function theme_advertorialcreate_post(){
@@ -3731,7 +3731,7 @@ function theme_insert_advertorialcreate_post(){
     } else {
         $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
     }
-	echo '<a href="'. $post_my_product_form .'" class="new-post-action">Post a Product Ad</a>';
+	echo '<a href="'. $post_my_product_form .'" class="new-post-action">Post a product ad</a>';
 }
 
 function theme_competitioncreate_post(){
@@ -3753,7 +3753,7 @@ function theme_insert_competitioncreate_post(){
     } else {
         $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
     }    
-	echo '<a href="'. $post_my_competition_form .'" class="new-post-action">Post a Competition</a>';
+	echo '<a href="'. $post_my_competition_form .'" class="new-post-action">Post a competition</a>';
 }
 
 function theme_eventcreate_post(){
@@ -3812,30 +3812,30 @@ function theme_update_delete_post() {
     # Check if this is users own post and show update button if appropriate
 	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $post->post_author ) ) ) {} else {return;}
 
-	# Route to appropriate form
+	# Set url components for post types
 	switch (get_post_type()) {
 		case 'gp_news':
-			theme_update_delete_news_post();
+			$update_delete_post_page = '/forms/update-news';
 			break;
 		case 'gp_projects':
-			;
+			$update_delete_post_page = '/forms/update-project';
 			break;
 		case 'gp_advertorial':
-			;
+			$update_delete_post_page = '/forms/update-product-post';
 			break;
 		case 'gp_competitions':
-			;
+			$update_delete_post_page = '/forms/update-competition';
 			break;
-		case 'gp_events':
-			;
+		case 'gp_events';
+		    $update_delete_post_page = '/forms/edit-and-update-post-forms';
 			break;
-		case 'gp_people':
-			;
-			break;
-	}	
+	}
+	
+	# Route to appropriate form
+	theme_update_delete_this_post($update_delete_post_page);
 }
 
-function theme_update_delete_news_post() {
+function theme_update_delete_this_post($update_delete_post_page) {
     /**
      * Allow users to edit their own posts by passing the post id
      * to a gravity form embedded in a page. 
@@ -3844,13 +3844,12 @@ function theme_update_delete_news_post() {
     global $post, $current_user;
 
     # Construct link to appropriate form passing post id via gform_post_id
-    $update_post_page = 'forms/update-posts'; # this will need to be changed wwhen real form created
     $gform_prefix = '?gform_post_id=';
     $post_id = $post->ID;
-    $update_post_link =  $update_post_page . $gform_prefix . $post_id;
+    $update_post_link =  $update_delete_post_page . $gform_prefix . $post_id;
 	$button = '<div class="new-action">
 	               <span class="right">
-	                   <a href="'. $update_post_link .'" class="new-post-action">Edit My Post</a>
+	                   <a href="'. $update_post_link .'" class="new-post-action">Edit this post</a>
 	               </span>
 	           </div>';
 	echo $button;  
