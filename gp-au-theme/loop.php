@@ -881,6 +881,9 @@ function people_index() {
  			 * PROJECTS I NEED HELP WITH, GREEN STUFF I'M INTO OR HOW I'D CHANGE THE WORLD
  			 * HAVE BEEN FILLED IN 
  			**/
+      		
+      		# TO DO - add conditional check for profile builder fields on jobtitle, current employer, change, stuff, projects
+      		
     	    if (!empty($thisuser->bio_projects) || !empty($thisuser->bio_change) || !empty($thisuser->bio_stuff)) {
 	      		$member_string .= '<a href="' . get_author_posts_url($thisuser->ID) . '" title="Posts by "' . esc_attr($thisuser->display_name) . '">'; 
     	  		$member_string .= get_avatar( $thisuser->ID, '100', '', $thisuser->display_name );
@@ -1321,54 +1324,106 @@ function theme_authordisplayname($profile_author) {
 	echo '<div class="author-name">' . $profile_author->display_name . '</div>';
 }
 
+/** Display member job title on member profile page  **/
 function theme_authorposition($profile_author) {
-	if ( !empty($profile_author->employment_jobtitle) ) {
-		echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
-	}
-}
 
+    # from either profile builder field of original meta field
+	if ( !empty($profile_author->custom_field_job_title) ) {
+		echo '<div class="author-position">Postition: ' . $profile_author->custom_field_job_title . '</div>';
+	} elseif ( !empty($profile_author->employment_jobtitle) ) {
+		echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
+	} 
+} 
+
+/** Display member employer on member profile page  **/
+function theme_author_employer($profile_author) {
+    # from either profile builder field of original meta field
+	if ( !empty($profile_author->custom_field_employer) ) {
+		echo '<div class="author-employer">Employer: ' . $profile_author->custom_field_job_title . '</div>';
+	} elseif ( !empty($profile_author->employment_currentemployer) ) {
+		echo '<div class="author-employer">Employer: ' . $profile_author->employment_currentemployer . '</div>';
+	} 
+} 
+
+/** Member location  **/
 function theme_authorlocation($profile_author) {
 	echo '<div class="author-location">Location: ' . $profile_author->location . '</div>';
 }
 
+/** Display member email on profile - not in use   **/
 function theme_authoremail($profile_author) {
 	if ( is_user_logged_in() && !empty($profile_author->user_email) ) {
 		echo '<a href="mailto://' . str_replace('@', '[at]', $profile_author->user_email) . '" class="author-email"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/email-16x16.png" /></a>';
 	}
 }
 
+/** Display facebook icon and link to member facebook page on member profile page **/
 function theme_authorfacebook($profile_author) {
-if ( !empty($profile_author->facebook) ) {
-		$profile_author_id = $profile_author->ID;
+    
+    $profile_author_id = $profile_author->ID;
+    
+    # from either profile builder field of original meta field
+	if ( !empty($profile_author->custom_field_facebook) ) {
+		$profile_author_facebook = $profile_author->custom_field_facebook;
+		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
+		echo '<a href="' . $profile_author->custom_field_facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';    
+	} elseif ( !empty($profile_author->facebook) ) {
 		$profile_author_facebook = $profile_author->facebook;
 		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
 	}
 }
 
+/** Display Linkedin icon and link to member linkedin page on member profile page **/
 function theme_authorlinkedin($profile_author) {
-if ( !empty($profile_author->linkedin) ) {
-		$profile_author_id = $profile_author->ID;
+    
+    $profile_author_id = $profile_author->ID;
+
+    # from either profile builder field of original meta field
+    if ( !empty($profile_author->custom_field_linkedin) ) {	
+		$profile_author_linkedin = $profile_author->custom_field_linkedin;
+		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
+		echo '<a href="' . $profile_author->custom_field_linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
+	} elseif ( !empty($profile_author->linkedin) ) {	
 		$profile_author_linkedin = $profile_author->linkedin;
 		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
 	}
 }
 
+/** Display Twitter icon and link to member Twitter account on member profile page **/
 function theme_authortwitter($profile_author) {
-	if ( !empty($profile_author->twitter) ) {
-		$profile_author_id = $profile_author->ID;
+    
+    $profile_author_id = $profile_author->ID;
+    
+    # from either profile builder field of original meta field
+	if ( !empty($profile_author->custom_field_twitter) ) {	
+		$profile_author_twitter = $profile_author->custom_field_twitter;
+		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
+		echo '<a href="http://www.twitter.com/' .$profile_author->custom_field_twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
+	} elseif ( !empty($profile_author->twitter) ) {
 		$profile_author_twitter = $profile_author->twitter;
 		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
 		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
 	}
 }
 
+/** Display Skype icon and link to member Skype account on member profile page **/
 function theme_authorskype($profile_author) {
-	if ( is_user_logged_in() && !empty($profile_author->skype) ) {
+    
+    $profile_author_id = $profile_author->ID;
+    
+    # from either profile builder field of original meta field
+	if ( is_user_logged_in() && !empty($profile_author->custom_field_skype) ) {
 		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
 		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
-			$profile_author_id = $profile_author->ID;
+			$profile_author_skype = $profile_author->custom_field_skype;
+			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id .'/\'';			
+			echo '<a href="callto://' .$profile_author->custom_field_skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
+		#} 
+	} elseif ( is_user_logged_in() && !empty($profile_author->skype) ) {
+		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
+		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
 			$profile_author_skype = $profile_author->skype;
 			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id .'/\'';			
 			echo '<a href="callto://' .$profile_author->skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
@@ -1380,6 +1435,7 @@ function theme_authorrss($profile_author) {
 	echo '<a href="" class="author-rss"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/feed-16x16.png" /></a>';
 }
 
+/** Display website link to member website on member profile page **/
 function theme_authorwww($profile_author) {
 	if ( !empty($profile_author->user_url) ) {
 		$profile_author_id = $profile_author->ID;
@@ -1398,8 +1454,9 @@ function theme_authorviews($profile_author) {
 	#echo "<div class=\"author-views\">Profile Views: <span>{$profile_views}</span></div>";
 }
 
+/** Display member bio on member profile page **/
 function theme_authorbio($profile_author) {
-    if ( !empty($profile_author->description) ) {
+if ( !empty($profile_author->description) ) {
 		echo '<p>' . nl2br($profile_author->description) . '</p>';
 	}
 }
@@ -1947,6 +2004,7 @@ function editor_index($profile_author) {
 		echo '<div class="clear"></div></div>';
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
+		theme_author_employer($profile_author);
 		theme_authorwww($profile_author);
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);
@@ -1973,6 +2031,7 @@ function subscriber_index($profile_author) {
 		echo '<div class="clear"></div></div>';
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
+		theme_author_employer($profile_author);
 		theme_authorwww($profile_author);
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);
