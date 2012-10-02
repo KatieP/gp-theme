@@ -16,6 +16,42 @@
  * @var array $sitemaptypes
  */
 
+//Bug fix for Profile Editor Pro Plugin
+function addCustomFields(){
+    $wppbFetchArray = get_option('wppb_custom_fields');
+
+
+      $id            = ''; //needs to be unique. Try to use something that is not in the list
+      $item_metaName = ''; //this will be the name that you want to save it as in the DB. It should be the string you already have
+      $item_title    = ''; //the title of the field
+      $item_desc     = ''; //description
+      $item_type     = ''; //the type: input, checkbox, radio, select, countrySelect, timeZone, datepicker, textarea, upload, avatar
+      $item_options = ''; //item options in case of ckeckbox, radio, select etc
+
+
+     $max_id = 0;
+    $max_sort = 0;
+    
+    foreach( $wppbFetchArray as $value ){
+        if ( $value['item_sort'] > $max_sort)
+            $max_sort = $value['item_sort'];
+        if ( $value['id'] > $max_id)
+            $max_id = $value['id'];
+    }
+    
+    $max_sort++;
+    $max_id++;
+    $tempArray = array(id => $max_id, item_metaName => $item_metaName, item_title => $item_title, item_desc => $item_desc, item_type => $item_type, item_options => $item_options, item_sort => $max_sort, item_required => $item_required, item_LastMetaName => $item_LastMetaName);
+    array_push($wppbFetchArray, $tempArray);
+    update_option( 'wppb_custom_fields', $wppbFetchArray );
+
+}
+
+
+
+
+
+
 global $wp_role;
 
 $sitemaptypes = array(
