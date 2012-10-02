@@ -1001,6 +1001,8 @@ function author_edit() {
 			$bio_stuff = get_the_author_meta( 'bio_stuff', $user->ID ); 
 		?>
 		
+		
+		
 		<Label for="bio_change">How I Would Change the World (in 50 words or less!)</Label>	
 		<textarea value="" name="bio_change" id="bio_change" style="width:470px" rows="5"><?php echo $bio_change; ?></textarea>
 	
@@ -1397,7 +1399,9 @@ function theme_authorviews($profile_author) {
 }
 
 function theme_authorbio($profile_author) {
-	
+    if ( !empty($profile_author->description) ) {
+		echo '<p>' . nl2br($profile_author->description) . '</p>';
+	}
 }
 
 function theme_contributorsblurb($profile_author) {
@@ -1974,6 +1978,7 @@ function subscriber_index($profile_author) {
 		#theme_authorjoined($profile_author);
 		#theme_authorseen($profile_author);
 	echo '</div><div class="clear"></div>';
+	theme_authorbio($profile_author);
 	theme_authorschange($profile_author);
 	theme_authorsprojects($profile_author);
 	theme_authorsstuff($profile_author);	
