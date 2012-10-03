@@ -296,8 +296,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							<li class="auth-account-options">	
 								<a href="<?php echo $post_author_url; ?>" title="Your profile">View Profile</a> 
 								<a href="/forms/profile-editor/" title="Update Profile">Update Profile</a>
-								<!-- <a href="/wp-admin" title="Notifications">Notifications</a>TO DO link to email notifications editor form page -->
-								<a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
+								<a href="/forms/profile-notifications/" title="Notifications">Notifications</a>								<a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
 								<a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
 							</li>
 							<!-- 

@@ -272,8 +272,12 @@ ul, ol {margin:0;padding:0;}
     min-width: 448px;
 }
 
+#content input[type="radio"] {
+	margin: 0px 8px 40px 0;
+}
+
 #content input[type="button"], #content input[type="reset"], 
-#content input[type="submit"] {
+#content input[type="submit"]  {
     color: #fff;
     font-weight: 600;
     line-height: 32px;
@@ -294,7 +298,7 @@ ul, ol {margin:0;padding:0;}
 #content input[type="submit"] {
     font-size: 1.2em;
     background-color: #61c201;
-    margin: 0 0 90px 0;
+    margin: 40px 0 90px 0;
     min-width: 100px;
 }
 
