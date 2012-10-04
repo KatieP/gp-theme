@@ -3909,4 +3909,14 @@ function theme_update_delete_this_post($update_delete_post_page) {
 	           </div>';
 	echo $button;  
 }
+
+function theme_single_tags() {
+    ?>
+    <div class="post-tags">
+        <?php
+        the_tags('Tags: ', ' ');
+        ?>
+    </div>
+    <?php
+}
 ?>

@@ -490,6 +490,7 @@ function default_single() {
 			}
 			the_content();
 			theme_singlepagination();
+			theme_single_tags();
 			theme_single_contributor_donate_join_bar();
 			theme_single_product_button();
 			theme_single_google_map();

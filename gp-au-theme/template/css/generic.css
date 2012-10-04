@@ -3281,6 +3281,38 @@ ul.categorieslistmain {
     text-decoration: none;
 }
 
+
+/** TAGS **/
+
+#content .post-tags {
+    margin: 30px 0 50px 0;
+}
+
+#content .post-tags a {
+    padding: 7px 10px 7px 10px;
+    overflow: hidden;
+    height: 20px;
+    display: inline;
+    margin: 3px 0px 30px 5px;
+    line-height: 38px;
+    color: grey;
+    font-size: 14px;
+    text-align: center;
+    -webkit-box-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: inherit;
+    border: 0;
+    border-radius: 3px;
+    background-color: #F0FAFD;
+
+
+}
+
+
+
+
+
 /** CONTRIBUTOR DONATE | JOIN BAR / BUTTONS & PRODUCT BUTTON BAR **/
 #post-donate-join-bar, #post-product-button-bar {
     margin-top: 20px;
