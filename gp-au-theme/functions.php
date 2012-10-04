@@ -533,6 +533,9 @@ function my_show_extra_profile_fields( $user ) {
 		$bio_change = get_the_author_meta( 'bio_change', $user->ID );
 		$bio_projects = get_the_author_meta( 'bio_projects', $user->ID );
 		$bio_stuff = get_the_author_meta( 'bio_stuff', $user->ID );
+		$user_default_location = get_the_author_meta( 'user_default_location', $user->ID );
+		$user_tags = get_the_author_meta( 'user_tags', $user->ID );
+		
 		echo ('
 		<table class="form-table">
 			<tr>
@@ -555,6 +558,20 @@ function my_show_extra_profile_fields( $user ) {
 					<br /><span class="description">Write a few brief words about the environmental, social or world changing issues that get you fired up.</span>
 				</td>
 			</tr>
+			<tr>
+				<th><label for="user_default_location">My Location</label></th>
+				<td>
+					<input type="text" name="user_default_location" id="user_default_location" value="' . $user_default_location . '"/>
+					<br /><span class="description">Location!</span>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="user_tags">My Tags</label></th>
+				<td>
+					<input type="text" name="user_tags" id="user_tags" value="' . $user_tags . '"/>
+					<br /><span class="description">Tags!</span>
+				</td>
+			</tr>			
 		</table>
 		');
 	}
@@ -921,6 +938,8 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
 	update_usermeta($user_id, 'chargify_self_service_page_url', $_POST['chargify_self_service_page_url'] );
 	update_usermeta($user_id, 'video_news_id', $_POST['video_news_id'] );
+	update_usermeta($user_id, 'user_default_location', $_POST['user_default_location'] );
+	update_usermeta($user_id, 'user_default_tags', $_POST['user_default_tags'] );
 	
 	/* UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION */
 	$subscription_post = array();
