@@ -37,7 +37,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	
 		<?php
 		# Dynamicaly generate keyword meta tag
-        theme_create_keyword_meta_tag();
+        # theme_create_keyword_meta_tag();
             	
 		/*
 		We've removed the follow noscript tags because Facebook Debugger will fail if meta tags are found outsite the head tag. Very annoying! 

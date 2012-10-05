@@ -3967,4 +3967,11 @@ function theme_single_tags() {
     </div>
     <?php
 }
+
+// In your functions.php file
+function add_suggest_script()
+{
+    wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
+}
+add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
 ?>
