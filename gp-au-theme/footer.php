@@ -14,7 +14,7 @@
 			<nav id="footer-contact">
 				<div id="footer-contact-click-box">
 					<div class="click-contact-info" id="click-contact-address">Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre></div>
-					<div class="click-contact-info" id="click-contact-phone">Phone:<pre><?php echo get_option('gp_phone1'); ?></pre></div>
+					<div class="click-contact-info" id="click-contact-phone">Phone:<pre>Promoting an event? <br /><a href="/forms/create-my-event-post-public/">Post it on Green Pages for free</a>.<br /> <?php echo get_option('gp_phone1'); ?></pre></div>
 					<div class="click-contact-info" id="click-contact-email">Email Address:<pre><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre></div>
 					<div class="click-contact-info" id="click-contact-skype">Skype ID:<pre><?php echo get_option('gp_skype1'); ?></pre></div>
 				</div>
