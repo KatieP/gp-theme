@@ -2664,54 +2664,6 @@ function simplegeo_ip_user_location() {
 	return $user_location;									#SUBURB AND CITY IN STRING
 }
 
-/* INSERT KEYWORDS META TAG INTO <head> */
-
-function theme_create_keyword_meta_tag() {
-    # Set first 5 tags as meta keywords if post/page has tags, called from header.php
-    
-    global $post;    
-    
-    $keywords = '<meta name="keywords" content="green, sustainability, green pages, sustainable, ';
-	if ( get_the_tags() ) {
-	    $posttags = get_the_tags();
-	    $i = 0;
-        if ($posttags) {
-            foreach($posttags as $tag) {
-                if ($i < 5) {
-                    $keywords .= $tag->name . ', ';
-                    $i++;
-                } else {
-                    break;
-                }
-            }
-        }
-        
-        $post_type = get_post_type();
-		switch ($post_type) {
-	        case 'gp_news':
-	            $keywords .= 'green news, conservation, ';
-	            break;
-	        case 'gp_projects':
-	  	        $keywords .= 'green projects, conservation, ';
-	            break;
-	        case 'gp_advertorial':
-		        $keywords .= 'green products, environmentally friendly products, eco friendly products, eco services, ';
-	            break;
-	        case 'gp_competitions':
-	            $keywords .= 'competitions, enter, win, ';
-	            break;
-	        case 'gp_events':
-	            $keywords .= 'green events, environmental events, community, sustainability, conference, seminar, workshop, ';
-	            break;
-	        case 'gp_people':
-	            $keywords .= 'activists, sustainability professionals, ';
-	            break;
-	    }
-    }	
-    $keywords .= 'environment">';
-    echo $keywords;
-}
-
 /* LOCATION TAG LINE STYLE */
 
 function theme_location_tag_line() {
@@ -3967,11 +3919,4 @@ function theme_single_tags() {
     </div>
     <?php
 }
-
-// In your functions.php file
-function add_suggest_script()
-{
-    wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
-}
-add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
 ?>
