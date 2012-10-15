@@ -5,7 +5,7 @@ function get_posttemplate($template='default_index') {
 	global $wp_query, $current_user;
     $current_page_id = $wp_query->get_queried_object_id();
 	$profile_author = get_profile_author();
-	
+
 	$templates = array('default_index', 'default_single', 'default_page', 'home_index', 'author_index', 'author_edit', 'author_account', 'author_notifications', 'author_locale', 'author_newsletters', 'author_privacy', 'author_password', 'author_admin', 'search_index', 'events_index', 'competitions_index', 'news_index', 'people_index', 'jobs_index', 'advertorial_index', 'projects_index', 'katiepatrick_index', 'productreview_index', 'greengurus_index', 'attachment_single');
 	
 	$templateRoutes = array(
@@ -45,7 +45,7 @@ function get_posttemplate($template='default_index') {
 	}
 	*/
 	
-	$post_type = get_query_var('post_type');
+	$post_type = get_query_var('posttype');echo $post_type;
 	if (is_string($post_type)) {
 		if ( isset($templateRoutes[$post_type]) ) {
 			$template = $templateRoutes[$post_type];
@@ -63,7 +63,7 @@ function get_posttemplate($template='default_index') {
 			$template = 'default_single';
 		}
 	}
-	
+
 	if ( is_page($current_page_id) ) {
 		if (isset($templateRoutes[$current_page_id]) ) {
 			$template = $templateRoutes[$current_page_id];
@@ -72,10 +72,11 @@ function get_posttemplate($template='default_index') {
 		}
 	}
 	
-	if ( is_home() && isset($templateRoutes['home']) ) {
+	#if ( is_home() && isset($templateRoutes['home']) ) {
+	if ( $_SERVER['REQUEST_URI'] == "/" && isset($templateRoutes['home']) ) {
 		$template = $templateRoutes['home'];
 	}
-	
+
 	if ( is_attachment() && isset($templateRoutes['attachment']) ) {
 		$template = $templateRoutes['attachment'];
 	}
@@ -298,8 +299,6 @@ function theme_like() {
 	global $post;
 	global $current_user, $current_site;
 	
-	$likedclass = '';
-	
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
 	}
@@ -350,38 +349,18 @@ function theme_index_feed_item() {
 	
 	echo '<div class="profile-postbox">';			 		
 			
-			/** CHECK POST TYPE AND ASSIGN APPROPRIATE TITLE AND URL **/
-			switch (get_post_type()) {
-			    case 'gp_news':
-			        $post_title = 'News';
-			        $post_url = '/news';
-			        break;
-			    case 'gp_projects':
-			    	$post_title = 'Projects';
-			    	$post_url = '/projects';
-			        break;
-				case 'gp_advertorial':
-					$post_title = 'Products';
-					$post_url = '/eco-friendly-products';
-			        break;
-				case 'gp_competitions':
-					$post_title = 'Competitions';
-					$post_url = '/competitions';
-			        break;
-			    case 'gp_events':
-			    	$post_title = 'Events';
-			    	$post_url = '/events';
-			        break;
-			    case 'gp_people':
-			    	$post_title = 'People';
-			    	$post_url = '/people';
-			        break;
-			}
+	        $site_posttypes = Site::getPostTypes();
+	        foreach ( $site_posttypes as $site_posttype ) {
+	            if ( $site_posttype['id'] == get_post_type() ) {
+	                $post_title = $site_posttype['title'];
+	                $post_url = $site_posttype['slug'];
+	            }   
+	        }
 			
 			/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
 			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . 
 					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
-					'</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</span>';
+					'</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</span>';
 			the_excerpt();			
 			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Learn More</a>';
 			
@@ -440,7 +419,7 @@ function default_index() {
 
         # Construct location data in JSON for google map display
         $json = '[';
-            
+
 		while ( have_posts() ) { 					        
             the_post();
             theme_index_feed_item();
@@ -513,27 +492,57 @@ function attachment_single() {
 
 /** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS **/
 function home_index() {
-	global $wpdb;
-	global $post;
+	global $wpdb, $post;
 	
 	$epochtime = strtotime('now');
+
+	if ( get_query_var('country') ) {
+	    $qry_country = $wpdb->prepare("AND (m3.meta_value = %s OR m6.meta_value=%s)", get_query_var('country'), get_query_var('country'));
+	} else {
+	    if ( SELECTED_COUNTRY != '_default' ) {
+	        $qry_country = $wpdb->prepare("AND (m3.meta_value = %s OR m6.meta_value = %s)", SELECTED_COUNTRY, SELECTED_COUNTRY);
+	    }
+	}
 	
 	/** NEW SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
-	$qrystart = "SELECT " . $wpdb->prefix . "posts.*, m0.meta_value as _thumbnail_id,m1.meta_value as gp_enddate,m2.meta_value as gp_startdate 
-				FROM " . $wpdb->prefix . "posts left join " . 
-						 $wpdb->prefix . "postmeta as m0 on m0.post_id=" . 
-						 $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . 
-						 $wpdb->prefix . "postmeta as m1 on m1.post_id=" . 
-						 $wpdb->prefix . "posts.ID and (m1.meta_key='gp_events_enddate' or m1.meta_key='gp_competitions_enddate') left join " . 
-						 $wpdb->prefix . "postmeta as m2 on m2.post_id=" . 
-						 $wpdb->prefix . "posts.ID and (m2.meta_key='gp_events_startdate' or m2.meta_key='gp_competitions_startdate') 
-				WHERE post_status='publish' AND m0.meta_value >= 1 AND ";
-	$querystr = "(" . $qrystart ." post_type='gp_news' AND post_status='publish' OR 
-						post_type='gp_advertorial' AND post_status='publish' OR 
-						post_type='gp_competitions' AND post_status='publish' OR 
-						post_type='gp_projects' AND post_status='publish' 
-						ORDER BY post_date DESC LIMIT 20)";
-
+	$querystr = "SELECT 
+	                " . $wpdb->prefix . "posts.*, 
+	                m0.meta_value AS _thumbnail_id,
+	                m1.meta_value AS gp_enddate,
+	                m2.meta_value AS gp_startdate,
+	                m3.meta_value AS gp_google_country,
+	                m4.meta_value AS gp_google_admin1,
+	                m5.meta_value AS gp_google_city,
+	                m6.meta_value AS gp_maxmind_country,
+	                m7.meta_value AS gp_maxmind_admin1,
+	                m8.meta_value AS gp_maxmind_city
+				FROM " . $wpdb->prefix . "posts 
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 
+    				    ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id' 
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 
+    				    ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 
+    				    ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 
+    				    ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 
+    				    ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_administrative_area_level_1'
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 
+    				    ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality'
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 
+    				    ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_maxmind_geo_country'
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m7 
+    				    ON m7.post_id=" . $wpdb->prefix . "posts.ID AND m7.meta_key='gp_maxmind_geo_region'
+    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m8 
+    				    ON m8.post_id=" . $wpdb->prefix . "posts.ID AND m8.meta_key='gp_maxmind_geo_city'
+				WHERE 
+				    post_status='publish' 
+				    AND m0.meta_value >= 1 
+				    AND post_status='publish' 
+				    AND (post_type='gp_news' OR post_type='gp_advertorial' OR post_type='gp_competitions' OR post_type='gp_projects')
+                    ${qry_country} 
+				ORDER BY post_date DESC LIMIT 20";
+echo $querystr;
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	#$numPosts = $wpdb->num_rows-1;
 	
@@ -572,10 +581,9 @@ function home_index() {
 	#theme_display_google_map_posts($json, $map_canvas);
 	?>
 	
-	<!-- Link to News/page/3 at bottom of feed -->
 	<nav id="post-nav">										
 		<ul>
-			<li class="post-previous"><a href="/news/page/3/"><div class="arrow-previous"></div>More Posts</a></li>
+			<li class="post-previous"><a href="/news/page/2/"><div class="arrow-previous"></div>More Posts</a></li>
 		</ul>
 	</nav>
 	<?php 
@@ -593,25 +601,32 @@ function news_index() {
 //Function that calls upcoming 20 events on events page with pagination
 function events_index() {
 	global $wpdb, $post;
-
-	$states = Config::getStates();
-	$state_subset = ( isset( $states[0]['subset_plural'] ) ? ucwords( $states[0]['subset_plural'] ) : "States" );
+echo "test";
+	$querystring_country = get_query_var( 'country' );
+	$querystring_state = get_query_var( 'state' );
+	$querystring_city = get_query_var( 'city' );
+	$querystring_page = get_query_var( 'page' );
+	echo $querystring_country . "<br />";
+	echo $querystring_state . "<br />";
+	echo $querystring_city . "<br />";
+	echo $querystring_page . "<br />";
 	
-	$current_location = Geo::getCurrentLocation();
+	$edition_states = Edition::getStates();
 	
-	$selected_country = get_query_var( 'filterby_country' );
-	$selected_state = get_query_var( 'filterby_state' );
+	$state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
 	
-	if ( empty($selected_country) && isset($current_location['country_iso2']) ) {
+	$geo_currentlocation = Geo::getCurrentLocation();
+	
+	if ( empty($selected_country) && isset($geo_currentlocation['country_iso2']) ) {
 	    # Not sure if you should use permanent redirects in this way?
-	    wp_redirect( '/events/' . $current_location['country_iso2'] . '/', 301 ); 
+	    wp_redirect( '/events/' . $geo_currentlocation['country_iso2'] . '/', 302 ); 
 	    exit;
 	}
 	
 	$filterby_state = "";
 	$epochtime = strtotime('now');
 
-	if ( !isset($current_location['country_iso2']) || $current_location['country_iso2'] != $selected_country ) {
+	if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $selected_country ) {
 	    // check county & state combination exists
 	    if ( isset($selected_state) && !empty($selected_state) ) {
     	    $query = $wpdb->prepare(
@@ -639,7 +654,7 @@ function events_index() {
 	        $filterby_state = "";
 	    }
 	} else {
-        foreach ( $states as $value ) {
+        foreach ( $edition_states as $value ) {
             $filterby_state = "";
             if ( $value['code'] == $selected_state) {
                 $filterby_state = $wpdb->prepare(" AND m3.meta_value=%s ", $selected_state);
@@ -675,7 +690,7 @@ function events_index() {
 	
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
-	$on_page = intval(get_query_var('paged'));	
+	$on_page = intval(get_query_var('page'));	
 
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
@@ -705,7 +720,7 @@ function events_index() {
 	theme_eventcreate_post();
 	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state"><option value="/events/' . $selected_country . '">All regions</option>'; 
         $optgroup = null;
-		foreach ($states as $row) {
+		foreach ($edition_states as $row) {
 		    if ( !isset( $row['parent'] ) ) {
 		        if ( $optgroup !=  $row['subset'] ) { 
 		            if ($optgroup !== null) { echo '</optgroup>'; } 
@@ -801,7 +816,7 @@ function competitions_index() {
 
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
-	$on_page = intval(get_query_var('paged'));	
+	$on_page = intval(get_query_var('page'));	
 
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
@@ -882,75 +897,20 @@ function people_index() {
  			 * PROJECTS I NEED HELP WITH, GREEN STUFF I'M INTO OR HOW I'D CHANGE THE WORLD
  			 * HAVE BEEN FILLED IN 
  			**/
-      		
-      		# Set empty variables for projects, stuff and change meta fields	
-      		$this_user_project = '';
-      		$this_user_change = '';
-      		$this_user_stuff = '';
-      		
-      		# Check profile builder and original meta fields for values
-      		
-      		# Check to see if 'Projects I Need Help With' filled in
-            if (!empty($thisuser->custom_field_projects) ) {
-      		    $this_user_project = $thisuser->custom_field_projects;
-      		} elseif (!empty($thisuser->bio_projects) ) {
-      		    $this_user_project = $thisuser->bio_projects;
-      		} 
-      		
-      		# Check to see if 'How I'd Change The World' filled in
-      		if (!empty($thisuser->custom_field_change) ) {
-      		    $this_user_change = $thisuser->custom_field_change;
-      		} elseif (!empty($thisuser->bio_change) ) {
-      		    $this_user_change = $thisuser->bio_change;
-      		}
-      		
-    	    # Check to see if 'Green Stuff I'm Into' filled in
-      		if (!empty($thisuser->custom_field_greenstuff_tags) ) {
-      		    $this_user_stuff = $thisuser->custom_field_greenstuff_tags;
-      		} elseif (!empty($thisuser->bio_stuff) ) {
-      		    $this_user_stuff = $thisuser->bio_stuff;
-      		}      		
-      		
-      		# If any of above fields hold a value (i.e. have been filled in) grab member snapshot and add to string
-    	    if ( ($this_user_project != '' ) || ($this_user_change != '') || ($this_user_stuff != '') ) {
-
-    	        # Set member data fields for display       
-    	        # Job title
-    	        $this_user_job_title = '';
-    	        if ( !empty($thisuser->custom_field_job_title) ) {
-		            $this_user_job_title = $thisuser->custom_field_job_title;
-	            } elseif ( !empty($thisuser->employment_jobtitle) ) {
-		            $this_user_job_title = $thisuser->employment_jobtitle;
-	            }
-	            
-	            # Employer
-	            $this_user_job_employer = '';
-    	        if ( !empty($thisuser->custom_field_employer) ) {
-		            $this_user_job_employer = $thisuser->custom_field_employer;
-	            } elseif ( !empty($thisuser->employment_currentemployer) ) {
-		            $this_user_job_employer = $thisuser->employment_currentemployer;
-	            }
-    	        
-    	        # Add user snapshot data to string 
+    	    if (!empty($thisuser->bio_projects) || !empty($thisuser->bio_change) || !empty($thisuser->bio_stuff)) {
 	      		$member_string .= '<a href="' . get_author_posts_url($thisuser->ID) . '" title="Posts by "' . esc_attr($thisuser->display_name) . '">'; 
     	  		$member_string .= get_avatar( $thisuser->ID, '100', '', $thisuser->display_name );
       			$member_string .= '<span><div><h1>' . $thisuser->display_name .'</h1></div>';
-	      		$member_string .= '<div>' . $this_user_job_title . '</div>';
-    	  		$member_string .= '<div>' . $this_user_job_employer . '</div>';
+	      		$member_string .= '<div>' . $thisuser->employment_jobtitle . '</div>';
+    	  		$member_string .= '<div>' . $thisuser->employment_currentemployer . '</div>';
       			$member_string .= insert_memberslist_excerpt($thisuser);
       			$member_string .= '</span></a>';
       		}
-      		
-      		# Reset projects, change and stuff to avoid duplicate / incorrect display
-      		$this_user_project = '';
-      		$this_user_change = '';
-      		$this_user_stuff = '';    		
     	}
    	
-        # Complete string, print to screen and reset	
-        $member_string .= '</div><div class="clear"></div>';
-   	    echo $member_string;
-   	    $member_string = '';
+    $member_string .= '</div><div class="clear"></div>';
+   	echo $member_string;
+   	$member_string = '';
   	}
 }
 
@@ -1056,8 +1016,6 @@ function author_edit() {
 			$bio_projects = get_the_author_meta( 'bio_projects', $user->ID );
 			$bio_stuff = get_the_author_meta( 'bio_stuff', $user->ID ); 
 		?>
-		
-		
 		
 		<Label for="bio_change">How I Would Change the World (in 50 words or less!)</Label>	
 		<textarea value="" name="bio_change" id="bio_change" style="width:470px" rows="5"><?php echo $bio_change; ?></textarea>
@@ -1377,106 +1335,54 @@ function theme_authordisplayname($profile_author) {
 	echo '<div class="author-name">' . $profile_author->display_name . '</div>';
 }
 
-/** Display member job title on member profile page  **/
 function theme_authorposition($profile_author) {
-
-    # from either profile builder field of original meta field
-	if ( !empty($profile_author->custom_field_job_title) ) {
-		echo '<div class="author-position">Postition: ' . $profile_author->custom_field_job_title . '</div>';
-	} elseif ( !empty($profile_author->employment_jobtitle) ) {
+	if ( !empty($profile_author->employment_jobtitle) ) {
 		echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
-	} 
-} 
+	}
+}
 
-/** Display member employer on member profile page  **/
-function theme_author_employer($profile_author) {
-    # from either profile builder field of original meta field
-	if ( !empty($profile_author->custom_field_employer) ) {
-		echo '<div class="author-employer">Employer: ' . $profile_author->custom_field_employer . '</div>';
-	} elseif ( !empty($profile_author->employment_currentemployer) ) {
-		echo '<div class="author-employer">Employer: ' . $profile_author->employment_currentemployer . '</div>';
-	} 
-} 
-
-/** Member location **/
 function theme_authorlocation($profile_author) {
 	echo '<div class="author-location">Location: ' . $profile_author->location . '</div>';
 }
 
-/** Display member email on profile - not in use   **/
 function theme_authoremail($profile_author) {
 	if ( is_user_logged_in() && !empty($profile_author->user_email) ) {
 		echo '<a href="mailto://' . str_replace('@', '[at]', $profile_author->user_email) . '" class="author-email"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/email-16x16.png" /></a>';
 	}
 }
 
-/** Display facebook icon and link to member facebook page on member profile page **/
 function theme_authorfacebook($profile_author) {
-    
-    $profile_author_id = $profile_author->ID;
-    
-    # from either profile builder field of original meta field
-	if ( !empty($profile_author->custom_field_facebook) ) {
-		$profile_author_facebook = $profile_author->custom_field_facebook;
-		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
-		echo '<a href="' . $profile_author->custom_field_facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';    
-	} elseif ( !empty($profile_author->facebook) ) {
+if ( !empty($profile_author->facebook) ) {
+		$profile_author_id = $profile_author->ID;
 		$profile_author_facebook = $profile_author->facebook;
 		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
 	}
 }
 
-/** Display Linkedin icon and link to member linkedin page on member profile page **/
 function theme_authorlinkedin($profile_author) {
-    
-    $profile_author_id = $profile_author->ID;
-
-    # from either profile builder field of original meta field
-    if ( !empty($profile_author->custom_field_linkedin) ) {	
-		$profile_author_linkedin = $profile_author->custom_field_linkedin;
-		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
-		echo '<a href="' . $profile_author->custom_field_linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
-	} elseif ( !empty($profile_author->linkedin) ) {	
+if ( !empty($profile_author->linkedin) ) {
+		$profile_author_id = $profile_author->ID;
 		$profile_author_linkedin = $profile_author->linkedin;
 		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
 	}
 }
 
-/** Display Twitter icon and link to member Twitter account on member profile page **/
 function theme_authortwitter($profile_author) {
-    
-    $profile_author_id = $profile_author->ID;
-    
-    # from either profile builder field of original meta field
-	if ( !empty($profile_author->custom_field_twitter) ) {	
-		$profile_author_twitter = $profile_author->custom_field_twitter;
-		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
-		echo '<a href="http://www.twitter.com/' .$profile_author->custom_field_twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
-	} elseif ( !empty($profile_author->twitter) ) {
+	if ( !empty($profile_author->twitter) ) {
+		$profile_author_id = $profile_author->ID;
 		$profile_author_twitter = $profile_author->twitter;
 		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
 		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
 	}
 }
 
-/** Display Skype icon and link to member Skype account on member profile page **/
 function theme_authorskype($profile_author) {
-    
-    $profile_author_id = $profile_author->ID;
-    
-    # from either profile builder field of original meta field
-	if ( is_user_logged_in() && !empty($profile_author->custom_field_skype) ) {
+	if ( is_user_logged_in() && !empty($profile_author->skype) ) {
 		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
 		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
-			$profile_author_skype = $profile_author->custom_field_skype;
-			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id .'/\'';			
-			echo '<a href="callto://' .$profile_author->custom_field_skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
-		#} 
-	} elseif ( is_user_logged_in() && !empty($profile_author->skype) ) {
-		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
-		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
+			$profile_author_id = $profile_author->ID;
 			$profile_author_skype = $profile_author->skype;
 			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id .'/\'';			
 			echo '<a href="callto://' .$profile_author->skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
@@ -1488,7 +1394,6 @@ function theme_authorrss($profile_author) {
 	echo '<a href="" class="author-rss"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/feed-16x16.png" /></a>';
 }
 
-/** Display website link to member website on member profile page **/
 function theme_authorwww($profile_author) {
 	if ( !empty($profile_author->user_url) ) {
 		$profile_author_id = $profile_author->ID;
@@ -1727,63 +1632,35 @@ function theme_authorseen($profile_author) {
     echo '<div class="author-seen">Last Seen: <span>' . $last_login . '</span></div>';
 }
 
-/** Display member 'How I would Change The World' on member profile page **/
 function theme_authorschange($profile_author) {
-    # from either profile builder field of original meta field
-	if (!empty($profile_author->custom_field_change)) {
-		echo '<h1>How I Would Change the World</h1>';
-		echo '<p>' . $profile_author->custom_field_change . '</p>';
-	} elseif (!empty($profile_author->bio_change)) {
+	if (!empty($profile_author->bio_change)) {
 		echo '<h1>How I Would Change the World</h1>';
 		echo '<p>' . $profile_author->bio_change . '</p>';
 	}
 }
 
-/** Display member 'Green Stuff I Need Help With' on member profile page **/
 function theme_authorsprojects($profile_author) {
-    # from either profile builder field of original meta field
-	if (!empty($profile_author->custom_field_projects)) {
-		echo '<h1>Green Projects I Need Help With</h1>';
-		echo '<p>' . $profile_author->custom_field_projects . '</p>';
-	} elseif (!empty($profile_author->bio_projects)) {
+	if (!empty($profile_author->bio_projects)) {
 		echo '<h1>Green Projects I Need Help With</h1>';
 		echo '<p>' . $profile_author->bio_projects . '</p>';
 	}	
 }
 
-/** Display member 'Green Stuff I'm Into' on member profile page **/
-function theme_authorsstuff($profile_author) {    
-    # from either profile builder field of original meta field
-	if (!empty($profile_author->custom_field_greenstuff_tags)) {
-		echo '<h1>Green Stuff I\'m Into</h1>';
-		echo '<p>' . $profile_author->custom_field_greenstuff_tags . '</p>';
-	} elseif (!empty($profile_author->bio_stuff)) {
+function theme_authorsstuff($profile_author) {
+	if (!empty($profile_author->bio_stuff)) {
 		echo '<h1>Green Stuff I\'m Into</h1>';
 		echo '<p>' . $profile_author->bio_stuff . '</p>';
 	}	
 }
 
-/** Short excerpt of member meta field for people_index() **/
 function insert_memberslist_excerpt($member) {
-    /**
-     *  Prints to screen first 135 characters of either 'Projects I Need Help With',
-     *  'How I'd Change The World' of 'Green Stuff I'm Into' - whichever is found
-     *  to be not empty first - as part of member snapshot in people section index page.
-     *  Called by people_index()
-     */
-    
-    # Checks both profile builder field and original user meta field for each type
-	if (!empty($member->custom_field_projects)) {	
-		return '<div><p><strong>Needs Help With: </strong>' . substr($member->custom_field_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
-	} elseif (!empty($member->bio_projects)) {	
+	if (!empty($member->bio_projects)) {	
 		return '<div><p><strong>Needs Help With: </strong>' . substr($member->bio_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
-	} elseif (!empty($member->custom_field_change)) {	
-		return '<div><p><strong>Would Change World By: </strong>' . substr($member->custom_field_change, 0, 130) . ' <strong>... Learn More ...</strong></p></div>';
-	} elseif (!empty($member->bio_change)) {	
+	}
+	else if (!empty($member->bio_change)) {	
 		return '<div><p><strong>Would Change World By: </strong>' . substr($member->bio_change, 0, 130) . ' <strong>... Learn More ...</strong></p></div>';
-	} elseif (!empty($member->custom_field_greenstuff_tags)) {	
-		return '<div><p><strong>Is Into: </strong>' . substr($member->custom_field_greenstuff_tags, 0, 140) . ' <strong>... Learn More ...</strong></p></div>';
-	} elseif (!empty($member->bio_stuff)) {	
+	}
+	else if (!empty($member->bio_stuff)) {	
 		return '<div><p><strong>Is Into: </strong>' . substr($member->bio_stuff, 0, 140) . ' <strong>... Learn More ...</strong></p></div>';
 	}
 }
@@ -2085,7 +1962,6 @@ function editor_index($profile_author) {
 		echo '<div class="clear"></div></div>';
 		#theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
-		theme_author_employer($profile_author);
 		theme_authorwww($profile_author);
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);

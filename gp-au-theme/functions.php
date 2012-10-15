@@ -349,34 +349,30 @@ function gp_after_scripts() {
 	}
 }
 
-/* REMOVE WORDPRESS (in 3.1+) ADMIN BAR */
-function my_function_admin_bar(){
-    return false;
-}
-add_filter( 'show_admin_bar' , 'my_function_admin_bar');
+#add_filter( 'author_template', 'edit_author_template' );
+#function edit_author_template( $author_template )
+#{
+    #if ( get_query_var( 'author_edit' ) ) {
+        #locate_template( array( 'edit-author.php', $author_template ), true );
+    #}
+    #return $author_template;
+#}
 
-/* ADD & REMOVE CONTACT METHODS */
-function my_new_contactmethods( $contactmethods ) {
-	// Remove
-	unset($contactmethods['aim']);
-	unset($contactmethods['jabber']);
-	unset($contactmethods['yim']);
-	
-	// Add Facebook
-    $contactmethods['facebook'] = 'Facebook URL';
-    
-    // Add Linkedin
-    $contactmethods['linkedin'] = 'Linkedin URL';
-    
-    // Add Twitter
-    $contactmethods['twitter'] = 'Twitter ID';
-    
-    // Add Skype
-    $contactmethods['skype'] = 'Skype ID';
-    
-    return $contactmethods;
+
+/* REGISTER CUSTOM QUERY VARS */
+# I'm assuming that query vars are registered in order to ensure rewrite rules work properly - in other words, don't change the order of the query vars.
+add_filter( 'query_vars', 'register_query_vars' );
+function register_query_vars( $query_vars )
+{
+    $query_vars[] = 'author_name';
+    $query_vars[] = 'author_edit';
+    $query_vars[] = 'posttype';
+    $query_vars[] = 'country';
+    $query_vars[] = 'state';
+    $query_vars[] = 'city';
+    $query_vars[] = 'page';
+    return $query_vars;
 }
-add_filter('user_contactmethods','my_new_contactmethods',10,1);
 
 /* ADD REWRITE RULES */
 function change_author_permalinks() {
@@ -388,62 +384,38 @@ add_action('init','change_author_permalinks');
 
 /* AUTHOR EDIT REWRITE RULE */
 add_action( 'author_rewrite_rules', 'edit_author_slug' ); #new-edit
-function edit_author_slug( $author_rules )
-{
-    $author_rules['profile/([^/]+)/edit/?$'] = 'index.php?author_name=$matches[1]&author_edit=1';
-    $author_rules['profile/([^/]+)/edit/account?$'] = 'index.php?author_name=$matches[1]&author_edit=2';
-    $author_rules['profile/([^/]+)/edit/locale?$'] = 'index.php?author_name=$matches[1]&author_edit=3';
-    $author_rules['profile/([^/]+)/edit/notifications?$'] = 'index.php?author_name=$matches[1]&author_edit=4';
-    $author_rules['profile/([^/]+)/edit/newsletters?$'] = 'index.php?author_name=$matches[1]&author_edit=5';
-    $author_rules['profile/([^/]+)/edit/privacy?$'] = 'index.php?author_name=$matches[1]&author_edit=6';
-    $author_rules['profile/([^/]+)/edit/password?$'] = 'index.php?author_name=$matches[1]&author_edit=7';
-    $author_rules['profile/([^/]+)/edit/admin?$'] = 'index.php?author_name=$matches[1]&author_edit=8';
+function edit_author_slug( $author_rules ) {
+    $author_rules['^profile/([^/]+)/edit/?$'] = 'index.php?author_name=$matches[1]&author_edit=1';
+    $author_rules['^profile/([^/]+)/edit/account/?$'] = 'index.php?author_name=$matches[1]&author_edit=2';
+    $author_rules['^profile/([^/]+)/edit/locale/?$'] = 'index.php?author_name=$matches[1]&author_edit=3';
+    $author_rules['^profile/([^/]+)/edit/notifications/?$'] = 'index.php?author_name=$matches[1]&author_edit=4';
+    $author_rules['^profile/([^/]+)/edit/newsletters/?$'] = 'index.php?author_name=$matches[1]&author_edit=5';
+    $author_rules['^profile/([^/]+)/edit/privacy/?$'] = 'index.php?author_name=$matches[1]&author_edit=6';
+    $author_rules['^profile/([^/]+)/edit/password/?$'] = 'index.php?author_name=$matches[1]&author_edit=7';
+    $author_rules['^profile/([^/]+)/edit/admin/?$'] = 'index.php?author_name=$matches[1]&author_edit=8';
     return $author_rules;
 }
 
-/* EVENTS FILTER BY STATE REWRITE RULES */
-#add_rewrite_rule('^AU/([^/]*)/?','index.php?p=12&filterby_state=$matches[1]','top');
-
-/* REGISTER CUSTOM QUERY VARS */
-# I'm assuming that query vars are registered in order to ensure rewrite rules work properly - in other words, don't change the order of the query vars.
-add_filter( 'query_vars', 'register_query_vars' );
-function register_query_vars( $query_vars )
-{
-	$query_vars[] = 'author_edit';
-	$query_vars[] = 'filterby_state';
-	$query_vars[] = 'filterby_country';
-    return $query_vars;
-}
-
-#add_filter( 'author_template', 'edit_author_template' );
-#function edit_author_template( $author_template )
-#{
-    #if ( get_query_var( 'author_edit' ) ) {
-        #locate_template( array( 'edit-author.php', $author_template ), true );
-    #}
-    #return $author_template;
-#}
-
 /* ADD CUSTOM REWRITE RULES */
 # see: http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
-function my_rewrite_rules( $wp_rewrite ) {
-	$newrules = array();
-	
-	$newrules['events/([A-Za-z]{1,2})/([A-Za-z0-9]{1,3})/page/([0-9]{1,})'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]&filterby_state=$matches[2]&paged=$matches[3]';
-	$newrules['events/([A-Za-z]{1,2})/([A-Za-z0-9]{1,3})'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]&filterby_state=$matches[2]';
-	$newrules['events/([A-Za-z]{1,2})/page/([0-9]{1,})'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]&paged=$matches[2]';
-	$newrules['events/([A-Za-z]{1,2})/?'] = 'index.php?post_type=gp_events&filterby_country=$matches[1]';
-	
-	#$newrules['events/AU/(' . implode($states_au, "|") . ')/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]&paged=$matches[2]';
-	#$newrules['events/AU/(' . implode($states_au, "|") . ')/?'] = 'index.php?post_type=gp_events&filterby_state=$matches[1]';
-	#$newrules['events/AU/page/?([0-9]{1,})?'] = 'index.php?post_type=gp_events&paged=$matches[1]';
-	#$newrules['events/AU/?'] = 'index.php?post_type=gp_events';
-	#$newrules['sitemaps.xml?'] = 'sitemaps-xml/';
-	
-	$wp_rewrite->rules = $newrules+$wp_rewrite->rules;
-	#var_dump($wp_rewrite->rules);
+
+function gp_rewrite_rules( $wp_rewrite ) {
+    $newrules = array();
+
+    $site_posttypes = Site::getPostTypes();
+    foreach ( $site_posttypes as $site_posttype ) {
+        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]&page=$matches[4]';
+        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&page=$matches[3]';
+        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/?$'] = 'index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]';
+        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/?$'] = '/index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]';
+        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/page/([0-9]{1,})/?$'] = '/index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&page=$matches[2]';
+        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/?$'] = '/index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]';
+        $newrules['^' . $site_posttype['slug'] . '/?$'] = '/index.php?posttype=' . $site_posttype['id'];
+    }
+
+    $wp_rewrite->rules = $newrules+$wp_rewrite->rules;
 }
-add_filter('generate_rewrite_rules','my_rewrite_rules');
+add_filter('generate_rewrite_rules','gp_rewrite_rules');
 
 /* SWITCH TEMPLATES */
 
@@ -981,10 +953,11 @@ add_image_size('dash-thumbnail', 35, 35, true);
 /* combined */
 add_action( 'init', 'createPostOptions' );
 
-$posttypes = Config::getPostTypes();
-for($index = 0; $index < count($posttypes); $index++) {
-	if ($posttypes[$index]['enabled'] == true) {
-		add_filter( 'manage_edit-' . $posttypes[$index]['id'] . '_columns', 'editColumns' );
+$edition_posttypes = Edition::getPostTypes();
+
+for($index = 0; $index < count($edition_posttypes); $index++) {
+	if ($edition_posttypes[$index]['enabled'] == true) {
+		add_filter( 'manage_edit-' . $edition_posttypes[$index]['id'] . '_columns', 'editColumns' );
 	}
 	# add_action( 'manage_posts_custom_column', $posttypes[$index]['id'] . '_custom_columns' );
 }
@@ -992,23 +965,25 @@ add_action( 'manage_posts_custom_column', 'new_custom_columns' );
 add_filter( 'post_updated_messages', 'updated_messages' );
 
 function createPostOptions () {
-	$posttypes = Config::getPostTypes();
-	for($index = 0; $index < count($posttypes); $index++) {
-		if ($posttypes[$index]['enabled'] == true) {
-			register_post_type( $posttypes[$index]['id'] , $posttypes[$index]['args'] );
-			register_taxonomy( $posttypes[$index]['id'] . '_category', $posttypes[$index]['id'], $posttypes[$index]['taxonomy'] );
+    $edition_posttypes = Edition::getPostTypes();
+    
+	for($index = 0; $index < count($edition_posttypes); $index++) {
+		if ($edition_posttypes[$index]['enabled'] == true) {
+			register_post_type( $edition_posttypes[$index]['id'] , $edition_posttypes[$index]['args'] );
+			register_taxonomy( $edition_posttypes[$index]['id'] . '_category', $edition_posttypes[$index]['id'], $edition_posttypes[$index]['taxonomy'] );
 		}
 	}	
 	flush_rewrite_rules();
 }
 
 function editColumns($columns) {
-	$posttypes = Config::getPostTypes();
-	for($index = 0; $index < count($posttypes); $index++) {
-		if ($posttypes[$index]['enabled'] == true) {
-			if ( substr(current_filter(), 12, -8) == $posttypes[$index]['id'] ) {
-				$mycolumns = $posttypes[$index]['columns'];
-				$myname = $posttypes[$index]['id'];
+    $edition_posttypes = Edition::getPostTypes();
+    
+	for($index = 0; $index < count($edition_posttypes); $index++) {
+		if ($edition_posttypes[$index]['enabled'] == true) {
+			if ( substr(current_filter(), 12, -8) == $edition_posttypes[$index]['id'] ) {
+				$mycolumns = $edition_posttypes[$index]['columns'];
+				$myname = $edition_posttypes[$index]['id'];
 			}
 		}
 	}
@@ -1026,16 +1001,18 @@ function editColumns($columns) {
 
 function new_custom_columns( $column ) {
 	global $post;
-	$posttypes = Config::getPostTypes();
+	
+    $edition_posttypes = Edition::getPostTypes();
+
     $custom = get_post_custom();
-    for($index = 0; $index < count($posttypes); $index++) {
-    	if ($posttypes[$index]['enabled'] == true) {
+    for($index = 0; $index < count($edition_posttypes); $index++) {
+    	if ($edition_posttypes[$index]['enabled'] == true) {
 		    switch ($column) {
-		    	case 'col_' . $posttypes[$index]['id'] . '_author':
+		    	case 'col_' . $edition_posttypes[$index]['id'] . '_author':
 		    		echo get_userdata($post->post_author)->display_name;
 		    	break;
-	            case 'col_' . $posttypes[$index]['id'] . '_categories':
-	                $categories = get_the_terms($post->ID, $posttypes[$index]['id'] . '_category');
+	            case 'col_' . $edition_posttypes[$index]['id'] . '_categories':
+	                $categories = get_the_terms($post->ID, $edition_posttypes[$index]['id'] . '_category');
 	                $categories_html = array();
 		            if ( is_array($categories) && !array_key_exists( 'errors', $categories ) ) {
 		            	foreach ($categories as $category) {
@@ -1046,8 +1023,8 @@ function new_custom_columns( $column ) {
 		            	echo 'None';
 		         	}
 	            break;
-	            case 'col_' . $posttypes[$index]['id'] . '_tags':
-	            	$tags = get_the_tags($post->ID, $posttypes[$index]['id'] . '_tags');
+	            case 'col_' . $edition_posttypes[$index]['id'] . '_tags':
+	            	$tags = get_the_tags($post->ID, $edition_posttypes[$index]['id'] . '_tags');
 	                $tags_html = array();
 		            if ( is_array($tags) && !array_key_exists( 'errors', $tags ) ) {
 		            	foreach ($tags as $tag) {
@@ -1058,15 +1035,15 @@ function new_custom_columns( $column ) {
 	                	echo 'No Tags';
 	                }
 	            break;
-	            case 'col_' . $posttypes[$index]['id'] . '_comments':
+	            case 'col_' . $edition_posttypes[$index]['id'] . '_comments':
 		    		echo $post->comment_count;
 		    	break;
-		    	case 'col_' . $posttypes[$index]['id'] . '_date':
+		    	case 'col_' . $edition_posttypes[$index]['id'] . '_date':
 		    		echo mysql2date('Y/m/d', $post->post_date);
 		    	break;
-	            case 'col_' . $posttypes[$index]['id'] . '_dates':
-	                $startd = isset($custom[$posttypes[$index]['id'] . '_startdate'][0]) ? date("F j, Y", $custom[$posttypes[$index]['id'] . '_startdate'][0]) : "";
-	                $endd = isset($custom[$posttypes[$index]['id'] . '_enddate'][0]) ? date("F j, Y", $custom[$posttypes[$index]['id'] . '_enddate'][0]) : "";
+	            case 'col_' . $edition_posttypes[$index]['id'] . '_dates':
+	                $startd = isset($custom[$edition_posttypes[$index]['id'] . '_startdate'][0]) ? date("F j, Y", $custom[$edition_posttypes[$index]['id'] . '_startdate'][0]) : "";
+	                $endd = isset($custom[$edition_posttypes[$index]['id'] . '_enddate'][0]) ? date("F j, Y", $custom[$edition_posttypes[$index]['id'] . '_enddate'][0]) : "";
 	                echo $startd . '<br /><em>' . $endd . '</em>';
 	            break;
 			}
@@ -1076,411 +1053,32 @@ function new_custom_columns( $column ) {
 
 function updated_messages( $messages ) {
   global $post, $post_ID;
-  $posttypes = Config::getPostTypes();
-  for($index = 0; $index < count($posttypes); $index++) {
-  	if ($posttypes[$index]['enabled'] == true) {
-	  	$messages[$posttypes[$index]['id']] = array(
+  
+    $edition_posttypes = Edition::getPostTypes();
+    
+  for($index = 0; $index < count($edition_posttypes); $index++) {
+  	if ($edition_posttypes[$index]['enabled'] == true) {
+	  	$messages[$edition_posttypes[$index]['id']] = array(
 		    0 => '', // Unused. Messages start at index 1.
-		    1 => sprintf( __($posttypes[$index]['name'] . ' updated. <a href="%s">View post</a>'), esc_url( get_permalink($post_ID) ) ),
+		    1 => sprintf( __($edition_posttypes[$index]['name'] . ' updated. <a href="%s">View post</a>'), esc_url( get_permalink($post_ID) ) ),
 		    2 => __('Custom field updated.'),
 		    3 => __('Custom field deleted.'),
-		    4 => __($posttypes[$index]['name'] . ' updated.'),
+		    4 => __($edition_posttypes[$index]['name'] . ' updated.'),
 		    /* translators: %s: date and time of the revision */
-		    5 => isset($_GET['revision']) ? sprintf( __($posttypes[$index]['name'] . ' restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-		    6 => sprintf( __($posttypes[$index]['name'] . ' published. <a href="%s">View ' . $posttypes[$index]['name'] . '</a>'), esc_url( get_permalink($post_ID) ) ),
-		    7 => __($posttypes[$index]['name'] . ' saved.'),
-		    8 => sprintf( __($posttypes[$index]['name'] . ' submitted. <a target="_blank" href="%s">Preview ' . $posttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
-		    9 => sprintf( __($posttypes[$index]['name'] . ' scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview ' . $posttypes[$index]['name'] . $posttypes[$index]['name'] . '</a>'),
+		    5 => isset($_GET['revision']) ? sprintf( __($edition_posttypes[$index]['name'] . ' restored to revision from %s'), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+		    6 => sprintf( __($edition_posttypes[$index]['name'] . ' published. <a href="%s">View ' . $edition_posttypes[$index]['name'] . '</a>'), esc_url( get_permalink($post_ID) ) ),
+		    7 => __($edition_posttypes[$index]['name'] . ' saved.'),
+		    8 => sprintf( __($edition_posttypes[$index]['name'] . ' submitted. <a target="_blank" href="%s">Preview ' . $edition_posttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+		    9 => sprintf( __($edition_posttypes[$index]['name'] . ' scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview ' . $edition_posttypes[$index]['name'] . $edition_posttypes[$index]['name'] . '</a>'),
 		      // translators: Publish box date format, see http://php.net/date
 		      date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
-		    10 => sprintf( __($posttypes[$index]['name'] . ' draft updated. <a target="_blank" href="%s">Preview ' . $posttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+		    10 => sprintf( __($edition_posttypes[$index]['name'] . ' draft updated. <a target="_blank" href="%s">Preview ' . $edition_posttypes[$index]['name'] . '</a>'), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
 	  	);
   	}
   }
   
   return $messages;
 }
-
-function hideUpdateNag() {
-	if ( !get_user_role( array('administrator') ) ) {
-    	remove_action( 'admin_notices', 'update_nag', 3 );
-	}
-}
-add_action('admin_menu','hideUpdateNag');
-
-/* MODIFY GENERIC POST TYPE VALUES */
-/* function change_post_menu_label() {
-	global $menu;
-
-	if ( get_user_role( array('subscriber') ) ) {
-		unset($menu[2]); # dashboard
-		unset($menu[4]); # seperator
-		unset($menu[28]); # jobs
-		unset($menu[30]); # people
-		unset($menu[31]); # katie patrick
-		unset($menu[32]); # product review
-		unset($menu[35]); # green gurus
-		unset($menu[26]); # news
-		unset($menu[10]); # media
-	}
-	
-	if ( !get_user_role( array('administrator') ) ) {
-		unset($menu[5]);
-	}
-
-	if ( get_user_role( array('contributor') ) ) {
-		unset($menu[28]); # jobs
-		unset($menu[29]); # competitions
-		unset($menu[30]); # people
-		unset($menu[31]); # katie patrick
-		unset($menu[32]); # product review
-		unset($menu[35]); # green gurus
-	}
-	
-	if ( get_user_role( array('contributor', 'author', 'subscriber') ) ) {
-		unset($menu[25]); # comments
-		unset($menu[75]); # tools
-		unset($menu[80]); # settings
-	}
-	
-} */
-
-function change_post_menu_label() {
-        global $menu;
-
-        if ( get_user_role( array('subscriber') ) ) {
-                unset($menu[2]); # dashboard
-                unset($menu[4]); # seperator
-                unset($menu[29]); # people
-                #unset($menu[31]); # projects
-                unset($menu[26]); # news
-                #unset($menu[27]); # events
-                #unset($menu[30]); # advertorials
-                unset($menu[10]); # media 
-        }
-
-        if ( !get_user_role( array('administrator') ) ) {
-                unset($menu[5]); # posts
-        }
-
-        if ( get_user_role( array('contributor') ) ) {
-                unset($menu[28]); # competitions
-                unset($menu[29]); # people
-        }
-        
-        if ( get_user_role( array('contributor', 'author', 'subscriber') ) ) {
-                unset($menu[5]); # posts
-                unset($menu[15]); # links
-                unset($menu[20]); # pages
-                unset($menu[25]); # comments
-                unset($menu[60]); # appearance
-                unset($menu[65]); # plugins
-                #unset($menu[70]); # users
-                unset($menu[75]); # tools
-                unset($menu[80]); # settings
-                unset($menu[100]); # gp-theme
-                unset($menu[101]); # gp-directory
-                unset($menu[102]); # syndication
-				unset($menu[103]); # performance
-        }
-
-}
-
-add_action( 'admin_menu', 'change_post_menu_label' );
-
-/* This only works for labels array, wordpress ignores everything else. 
-
-function change_post_object_label() {
-	global $wp_post_types;
-
-	$wp_post_types['post']->labels->name = 'News';
-	$wp_post_types['post']->labels->singular_name = 'News';
-	$wp_post_types['post']->labels->add_new = 'Add News';
-	$wp_post_types['post']->labels->add_new_item = 'Add News';
-	$wp_post_types['post']->labels->edit_item = 'Edit News';
-	$wp_post_types['post']->labels->new_item = 'News';
-	$wp_post_types['post']->labels->view_item = 'View News';
-	$wp_post_types['post']->labels->search_items = 'Search News';
-	$wp_post_types['post']->labels->not_found = 'No News found';
-	$wp_post_types['post']->labels->not_found_in_trash = 'No News found in Trash';
-	$wp_post_types['post']->labels->parent_item_colon = '';
-	$wp_post_types['post']->labels->menu_name = 'News';
-	$wp_post_types['post']->menu_icon = get_bloginfo( 'template_url' ).'/template/cup.png';
-	$wp_post_types['post']->rewrite = array( 'slug'=>'news', 'with_front'=>false, 'pages'=>true, 'feeds'=>true );
-	
-	$newpost = array(
-		'post' => array (
-		    'labels' => array(
-			    'name' => _x( 'News', 'post type general name' ),
-			    'singular_name' => _x( 'News', 'post type singular name' ),
-			    'add_new' => _x( 'Add New', 'News' ),
-			    'add_new_item' => __( 'Add New News' ),
-			    'edit_item' => __( 'Edit News' ),
-			    'new_item' => __( 'New News' ),
-			    'view_item' => __( 'View News' ),
-			    'search_items' => __( 'Search News' ),
-			    'not_found' =>  __( 'No news found' ),
-			    'not_found_in_trash' => __( 'No news found in Trash' ),
-			    'parent_item_colon' => '',
-			    'menu_name' => 'News'
-			),
-		    'menu_icon' => get_bloginfo( 'template_url' ).'/template/cup.png',
-		    'rewrite' => array( 'slug' => 'news' ,'with_front' => FALSE )
-		)
-	);
-	$labels = array_merge($wp_post_types['post'], $newpost); 
-}
-
-add_action( 'init', 'change_post_object_label' );
- */
-
-
-/* RE-ORDER ADMIN MENU */
-function menu_order_filter($menu) {
-	$menu = array (
-		0 => 'index.php',
-		1 => 'separator1',
-		2 => 'edit.php?post_type=gp_news',
-		3 => 'edit.php?post_type=gp_events',
-		4 => 'edit.php?post_type=gp_jobs',
-		5 => 'edit.php?post_type=gp_competitions',
-		6 => 'edit.php?post_type=gp_people',
-		7 => 'edit.php?post_type=gp_advertorial',
-		8 => 'edit.php?post_type=gp_productreview',
-		9 => 'edit.php?post_type=gp_projects',
-		10 => 'edit.php?post_type=gp_greengurus',
-		11 => 'edit.php?post_type=gp_katiepatrick',
-		12 => 'edit-comments.php',
-		13 => 'separator2',
-		14 => 'upload.php',
-		15 => 'link-manager.php',
-		16 => 'edit.php?post_type=page'
-	);
-	
-	return $menu;
-}
-add_filter('custom_menu_order', create_function('', 'return true;'));
-add_filter('menu_order', 'menu_order_filter');
-
-/* function restrict_comment_editing( $caps, $cap ) {
-	global $pagenow;
-	
-	if ( get_user_role( array('administrator', 'editor') ) ) {
-		echo "test";
-		if ( 'edit_post' == $cap && 'edit-comments.php' == $pagenow ) {
-				$caps[] = 'moderate_comments';
-		}
-	}
- 
-	return $caps;
-}
-add_filter('map_meta_cap', 'restrict_comment_editing', 10, 3); */
-
-/* ! undocumented functions */
-function modify_capabilities () {
-	$role = get_role('contributor');
-	$role->add_cap('upload_files');	
-	$role = get_role('subscriber');
-	$role->add_cap('edit_posts');
-	$role->add_cap('delete_posts');
-	$role->add_cap('upload_files');
-}
-add_action( 'admin_init', 'modify_capabilities' );
-
-/* note: http://codex.wordpress.org/Dashboard_Widgets_API */
-function modify_dashboardwidgets () {
-	global $wp_meta_boxes;
-	if ( get_user_role( array('contributor', 'author', 'subscriber') ) ) {
-		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
-		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
-		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
-		unset($wp_meta_boxes['dashboard']['normal']['core']['w3tc_latest']);
-		unset($wp_meta_boxes['dashboard']['normal']['core']['w3tc_pagespeed']);
-	}
-}
-add_action( 'wp_dashboard_setup', 'modify_dashboardwidgets' );
-
-/* REDIRECT USER AFTER LOGIN */
-function redirect_user_to( $redirect_to, $user ) {
-	if ( get_user_role( array('subscriber') ) ) {
-		wp_safe_redirect('/wp-admin/profile.php');
-	}
-}
-//add_filter( 'login_redirect', 'redirect_user_to', 10, 3 );
-
-/* REMOVE FAVOURITE ACTIONS MENU */
-function remove_favorite_actions() {
-    	return array();
-}
-add_filter( 'favorite_actions', 'remove_favorite_actions' );
-
-/* SCREEN OPTIONS / HIDE WIDGETS FROM CUSTOM POST TYPES */
-# http://w-shadow.com/blog/2010/06/29/adding-stuff-to-wordpress-screen-options/
-# http://w-shadow.com/blog/2010/06/30/add-new-buttons-alongside-screen-options-and-help/
-
-function my_remove_meta_boxes(){
-	global $wp_meta_boxes;
-
-	if ( !get_user_role( array('administrator') ) ) {
-		unset( $wp_meta_boxes['post'] );
-		unset( $wp_meta_boxes['page'] );
-	}
-	
-	if ( get_user_role( array('subscriber') ) ) {
-		$disallowed_posttypes = array('gp_news', 'gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus');
-		$allowed_posttypes = array('gp_advertorial', 'gp_competitions', 'gp_events', 'gp_projects');
-		$disallowed_metaboxes = array('wordbook_sectionid', 'tagsdiv-post_tag', 'gp_advertorial_categorydiv', 'gp_events_categorydiv', 'gp_competitions_categorydiv', 'pageparentdiv', 'postexcerpt', 'trackbacksdiv', 'postcustom', 'postexcerpt', 'commentstatusdiv', 'slugdiv', 'revisionsdiv');
-		
-		foreach ($disallowed_posttypes as $posttype) {
-			unset( $wp_meta_boxes[$posttype] );
-		}
-		
-		foreach ($allowed_posttypes as $posttype) {
-			unset( $wp_meta_boxes[$posttype]['advanced']['default']['wordbook_sectionid'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['tagsdiv-post_tag'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_advertorial_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_events_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_competitions_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['pageparentdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['postexcerpt'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['trackbacksdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['postcustom'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['postexcerpt'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['commentstatusdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['slugdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['revisionsdiv'] );
-		}
-	}
-	
-	if ( get_user_role( array('contributor') ) ) {
-		$disallowed_posttypes = array('gp_jobs', 'gp_people', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus');
-		$allowed_posttypes = array('gp_news', 'gp_advertorial', 'gp_competitions', 'gp_events', 'gp_projects');
-		$disallowed_metaboxes = array('wordbook_sectionid', 'tagsdiv-post_tag', 'gp_advertorial_categorydiv', 'gp_events_categorydiv', 'gp_competitions_categorydiv', 'pageparentdiv', 'postexcerpt', 'trackbacksdiv', 'postcustom', 'postexcerpt', 'commentstatusdiv', 'slugdiv', 'revisionsdiv');
-		
-		foreach ($disallowed_posttypes as $posttype) {
-			unset( $wp_meta_boxes[$posttype] );
-		}
-		
-		foreach ($allowed_posttypes as $posttype) {
-			unset( $wp_meta_boxes[$posttype]['advanced']['default']['wordbook_sectionid'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['tagsdiv-post_tag'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_advertorial_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_events_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_competitions_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_projects_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['gp_news_categorydiv'] );
-			unset( $wp_meta_boxes[$posttype]['side']['core']['pageparentdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['postexcerpt'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['trackbacksdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['postcustom'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['postexcerpt'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['commentstatusdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['slugdiv'] );
-			unset( $wp_meta_boxes[$posttype]['normal']['core']['revisionsdiv'] );
-		}
-	}
-}
-add_action( 'add_meta_boxes', 'my_remove_meta_boxes', 0 );
-
-
-/* DISABLE FLASH UPLOADER */
-function disable_flash_uploader() {
-	if ( !get_user_role( array('administrator') ) ) {
-		return false;
-	} else {
-		return true;
-	}
-}
-add_filter( 'flash_uploader', 'disable_flash_uploader', 1 );
-
-/* ALLOWABLE FILE EXTENSION UPLOADS */
-function yoursite_wp_handle_upload_prefilter($file) {
-	if ( get_user_role( array('subscriber') ) ) {
-	  // This bit is for the flash uploader
-	  if ($file['type']=='application/octet-stream' && isset($file['tmp_name'])) {
-	    $file_size = getimagesize($file['tmp_name']);
-	    if (isset($file_size['error']) && $file_size['error']!=0) {
-	      $file['error'] = "Unexpected Error: {$file_size['error']}";
-	      return $file;
-	    } else {
-	      $file['type'] = $file_size['mime'];
-	    }
-	  }
-	  list($category,$type) = explode('/',$file['type']);
-	  if ('image'!=$category || !in_array($type,array('jpg','jpeg','gif','png'))) {
-	    $file['error'] = "Sorry, you can only upload a .GIF, a .JPG, or a .PNG image file.";
-	  } else if ($post_id = (isset($_REQUEST['post_id']) ? $_REQUEST['post_id'] : false)) {
-	    if (count(get_posts("post_type=attachment&post_parent={$post_id}"))>1)
-	      $file['error'] = "Sorry, you cannot upload more than two (2) images.";
-	  }
-	}
-	return $file;
-}
-add_filter('wp_handle_upload_prefilter', 'yoursite_wp_handle_upload_prefilter');
-
-/* RESTRICT VIEWING OTHER USERS POSTS & MEDIA LIBRARY */
-function query_set_only_author( $wp_query ) {
-	global $current_user;
-	$the_admin_url = get_admin_url();
-	$the_current_url = "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-	if ( substr( $the_current_url, 0, strlen($the_admin_url) ) == $the_admin_url ) {
-		if ( get_user_role( array('subscriber', 'contributor') ) ) {
-	        $wp_query->set( 'author', $current_user->ID );
-	    }
-	}  
-}
-add_action('pre_get_posts', 'query_set_only_author' );
-
-
-/* REMOVE "QUICK EDIT" MENU FROM /WP-ADMIN/EDIT.PHP */
-function remove_quick_edit( $actions ) {
-	if ( get_user_role( array('subscriber', 'contributor') ) ) {
-		unset($actions['inline hide-if-no-js']);
-	}
-	return $actions;
-}
-add_filter('post_row_actions','remove_quick_edit',10,1);
-
-function my_default_editor() {
-    return 'tinymce';
-}
-add_filter( 'wp_default_editor', 'my_default_editor' );
-
-/* ONLY ALLOW CERTAIN PAGES FOR SUBSCRIBERS (very hacky!) */
-function redirect_disallowed_pages () {
-	if ( get_user_role( array('subscriber') ) ) {
-		$admin_url = get_admin_url();
-		$allowed_urls = array(
-			$admin_url . 'profile.php', 
-			$admin_url . 'post.php',
-			$admin_url . 'admin-ajax.php',
-			$admin_url . 'media-upload.php',
-			$admin_url . 'wp-login.php',
-			$admin_url . 'edit.php?post_type=gp_events', 
-			$admin_url . 'post-new.php?post_type=gp_events', 
-			$admin_url . 'edit.php?post_type=gp_competitions', 
-			$admin_url . 'post-new.php?post_type=gp_competitions', 
-			$admin_url . 'edit.php?post_type=gp_advertorial', 
-			$admin_url . 'post-new.php?post_type=gp_advertorial',
-			$admin_url . 'edit.php?post_type=gp_projects', 
-			$admin_url . 'post-new.php?post_type=gp_projects'
-		);
-		
-		$current_url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-
-		$redirect_this = true;
-		foreach ($allowed_urls as $allowed_url) {
-			if (substr($current_url, 0, strlen($allowed_url)) == $allowed_url) {
-				$redirect_this = false;
-			}
-		}
-
-		if ($redirect_this == true) {
-			wp_safe_redirect('/wp-admin/profile.php');
-		}
-	}
-}
-add_action( 'admin_init', 'redirect_disallowed_pages' );
 
 /* OVERRIDE 404 ON EMPTY ARCHIVE */
 function override_404() {
@@ -1505,36 +1103,6 @@ function override_template() {
 	}
 }
 
-/* RECORD DATE/TIME OF LAST TIME USER LOGGED IN */
-function user_last_login($login) {
-    global $user_ID;
-    $user = get_userdatabylogin($login);
-    update_usermeta($user->ID, 'last_login', $epochtime = strtotime('now'));
-}
-add_action('wp_login','user_last_login');
-
-/* REDIRECT USER AFTER LOGIN/LOGOUT */
-function redirect_login() {
-	wp_redirect($_SERVER['HTTP_REFERER']);
-}
-#add_action('wp_login','redirect_login');
-
-function redirect_logout() {
-	wp_redirect($_SERVER['HTTP_REFERER']);
-}
-#add_action('wp_logout ','redirect_logout');
-
-/* CHANGE EXCERPT LENGTH */
-function new_excerpt_length($length) {
-	return 20;
-}
-add_filter('excerpt_length', 'new_excerpt_length', 125);
-
-/* CHANGE END OF EXCERPT */
-function new_excerpt_more($more) {
-	return '...';
-}
-add_filter('excerpt_more', 'new_excerpt_more');
 
 /* GET RELATIVE DATE */
 function get_competitiondate($start, $end, $format = 2) {
@@ -1608,94 +1176,7 @@ function get_competitiondate($start, $end, $format = 2) {
 	return '<div class="competition-enddate">'.$displaydate.'</div>';
 }
 
-/* GET ABSOLUTE DATE */
-function get_absolutedate( $start, $end, $dateformat = 'jS F Y', $timeformat = 'g:i a', $abreviate = true, $dropyear = true, $join = array(' to ', ' at ', ' - ') ) {
-	# A completely incomplete function
-	
-	$datetime_format = array(
-		'year' => array('LoYy'),
-		'month' => array('FmMnt'),
-		'week' => array('W'),
-		'day' => array('dDjlNSwz'),
-		'time' => array('aAbgGhHisu'),
-		'timezone' => array('eIOPTZ'),
-		'full' => array('crU')
-	);
-	
-	if ( !is_numeric($start) && !is_numeric($end) ) {
-		return false;
-	}
-	
-	if ( !is_string($dateformat) ) {
-		$dateformat = 'jS F Y g:i a';
-	}
-	
-	if ( !is_string($timeformat) ) {
-		$timeformat = 'g:i a';
-	}
-	
-	if ( empty($timeformat) ) {
-		$showtime = false;
-	} else {
-		$showtime = true;
-	}
-	
-	if ( !is_bool($abreviate) ) {
-		$abreviate = true;
-	}
-	
-	if ( !is_bool($dropyear) ) {
-		$dropyear = true;
-	}
-	
-	$yearstart = date('Y', $start);
-	$yearend = date('Y', $end);
-	$yearnow = date('Y');
-	
-	$monthstart = date('n', $start);
-	$monthend = date('n', $end);
-	$monthnow = date('n');
-	
-	$daystart = date('j', $start);
-	$dayend = date('j', $end);
-	$daynow = date('j');
-	
-	$hourstart = (int)date('H', $start);
-	$hourend = (int)date('H', $end);
-	$hournow = (int)date('H');
-	
-	$minutestart = (int)date('i', $start);
-	$minuteend = (int)date('i', $end);
-	$minutenow = (int)date('i');
-	
-	if ($yearstart == $yearnow && $yearend == $yearnow) {
-		if ($daystart != $dayend && $monthstart != $monthend) {
-			$displaydate = date('jS F', $start) . $join[0];
-		}
-		if ($daystart != $dayend && $monthstart == $monthend) {
-			$displaydate = date('jS', $start) . $join[0];
-		}
-		$displaydate = $displaydate . date('jS F', $end);
-	} else {
-		if ($daystart != $dayend && $monthstart != $monthend && $yearstart != $yearend) {
-			$displaydate = date('jS F Y', $start) . $join[0];
-		}
-		if ($daystart != $dayend && $monthstart != $monthend && $yearstart == $yearend) {
-			$displaydate = date('jS F', $start) . $join[0];
-		}
-		if ($daystart != $dayend && $monthstart == $monthend && $yearstart == $yearend) {
-			$displaydate = date('jS', $start) . $join[0];
-		}
-		$displaydate = $displaydate . date('jS F Y', $end);
-	}
-	
-	if ( ( ( ( $hourstart * 60 ) + $minutestart ) < ( ( $hourend * 60 ) + $minuteend ) ) && $showtime == true) {
-		$displaydate = $displaydate . $join[1] . date($timeformat, $start) . $join[2] . date($timeformat, $end);
-	}
-	
-	return $displaydate;
-	
-}
+
 
 function relevant_posts() {
 	/*
@@ -1769,15 +1250,16 @@ function relevant_posts() {
 function coming_events() {			
 	global $wpdb, $post;
 	
-	$states = Config::getStates();
-	$state_subset = ( isset( $states[0]['subset_plural'] ) ? ucwords( $states[0]['subset_plural'] ) : "States" );
+	$edition_states = Edition::getStates();
 	
-	$current_location = Geo::getCurrentLocation();
-	$current_location = ( isset($current_location['country_iso2']) ) ? $current_location['country_iso2'] : 'US';
+	$state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
+	
+	$geo_currentlocation = Geo::getCurrentLocation();
+	$geo_currentlocation = ( isset($geo_currentlocation['country_iso2']) ) ? $geo_currentlocation['country_iso2'] : 'US';
 	
 	$epochtime = strtotime('now');
 
-    foreach ( $states as $value ) {
+    foreach ( $edition_states as $value ) {
 	    $filterby_state = "";
 	    if ( $value['code'] ==  get_query_var( 'filterby_state' )) {
 	        $filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
@@ -1798,7 +1280,7 @@ function coming_events() {
     $querystr .=  join(' ', $meta_joins);
 	$querystr .= "WHERE post_status='publish'
 						AND post_type='gp_events'
-						AND m5.meta_value='" . $current_location . "' " . $filterby_state . " 
+						AND m5.meta_value='" . $geo_currentlocation . "' " . $filterby_state . " 
 						AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . "
 					ORDER BY gp_events_startdate;";
 	
@@ -1806,7 +1288,7 @@ function coming_events() {
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
-		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . $current_location . '">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
+		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . $geo_currentlocation . '">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
 		?><div id="post-filter"><span class="left">Filter by Region:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All regions</option><?php
 		$optgroup = null;
 		foreach ($states as $row) {
@@ -1817,7 +1299,7 @@ function coming_events() {
 		            $optgroup = $row['subset']; 
 		        }
 			    if ($row['code'] == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
-  			    echo '<option value="/events/' . $current_location . '/' . $row['code'] . '"' . $state_selected . '>' . $row['name'] . '</option>';
+  			    echo '<option value="/events/' . $geo_currentlocation . '/' . $row['code'] . '"' . $state_selected . '>' . $row['name'] . '</option>';
 		    }
 		}
 		if ($optgroup !== null) { echo '</optgroup>'; }								
@@ -1866,7 +1348,7 @@ function coming_events() {
 				}
 				?>
 				<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
-				<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/' .$current_location . '/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
+				<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/' .$geo_currentlocation . '/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
 				if ($displayday == $displayendday) {
 					echo $displayday . ' ' . $displaymonth;
 				} else {
@@ -2602,11 +2084,12 @@ function theme_single_google_map() {
 function show_facebook_by_location() {
     global $post,$wpdb;
     
-    $site_meta = Config::getMeta();
-    if ( isset($site_meta['facebook_id']) && !empty($site_meta['facebook_id']) ) {
+    $edition_meta = Edition::getMeta();
+    
+    if ( isset($edition_meta['facebook_id']) && !empty($edition_meta['facebook_id']) ) {
     
     	// Echo facebook iframe with country based facebook page ID inserted into iframe
-    	echo '<iframe src="http://www.facebook.com/plugins/likebox.php?id=' . $site_meta['facebook_id'] .
+    	echo '<iframe src="http://www.facebook.com/plugins/likebox.php?id=' . $edition_meta['facebook_id'] .
     	      '&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" 
     	      frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>';
     }
@@ -2664,6 +2147,54 @@ function simplegeo_ip_user_location() {
 	return $user_location;									#SUBURB AND CITY IN STRING
 }
 
+/* INSERT KEYWORDS META TAG INTO <head> */
+
+function theme_create_keyword_meta_tag() {
+    # Set first 5 tags as meta keywords if post/page has tags, called from header.php
+    
+    global $post;    
+    
+    $keywords = '<meta name="keywords" content="green, sustainability, green pages, sustainable, ';
+	if ( get_the_tags() ) {
+	    $posttags = get_the_tags();
+	    $i = 0;
+        if ($posttags) {
+            foreach($posttags as $tag) {
+                if ($i < 5) {
+                    $keywords .= $tag->name . ', ';
+                    $i++;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        $post_type = get_post_type();
+		switch ($post_type) {
+	        case 'gp_news':
+	            $keywords .= 'green news, conservation, ';
+	            break;
+	        case 'gp_projects':
+	  	        $keywords .= 'green projects, conservation, ';
+	            break;
+	        case 'gp_advertorial':
+		        $keywords .= 'green products, environmentally friendly products, eco friendly products, eco services, ';
+	            break;
+	        case 'gp_competitions':
+	            $keywords .= 'competitions, enter, win, ';
+	            break;
+	        case 'gp_events':
+	            $keywords .= 'green events, environmental events, community, sustainability, conference, seminar, workshop, ';
+	            break;
+	        case 'gp_people':
+	            $keywords .= 'activists, sustainability professionals, ';
+	            break;
+	    }
+    }	
+    $keywords .= 'environment">';
+    echo $keywords;
+}
+
 /* LOCATION TAG LINE STYLE */
 
 function theme_location_tag_line() {
@@ -2676,9 +2207,9 @@ function theme_location_tag_line() {
 	# $user_location = get user location from ip address and convert to 'City' string
 	
 	# Get location from user ip address function	
-	$current_location = Geo::getCurrentLocation();
+	$geo_currentlocation = Geo::getCurrentLocation();
 	
-    $user_location = $current_location['city'];
+    $user_location = $geo_currentlocation['city'];
 
 	?>
     <script type="text/javascript">
@@ -2724,7 +2255,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	
 	global $wpdb, $post, $current_user;
 	
-	$posttypes = Config::getPostTypes();
+	$edition_posttypes = Edition::getPostTypes();
 	
 	if ( strtolower($post_type) == "directory" ) {
 		theme_profile_directory($profile_pid);
@@ -2736,7 +2267,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	if ( $post_type_key ) {
 		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
 	} else {
-		foreach ($posttypes as $value) {
+		foreach ($edition_posttypes as $value) {
 		    if ( $value['enabled'] === true ) {
 			    $post_type_filter .= $wpdb->prefix . "posts.post_type = '{$value['id']}' or ";
 		    }
@@ -2790,7 +2321,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 		$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 		if ( $post_type_key ) {
-			foreach ($posttypes as $newposttype) {
+			foreach ($edition_posttypes as $newposttype) {
 			    if ( $newposttype['enabled'] === true ) {
 				    if ($newposttype['id'] == $post_type_key) {$post_type_name = " " . $newposttype['name'];}
 			    }
@@ -2956,7 +2487,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 	global $wpdb, $post, $current_user, $current_site;
 	
-	$posttypes = Config::getPostTypes();
+	$edition_posttypes = Edition::getPostTypes();
 	
 	$post_type_filter = "";
 	$post_type_key = getPostTypeID_by_Slug($post_type);
@@ -2964,7 +2495,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 	if ( $post_type_key ) {
 		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
 	} else {
-	    foreach ($posttypes as $value) {
+	    foreach ($edition_posttypes as $value) {
 		    if ( $value['enabled'] === true ) {
 			    $post_type_filter .= $wpdb->prefix . "posts.post_type = '{$value['id']}' or ";
 		    }
@@ -3012,7 +2543,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 	$pageposts = $wpdb->get_results($querystr, OBJECT);	
 			
 		if ( $post_type_key ) {
-			foreach ($posttypes as $newposttype) {
+			foreach ($edition_posttypes as $newposttype) {
 			    if ( $newposttype['enabled'] === true ) {
     				if ($newposttype['id'] == $post_type_key) {
     					if ($newposttype['plural'] === true) {
@@ -3919,4 +3450,11 @@ function theme_single_tags() {
     </div>
     <?php
 }
+
+// In your functions.php file
+function add_suggest_script()
+{
+    wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
+}
+add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
 ?>
