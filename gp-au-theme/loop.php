@@ -897,20 +897,75 @@ function people_index() {
  			 * PROJECTS I NEED HELP WITH, GREEN STUFF I'M INTO OR HOW I'D CHANGE THE WORLD
  			 * HAVE BEEN FILLED IN 
  			**/
-    	    if (!empty($thisuser->bio_projects) || !empty($thisuser->bio_change) || !empty($thisuser->bio_stuff)) {
+      		
+      		# Set empty variables for projects, stuff and change meta fields	
+      		$this_user_project = '';
+      		$this_user_change = '';
+      		$this_user_stuff = '';
+      		
+      		# Check profile builder and original meta fields for values
+      		
+      		# Check to see if 'Projects I Need Help With' filled in
+            if (!empty($thisuser->custom_field_projects) ) {
+      		    $this_user_project = $thisuser->custom_field_projects;
+      		} elseif (!empty($thisuser->bio_projects) ) {
+      		    $this_user_project = $thisuser->bio_projects;
+      		} 
+      		
+      		# Check to see if 'How I'd Change The World' filled in
+      		if (!empty($thisuser->custom_field_change) ) {
+      		    $this_user_change = $thisuser->custom_field_change;
+      		} elseif (!empty($thisuser->bio_change) ) {
+      		    $this_user_change = $thisuser->bio_change;
+      		}
+      		
+    	    # Check to see if 'Green Stuff I'm Into' filled in
+      		if (!empty($thisuser->custom_field_greenstuff_tags) ) {
+      		    $this_user_stuff = $thisuser->custom_field_greenstuff_tags;
+      		} elseif (!empty($thisuser->bio_stuff) ) {
+      		    $this_user_stuff = $thisuser->bio_stuff;
+      		}      		
+      		
+      		# If any of above fields hold a value (i.e. have been filled in) grab member snapshot and add to string
+    	    if ( ($this_user_project != '' ) || ($this_user_change != '') || ($this_user_stuff != '') ) {
+
+    	        # Set member data fields for display       
+    	        # Job title
+    	        $this_user_job_title = '';
+    	        if ( !empty($thisuser->custom_field_job_title) ) {
+		            $this_user_job_title = $thisuser->custom_field_job_title;
+	            } elseif ( !empty($thisuser->employment_jobtitle) ) {
+		            $this_user_job_title = $thisuser->employment_jobtitle;
+	            }
+	            
+	            # Employer
+	            $this_user_job_employer = '';
+    	        if ( !empty($thisuser->custom_field_employer) ) {
+		            $this_user_job_employer = $thisuser->custom_field_employer;
+	            } elseif ( !empty($thisuser->employment_currentemployer) ) {
+		            $this_user_job_employer = $thisuser->employment_currentemployer;
+	            }
+    	        
+    	        # Add user snapshot data to string 
 	      		$member_string .= '<a href="' . get_author_posts_url($thisuser->ID) . '" title="Posts by "' . esc_attr($thisuser->display_name) . '">'; 
     	  		$member_string .= get_avatar( $thisuser->ID, '100', '', $thisuser->display_name );
       			$member_string .= '<span><div><h1>' . $thisuser->display_name .'</h1></div>';
-	      		$member_string .= '<div>' . $thisuser->employment_jobtitle . '</div>';
-    	  		$member_string .= '<div>' . $thisuser->employment_currentemployer . '</div>';
+	      		$member_string .= '<div>' . $this_user_job_title . '</div>';
+    	  		$member_string .= '<div>' . $this_user_job_employer . '</div>';
       			$member_string .= insert_memberslist_excerpt($thisuser);
       			$member_string .= '</span></a>';
       		}
+      		
+      		# Reset projects, change and stuff to avoid duplicate / incorrect display
+      		$this_user_project = '';
+      		$this_user_change = '';
+      		$this_user_stuff = '';    		
     	}
    	
-    $member_string .= '</div><div class="clear"></div>';
-   	echo $member_string;
-   	$member_string = '';
+        # Complete string, print to screen and reset	
+        $member_string .= '</div><div class="clear"></div>';
+   	    echo $member_string;
+   	    $member_string = '';
   	}
 }
 
@@ -1336,24 +1391,54 @@ function theme_authordisplayname($profile_author) {
 }
 
 function theme_authorposition($profile_author) {
-	if ( !empty($profile_author->employment_jobtitle) ) {
+    /**
+     * Display member job title on member profile page
+     * from either profile builder field of original meta field   
+     **/
+	if ( !empty($profile_author->custom_field_job_title) ) {
+		echo '<div class="author-position">Postition: ' . $profile_author->custom_field_job_title . '</div>';
+	} elseif ( !empty($profile_author->employment_jobtitle) ) {
 		echo '<div class="author-position">Position: ' . $profile_author->employment_jobtitle . '</div>';
-	}
+	} 
+}
+
+function theme_author_employer($profile_author) {
+    /**
+     * Display member employer on member profile page
+     * from either profile builder field of original meta field   
+     **/
+	if ( !empty($profile_author->custom_field_employer) ) {
+		echo '<div class="author-employer">Employer: ' . $profile_author->custom_field_employer . '</div>';
+	} elseif ( !empty($profile_author->employment_currentemployer) ) {
+		echo '<div class="author-employer">Employer: ' . $profile_author->employment_currentemployer . '</div>';
+	} 
 }
 
 function theme_authorlocation($profile_author) {
+    /** Member location **/
 	echo '<div class="author-location">Location: ' . $profile_author->location . '</div>';
 }
 
 function theme_authoremail($profile_author) {
+    /** Display member email on profile - not in use **/
 	if ( is_user_logged_in() && !empty($profile_author->user_email) ) {
 		echo '<a href="mailto://' . str_replace('@', '[at]', $profile_author->user_email) . '" class="author-email"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/email-16x16.png" /></a>';
 	}
 }
 
 function theme_authorfacebook($profile_author) {
-if ( !empty($profile_author->facebook) ) {
-		$profile_author_id = $profile_author->ID;
+    /**
+     * Display facebook icon and link to member facebook page on member profile page
+     * from either profile builder field of original meta field   
+     **/    
+
+    $profile_author_id = $profile_author->ID;
+
+	if ( !empty($profile_author->custom_field_facebook) ) {
+		$profile_author_facebook = $profile_author->custom_field_facebook;
+		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
+		echo '<a href="' . $profile_author->custom_field_facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';    
+	} elseif ( !empty($profile_author->facebook) ) {
 		$profile_author_facebook = $profile_author->facebook;
 		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
@@ -1361,8 +1446,17 @@ if ( !empty($profile_author->facebook) ) {
 }
 
 function theme_authorlinkedin($profile_author) {
-if ( !empty($profile_author->linkedin) ) {
-		$profile_author_id = $profile_author->ID;
+    /**
+     * Display Linkedin icon and link to member linkedin page on member profile page
+     * from either profile builder field of original meta field   
+     **/      
+    $profile_author_id = $profile_author->ID;
+
+    if ( !empty($profile_author->custom_field_linkedin) ) {	
+		$profile_author_linkedin = $profile_author->custom_field_linkedin;
+		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
+		echo '<a href="' . $profile_author->custom_field_linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
+	} elseif ( !empty($profile_author->linkedin) ) {	
 		$profile_author_linkedin = $profile_author->linkedin;
 		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
@@ -1370,8 +1464,17 @@ if ( !empty($profile_author->linkedin) ) {
 }
 
 function theme_authortwitter($profile_author) {
-	if ( !empty($profile_author->twitter) ) {
-		$profile_author_id = $profile_author->ID;
+    /**
+     * Display Twitter icon and link to member Twitter account on member profile page
+     * from either profile builder field of original meta field   
+     **/     
+    $profile_author_id = $profile_author->ID;
+
+	if ( !empty($profile_author->custom_field_twitter) ) {	
+		$profile_author_twitter = $profile_author->custom_field_twitter;
+		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
+		echo '<a href="http://www.twitter.com/' .$profile_author->custom_field_twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
+	} elseif ( !empty($profile_author->twitter) ) {
 		$profile_author_twitter = $profile_author->twitter;
 		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
 		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
@@ -1379,10 +1482,22 @@ function theme_authortwitter($profile_author) {
 }
 
 function theme_authorskype($profile_author) {
-	if ( is_user_logged_in() && !empty($profile_author->skype) ) {
+    /**
+     * Display Skype icon and link to member Skype account on member profile page
+     * from either profile builder field of original meta field   
+     **/      
+    $profile_author_id = $profile_author->ID;
+    
+	if ( is_user_logged_in() && !empty($profile_author->custom_field_skype) ) {
 		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
 		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
-			$profile_author_id = $profile_author->ID;
+			$profile_author_skype = $profile_author->custom_field_skype;
+			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id .'/\'';			
+			echo '<a href="callto://' .$profile_author->custom_field_skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
+		#} 
+	} elseif ( is_user_logged_in() && !empty($profile_author->skype) ) {
+		#$skype_viewers = array('administrator', 'contributor', 'author', 'editor');
+		#if ( get_user_role($skype_viewers, $profile_author->ID) )  {
 			$profile_author_skype = $profile_author->skype;
 			$click_track_tag = '\'/outbound/profile-skype/' . $profile_author_id .'/\'';			
 			echo '<a href="callto://' .$profile_author->skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
@@ -1395,6 +1510,7 @@ function theme_authorrss($profile_author) {
 }
 
 function theme_authorwww($profile_author) {
+    /** Display website link to member website on member profile page **/
 	if ( !empty($profile_author->user_url) ) {
 		$profile_author_id = $profile_author->ID;
 		$profile_author_url = $profile_author->user_url;
@@ -1412,8 +1528,8 @@ function theme_authorviews($profile_author) {
 	#echo "<div class=\"author-views\">Profile Views: <span>{$profile_views}</span></div>";
 }
 
-/** Display member bio on member profile page **/
 function theme_authorbio($profile_author) {
+    /** Display member bio on member profile page **/
     if ( !empty($profile_author->description) ) {
 		echo '<p>' . nl2br($profile_author->description) . '</p>';
 	}
@@ -1633,34 +1749,68 @@ function theme_authorseen($profile_author) {
 }
 
 function theme_authorschange($profile_author) {
-	if (!empty($profile_author->bio_change)) {
+    /**
+     * Display member 'How I would Change The World' on member profile page
+     * from either profile builder field of original meta field   
+     **/
+	if (!empty($profile_author->custom_field_change)) {
+		echo '<h1>How I Would Change the World</h1>';
+		echo '<p>' . $profile_author->custom_field_change . '</p>';
+	} elseif (!empty($profile_author->bio_change)) {
 		echo '<h1>How I Would Change the World</h1>';
 		echo '<p>' . $profile_author->bio_change . '</p>';
 	}
 }
 
 function theme_authorsprojects($profile_author) {
-	if (!empty($profile_author->bio_projects)) {
+    /**
+     * Display member 'Green Stuff I Need Help With' on member profile page
+     * from either profile builder field of original meta field   
+     **/
+	if (!empty($profile_author->custom_field_projects)) {
+		echo '<h1>Green Projects I Need Help With</h1>';
+		echo '<p>' . $profile_author->custom_field_projects . '</p>';
+	} elseif (!empty($profile_author->bio_projects)) {
 		echo '<h1>Green Projects I Need Help With</h1>';
 		echo '<p>' . $profile_author->bio_projects . '</p>';
 	}	
 }
 
-function theme_authorsstuff($profile_author) {
-	if (!empty($profile_author->bio_stuff)) {
+function theme_authorsstuff($profile_author) {    
+    /**
+     * Display member 'Green Stuff I'm Into' on member profile page
+     * from either profile builder field of original meta field   
+     **/
+	if (!empty($profile_author->custom_field_greenstuff_tags)) {
+		echo '<h1>Green Stuff I\'m Into</h1>';
+		echo '<p>' . $profile_author->custom_field_greenstuff_tags . '</p>';
+	} elseif (!empty($profile_author->bio_stuff)) {
 		echo '<h1>Green Stuff I\'m Into</h1>';
 		echo '<p>' . $profile_author->bio_stuff . '</p>';
 	}	
 }
 
+/** Short excerpt of member meta field for people_index() **/
 function insert_memberslist_excerpt($member) {
-	if (!empty($member->bio_projects)) {	
+    /**
+     *  Prints to screen first 135 characters of either 'Projects I Need Help With',
+     *  'How I'd Change The World' of 'Green Stuff I'm Into' - whichever is found
+     *  to be not empty first - as part of member snapshot in people section index page.
+     *  Called by people_index()
+     */
+    
+    # Checks both profile builder field and original user meta field for each type
+	if (!empty($member->custom_field_projects)) {	
+		return '<div><p><strong>Needs Help With: </strong>' . substr($member->custom_field_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
+	} elseif (!empty($member->bio_projects)) {	
 		return '<div><p><strong>Needs Help With: </strong>' . substr($member->bio_projects, 0, 135) . ' <strong>... Learn More ...</strong></p></div>';
-	}
-	else if (!empty($member->bio_change)) {	
+	} elseif (!empty($member->custom_field_change)) {	
+		return '<div><p><strong>Would Change World By: </strong>' . substr($member->custom_field_change, 0, 130) . ' <strong>... Learn More ...</strong></p></div>';
+	} elseif (!empty($member->bio_change)) {	
 		return '<div><p><strong>Would Change World By: </strong>' . substr($member->bio_change, 0, 130) . ' <strong>... Learn More ...</strong></p></div>';
-	}
-	else if (!empty($member->bio_stuff)) {	
+	} elseif (!empty($member->custom_field_greenstuff_tags)) {	
+		return '<div><p><strong>Is Into: </strong>' . substr($member->custom_field_greenstuff_tags, 0, 140) . ' <strong>... Learn More ...</strong></p></div>';
+	} elseif (!empty($member->bio_stuff)) {	
 		return '<div><p><strong>Is Into: </strong>' . substr($member->bio_stuff, 0, 140) . ' <strong>... Learn More ...</strong></p></div>';
 	}
 }
