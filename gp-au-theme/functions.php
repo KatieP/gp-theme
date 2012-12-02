@@ -2208,9 +2208,8 @@ function theme_location_tag_line() {
 	
 	# Get location from user ip address function	
 	$geo_currentlocation = Geo::getCurrentLocation();
-	
     $user_location = $geo_currentlocation['city'];
-
+    
 	?>
     <script type="text/javascript">
         function show_location_field() {

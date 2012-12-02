@@ -204,9 +204,12 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    <li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
 					    <li><a href="/eco-friendly-products"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
 					    <li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
-					    <li><a href="/people"<?php if ( $post_type == 'gp_people' ) {echo ' class="active"';} ?>>People</a></li>
 					    <li><a href="/projects"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-					    <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>					    
+					    <?php # Display Directory link only if user in Australia 
+                        # Get location from user ip address function	
+	                    $geo_currentlocation = Geo::getCurrentLocation();
+                        $user_country = $geo_currentlocation['country'];
+	                    if ( $user_country == 'Australia' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} ?>					    
 				    </ul>
 			    </nav>
 			   

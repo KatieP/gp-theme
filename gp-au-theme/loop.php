@@ -1566,10 +1566,6 @@ function theme_single_product_button() {
 	}
 }
 
-
-
-
-
 /********************************************************************************/
 
 /** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BARS **/
