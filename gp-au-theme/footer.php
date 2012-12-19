@@ -133,7 +133,6 @@
 		
         wp_footer();
         global $current_user, $wpdb;
-        #$current_user = wp_get_current_user();
 
         if ( ( isset( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] ) && $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] != "true" ) || !is_user_logged_in()) {
         ?>

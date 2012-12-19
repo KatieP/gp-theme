@@ -3213,11 +3213,6 @@ function theme_homecreate_post(){
 
 function theme_insert_homecreate_post(){
 	echo '<a href="/welcome" class="new-post-action">Create a post</a>';
-	#theme_insert_newscreate_post();
-	#theme_insert_eventcreate_post();
-	#theme_insert_advertorialcreate_post();
-	#theme_insert_competitioncreate_post();
-	#theme_insert_projectcreate_post();
 }
 
 function theme_profilecreate_post(){

@@ -291,8 +291,8 @@ function theme_indexpagination() {
 				<li class="post-next"><?php previous_posts_link('Recent Posts<div class="arrow-next"></div>', $wp_query->max_num_pages); ?></li>
 			</ul>
 		</nav>
-		<?php
-		}
+	<?php
+	}
 }
 
 function theme_like() {
@@ -325,9 +325,14 @@ function theme_like() {
 	}
 }
 
-/** NEW INDEX FEED STYLE **/
+/** INDEX FEED STYLE **/
 
 function theme_index_feed_item() {
+    /**
+     * Shows excerpt of post for dislay in index pages,
+     * If featured image present then thumbnail displayed
+     * Otherwise thumbnail of user profile picture shown instead 
+     */
 	global $post;
 
 	$post_author = get_userdata($post->post_author);
@@ -341,11 +346,10 @@ function theme_index_feed_item() {
 		$imageURL = $imageArray[0];
 		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="140" /></a>';
     }
-    else {	/** DISPLAY LOGO INSTEAD **/
+    else {	/** DISPLAY LOGO/PROFILE PICTURE INSTEAD **/
 		echo '<span class="profile_minithumb"><a href="' . $post_author_url . '">' . 
     		  get_avatar( $post_author->ID, '142', '', $post_author->display_name ) . '</a></span>';
 	}
-	
 	
 	echo '<div class="profile-postbox">';			 		
 			
@@ -490,7 +494,7 @@ function attachment_single() {
 	}
 }
 
-/** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS **/
+/** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS - EXCLUDING EVENTS **/
 function home_index() {
 	global $wpdb, $post;
 	
@@ -504,7 +508,7 @@ function home_index() {
 	    }
 	}
 	
-	/** NEW SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
+	/** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
 	$querystr = "SELECT 
 	                " . $wpdb->prefix . "posts.*, 
 	                m0.meta_value AS _thumbnail_id,
@@ -1540,7 +1544,7 @@ function theme_contributorsblurb($profile_author) {
 		echo '<p>' . nl2br($profile_author->contributors_blurb) . '</p>';
 	}
 }
-/********************************************************************************/
+
 /** PRODUCT 'BUY IT!' BUTTON **/
 
 function theme_single_product_button() {
@@ -1565,8 +1569,6 @@ function theme_single_product_button() {
 	 	}
 	}
 }
-
-/********************************************************************************/
 
 /** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BARS **/
 
@@ -1688,7 +1690,7 @@ function theme_contributors_volunteer($volunteer_url, $post_author_id) {
 	}
 }
 
-/********************************************************************************/
+/** ENDS - DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
 
 function theme_editorsblurb($profile_author) {
 	if ( !empty($profile_author->editors_blurb) ) {

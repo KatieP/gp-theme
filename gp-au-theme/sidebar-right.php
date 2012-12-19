@@ -1,15 +1,4 @@
 			<div id="col3"  class="set3col">
-				<!-- 
-				<div class="col3-ad"> -->
-						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec1.html" class="medrec"></iframe> -->
-						<!-- stg1_medrec -->
-						<!--
-						<script type='text/javascript'>
-							GA_googleFillSlot("stg1_medrec");
-						</script>
-						<span class="icon-advertisement">Advertisement</span>
-				</div>
-				-->
 				 
 				<!-- Event Calendar -->
 				<div id="eventCalendar"></div>
@@ -23,6 +12,7 @@
 				</div>
 				-->
 				<?php 
+				/** SHOW VIDEO IF CURRENT CONTENT AVAILABLE **/
 				$video_news_id = get_the_author_meta( 'video_news_id', '2' );
 				if ( !empty($video_news_id) ) {
 				?>
@@ -40,7 +30,7 @@
 				coming_events();
 				
 				cm_update_current_user(); # checks a users Campaign Monitor newsletter subscription first and modify's that user if necessary.
-				#$current_user = wp_get_current_user();
+
 				global $current_user, $wpdb;
 				if ( ( is_page() || is_home() ) && ( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] !== "true" || !is_user_logged_in() ) ) {
 				?>
@@ -58,7 +48,6 @@
 				<?php
 				}
 				
-				#if ( is_home() ) {
 				?>
 				<div id="twitter">
 					<a href="https://twitter.com/GreenPagesAu" class="twitter-follow-button" data-show-count="true" data-size="large">Follow @GreenPagesAu</a>
@@ -68,9 +57,7 @@
 				    <?php show_facebook_by_location(); ?>
 			    </div>
 		
-			<?php
-				#}
-				
+			    <?php
 				if ( get_post_type() == 'gp_news' && !is_author() && !is_single() && !wp_title("",0)==" Search") {
 				?> 
 				<div id="twitter">
@@ -131,7 +118,7 @@
 								<?php $click_track_tag_awu = '/internal/advertising/advertise-with-us/'; ?>
 								<a href="<?php bloginfo('template_url'); ?>/about/rate-card/" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
 									<span class="title">Advertise</span>
-									<span class="content">Explore the options</span>
+									<span class="content">Rate Card</span>
 								</a>
 							</nav>
 						</td>
