@@ -2195,13 +2195,20 @@ function theme_create_keyword_meta_tag() {
     echo $keywords;
 }
 
-/* LOCATION TAG LINE STYLE */
+/* LOCATION TAG LINE */
 
 function theme_location_tag_line() {
 	/**
 	 * Display tag line including user location and
 	 * link that shows field to enter new location that will filter
 	 * all post data for site
+	 * NB: js that calls google api for autocomplete of location names
+	 *     throws an error when our custom google map function is also
+	 *     being called, so have disabled autocomplete of text field in
+	 *     this function for time being
+	 * TODO As an interim measure, we could add a drop down menu
+	 *      to filter content by region that won't interfere with 
+	 *      google's api
 	 */
 	
 	# $user_location = get user location from ip address and convert to 'City' string
@@ -2213,7 +2220,8 @@ function theme_location_tag_line() {
 	?>
     <script type="text/javascript">
         function show_location_field() {
-            document.getElementById("header_location_field").className = "";
+            <!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
+            document.getElementById("header_location_list").className = "";
             document.getElementById("header_location_prompt").className = "";
         }
     </script>
@@ -2226,7 +2234,9 @@ function theme_location_tag_line() {
                 <div class="inside">
                     <input type="hidden" name="gp_postGeoLoc-nonce" id="gp_postGeoLoc-nonce" value="53c6d67000" />
                     <div class="gp-meta">
-                        <span class="hidden" id="header_location_prompt">Show me what's happening around </span><span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
+                        <span class="hidden" id="header_location_prompt">Show me what's happening around </span>
+                        <span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
+                        <span id="header_location_list" class="hidden"><select><option>List supported regions here</option></select></span>
                         <div class="hidden">
                             <input name="gp_projects_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="" readonly="readonly" />
                             <input name="gp_projects_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="" readonly="readonly" />
