@@ -2221,22 +2221,33 @@ function theme_location_tag_line() {
     <script type="text/javascript">
         function show_location_field() {
             <!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
+            document.getElementById("header_user_location").className = "hidden";
             document.getElementById("header_location_list").className = "";
-            document.getElementById("header_location_prompt").className = "";
         }
     </script>
     	
 	<div class="pos">
 	    <div class="post-details" id="header-tagline">
-	        Everything environmental happening around <a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>. 
+	        Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
+	        <span id="header_location_list" class="hidden">
+	            <select>
+	                <option>Australia</option>
+	                <option>Canada</option>
+	                <option>France</option>
+	                <option>India</option>	                
+	                <option>Ireland</option>
+	                <option>New Zealand</option>
+	                <option>UK</option>
+	                <option>USA</option>
+	            </select>
+	        </span> 
     	    <div id="gp_create_postGeoLoc_meta" class="postbox " >
                 <span class="hidden"><label class="gfield_label" for="gp_projects_google_geo_location">Location*</label></span>
                 <div class="inside">
                     <input type="hidden" name="gp_postGeoLoc-nonce" id="gp_postGeoLoc-nonce" value="53c6d67000" />
                     <div class="gp-meta">
-                        <span class="hidden" id="header_location_prompt">Show me what's happening around </span>
                         <span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
-                        <span id="header_location_list" class="hidden"><select><option>List supported regions here</option></select></span>
+                        
                         <div class="hidden">
                             <input name="gp_projects_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="" readonly="readonly" />
                             <input name="gp_projects_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="" readonly="readonly" />
