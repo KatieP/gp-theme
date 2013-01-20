@@ -45,7 +45,7 @@ function get_posttemplate($template='default_index') {
 	}
 	*/
 	
-	$post_type = get_query_var('posttype');echo $post_type;
+	$post_type = get_query_var('post_type');
 	if (is_string($post_type)) {
 		if ( isset($templateRoutes[$post_type]) ) {
 			$template = $templateRoutes[$post_type];
@@ -546,7 +546,7 @@ function home_index() {
 				    AND (post_type='gp_news' OR post_type='gp_advertorial' OR post_type='gp_competitions' OR post_type='gp_projects')
                     ${qry_country} 
 				ORDER BY post_date DESC LIMIT 20";
-echo $querystr;
+
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	#$numPosts = $wpdb->num_rows-1;
 	
@@ -604,152 +604,213 @@ function news_index() {
 
 //Function that calls upcoming 20 events on events page with pagination
 function events_index() {
-	global $wpdb, $post;
-echo "test";
-	$querystring_country = get_query_var( 'country' );
-	$querystring_state = get_query_var( 'state' );
+	global $wpdb, $post, $gp;
+
+	//$querystr = "SELECT " . $wpdb->prefix . "posts.ID, m6.meta_value AS gp_google_geo_locality FROM $wpdb->posts LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality' WHERE m6.meta_value IS NOT NULL AND m6.meta_value != \"\"";
+	//$fixes = $wpdb->get_results($querystr, OBJECT);
+	//foreach ($fixes as $fix) {
+        //$slug = sanitize_title($fix->gp_google_geo_locality);
+        //update_post_meta($fix->ID, 'gp_google_geo_locality_slug', $slug );
+    //}
+	
+	$querystring_country = strtoupper( get_query_var( 'country' ) );
+	$querystring_state = strtoupper( get_query_var( 'state' ) );
 	$querystring_city = get_query_var( 'city' );
 	$querystring_page = get_query_var( 'page' );
-	echo $querystring_country . "<br />";
-	echo $querystring_state . "<br />";
-	echo $querystring_city . "<br />";
-	echo $querystring_page . "<br />";
 	
-	$edition_states = Edition::getStates();
+	$geo_currentlocation = $gp->location;
+	$edition_states = $gp->states;
 	
-	$state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
-	
-	$geo_currentlocation = Geo::getCurrentLocation();
-	
-	if ( empty($selected_country) && isset($geo_currentlocation['country_iso2']) ) {
+
+	//if ( empty($selected_country) && isset($geo_currentlocation['country_iso2']) ) {
 	    # Not sure if you should use permanent redirects in this way?
-	    wp_redirect( '/events/' . $geo_currentlocation['country_iso2'] . '/', 302 ); 
-	    exit;
-	}
+	    //wp_redirect( '/events/' . $geo_currentlocation['country_iso2'] . '/', 302 ); 
+	    //exit;
+	//}
 	
+	$filterby_city = "";
 	$filterby_state = "";
+	$filterby_country = "";
+	
 	$epochtime = strtotime('now');
 
-	if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $selected_country ) {
-	    // check county & state combination exists
-	    if ( isset($selected_state) && !empty($selected_state) ) {
-    	    $query = $wpdb->prepare(
-    	            "SELECT COUNT(*) as count 
-    	            FROM " . $wpdb->prefix . "debian_iso_3166_2 
-    	            WHERE id = concat(%s, '-', %s);", 
-    	            $selected_country, 
-    	            $selected_state
+    if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
+        if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+            require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
+            $ns_loc_alt = $querystring_country . '\\Edition';
+            $edition_states = $ns_loc_alt::getStates();
+        }
+
+        $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
+
+	    if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+	        // if the country we are search on isn't the country selected automatically 
+	        // for the user then we are going to do a little bit of extra work make sure 
+	        // the country exists first and then grab the results.
+	        if ( isset($querystring_state) && !empty($querystring_state) ) {
+    	        $query = $wpdb->prepare(
+    	                "SELECT COUNT(*) as count 
+    	                FROM " . $wpdb->prefix . "debian_iso_3166_2 
+    	                WHERE id = concat(%s, '-', %s);", 
+    	                $querystring_country, 
+    	                $querystring_state
     	            );
     	    
-    	    $result = $wpdb->get_row( $query, ARRAY_A );
+    	        $result = $wpdb->get_row( $query, ARRAY_A );
     	    
-    	    if ($result['count'] >= 1) {
-    	        $filterby_state = $wpdb->prepare(" AND m3.meta_value=%s ", $selected_state);
-    	    }
-	    } else {
-	        $query = $wpdb->prepare(
-	                "SELECT COUNT(*) as count
-	                FROM " . $wpdb->prefix . "geonames_countryinfo
-	                WHERE iso_alpha2 = %s;",
-	                $selected_country
-	        );
+    	        if ($result['count'] >= 1) {
+    	            $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
+    	        } else {
+                    // redirect or 404
+                }
+	        } else {
+	            $query = $wpdb->prepare(
+	                    "SELECT COUNT(*) as count
+	                    FROM " . $wpdb->prefix . "geonames_countryinfo
+	                    WHERE iso_alpha2 = %s;",
+	                    $querystring_country
+	                );
 	        	
-	        $result = $wpdb->get_row( $query, ARRAY_A );
-	        $filterby_state = "";
-	    }
-	} else {
-        foreach ( $edition_states as $value ) {
-            $filterby_state = "";
-            if ( $value['code'] == $selected_state) {
-                $filterby_state = $wpdb->prepare(" AND m3.meta_value=%s ", $selected_state);
-                break;
+	            $result = $wpdb->get_row( $query, ARRAY_A );
+	        
+	            if ($result['count'] <= 0) {
+	                // redirect or 404
+	            }
+	        }
+	    } else {
+            // if the country has been predetermined and a state is specified then make 
+            // sure the state is valid
+            foreach ( $edition_states as $value ) {
+                $filterby_state = "";
+                if ( $value['code'] == $querystring_state) {
+                    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
+                    break;
+                }
             }
-        }
-	}
+	    }
 
-    $querytotal = $wpdb->prepare("SELECT COUNT(*) as count 
-                   FROM $wpdb->posts left join " . 
-                        $wpdb->prefix . "postmeta as m0 on m0.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' left join " . 
-                        $wpdb->prefix . "postmeta as m1 on m1.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' left join " . 
-                        $wpdb->prefix . "postmeta as m2 on m2.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' left join " . 
-                        $wpdb->prefix . "postmeta as m4 on m4.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m4.meta_key='gp_events_google_geo_country' left join " . 
-                        $wpdb->prefix . "postmeta as m3 on m3.post_id=" . 
-                        $wpdb->prefix . "posts.ID and m3.meta_key='gp_events_google_geo_administrative_area_level_1' 
-                   WHERE post_status='publish' 
-                       AND post_type='gp_events' 
-                       AND m4.meta_value=%s" . $filterby_state . "
-                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d;",
-            $selected_country,
-            $epochtime
+	    if ( isset($querystring_city) && !empty($querystring_city) ) {
+	        $filterby_city = $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city );
+        }
+        
+        $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country );
+	}
+	
+    $querytotal = $wpdb->prepare(
+                    "SELECT COUNT(*) AS count 
+                    FROM $wpdb->posts 
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
+                    WHERE 
+                        post_status='publish' 
+                        AND post_type='gp_events' 
+                        " . $filterby_country . "
+                        " . $filterby_state . "
+                        " . $filterby_city . "
+                        AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d;",
+                    $epochtime
             );
-                       
+                
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
 
-	#$ppp = intval(get_query_var('posts_per_page'));
-	$ppp = 20;
+	// if a city is given we are NOT going to check to see if it's a valid city
+	// but if no results are found then we will redirect
+	if ( isset($querystring_city) && !empty($querystring_city) && $totalposts['count'] <= 0 ) {
+        // redirect or 404
+    }
 	
+	#$ppp = intval(get_query_var('posts_per_page'));
+	$ppp = 10;
+
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
-	$on_page = intval(get_query_var('page'));	
+	$on_page = intval($querystring_page);	
 
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
 	
-    $metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_google_geo_administrative_area_level_1', 'gp_events_google_geo_locality', 'gp_events_google_geo_country');
-	foreach ($metas as $i=>$meta_key) {
-        $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
-        $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
-    }
-    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
-                 FROM $wpdb->posts ";
-    $querystr .=  join(' ', $meta_joins);
-    $querystr .= $wpdb->prepare("WHERE post_status='publish' 
-                       AND post_type='gp_events' 
-                       AND m5.meta_value=%s" . $filterby_state . " 
-                       AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
-                   ORDER BY gp_events_startdate ASC LIMIT %d OFFSET %d;",
-                   $selected_country,
-                   $epochtime,
-                   $ppp,
-                   $offset
-    );
+    $querystr = $wpdb->prepare(
+                "SELECT 
+                    " . $wpdb->prefix . "posts.*, 
+                    m0.meta_value AS _thumbnail_id, 
+                    m1.meta_value AS gp_events_enddate, 
+                    m2.meta_value AS gp_events_startdate, 
+                    m3.meta_value AS gp_google_geo_country, 
+                    m4.meta_value AS gp_google_geo_administrative_area_level_1, 
+                    m5.meta_value AS gp_google_geo_locality_slug,
+                    m6.meta_value AS gp_google_geo_locality  
+                FROM $wpdb->posts 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
+                WHERE 
+	                post_status='publish' 
+                    AND post_type='gp_events' 
+                    " . $filterby_country . "
+                    " . $filterby_state . "
+                    " . $filterby_city . "
+                    AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
+                ORDER BY gp_events_startdate ASC 
+                LIMIT %d 
+                OFFSET %d;",
+                $epochtime,
+                $ppp,
+                $offset
+            );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	#please fix this and make it accessable to non js users
 	theme_eventcreate_post();
-	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state"><option value="/events/' . $selected_country . '">All regions</option>'; 
-        $optgroup = null;
-		foreach ($edition_states as $row) {
-		    if ( !isset( $row['parent'] ) ) {
-		        if ( $optgroup !=  $row['subset'] ) { 
-		            if ($optgroup !== null) { echo '</optgroup>'; } 
-		            echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
-		            $optgroup = $row['subset']; 
+	
+	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state">';
+	if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
+	    echo '<option value="/events/' . strtolower($querystring_country) . '/">All regions</option>'; 
+            $optgroup = null;
+		    foreach ($edition_states as $row) {
+		        if ( !isset( $row['parent'] ) ) {
+		            if ( $optgroup !=  $row['subset'] ) { 
+		                if ($optgroup !== null) { echo '</optgroup>'; } 
+		                echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
+		                $optgroup = $row['subset']; 
+		            }
+			        if ($row['code'] == $querystring_state) {$state_selected = ' selected';} else {$state_selected = '';}
+  			        echo '<option value="/events/' . strtolower($querystring_country) . '/' . strtolower($row['code']) . '/"' . $state_selected . '>' . $row['name'] . '</option>';
 		        }
-			    if ($row['code'] == $selected_state) {$state_selected = ' selected';} else {$state_selected = '';}
-  			    echo '<option value="/events/' . $selected_country . '/' . $row['code'] . '"' . $state_selected . '>' . $row['name'] . '</option>';
 		    }
-		}
-		if ($optgroup !== null) { echo '</optgroup>'; }									
-	?></select></span><div class="clear"></div><?php 
+		    if ($optgroup !== null) { echo '</optgroup>'; }									
+	}
+	echo "<option disabled=\"disabled\"></option>";
+	echo "<option value=\"/events/\">Worldwide</option>";
+	echo "<optgroup label=\"Countries\">";
+	
+	$editions = Site::getEditions();
+	foreach ( $editions as $edition ) {
+        echo "<option value=\"/events/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+    }
+
+	echo "</optgroup>";
+	echo "</select></span><div class=\"clear\"></div>"; 
 
 	if ($pageposts) {
-	    
 	    # Construct location data in JSON for google map display
         $json = '[';	    
 	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			
-			if ( !isset($post->gp_events_google_geo_locality) || empty($post->gp_events_google_geo_locality) ) {
+			if ( !isset($post->gp_google_geo_locality) || empty($post->gp_google_geo_locality) ) {
 			    continue;
 			}
-			
+
 			$displayday = date('j', $post->gp_events_startdate);
 			$displaymonth = date('M', $post->gp_events_startdate);
 			$displayyear = date('y', $post->gp_events_startdate);
@@ -769,7 +830,7 @@ echo "test";
 			echo '<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
 			echo '<a href="' . get_permalink($post->ID) . '" class="more-link">Continue reading...</a><div>';
 			theme_indexdetails('author');
-			echo '<div class="post-loc">' . $post->gp_events_google_geo_locality . ' | <a href="/events/' . $selected_country . '/' . $post->gp_events_google_geo_administrative_area_level_1 . '/">' . $post->gp_events_google_geo_administrative_area_level_1 . '</a></div><div class="clear"></div></div>';
+			echo '<div class="post-loc"><a href="/events/' . strtolower($post->gp_google_geo_country) . '/' . strtolower($post->gp_google_geo_administrative_area_level_1) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a> | <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' . strtolower($post->gp_google_geo_administrative_area_level_1) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a></div><div class="clear"></div></div>';
 			#the_content('Continue reading...');
 			echo '</div><div class="clear"></div>';
 		    #theme_indexsocialbar();
@@ -785,11 +846,21 @@ echo "test";
 	    $map_canvas = 'post_google_map_canvas';
 	    theme_display_google_map_posts($json, $map_canvas);			
 		
-		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
+		if (  $wp_query->max_num_pages > 1 ) {
+            $page_url = "/events/";
+            if ( isset( $querystring_country ) && !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
+            if ( isset( $querystring_state ) && !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
+            if ( isset( $querystring_city ) && !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
+            
+            if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
+            if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+            if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+            
+        ?>
 			<nav id="post-nav">
 				<ul>
-					<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>Later in Time', $wp_query->max_num_pages); ?></li>
-					<li class="post-next"><?php previous_posts_link('Sooner in Time<div class="arrow-next"></div>', $wp_query->max_num_pages-1); ?></li>
+					<li class="post-previous"><?php echo $previous; ?></li>
+					<li class="post-next"><?php echo $next; ?></li>
 				</ul>
 			</nav>
 		<?php

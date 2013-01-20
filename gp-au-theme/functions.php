@@ -366,7 +366,7 @@ function register_query_vars( $query_vars )
 {
     $query_vars[] = 'author_name';
     $query_vars[] = 'author_edit';
-    $query_vars[] = 'posttype';
+    $query_vars[] = 'post_type';
     $query_vars[] = 'country';
     $query_vars[] = 'state';
     $query_vars[] = 'city';
@@ -385,14 +385,14 @@ add_action('init','change_author_permalinks');
 /* AUTHOR EDIT REWRITE RULE */
 add_action( 'author_rewrite_rules', 'edit_author_slug' ); #new-edit
 function edit_author_slug( $author_rules ) {
-    $author_rules['^profile/([^/]+)/edit/?$'] = 'index.php?author_name=$matches[1]&author_edit=1';
-    $author_rules['^profile/([^/]+)/edit/account/?$'] = 'index.php?author_name=$matches[1]&author_edit=2';
-    $author_rules['^profile/([^/]+)/edit/locale/?$'] = 'index.php?author_name=$matches[1]&author_edit=3';
-    $author_rules['^profile/([^/]+)/edit/notifications/?$'] = 'index.php?author_name=$matches[1]&author_edit=4';
-    $author_rules['^profile/([^/]+)/edit/newsletters/?$'] = 'index.php?author_name=$matches[1]&author_edit=5';
-    $author_rules['^profile/([^/]+)/edit/privacy/?$'] = 'index.php?author_name=$matches[1]&author_edit=6';
-    $author_rules['^profile/([^/]+)/edit/password/?$'] = 'index.php?author_name=$matches[1]&author_edit=7';
-    $author_rules['^profile/([^/]+)/edit/admin/?$'] = 'index.php?author_name=$matches[1]&author_edit=8';
+    $author_rules['profile/([^/]+)/edit/account/?$'] = 'index.php?author_name=$matches[1]&author_edit=2';
+    $author_rules['profile/([^/]+)/edit/locale/?$'] = 'index.php?author_name=$matches[1]&author_edit=3';
+    $author_rules['profile/([^/]+)/edit/notifications/?$'] = 'index.php?author_name=$matches[1]&author_edit=4';
+    $author_rules['profile/([^/]+)/edit/newsletters/?$'] = 'index.php?author_name=$matches[1]&author_edit=5';
+    $author_rules['profile/([^/]+)/edit/privacy/?$'] = 'index.php?author_name=$matches[1]&author_edit=6';
+    $author_rules['profile/([^/]+)/edit/password/?$'] = 'index.php?author_name=$matches[1]&author_edit=7';
+    $author_rules['profile/([^/]+)/edit/admin/?$'] = 'index.php?author_name=$matches[1]&author_edit=8';
+    $author_rules['profile/([^/]+)/edit/?$'] = 'index.php?author_name=$matches[1]&author_edit=1';
     return $author_rules;
 }
 
@@ -404,16 +404,17 @@ function gp_rewrite_rules( $wp_rewrite ) {
 
     $site_posttypes = Site::getPostTypes();
     foreach ( $site_posttypes as $site_posttype ) {
-        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]&page=$matches[4]';
-        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&page=$matches[3]';
-        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/?$'] = 'index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]';
-        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/?$'] = '/index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]';
-        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/page/([0-9]{1,})/?$'] = '/index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]&page=$matches[2]';
-        $newrules['^' . $site_posttype['slug'] . '/([a-z0-9]{1,2})/?$'] = '/index.php?posttype=' . $site_posttype['id'] . '&country=$matches[1]';
-        $newrules['^' . $site_posttype['slug'] . '/?$'] = '/index.php?posttype=' . $site_posttype['id'];
+        $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]&page=$matches[4]';
+        $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&page=$matches[3]';
+        $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/?$'] = 'index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]';
+        $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/?$'] = '/index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]';
+        $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/page/([0-9]{1,})/?$'] = '/index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&page=$matches[2]';
+        $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/?$'] = '/index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]';
+        //$newrules[$site_posttype['slug'] . '/?$'] = '/index.php?post_type=' . $site_posttype['id'];
     }
-
-    $wp_rewrite->rules = $newrules+$wp_rewrite->rules;
+    
+    $wp_rewrite->rules = $newrules + $wp_rewrite->rules;
+    return $wp_rewrite->rules;
 }
 add_filter('generate_rewrite_rules','gp_rewrite_rules');
 
@@ -952,8 +953,10 @@ add_image_size('dash-thumbnail', 35, 35, true);
 
 /* combined */
 add_action( 'init', 'createPostOptions' );
+global $gp;
 
-$edition_posttypes = Edition::getPostTypes();
+$ns_loc = $gp->location['country_iso2'] . '\\Edition';
+$edition_posttypes = $ns_loc::getPostTypes();
 
 for($index = 0; $index < count($edition_posttypes); $index++) {
 	if ($edition_posttypes[$index]['enabled'] == true) {
@@ -965,7 +968,9 @@ add_action( 'manage_posts_custom_column', 'new_custom_columns' );
 add_filter( 'post_updated_messages', 'updated_messages' );
 
 function createPostOptions () {
-    $edition_posttypes = Edition::getPostTypes();
+    global $gp;
+    $ns_loc = $gp->location['country_iso2'] . '\\Edition';
+    $edition_posttypes = $ns_loc::getPostTypes();
     
 	for($index = 0; $index < count($edition_posttypes); $index++) {
 		if ($edition_posttypes[$index]['enabled'] == true) {
@@ -977,7 +982,9 @@ function createPostOptions () {
 }
 
 function editColumns($columns) {
-    $edition_posttypes = Edition::getPostTypes();
+    global $gp;
+    $ns_loc = $gp->location['country_iso2'] . '\\Edition';
+    $edition_posttypes = $ns_loc::getPostTypes();
     
 	for($index = 0; $index < count($edition_posttypes); $index++) {
 		if ($edition_posttypes[$index]['enabled'] == true) {
@@ -1000,9 +1007,9 @@ function editColumns($columns) {
 }
 
 function new_custom_columns( $column ) {
-	global $post;
-	
-    $edition_posttypes = Edition::getPostTypes();
+	global $post, $gp;
+	$ns_loc = $gp->location['country_iso2'] . '\\Edition';
+    $edition_posttypes = $ns_loc::getPostTypes();
 
     $custom = get_post_custom();
     for($index = 0; $index < count($edition_posttypes); $index++) {
@@ -1052,9 +1059,9 @@ function new_custom_columns( $column ) {
 }
 
 function updated_messages( $messages ) {
-  global $post, $post_ID;
-  
-    $edition_posttypes = Edition::getPostTypes();
+  global $post, $post_ID, $gp;
+  $ns_loc = $gp->location['country_iso2'] . '\\Edition';
+  $edition_posttypes = $ns_loc::getPostTypes();
     
   for($index = 0; $index < count($edition_posttypes); $index++) {
   	if ($edition_posttypes[$index]['enabled'] == true) {
@@ -1148,7 +1155,7 @@ function get_competitiondate($start, $end, $format = 2) {
 
 	if (date('Y', $start) - $competitions_enddate_diff['y'] != 1970) {
 		if ($competitions_enddate_diff['y'] > 0) {
-			$displaydate = 'Continue reading�';
+			$displaydate = 'Continue readingÔøΩ';
 		}
 		 
 		if ($competitions_enddate_diff['y'] <= 0 && $competitions_enddate_diff['m'] > 0) {
@@ -1248,63 +1255,92 @@ function relevant_posts() {
 
 /* SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
 function coming_events() {			
-	global $wpdb, $post;
-	
-	$edition_states = Edition::getStates();
-	
+	global $wpdb, $post, $gp;
+
+	$edition_states = $gp->states;
 	$state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
-	
-	$geo_currentlocation = Geo::getCurrentLocation();
-	$geo_currentlocation = ( isset($geo_currentlocation['country_iso2']) ) ? $geo_currentlocation['country_iso2'] : 'US';
 	
 	$epochtime = strtotime('now');
 
-    foreach ( $edition_states as $value ) {
-	    $filterby_state = "";
-	    if ( $value['code'] ==  get_query_var( 'filterby_state' )) {
-	        $filterby_state = "AND m3.meta_value='" . get_query_var( 'filterby_state' ) . "'";
-	        break;
-	    }
+	$filterby_state = "";
+	if ( isset( $gp->location['region_iso2'] ) && !empty( $gp->location['region_iso2'] ) ) {
+	    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $gp->location['region_iso2'] );
 	}
-    
-	/* SQL QUERY FOR COMING EVENTS */
-	$metas = array('_thumbnail_id', 'gp_events_enddate', 'gp_events_startdate', 'gp_events_locstate', 'gp_events_locsuburb', 'gp_events_loccountry');
 	
-	foreach ($metas as $i=>$meta_key) {
-        $meta_fields[] = 'm' . $i . '.meta_value as ' . $meta_key;
-        $meta_joins[] = ' left join ' . $wpdb->postmeta . ' as m' . $i . ' on m' . $i . '.post_id=' . $wpdb->posts . '.ID and m' . $i . '.meta_key="' . $meta_key . '"';
-    }
-    
-    $querystr = "SELECT " . $wpdb->prefix . "posts.*, " .  join(',', $meta_fields) . " 
-    				FROM $wpdb->posts ";
-    $querystr .=  join(' ', $meta_joins);
-	$querystr .= "WHERE post_status='publish'
-						AND post_type='gp_events'
-						AND m5.meta_value='" . $geo_currentlocation . "' " . $filterby_state . " 
-						AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= " . $epochtime . "
-					ORDER BY gp_events_startdate;";
+	$filterby_state = $wpdb->prepare( " AND m3.meta_value=%s ", $gp->location['country_iso2'] );
+	
+	/* SQL QUERY FOR COMING EVENTS */
+	$querystr = $wpdb->prepare(
+	        "SELECT
+                " . $wpdb->prefix . "posts.*,
+	            m0.meta_value AS _thumbnail_id,
+	            m1.meta_value AS gp_events_enddate,
+	            m2.meta_value AS gp_events_startdate,
+	            m3.meta_value AS gp_google_geo_country,
+	            m4.meta_value AS gp_google_geo_administrative_area_level_1,
+	            m5.meta_value AS gp_google_geo_locality_slug,
+	            m6.meta_value AS gp_google_geo_locality
+	        FROM $wpdb->posts
+	            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id'
+                LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate'
+                LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate'
+                LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country'
+                LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1'
+                LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
+                LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
+            WHERE
+	            post_status='publish'
+                AND post_type='gp_events'
+                " . $filterby_country . "
+	            " . $filterby_state . "
+	            AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d
+            ORDER BY gp_events_startdate ASC;",
+            $epochtime
+	);
 	
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
-		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . $geo_currentlocation . '">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
-		?><div id="post-filter"><span class="left">Filter by Region:&nbsp;&nbsp;<select name="filterby_state" id="filterby_state"><option value="/events">All regions</option><?php
+		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
+		?>
+		
+		<div id="post-filter">
+		    <span class="left">Jump to Region:&nbsp;&nbsp;
+		        <select name="filterby_state" id="filterby_state">
+		            <option value="/events/<?php echo strtolower( $gp->location['country_iso2'] ); ?>/">All regions</option>
+		
+		<?php
 		$optgroup = null;
-		foreach ($states as $row) {
-		    if ( !isset( $row['parent'] ) ) {
-		        if ( $optgroup !=  $row['subset'] ) { 
+		foreach ($edition_states as $state) {
+		    if ( !isset( $state['parent'] ) ) {
+		        if ( $optgroup !=  $state['subset'] ) { 
 		            if ($optgroup !== null) { echo '</optgroup>'; } 
-		            echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
-		            $optgroup = $row['subset']; 
+		            echo '<optgroup label="' . ucwords( $state['subset_plural'] ) . '">';
+		            $optgroup = $state['subset']; 
 		        }
-			    if ($row['code'] == get_query_var( 'filterby_state' )) {$state_selected = ' selected';} else {$state_selected = '';}
-  			    echo '<option value="/events/' . $geo_currentlocation . '/' . $row['code'] . '"' . $state_selected . '>' . $row['name'] . '</option>';
+  			    echo '<option value="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $state['code']) . '/">' . $state['name'] . '</option>';
 		    }
 		}
-		if ($optgroup !== null) { echo '</optgroup>'; }								
-		?></select></span><div class="clear"></div></div><?php
+		if ($optgroup !== null) { echo '</optgroup>'; }
+		echo "<option disabled=\"disabled\"></option>";
+		echo "<option value=\"/events/\">Worldwide</option>";
+		echo "<optgroup label=\"Countries\">";
 		
+		$editions = Site::getEditions();
+		foreach ( $editions as $edition ) {
+		    echo "<option value=\"/events/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+		}
+		
+		echo "</optgroup>";
+		?>
+		
+		        </select>
+		    </span>
+		    <div class="clear"></div>
+		</div>
+		
+		<?php
 		$i = 0;
 		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR
 		$event_str = '[';
@@ -1322,9 +1358,6 @@ function coming_events() {
 			$displayendday = date('j', $post->gp_events_enddate);
 			$displayendmonth = date('M', $post->gp_events_enddate);
 			$str_endmonth = date('m', $post->gp_events_enddate);
-			
-			$displaysuburb = $post->gp_events_locsuburb;
-			$displaystate = $post->gp_events_locstate;
 			
 			$event_link_url = get_permalink($post->ID);
 			$post_id = $post->ID;
@@ -1348,7 +1381,8 @@ function coming_events() {
 				}
 				?>
 				<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
-				<?php echo '<div class="post-details">' . $post->gp_events_locsuburb . ' | <a href="/events/' .$geo_currentlocation . '/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . ', </a>';
+				<?php 
+				echo '<div class="post-details"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a>, <a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a><br />';
 				if ($displayday == $displayendday) {
 					echo $displayday . ' ' . $displaymonth;
 				} else {
@@ -1693,8 +1727,8 @@ function get_post_location_json_data() {
     $displaytitle = '<a href=\"'. $post_link_url . '\" title=\"'. $post_title .'\">'. $post_title .'</a>';
     
     # Set location keys
-    $lat_post_key = $post_type .'_google_geo_latitude';
-    $long_post_key = $post_type .'_google_geo_longitude';
+    $lat_post_key = 'gp_google_geo_latitude';
+    $long_post_key = 'gp_google_geo_longitude';
     
 	# Assign icon for custom marker depending on post type
 	switch ($post_type) {
@@ -1736,7 +1770,8 @@ function get_post_location_json_data() {
 /** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP, CENTERED BY USER IP LOCATION **/
 
 function theme_display_google_map_posts($json, $map_canvas) {
-
+    global $gp;
+    
     /**
      * Accepts json structured string holding post title link, lat and long data on each relevant post
      * Construcs google map and places marker on each post location,
@@ -1750,8 +1785,8 @@ function theme_display_google_map_posts($json, $map_canvas) {
     $geoplugin = unserialize( file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_addr) );
 
     if ( is_numeric($geoplugin['geoplugin_latitude']) && is_numeric($geoplugin['geoplugin_longitude']) ) {
-        $user_lat = $geoplugin['geoplugin_latitude'];
-        $user_long = $geoplugin['geoplugin_longitude'];
+        //$user_lat = $geoplugin['geoplugin_latitude'];
+        //$user_long = $geoplugin['geoplugin_longitude'];
     }
 
     // For testing
@@ -1761,8 +1796,14 @@ function theme_display_google_map_posts($json, $map_canvas) {
 
 
     //Centre of Australia default lat and long in case remote IP does not load.
-    $default_lat = -32;
-    $default_long = 134;
+    
+    $default_lat = $gp->location['latitude'];
+    $default_long = $gp->location['longitude'];
+    
+    if ( empty( $default_lat ) || empty( $default_long ) ) {
+        $default_lat = -32;
+        $default_long = 134;
+    }
 
     ?>
     <script type="text/javascript">
@@ -1774,7 +1815,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
             var myLatlng = new google.maps.LatLng(
                                <?php
                                # If user ip grab successful centre map on user location, otherwise default to Australia
-                               if ( isset($user_lat) && isset($user_long) ) {
+                               if ( isset( $user_lat ) && isset( $user_long ) ) {
                                    echo $user_lat .','. $user_long; 
                                } else {
                                    echo $default_lat .','. $default_long;
@@ -1948,7 +1989,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
             };
         
             //Adds map to map_canvas div in DOM to it is visible
-            var map = new google.maps.Map(document.getElementById($map_canvas),
+            var map = new google.maps.Map(document.getElementById('<?php echo $map_canvas; ?>'),
                       mapOptions);
             
             // Creating a global infoWindow object that will be reused by all markers
@@ -2082,9 +2123,10 @@ function theme_single_google_map() {
 
 /** SHOWS DIFFERENT COUNTRY FACEBOOK PAGES ON RIGHT SIDEBAR BASED ON USER'S LOCATION BY IP**/
 function show_facebook_by_location() {
-    global $post,$wpdb;
+    global $post,$wpdb,$gp;
+    $ns_loc = $gp->location['country_iso2'] . '\\Edition';
     
-    $edition_meta = Edition::getMeta();
+    $edition_meta = $ns_loc::getMeta();
     
     if ( isset($edition_meta['facebook_id']) && !empty($edition_meta['facebook_id']) ) {
     
@@ -2213,8 +2255,10 @@ function theme_location_tag_line() {
 	
 	# $user_location = get user location from ip address and convert to 'City' string
 	
-	# Get location from user ip address function	
-	$geo_currentlocation = Geo::getCurrentLocation();
+	# Get location from user ip address function
+    global $gp;	
+
+	$geo_currentlocation = $gp->location;
     $user_location = $geo_currentlocation['city'];
     
 	?>
@@ -2230,37 +2274,15 @@ function theme_location_tag_line() {
 	    <div class="post-details" id="header-tagline">
 	        Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
 	        <span id="header_location_list" class="hidden">
-	            <select>
-	                <option>Australia</option>
-	                <option>Canada</option>
-	                <option>France</option>
-	                <option>India</option>	                
-	                <option>Ireland</option>
-	                <option>New Zealand</option>
-	                <option>UK</option>
-	                <option>USA</option>
+	            <select name="filterby_state" id ="filterby_state">
+	                <?php
+	                $editions = Site::getEditions();
+	                foreach ( $editions as $edition ) {
+                        echo "<option value=\"/news/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+                    }
+                    ?>
 	            </select>
 	        </span> 
-    	    <div id="gp_create_postGeoLoc_meta" class="postbox " >
-                <span class="hidden"><label class="gfield_label" for="gp_projects_google_geo_location">Location*</label></span>
-                <div class="inside">
-                    <input type="hidden" name="gp_postGeoLoc-nonce" id="gp_postGeoLoc-nonce" value="53c6d67000" />
-                    <div class="gp-meta">
-                        <span id="header_location_field" class="hidden"><input name="gp_projects_google_geo_location" id="gp_google_geo_location" type="text" value="" /></span>
-                        
-                        <div class="hidden">
-                            <input name="gp_projects_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="" readonly="readonly" />
-                            <input name="gp_projects_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="" readonly="readonly" />
-                            <input name="gp_projects_google_geo_country" id="gp_google_geo_country" type="text" value="" readonly="readonly" />
-                            <input name="gp_projects_google_geo_administrative_area_level_1" id="gp_google_geo_administrative_area_level_1" type="text" value="" readonly="readonly" />
-                            <input name="gp_projects_google_geo_administrative_area_level_2" id="gp_google_geo_administrative_area_level_2" type="text" value="" readonly="readonly" />
-                            <input name="gp_projects_google_geo_administrative_area_level_3" id="gp_google_geo_administrative_area_level_3" type="text" value="" readonly="readonly" />
-                            <input name="gp_projects_google_geo_locality" id="gp_google_geo_locality" type="text" value="" readonly="readonly" />
-                        </div>
-                        <div id="map_canvas"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <?php
@@ -2273,9 +2295,10 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	
 	$profile_author = get_user_by('slug', $profile_pid);
 	
-	global $wpdb, $post, $current_user;
-	
-	$edition_posttypes = Edition::getPostTypes();
+	global $wpdb, $post, $current_user, $gp;
+	$geo_currentlocation = $gp->location;
+	$ns_loc = $gp->location['country_iso2'] . '\\Edition';
+	$edition_posttypes = $ns_loc::getPostTypes();
 	
 	if ( strtolower($post_type) == "directory" ) {
 		theme_profile_directory($profile_pid);
@@ -2505,9 +2528,10 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 	
 	$profile_author = get_user_by('slug', $profile_pid);
 
-	global $wpdb, $post, $current_user, $current_site;
-	
-	$edition_posttypes = Edition::getPostTypes();
+	global $wpdb, $post, $current_user, $current_site, $gp;
+	$geo_currentlocation = $gp->location;
+	$ns_loc = $gp->location['country_iso2'] . '\\Edition';
+	$edition_posttypes = $ns_loc::getPostTypes();
 	
 	$post_type_filter = "";
 	$post_type_key = getPostTypeID_by_Slug($post_type);

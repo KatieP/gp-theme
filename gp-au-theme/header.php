@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <?php
+global $gp;
+
 if ( is_user_logged_in() ) {
 	global $current_user;
 	#$current_user = wp_get_current_user();
@@ -201,16 +203,17 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
 		                $post_type = ( isset($post) ? get_post_type($post->ID) : "" );
 					    ?>
-					    <li><a href="/news"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
-					    <li><a href="/events"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
-					    <li><a href="/eco-friendly-products"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
-					    <li><a href="/competitions"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
-					    <li><a href="/projects"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-					    <?php # Display Directory link only if user in Australia 
+					    <li><a href="/news/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
+					    <li><a href="/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
+					    <li><a href="/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
+					    <li><a href="/competitions/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_competitions' ) {echo ' class="active"';} ?>>Competitions</a></li>
+					    <li><a href="/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
+					    <?php 
+					    # Display Directory link only if user in Australia 
                         # Get location from user ip address function	
-	                    $geo_currentlocation = Geo::getCurrentLocation();
-                        $user_country = $geo_currentlocation['country'];
-	                    if ( $user_country == 'Australia' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} ?>					    
+                        $user_country = $gp->location['country'];
+	                    if ( $user_country == 'Australia' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
+	                    ?>					    
 				    </ul>
 			    </nav>
 			   
@@ -310,7 +313,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							<li class="auth-account-options">	
 								<a href="<?php echo $post_author_url; ?>" title="Your profile">View Profile</a> 
 								<a href="/forms/profile-editor/" title="Update Profile">Update Profile</a>
-								<a href="/forms/profile-notifications/" title="Notifications">Notifications</a>								<a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
+								<a href="/forms/profile-notifications/" title="Notifications">Notifications</a>
+								<a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
 								<a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
 							</li>
 							<!-- 
