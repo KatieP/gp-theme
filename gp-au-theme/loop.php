@@ -284,6 +284,7 @@ function theme_indexsocialbar() {
 
 function theme_indexpagination() {
 	global $wp_query;
+	
 	if (  $wp_query->max_num_pages > 1 ) { ?>
 		<nav id="post-nav">
 			<ul>
@@ -418,14 +419,189 @@ function theme_index_feed_item() {
 /*** TEMPLATE RENDERING ***/
 
 function default_index() {
-	if ( have_posts() ) {
-        global $post;
+
+    global $wpdb, $post, $gp;
+
+    $querystring_country = strtoupper( get_query_var( 'country' ) );
+    $querystring_state = strtoupper( get_query_var( 'state' ) );
+    $querystring_city = get_query_var( 'city' );
+    $querystring_page = get_query_var( 'page' );
+
+    $geo_currentlocation = $gp->location;
+    $edition_states = $gp->states;
+
+    $epochtime = strtotime('now');
+
+    $filterby_city = "";
+    $filterby_state = "";
+    $filterby_country = "";
+
+    if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
+        if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+            require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
+            $ns_loc_alt = $querystring_country . '\\Edition';
+            $edition_states = $ns_loc_alt::getStates();
+        }
+
+        $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
+
+        if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+            // if the country we are search on isn't the country selected automatically
+            // for the user then we are going to do a little bit of extra work make sure
+            // the country exists first and then grab the results.
+            if ( isset($querystring_state) && !empty($querystring_state) ) {
+                $query = $wpdb->prepare(
+                    "SELECT COUNT(*) as count
+    	            FROM " . $wpdb->prefix . "debian_iso_3166_2
+    	            WHERE id = concat(%s, '-', %s);",
+                    $querystring_country,
+                    $querystring_state
+                );
+             
+                $result = $wpdb->get_row( $query, ARRAY_A );
+             
+                if ($result['count'] >= 1) {
+                    $filterby_state = $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state );
+                } else {
+                    // redirect or 404
+                }
+            } else {
+                $query = $wpdb->prepare(
+                    "SELECT COUNT(*) as count
+                    FROM " . $wpdb->prefix . "geonames_countryinfo
+	                WHERE iso_alpha2 = %s;",
+                    $querystring_country
+                );
+
+                $result = $wpdb->get_row( $query, ARRAY_A );
+             
+                if ($result['count'] <= 0) {
+                    // redirect or 404
+                }
+            }
+        } else {
+            // if the country has been predetermined and a state is specified then make
+            // sure the state is valid
+            foreach ( $edition_states as $value ) {
+                $filterby_state = "";
+                if ( $value['code'] == $querystring_state) {
+                    $filterby_state = $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state );
+                    break;
+                }
+            }
+        }
+
+        if ( isset($querystring_city) && !empty($querystring_city) ) {
+            $filterby_city = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_city );
+        }
+
+        $filterby_country = $wpdb->prepare( " AND m1.meta_value=%s ", $querystring_country );
+    }
+
+    $querytotal = $wpdb->prepare(
+        "SELECT COUNT(*) AS count 
+        FROM $wpdb->posts 
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_google_geo_country'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_google_geo_administrative_area_level_1'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_locality_slug'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_locality'
+        WHERE 
+            post_status='publish'
+            AND m0.meta_value >= 1
+            AND post_type=%s 
+            " . $filterby_country . "
+            " . $filterby_state . "
+            " . $filterby_city . ";",
+            get_query_var('post_type')
+        );
+              
+	$totalposts = $wpdb->get_results($querytotal, OBJECT);
+
+	// if a city is given we are NOT going to check to see if it's a valid city
+	// but if no results are found then we will redirect
+	if ( isset( $querystring_city ) && !empty( $querystring_city ) && $totalposts['count'] <= 0 ) {
+        // redirect or 404
+    }
+	
+	#$ppp = intval(get_query_var('posts_per_page'));
+	$ppp = 10;
+
+	$wp_query->found_posts = $totalposts[0]->count;
+	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
+	$on_page = intval($querystring_page);	
+	
+	if($on_page == 0){ $on_page = 1; }		
+	$offset = ($on_page-1) * $ppp;
+
+    /** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
+    $querystr = $wpdb->prepare(
+        "SELECT
+            " . $wpdb->prefix . "posts.*,
+            m0.meta_value AS _thumbnail_id,
+            m1.meta_value AS gp_google_geo_country,
+            m2.meta_value AS gp_google_geo_administrative_area_level_1,
+            m3.meta_value AS gp_google_geo_locality_slug,
+            m4.meta_value AS gp_google_geo_locality
+        FROM $wpdb->posts
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_google_geo_country'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_google_geo_administrative_area_level_1'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_locality_slug'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_locality'
+        WHERE
+            post_status='publish'
+            AND m0.meta_value >= 1
+            AND post_type=%s 
+            " . $filterby_country . "
+            " . $filterby_state . "
+            " . $filterby_city . "
+        ORDER BY post_date DESC
+        LIMIT %d;",
+        get_query_var('post_type'),
+        $ppp
+    );
+
+	$pageposts = $wpdb->get_results($querystr, OBJECT);
+
+	$posttype_slug = getPostTypeSlug( get_query_var('post_type') );
+	
+	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state">';
+	if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
+	    echo '<option value="/' . $posttype_slug . '/' . strtolower($querystring_country) . '/">All regions</option>';
+	    $optgroup = null;
+	    foreach ($edition_states as $row) {
+	        if ( !isset( $row['parent'] ) ) {
+	            if ( $optgroup !=  $row['subset'] ) {
+	                if ($optgroup !== null) { echo '</optgroup>'; }
+	                echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
+	                $optgroup = $row['subset'];
+	            }
+	            if ($row['code'] == $querystring_state) {$state_selected = ' selected';} else {$state_selected = '';}
+	            echo '<option value="/' . $posttype_slug . '/' . strtolower($querystring_country) . '/' . strtolower($row['code']) . '/"' . $state_selected . '>' . $row['name'] . '</option>';
+	        }
+	    }
+	    if ($optgroup !== null) { echo '</optgroup>'; }
+	}
+	echo "<option disabled=\"disabled\"></option>";
+	echo "<option value=\"/" . $posttype_slug . "/\">Worldwide</option>";
+	echo "<optgroup label=\"Countries\">";
+	
+	$editions = Site::getEditions();
+	foreach ( $editions as $edition ) {
+	    echo "<option value=\"/" . $posttype_slug . "/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+	}
+	
+	echo "</optgroup>";
+	echo "</select></span><div class=\"clear\"></div>";
+	
+	if ( $pageposts ) {
 
         # Construct location data in JSON for google map display
         $json = '[';
 
-		while ( have_posts() ) { 					        
-            the_post();
+		foreach ( $pageposts as $post ) { 
+			setup_postdata($post);
             theme_index_feed_item();
 
 			# Add post location data to JSON string
@@ -438,8 +614,26 @@ function default_index() {
      	# Define map canvas id and display google map with custom markers for each post
 	    $map_canvas = 'post_google_map_canvas';
 	    theme_display_google_map_posts($json, $map_canvas);
-		    
-	    theme_indexpagination();	
+	    
+	    if (  $wp_query->max_num_pages > 1 ) {
+            $page_url = "/" . $posttype_slug . "/";
+            if ( isset( $querystring_country ) && !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
+            if ( isset( $querystring_state ) && !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
+            if ( isset( $querystring_city ) && !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
+            
+            if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
+            if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+            if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+            
+        ?>
+			<nav id="post-nav">
+				<ul>
+					<li class="post-previous"><?php echo $previous; ?></li>
+					<li class="post-next"><?php echo $next; ?></li>
+				</ul>
+			</nav>
+		<?php
+		}	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
 			  <p>No there\'s nothing wrong. It just means there\'s no posts for this section yet! Which is admittedly a little strange but if you\'d like to help and write for us (In a volunteer capacity at this stage.) send us a email to info[at]thegreenpages.com.au and we\'ll be in touch.</p>';
@@ -513,65 +707,65 @@ function home_index() {
 	$filterby_country = "";
 	
     if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
-    if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
-        require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
-        $ns_loc_alt = $querystring_country . '\\Edition';
-        $edition_states = $ns_loc_alt::getStates();
-    }
-
-    $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
-
-    if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
-        // if the country we are search on isn't the country selected automatically
-        // for the user then we are going to do a little bit of extra work make sure
-        // the country exists first and then grab the results.
-        if ( isset($querystring_state) && !empty($querystring_state) ) {
-        $query = $wpdb->prepare(
-                "SELECT COUNT(*) as count
-    	                FROM " . $wpdb->prefix . "debian_iso_3166_2
-    	                WHERE id = concat(%s, '-', %s);",
-                $querystring_country,
-                $querystring_state
-        );
-        	
-        $result = $wpdb->get_row( $query, ARRAY_A );
-        	
-        if ($result['count'] >= 1) {
-        $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
-        } else {
-                // redirect or 404
+        if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+            require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
+            $ns_loc_alt = $querystring_country . '\\Edition';
+            $edition_states = $ns_loc_alt::getStates();
         }
-        } else {
-            $query = $wpdb->prepare(
-            "SELECT COUNT(*) as count
-                FROM " . $wpdb->prefix . "geonames_countryinfo
-	                    WHERE iso_alpha2 = %s;",
-                        $querystring_country
-	                );
+
+        $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
+
+        if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+            // if the country we are search on isn't the country selected automatically
+            // for the user then we are going to do a little bit of extra work make sure
+            // the country exists first and then grab the results.
+            if ( isset($querystring_state) && !empty($querystring_state) ) {
+                $query = $wpdb->prepare(
+                    "SELECT COUNT(*) as count
+    	            FROM " . $wpdb->prefix . "debian_iso_3166_2
+    	            WHERE id = concat(%s, '-', %s);",
+                    $querystring_country,
+                    $querystring_state
+                );
+        	
+                $result = $wpdb->get_row( $query, ARRAY_A );
+        	
+                if ($result['count'] >= 1) {
+                    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
+                } else {
+                    // redirect or 404
+                }
+            } else {
+                $query = $wpdb->prepare(
+                    "SELECT COUNT(*) as count
+                    FROM " . $wpdb->prefix . "geonames_countryinfo
+	                WHERE iso_alpha2 = %s;",
+                    $querystring_country
+	            );
 
 	            $result = $wpdb->get_row( $query, ARRAY_A );
                  
                 if ($result['count'] <= 0) {
-                // redirect or 404
+                    // redirect or 404
+                }
             }
-            }
-            } else {
+        } else {
             // if the country has been predetermined and a state is specified then make
-                // sure the state is valid
-                foreach ( $edition_states as $value ) {
+            // sure the state is valid
+            foreach ( $edition_states as $value ) {
                 $filterby_state = "";
                 if ( $value['code'] == $querystring_state) {
-                $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
+                    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
                     break;
                 }
-                }
-                }
+            }
+        }
 
-                if ( isset($querystring_city) && !empty($querystring_city) ) {
-                $filterby_city = $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city );
-                }
+        if ( isset($querystring_city) && !empty($querystring_city) ) {
+            $filterby_city = $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city );
+        }
 
-                        $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country );
+        $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country );
 	}
 
 	$ppp = 20;
