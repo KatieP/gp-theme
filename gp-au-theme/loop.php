@@ -496,62 +496,129 @@ function attachment_single() {
 
 /** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS - EXCLUDING EVENTS **/
 function home_index() {
-	global $wpdb, $post;
+	global $wpdb, $post, $gp;
+	
+	$querystring_country = strtoupper( get_query_var( 'country' ) );
+	$querystring_state = strtoupper( get_query_var( 'state' ) );
+	$querystring_city = get_query_var( 'city' );
+	$querystring_page = get_query_var( 'page' );
+	
+	$geo_currentlocation = $gp->location;
+	$edition_states = $gp->states;
 	
 	$epochtime = strtotime('now');
-
-	if ( get_query_var('country') ) {
-	    $qry_country = $wpdb->prepare("AND (m3.meta_value = %s OR m6.meta_value=%s)", get_query_var('country'), get_query_var('country'));
-	} else {
-	    if ( SELECTED_COUNTRY != '_default' ) {
-	        $qry_country = $wpdb->prepare("AND (m3.meta_value = %s OR m6.meta_value = %s)", SELECTED_COUNTRY, SELECTED_COUNTRY);
-	    }
-	}
 	
-	/** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
-	$querystr = "SELECT 
-	                " . $wpdb->prefix . "posts.*, 
-	                m0.meta_value AS _thumbnail_id,
-	                m1.meta_value AS gp_enddate,
-	                m2.meta_value AS gp_startdate,
-	                m3.meta_value AS gp_google_country,
-	                m4.meta_value AS gp_google_admin1,
-	                m5.meta_value AS gp_google_city,
-	                m6.meta_value AS gp_maxmind_country,
-	                m7.meta_value AS gp_maxmind_admin1,
-	                m8.meta_value AS gp_maxmind_city
-				FROM " . $wpdb->prefix . "posts 
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 
-    				    ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id' 
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 
-    				    ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 
-    				    ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 
-    				    ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 
-    				    ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_administrative_area_level_1'
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 
-    				    ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality'
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 
-    				    ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_maxmind_geo_country'
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m7 
-    				    ON m7.post_id=" . $wpdb->prefix . "posts.ID AND m7.meta_key='gp_maxmind_geo_region'
-    				LEFT JOIN " . $wpdb->prefix . "postmeta AS m8 
-    				    ON m8.post_id=" . $wpdb->prefix . "posts.ID AND m8.meta_key='gp_maxmind_geo_city'
-				WHERE 
-				    post_status='publish' 
-				    AND m0.meta_value >= 1 
-				    AND post_status='publish' 
-				    AND (post_type='gp_news' OR post_type='gp_advertorial' OR post_type='gp_competitions' OR post_type='gp_projects')
-                    ${qry_country} 
-				ORDER BY post_date DESC LIMIT 20";
+	$filterby_city = "";
+	$filterby_state = "";
+	$filterby_country = "";
+	
+    if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
+    if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+        require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
+        $ns_loc_alt = $querystring_country . '\\Edition';
+        $edition_states = $ns_loc_alt::getStates();
+    }
 
+    $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
+
+    if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
+        // if the country we are search on isn't the country selected automatically
+        // for the user then we are going to do a little bit of extra work make sure
+        // the country exists first and then grab the results.
+        if ( isset($querystring_state) && !empty($querystring_state) ) {
+        $query = $wpdb->prepare(
+                "SELECT COUNT(*) as count
+    	                FROM " . $wpdb->prefix . "debian_iso_3166_2
+    	                WHERE id = concat(%s, '-', %s);",
+                $querystring_country,
+                $querystring_state
+        );
+        	
+        $result = $wpdb->get_row( $query, ARRAY_A );
+        	
+        if ($result['count'] >= 1) {
+        $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
+        } else {
+                // redirect or 404
+        }
+        } else {
+            $query = $wpdb->prepare(
+            "SELECT COUNT(*) as count
+                FROM " . $wpdb->prefix . "geonames_countryinfo
+	                    WHERE iso_alpha2 = %s;",
+                        $querystring_country
+	                );
+
+	            $result = $wpdb->get_row( $query, ARRAY_A );
+                 
+                if ($result['count'] <= 0) {
+                // redirect or 404
+            }
+            }
+            } else {
+            // if the country has been predetermined and a state is specified then make
+                // sure the state is valid
+                foreach ( $edition_states as $value ) {
+                $filterby_state = "";
+                if ( $value['code'] == $querystring_state) {
+                $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
+                    break;
+                }
+                }
+                }
+
+                if ( isset($querystring_city) && !empty($querystring_city) ) {
+                $filterby_city = $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city );
+                }
+
+                        $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country );
+	}
+
+	$ppp = 20;
+	
+	/** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/         
+    $querystr = $wpdb->prepare(
+        "SELECT
+            " . $wpdb->prefix . "posts.*,
+            m0.meta_value AS _thumbnail_id,
+            m1.meta_value AS gp_enddate,
+            m2.meta_value AS gp_startdate,
+            m3.meta_value AS gp_google_geo_country,
+            m4.meta_value AS gp_google_geo_administrative_area_level_1,
+            m5.meta_value AS gp_google_geo_locality_slug,
+            m6.meta_value AS gp_google_geo_locality
+        FROM $wpdb->posts
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_administrative_area_level_1'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality_slug'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_google_geo_locality'
+        WHERE
+            post_status='publish'
+            AND m0.meta_value >= 1
+            AND (
+                post_type='gp_news' 
+                OR post_type='gp_advertorial' 
+                OR ( post_type='gp_competitions' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+                OR post_type='gp_projects' 
+                OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+            )
+            " . $filterby_country . "
+            " . $filterby_state . "
+            " . $filterby_city . "
+        ORDER BY post_date DESC
+        LIMIT %d;",
+        $epochtime,
+        $epochtime,
+        $ppp
+    );
+    
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
-	#$numPosts = $wpdb->num_rows-1;
 	
 	/** NEW LIST VIEW OF 20 MOST RECENT POSTS **/
-	if ($pageposts) {
+	if ( $pageposts ) {
 	    
 	    # Display create new post button
 		theme_homecreate_post();
@@ -560,11 +627,11 @@ function home_index() {
         $json = '[';
 		
 		# Display most recent posts
-		foreach ($pageposts as $post) { 
+		foreach ( $pageposts as $post ) { 
 			setup_postdata($post);
 			
 			# Display post, if project display activist bar also
-			if (get_post_type() != 'gp_projects') {
+			if ( get_post_type() != 'gp_projects' ) {
 				theme_index_feed_item();
 			} 
 			else {

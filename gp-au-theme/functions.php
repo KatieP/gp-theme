@@ -978,7 +978,7 @@ function createPostOptions () {
 			register_taxonomy( $edition_posttypes[$index]['id'] . '_category', $edition_posttypes[$index]['id'], $edition_posttypes[$index]['taxonomy'] );
 		}
 	}	
-	flush_rewrite_rules();
+	//flush_rewrite_rules();
 }
 
 function editColumns($columns) {
@@ -1256,18 +1256,16 @@ function relevant_posts() {
 /* SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
 function coming_events() {			
 	global $wpdb, $post, $gp;
-
+	
 	$edition_states = $gp->states;
 	$state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
 	
 	$epochtime = strtotime('now');
 
-	$filterby_state = "";
-	if ( isset( $gp->location['region_iso2'] ) && !empty( $gp->location['region_iso2'] ) ) {
-	    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $gp->location['region_iso2'] );
+	$filterby_country = "";
+	if ( isset( $gp->location['country_iso2'] ) && !empty( $gp->location['country_iso2'] ) ) {
+	    $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $gp->location['country_iso2'] );
 	}
-	
-	$filterby_state = $wpdb->prepare( " AND m3.meta_value=%s ", $gp->location['country_iso2'] );
 	
 	/* SQL QUERY FOR COMING EVENTS */
 	$querystr = $wpdb->prepare(
@@ -1292,7 +1290,6 @@ function coming_events() {
 	            post_status='publish'
                 AND post_type='gp_events'
                 " . $filterby_country . "
-	            " . $filterby_state . "
 	            AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d
             ORDER BY gp_events_startdate ASC;",
             $epochtime
