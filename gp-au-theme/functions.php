@@ -1820,7 +1820,159 @@ function theme_display_google_map_posts($json, $map_canvas) {
                                ?>
                            );
 
-            var styles = [ 
+            var styles = <?php custom_google_map_styles(); ?>
+            
+            var mapOptions = {
+                zoom: 4,
+                center: myLatlng, 
+                styles: styles,          
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+        
+            //Adds map to map_canvas div in DOM to it is visible
+            var map = new google.maps.Map(document.getElementById('<?php echo $map_canvas; ?>'),
+                      mapOptions);
+            
+            // Creating a global infoWindow object that will be reused by all markers
+		    var infoWindow = new google.maps.InfoWindow();
+		
+		        		
+    		//Loop through the json surrounding event objects
+	    	for (var i = 0, length = json.length; i < length; i++) {
+		        var data = json[i],
+		                   postlatlong = new google.maps.LatLng(data.Post_lat, data.Post_long);
+		    		    
+                //Adds surrounding markers from the json object and loop for surrounding events
+                var custom_marker = new google.maps.Marker({
+            	    position: postlatlong,
+            	    map: map,
+        	        title: data.Title,
+        	        icon: data.Post_icon
+                });		    
+		
+		 	    // Creating a closure to retain the correct data, notice how I pass the current 
+            	// data in the loop into the closure (marker, data)
+	    		(function(custom_marker, data) {
+
+		        	// Attaching a click event to the current marker
+		        	google.maps.event.addListener(custom_marker, "click", function(e) {
+			        	infoWindow.setContent(data.Title);
+			    	    infoWindow.open(map, custom_marker);
+    				});
+	    		})(custom_marker, data);       	
+		    } 
+        }
+     
+        function loadScript() {
+  	        var script = document.createElement("script");
+      	    script.type = "text/javascript";
+  		    script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
+      		document.body.appendChild(script);
+	    }
+	    window.onload = loadScript;
+   </script>
+   <?php
+   echo '<div onload="initialize()"></div>
+         <div id="'. $map_canvas .'"></div>'; 
+} 
+
+/** GOOGLE MAP FOR INDIVIDUAL POSTS **/
+// This function grabs meta data for lat and long from each posts and displays them in a google map.
+
+function theme_single_google_map() {
+    if (get_post_type() != "page") { 
+        global $post;
+        
+        # Find ID 
+        $post_id = $post->ID;
+                
+        # Set location meta keys depending on post type
+        switch (get_post_type()) {
+		    case 'gp_news':
+                $lat_key = 'gp_news_google_geo_latitude';
+                $long_key = 'gp_news_google_geo_longitude';
+		        break;
+		    case 'gp_projects':
+		    	$lat_key = 'gp_projects_google_geo_latitude';
+                $long_key = 'gp_projects_google_geo_longitude';
+		        break;
+			case 'gp_advertorial':
+				$lat_key = 'gp_advertorial_google_geo_latitude';
+                $long_key = 'gp_advertorial_google_geo_longitude';
+		        break;
+			case 'gp_competitions':
+				$lat_key = 'gp_competitions_google_geo_latitude';
+                $long_key = 'gp_competitions_google_geo_longitude';
+		        break;
+		    case 'gp_events':
+		    	$lat_key = 'gp_events_google_geo_latitude';
+                $long_key = 'gp_events_google_geo_longitude';
+		        break;
+		}
+                
+        # get post location meta (post id, key, true/false)
+        $lat = get_post_meta($post_id, $lat_key, true);
+        $long = get_post_meta($post_id, $long_key, true);
+        
+        # display google map if proper location data found
+        if (!empty($lat) && !empty($long)) {
+            ?>        
+            <script type="text/javascript"
+                    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
+            </script>
+            <script type="text/javascript">
+      
+                var lat = <?php echo $lat; ?>;
+                var lng = <?php echo $long; ?>;
+        
+                function initialize() {
+                    var myLatlng = new google.maps.LatLng(lat,lng);
+                    var mapOptions = {
+                        zoom: 10,
+                        center: myLatlng,          
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+
+                    var styles = <?php custom_google_map_styles(); ?>
+                    
+                    var mapOptions = {
+                        zoom: 7,
+                        center: myLatlng, 
+                        styles: styles,          
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+        
+                    var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
+                          mapOptions);
+        
+                    var marker = new google.maps.Marker({
+        	            position: myLatlng,
+      		            map: map,
+      		            title:"<?php echo $post->title; ?>"
+                    })  
+                }
+      
+                function loadScript() {
+  		            var script = document.createElement("script");
+  		            script.type = "text/javascript";
+  		            script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
+  		            document.body.appendChild(script);
+                }
+
+		        window.onload = loadScript;
+
+		    </script>
+
+            <div onload="initialize()">
+            <div id="post_google_map_canvas"></div>
+	    <?php 
+	    }
+	}
+}
+
+/** CUSTOM STYLES FOR GOOGLE MAPS  **/
+function custom_google_map_styles() {
+    echo  '[ 
                           { 
                               "featureType": "water", 
                               "elementType": "geometry.fill", 
@@ -1975,146 +2127,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
                                              { "color": "#f8f8f5" } 
                                          ] 
                           },{ } 
-                      ];
-            
-            
-            var mapOptions = {
-                zoom: 4,
-                center: myLatlng, 
-                styles: styles,          
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-        
-            //Adds map to map_canvas div in DOM to it is visible
-            var map = new google.maps.Map(document.getElementById('<?php echo $map_canvas; ?>'),
-                      mapOptions);
-            
-            // Creating a global infoWindow object that will be reused by all markers
-		    var infoWindow = new google.maps.InfoWindow();
-		
-		        		
-    		//Loop through the json surrounding event objects
-	    	for (var i = 0, length = json.length; i < length; i++) {
-		        var data = json[i],
-		                   postlatlong = new google.maps.LatLng(data.Post_lat, data.Post_long);
-		    		    
-                //Adds surrounding markers from the json object and loop for surrounding events
-                var custom_marker = new google.maps.Marker({
-            	    position: postlatlong,
-            	    map: map,
-        	        title: data.Title,
-        	        icon: data.Post_icon
-                });		    
-		
-		 	    // Creating a closure to retain the correct data, notice how I pass the current 
-            	// data in the loop into the closure (marker, data)
-	    		(function(custom_marker, data) {
-
-		        	// Attaching a click event to the current marker
-		        	google.maps.event.addListener(custom_marker, "click", function(e) {
-			        	infoWindow.setContent(data.Title);
-			    	    infoWindow.open(map, custom_marker);
-    				});
-	    		})(custom_marker, data);       	
-		    } 
-        }
-     
-        function loadScript() {
-  	        var script = document.createElement("script");
-      	    script.type = "text/javascript";
-  		    script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
-      		document.body.appendChild(script);
-	    }
-	    window.onload = loadScript;
-   </script>
-   <?php
-   echo '<div onload="initialize()"></div>
-         <div id="'. $map_canvas .'"></div>'; 
-} 
-
-/** GOOGLE MAP FOR INDIVIDUAL POSTS **/
-// This function grabs meta data for lat and long from each posts and displays them in a google map.
-
-function theme_single_google_map() {
-    if (get_post_type() != "page") { 
-        global $post;
-        
-        # Find ID 
-        $post_id = $post->ID;
-                
-        # Set location meta keys depending on post type
-        switch (get_post_type()) {
-		    case 'gp_news':
-                $lat_key = 'gp_news_google_geo_latitude';
-                $long_key = 'gp_news_google_geo_longitude';
-		        break;
-		    case 'gp_projects':
-		    	$lat_key = 'gp_projects_google_geo_latitude';
-                $long_key = 'gp_projects_google_geo_longitude';
-		        break;
-			case 'gp_advertorial':
-				$lat_key = 'gp_advertorial_google_geo_latitude';
-                $long_key = 'gp_advertorial_google_geo_longitude';
-		        break;
-			case 'gp_competitions':
-				$lat_key = 'gp_competitions_google_geo_latitude';
-                $long_key = 'gp_competitions_google_geo_longitude';
-		        break;
-		    case 'gp_events':
-		    	$lat_key = 'gp_events_google_geo_latitude';
-                $long_key = 'gp_events_google_geo_longitude';
-		        break;
-		}
-                
-        # get post location meta (post id, key, true/false)
-        $lat = get_post_meta($post_id, $lat_key, true);
-        $long = get_post_meta($post_id, $long_key, true);
-        
-        # display google map if proper location data found
-        if (!empty($lat) && !empty($long)) {
-            ?>        
-            <script type="text/javascript"
-                    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
-            </script>
-            <script type="text/javascript">
-      
-                var lat = <?php echo $lat; ?>;
-                var lng = <?php echo $long; ?>;
-        
-                function initialize() {
-                    var myLatlng = new google.maps.LatLng(lat,lng);
-                    var mapOptions = {
-                        zoom: 10,
-                        center: myLatlng,          
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }
-        
-                    var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
-                          mapOptions);
-        
-                    var marker = new google.maps.Marker({
-        	            position: myLatlng,
-      		            map: map,
-      		            title:"<?php echo $post->title; ?>"
-                    })  
-                }
-      
-                function loadScript() {
-  		            var script = document.createElement("script");
-  		            script.type = "text/javascript";
-  		            script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
-  		            document.body.appendChild(script);
-                }
-
-		        window.onload = loadScript;
-
-		    </script>
-
-            <div onload="initialize()">
-            <div id="post_google_map_canvas"></div>
-	    <?php 
-	    }
-	}
+                      ]';
 }
 
 

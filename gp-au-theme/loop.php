@@ -843,7 +843,7 @@ function home_index() {
 
 	# Define map canvas id and display google map with custom markers for each post
 	$map_canvas = 'post_google_map_canvas';
-	#theme_display_google_map_posts($json, $map_canvas);
+	theme_display_google_map_posts($json, $map_canvas);
 	?>
 	
 	<nav id="post-nav">										
