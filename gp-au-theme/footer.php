@@ -17,14 +17,10 @@
 					    Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre>
 					</div>
 					<div class="click-contact-info" id="click-contact-phone">
-					    Phone:<pre>Promoting an event? <br />
-					    <a href="/welcome/">Post it on Green Pages for free</a>.<br /> 
-					    <?php echo get_option('gp_phone1'); ?></pre>
+					    Phone:<pre>Promoting an event? <br /><a href="/welcome/">Post it on Green Pages for free</a>.<br /><br /><?php echo get_option('gp_phone1'); ?></pre>
 					</div>
 					<div class="click-contact-info" id="click-contact-email">
-					    Email Address:<pre>Promoting a product or company? <br />
-					    <a href="/welcome/">Post it on Green Pages for $89</a>.<br />
-					    <?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
+					    Email Address:<pre>Promoting a product or company? <br /><a href="/welcome/">Post it on Green Pages for $89</a>.<br /><br /><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
 					</div>
 					<div class="click-contact-info" id="click-contact-skype">
 					    Skype ID:<pre><?php echo get_option('gp_skype1'); ?></pre>
