@@ -2129,7 +2129,7 @@ function show_facebook_by_location() {
     
     	// Echo facebook iframe with country based facebook page ID inserted into iframe
     	echo '<iframe src="http://www.facebook.com/plugins/likebox.php?id=' . $edition_meta['facebook_id'] .
-    	      '&amp;width=300&amp;connections=10&amp;stream=false&amp;header=false&amp;height=200" 
+    	      '&amp;width=300&amp;connections=5&amp;stream=false&amp;header=false&amp;height=200" 
     	      frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>';
     }
 }	

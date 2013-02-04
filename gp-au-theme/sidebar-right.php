@@ -31,7 +31,7 @@
 				
 				cm_update_current_user(); # checks a users Campaign Monitor newsletter subscription first and modify's that user if necessary.
 
-				global $current_user, $wpdb;
+				global $current_user, $wpdb, $gp;
 				if ( ( is_page() || is_home() ) && ( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] !== "true" || !is_user_logged_in() ) ) {
 				?>
 				<div id="subscribe">
@@ -56,80 +56,17 @@
 				<div id="facebook">
 				    <?php show_facebook_by_location(); ?>
 			    </div>
-		
-			    <?php
-				if ( get_post_type() == 'gp_news' && !is_author() && !is_single() && !wp_title("",0)==" Search") {
-				?> 
-				<div id="twitter">
-					<span class="title">Live: Environmental News</span>
-					<script src="http://widgets.twimg.com/j/2/widget.js"></script>
-					<script>
-					new TWTR.Widget({
-					  version: 2,
-					  type: 'search',
-					  search: 'environmental news',
-					  interval: 6000,
-					  title: '',
-					  subject: '',
-					  width: 300,
-					  height: 640,
-					  theme: {
-					    shell: {
-					      background: '#ffffff',
-					      color: '#666666'
-					    },
-					    tweets: {
-					      background: '#ffffff',
-					      color: '#666666',
-					      links: '#01add8'
-					    }
-					  },
-					  features: {
-					    scrollbar: false,
-					    loop: true,
-					    live: true,
-					    hashtags: false,
-					    timestamp: false,
-					    avatars: true,
-					    toptweets: true,
-					    behavior: 'default'
-					  }
-					}).render().start();
-					</script>
-					<a href="http://twitter.com/GreenPagesAu" target="_blank" class="moreinfo">Click here to visit our Twitter account</a>
-				</div>
 				<?php
-				}
 				relevant_posts();
 				?>
 				<table>
 					<tr>
 						<td>
-							<nav id="lyb">
-								<?php $click_track_tag_lyb = '/internal/advertising/list-your-business/'; ?>
-								<a href="<?php echo get_permalink(472); ?>" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_lyb; ?>']);">
-									<span class="title">List your business</span>
-									<span class="content">Free 30 day trial</span>
-								</a>
-							</nav>
-						</td>
-						<td>
 							<nav id="advertisewus">
 								<?php $click_track_tag_awu = '/internal/advertising/advertise-with-us/'; ?>
 								<a href="<?php bloginfo('template_url'); ?>/about/rate-card/" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_awu; ?>']);">
 									<span class="title">Advertise</span>
-									<span class="content">Rate Card</span>
-								</a>
-							</nav>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<nav id="renew-directory">
-								<?php $click_track_tag_renew_directory = '/chargify/renew-directory/'; ?>
-								<a href="https://green-pages.chargify.com/h/51439/subscriptions/new" target="_blank" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_renew_directory; ?>']);">
-									<span class="title">Renew My Listing</span>
-									<span class="content">Directory Page Renewal</span>
+									<span class="content">Explore the options</span>
 								</a>
 							</nav>
 						</td>
@@ -141,32 +78,35 @@
 									<span class="content">About the members</span>
 								</a>
 							</nav>						
-						</td>							
+						</td>
 					</tr>
+					<?php 
+					# Display Directory links only if user in Australia 
+                    # Get location from user ip address function	
+                    $user_country = $gp->location['country'];
+	                if ( $user_country == 'Australia' ) { ?> 
+					<tr>
+						<td>
+							<nav id="lyb">
+								<?php $click_track_tag_lyb = '/internal/advertising/list-your-business/'; ?>
+								<a href="<?php echo get_permalink(472); ?>" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_lyb; ?>']);">
+									<span class="title">List your business</span>
+									<span class="content">Free 30 day trial</span>
+								</a>
+							</nav>
+						</td>					
+						<td>
+							<nav id="renew-directory">
+								<?php $click_track_tag_renew_directory = '/chargify/renew-directory/'; ?>
+								<a href="https://green-pages.chargify.com/h/51439/subscriptions/new" target="_blank" onClick="_gaq.push(['_trackPageview', '<?php echo $click_track_tag_renew_directory; ?>']);">
+									<span class="title">Renew My Listing</span>
+									<span class="content">Directory Page Renewal</span>
+								</a>
+							</nav>
+						</td>
+					</tr>
+					<?php 
+					;}  ?>
 				</table>
-				<!--  
-				<div id="toolbox">
-					<script type="text/javascript">
-
-						google_ad_client = "ca-pub-5276108711751681";
-						/* Col3 text ads */
-						google_ad_slot = "3620435405";
-						google_ad_width = 300;
-						google_ad_height = 250;
-
-					</script>
-					<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-				</div>
-				-->
-				<div class="col3-ad" style="margin-top:20px;">
-					<div>
-						<!-- <iframe src="<?php bloginfo('template_url'); ?>/template/google-medrec2.html" class="medrec"></iframe> -->
-						<!-- stg1_medrec -->
-						<script type='text/javascript'>
-							GA_googleFillSlot("stg1_medrec2");
-						</script>
-						<span class="icon-advertisement">Advertisement</span>
-					</div>
-				</div>
 			</div>
 			
