@@ -8,9 +8,9 @@ body, pre {
     background-color: #fff;
     font-family: Helvetica, Arial, Sans-Serif;
     line-height: 1.5em;
-    font-size: 13px;
+    font-size: 10px;
     color: #666;
-    padding: 0 0 15px 0;
+    padding: 0 0 1.5em 0;
 }
 
 pre {
@@ -80,28 +80,35 @@ ul, ol {margin:0;padding:0;}
 }
 
 .pos, .widecolumn {
-    width: 972px;
+    width: 97.2em;
     margin: 0 auto;
     position: relative;
     clear: both;
+    padding: 0 5em 0 10em;
 }
 
 /** CONTENT AREA **/
 #content {
     letter-spacing: 0;
-    line-height: 18px;
-    font-size: 12px;
+    line-height: 1.5em;
+    font-size: 1.2em;
 }
 
-#content h1, #content h1 a, #content h2, #content h2 a {
-    font-size: 18px;
+#content h1, #content h1 a {
+    font-size: 1.3em;
     font-weight: 600;
-    margin: 30px 0 30px 0;
+    margin: 3em 0 3em 0;
+}
+
+#content h2, #content h2 a {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 3em 0 3em 0;
 }
 
 #content h1, #content h2 {
-    margin: 0 0 7px 0;
-    line-height: 24px;
+    margin: 0 0 0.7em 0;
+    line-height: 1.8em;
 }
 
 #content h1.loop-title {
@@ -109,20 +116,20 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content h1.loop-title a {
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 1.6em;
+    line-height: 2em;
 }
 
 #content h3 {
-    font-size: 14px;
+    font-size: 1.4em;
     font-weight: 600;
-    margin: 20px 0 15px 0;
+    margin: 2em 0 1.5em 0;
 }
 
 #content h4 {
-    font-size: 12px;
+    font-size: 1.3em;
     font-weight: 600;
-    margin: 20px 0 0 0;
+    margin: 2em 0 0 0;
 }
 
 #content h1 a,#content h2 a {
@@ -146,7 +153,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content p, #content a,pre {
-    font-size: 12px;
+    font-size: 1.1em;
 }
 
 #content a:hover {
@@ -154,15 +161,15 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content p, #content ul, #content ol, #content img {
-    margin-top: 16px;
+    margin-top: 1.6em;
 }
 
 #content ul li, #content ol li {
     list-style-type: disc;
     list-style-position: inside;
-    margin-left: 20px;
-    padding-left: 20px;
-    text-indent: -20px;
+    margin-left: 2em;
+    padding-left: 2em;
+    text-indent: -2em;
 }
 
 #content ol li {
@@ -170,13 +177,13 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content blockquote {
-    margin: 16px 16px 0 16px;
+    margin: 1.2em 1.2em 0 1.2em;
     font-style: italic;
     font-family: Times;
 }
 
 #content blockquote p {
-    font-size: 16px;
+    font-size: 1.2em;
 }
 
 .aligncenter, dl.aligncenter {
@@ -187,7 +194,7 @@ ul, ol {margin:0;padding:0;}
 
 #content .wp-caption-text {
     text-align: center;
-    font-size: 10px;
+    font-size: 0.75em;
     margin: 0;
 }
 
@@ -205,7 +212,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content .withbr p {
-    margin: 0 0 15px 0;
+    margin: 0 0 1.5em 0;
 }
 
 #content .email {
@@ -213,29 +220,29 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content address {
-    padding: 8px 20px 8px 20px;
-    margin: 0 10px 0 10px;
-    border: 1px solid #ddd;
+    padding: 0.8em 2em 0.8em 2em;
+    margin: 0 1em 0 1em;
+    border: 0.1em solid #ddd;
     background-color: #eee;
     display: inline-block;
     color: #666;
-    font-size: 12px;
-    min-width: 160px;
+    font-size: 0.9em;
+    min-width: 16em;
 }
 
 /** SYSTEM MESSAGES **/
 #content .msg-something {
     font-weight: 600;
     color: #01aed8;
-    font-size: 18px;
-    margin: 20px 0 20px 0;
+    font-size: 1.4em;
+    margin: 2em 0 2em 0;
 }
 
 #content .msg-complete {
     font-weight: 600;
     color: #61c201;
-    font-size: 18px;
-    margin: 20px 0 20px 0;
+    font-size: 1.4em;
+    margin: 2em 0 2em 0;
 }
 
 /** FORMS **/
@@ -243,63 +250,63 @@ ul, ol {margin:0;padding:0;}
 #content input[type="text"], #content input[type="password"], #content input[type="email"],
 #content textarea, #content select, #relevant-posts select {
     display: block;
-    height: 25px;
-    min-width: 280px;
-    font-size: 16px;
+    height: 1.9em;
+    min-width: 25em;
+    font-size: 1em;
     font-family: Helvetica;
     color: grey;
-    padding: 10px;
-    margin: 8px 8px 40px 0;
+    padding: 1em;
+    margin: 0.8em 0.8em 4em 0;
     background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    border: 0.1em solid #ccc;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content select, #relevant-posts select {
-    height: 36px;
-    padding: 10px;
-    min-width: 60px;
+    height: 3.6em;
+    padding: 1em;
+    min-width: 6em;
 }
 
 #content select option {
-    padding: 2px 10px 2px 10px;
-    font-size: 12px;
+    padding: 0.2em 1em 0.2em 1em;
+    font-size: 0.9em;
 }
 
 #content textarea {
-    min-width: 448px;
+    min-width: 34em;
 }
 
 #content input[type="radio"] {
-	margin: 0px 8px 40px 0;
+	margin: 0 0.8em 4em 0;
 }
 
 #content input[type="button"], #content input[type="reset"], 
 #content input[type="submit"]  {
     color: #fff;
     font-weight: 600;
-    line-height: 32px;
-    font-size: 11px;
+    line-height: 3.2em;
+    font-size: 1.1em;
     display: block;
-    height: 33px;
-    padding: 0 10px 0 10px;
+    height: 3.3em;
+    padding: 0 1em 0 1em;
     background-color: #bbb;
     float: left;
-    margin: 30px 10px 0 0;
+    margin: 3em 1em 0 0;
     cursor: pointer;
     border: 0;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content input[type="submit"] {
     font-size: 1.2em;
     background-color: #61c201;
-    margin: 40px 0 90px 0;
-    min-width: 100px;
+    margin: 4em 0 9em 0;
+    min-width: 8em;
 }
 
 #content input[type="submit"].secondary {
@@ -308,15 +315,15 @@ ul, ol {margin:0;padding:0;}
 
 #content textarea {
     height: auto;
-    padding: 10px;
+    padding: 1em;
 }
 
 #content label {
     font-weight: 600;
     color: #01aed8;
     display: block;
-    font-size: 13px;
-    padding: 20px 0 0 0;
+    font-size: 1.1em;
+    padding: 2em 0 0 0;
     clear: both;
 }
 
@@ -325,31 +332,32 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content input.form-bankcard-id {
-    width: 50px;
+    width: 5em;
     float: left;
 }
 
 #content input.form-bankcard-csv {
-    width: 30px;
+    width: 3em;
 }
 
 #content input.form-bankcard-exp {
-    width: 20px;
+    width: 2em;
     float: left;
 }
 
 #content input.form-phone-local {
-    width: 160px;
+    width: 16em;
 }
 
 #content input.form-string-width1 {
-    width: 250px;
+    width: 25em;
 }
 
 #content form td {
-    padding-right: 60px;
+    padding-right: 6em;
     vertical-align: top;
 }
+
 /** Gravity Form Specific Styles **/
 #content .clear-multi select {
     float: left;
@@ -368,8 +376,8 @@ ul, ol {margin:0;padding:0;}
 
 /** Profile Builder Pro to limit field width on user profile editor form **/
 #content .wppb_holder input[type="text"], #content .wppb_holder input[type="password"] {
-	 max-width: 250px;
-	 margin-top: 40px;
+	 max-width: 25em;
+	 margin-top: 4em;
 }
 
 #content #wppb_modify p label, #content #wppb_register p label, 
@@ -383,12 +391,12 @@ ul, ol {margin:0;padding:0;}
 
 #content #wppb_modify select, #content #wppb_register select {
 	width: 33%;
-	margin-top: 40px;
+	margin-top: 4em;
 }
 
 
 #content .moreinfo ,#content .readmore {
-    font-size: 12px;
+    font-size: 1.2em;
     font-weight: bold;
     display: block;
 }
@@ -399,14 +407,14 @@ ul, ol {margin:0;padding:0;}
 
 #content .date, #content .author {
     font-style: italic;
-    font-size: 10px;
+    font-size: 1em;
     display: block;
 }
 
 #content .tags, #content .breadcrumbs {
     background-color: #f2f2f2;
-    padding: 2px 6px 2px 6px;
-    font-size: 11px;
+    padding: 0.2em 0.6em 0.2em 0.6em;
+    font-size: 1.1em;
     text-transform: capitalize;
 }
 
@@ -416,7 +424,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content .tags a, #content .breadcrumbs a {
-    font-size: 11px;
+    font-size: 1.1em;
     font-weight: normal;
     color: #666;
 }
@@ -433,32 +441,32 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content .uneven-Xcol .col {
-    margin: 0 20px 0 0;
+    margin: 0 2em 0 0;
 }
 
 #content .even-2col .colA, #content .even-2col .colB {
-    width: 215px;
+    width: 21.5em;
 }
 
 #content .even-2col .colA {
-    margin: 0 38px 0 0;
+    margin: 0 3.8em 0 0;
 }
 
 #content .even-3col .colA, #content .even-3col .colB, #content .even-3col .colC {
-    width: 130px;
+    width: 13em;
 }
 
 #content .even-3col .colA, #content .even-3col .colB {
-    margin: 0 38px 0 0;
+    margin: 0 3.8em 0 0;
 }
 
 #content .product-2col .col1 {
-    width: 300px;
+    width: 30em;
 }
 
 #content .product-2col .col2 {
-    width: 118px;
-    margin: 0 0 0 50px;
+    width: 11.8em;
+    margin: 0 0 0 5em;
 }
 
 /** MAPS **/
@@ -560,7 +568,7 @@ ul, ol {margin:0;padding:0;}
     display: block;
     overflow: hidden;
     float: left;
-    margin-right: 4px;
+    margin-right: 0.4em;
 }
 
 .icon-listcheck {
@@ -586,13 +594,13 @@ ul, ol {margin:0;padding:0;}
 /** CONTACT ICONS **/
 #contact-address, #contact-phone, #contact-email, #contact-skype {
     background: url(../../template/map-footercontact.png) no-repeat;
-    height: 15px;
-    width: 14px;
+    height: 1.5em;
+    width: 1.4em;
     display: block;
     float: left;
     overflow: hidden;
     text-indent: -9999px;
-    padding: 3px 3px 5px 3px;
+    padding: 0.3em 0.3em 0.5em 0.3em;
 }
 
 #contact-address {
@@ -712,8 +720,8 @@ ul, ol {margin:0;padding:0;}
 
 header {
     color: #FAFAFA;
-    height: 48px;
-    min-width: 972px;
+    height: 4.8em;
+    min-width: 97.2em;
     margin-bottom: 2em;
     margin-top: 0;
     position: fixed;
@@ -740,8 +748,8 @@ header a:hover {
 }
 
 #header-nav, #header-search, #header-auth .lower {
-    padding-top: 14px;
-    padding-right: 0px; 
+    padding-top: 1.4em;
+    padding-right: 0; 
 }
 
 #header-auth .lower:hover {
@@ -750,24 +758,24 @@ header a:hover {
 }
 
 #header-auth .lower {
-    padding: 0 2px;
+    padding: 0 0.2em;
     width: auto; 
     float: right;
-    margin: 14px 0 0 0;
+    margin: 1.4em 0 0 0;
 }
 
 #header-auth .in-or-out {
-	padding-top: 14px;
-    margin: 0 5px 0 5px;
+    margin: 0 0.2em 0 0.2em;
     float: right;
-    line-height: 22px;
-    font-size: 1.4em;
+    line-height: 2.9em;
+    font-size: 1.9em;
     color: white;
 }
 
 #header-logo {
     font-family: VAGRundschriftEF;
     font-size: 24px;
+    line-height: 0.9em;
     padding-top: 16px;
     width: 158px;
 }
@@ -992,7 +1000,7 @@ header a:hover {
     padding: 0 10px 0 10px;
     height: 23px;
     line-height: 22px;
-    font-size: 12px;
+    font-size: 1.2em;
     display: inline;
 }
 
@@ -1060,7 +1068,7 @@ header a:hover {
     position: absolute;
     z-index: 2;
     top: 48px;
-    right: 0px;
+    right: 50px;
     width: 285px;
     height: 278px;
     background-color: #f2f2f2;

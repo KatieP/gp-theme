@@ -231,7 +231,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 						<a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
 						-->
                         <a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
-                            <span class="bullet2"></span>Log In
+                            Log In
                         </a>
                         <span class="in-or-out"> | </span>
                         <a href="/wp-login.php?action=register" class="lower">Register</a>
@@ -362,9 +362,35 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			        <div id="search-button"><input type="submit" value=""/></div>
 			    </form>
 			</div>
+			<div class="clear"></div>
             <!-- Google CSE Search Box Ends -->			
             <?php
-       	    # Display location tag line and change region option
-	        theme_location_tag_line();
-            ?>
-		</header>
+       	    # Display location tag line and change region filter option
+	        # Get location from user ip address function
+            global $gp;	
+
+	        $geo_currentlocation = $gp->location;
+            $user_location = $geo_currentlocation['city'];
+    
+	        ?>
+            <script type="text/javascript">
+                function show_location_field() {
+                    <!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
+                    document.getElementById("header_user_location").className = "hidden";
+                    document.getElementById("header_location_list").className = "";
+                }
+            </script>
+    		<div class="post-details" id="header-tagline">
+	            Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
+	            <span id="header_location_list" class="hidden">
+	                <select name="filterby_state" id ="filterby_state">
+	                    <?php
+	                    $editions = Site::getEditions();
+	                    foreach ( $editions as $edition ) {
+                            echo "<option value=\"/news/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+                        }
+                        ?>
+	                </select>
+	            </span> 
+            </div>
+        </header>

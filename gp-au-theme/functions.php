@@ -2247,58 +2247,6 @@ function theme_create_keyword_meta_tag() {
     echo $keywords;
 }
 
-/* LOCATION TAG LINE */
-
-function theme_location_tag_line() {
-	/**
-	 * Display tag line including user location and
-	 * link that shows field to enter new location that will filter
-	 * all post data for site
-	 * NB: js that calls google api for autocomplete of location names
-	 *     throws an error when our custom google map function is also
-	 *     being called, so have disabled autocomplete of text field in
-	 *     this function for time being
-	 * TODO As an interim measure, we could add a drop down menu
-	 *      to filter content by region that won't interfere with 
-	 *      google's api
-	 */
-	
-	# $user_location = get user location from ip address and convert to 'City' string
-	
-	# Get location from user ip address function
-    global $gp;	
-
-	$geo_currentlocation = $gp->location;
-    $user_location = $geo_currentlocation['city'];
-    
-	?>
-    <script type="text/javascript">
-        function show_location_field() {
-            <!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
-            document.getElementById("header_user_location").className = "hidden";
-            document.getElementById("header_location_list").className = "";
-        }
-    </script>
-    	
-	<div class="pos">
-	    <div class="post-details" id="header-tagline">
-	        Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
-	        <span id="header_location_list" class="hidden">
-	            <select name="filterby_state" id ="filterby_state">
-	                <?php
-	                $editions = Site::getEditions();
-	                foreach ( $editions as $edition ) {
-                        echo "<option value=\"/news/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
-                    }
-                    ?>
-	            </select>
-	        </span> 
-        </div>
-    </div>
-    <?php
-}
-
-
 /* SHOW MEMBERS POSTS */
 function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	// note: Favourites are viewable by everyone!
