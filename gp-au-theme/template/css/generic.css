@@ -748,8 +748,7 @@ header a:hover {
 }
 
 #header-nav, #header-search, #header-auth .lower {
-    padding-top: 1.4em;
-    padding-right: 0; 
+    padding: 1.4em 0 1em 0;
 }
 
 #header-auth .lower:hover {
@@ -761,57 +760,58 @@ header a:hover {
     padding: 0 0.2em;
     width: auto; 
     float: right;
-    margin: 1.4em 0 0 0;
+    margin: 1.3em 0 0 0;
 }
 
 #header-auth .in-or-out {
     margin: 0 0.2em 0 0.2em;
     float: right;
-    line-height: 2.9em;
+    line-height: 3em;
     font-size: 1.9em;
     color: white;
 }
 
 #header-logo {
     font-family: VAGRundschriftEF;
-    font-size: 24px;
-    line-height: 0.9em;
-    padding-top: 16px;
-    width: 158px;
+    font-size: 2.4em;
+    line-height: 2.4em;
+    width: 6em;
 }
 
-#header-logo, #header-nav, #header-search {
+#header-logo, #header-nav {
     overflow: hidden;
     float: left;
-    height: 32px;
+    height: 2em;
 }
 
 #header-search {
-    width: 160px;
+	overflow: hidden;
+    width: 16em;
     float: right;
+    height: 2.4em;
 }
 
 #header-auth {
-	height: 36px;
-    width: 140px;
+	height: 3.6em;
+    width: 14em;
     float: right;
-    margin-top: 1px;
+    margin-top: 0.1em;
 }
 
 .header-slogan {
-    top: 10px;
-    left: 246px;
+    top: 1em;
+    left: 24.6em;
     font-weight: bold;
     color: #666;
     position: absolute;
-    line-height: 14px;
+    line-height: 1.4em;
 }
 
 .pos #header-tagline {
-    min-width: 636px;
+    min-width: 63.6em;
     height: 2em;
     line-height: 2em;
-    font-size: 10px;
+    font-size: 1em;
     font-style: normal;
     color: grey;
     background-color: #fff;
@@ -819,14 +819,12 @@ header a:hover {
 
 /** MAIN NAVIGATION **/
 #header-nav ul {
-    height: 23px;
-    margin: 0 0 13px 0;
-    padding: 1px;
-    padding-left: 3px;
+    margin: 0 0 1.3em 0;
+    padding-left: 0.3em;
     overflow: hidden;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #header-nav li {
@@ -836,37 +834,37 @@ header a:hover {
 
 #header-nav a {
     display: block;
-    height: 23px;
-    line-height: 23px;
+    height: 2.3em;
+    line-height: 2.3em;
     font-weight: 500;
-    font-size: 13px;
-    padding: 0 8px 0 8px; /* don't forget to change this in ie6.css */
+    font-size: 1.3em;
+    padding: 0 0.8em 0 0.8em; /* don't forget to change this in ie6.css */
 }
 
 #header-nav a:hover {
     background-color: #7EC85B;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #header-nav a.active {
     background-color: #f2f2f2;
     color: #666;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 /** SEARCH NAVIGATION **/
 
   #search-tag {
-    height: 8px;
-    font-size: 10px;
+    height: 0.8em;
+    font-size: 1em;
     overflow: hidden;
-    line-height: 10px;
+    line-height: 1em;
     font-weight: 100;
-    padding-bottom: 5px;
+    padding-bottom: 0.5em;
   }
 
   #search-tag span {
@@ -876,54 +874,54 @@ header a:hover {
 
   #search-field {
     float: left;
-    height: 23px;
-    width: 126px;
+    height: 2.3em;
+    width: 12.6em;
     background-color: #f2f2f2;
-    border: 1px solid #4bb703;
-      -moz-border-top-left-radius: 3px;
-      -moz-border-bottom-left-radius: 3px;
-      -webkit-border-top-left-radius: 3px;
-      -webkit-border-bottom-left-radius: 3px;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
+    border: 0.1em solid #4bb703;
+      -moz-border-top-left-radius: 0.3em;
+      -moz-border-bottom-left-radius: 0.3em;
+      -webkit-border-top-left-radius: 0.3em;
+      -webkit-border-bottom-left-radius: 0.3em;
+    border-top-left-radius: 0.3em;
+    border-bottom-left-radius: 0.3em;
   }
 
   #search-field input {
     border: 0;
     background-color: transparent;
-    font-size: 12px;
+    font-size: 1.2em;
     margin: 0;
     width: 100%;
-    padding: 0 6px;
-    height: 23px;
-    line-height: 23px;
+    padding: 0 0.6em;
+    height: 2.3em;
+    line-height: 2.3em;
   }
 
   #search-button {
-    height: 23px;
-    line-height: 25px;
+    height: 1.8em;
+    line-height: 2.5em;
     color: #fff;
-    font-size: 13px;
+    font-size: 1.3em;
     font-weight: 500;
-    border: 1px solid #4bb703;
+    border: 0.1em solid #4bb703;
     border-left: none;
-      -moz-border-top-right-radius: 3px;
-      -moz-border-bottom-right-radius: 3px;
-      -webkit-border-top-right-radius: 3px;
-      -webkit-border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+      -moz-border-top-right-radius: 0.3em;
+      -moz-border-bottom-right-radius: 0.3em;
+      -webkit-border-top-right-radius: 0.3em;
+      -webkit-border-bottom-right-radius: 0.3em;
+    border-top-right-radius: 0.3em;
+    border-bottom-right-radius: 0.3em;
     overflow: hidden;
     text-align: center;
     background-color: #7EC85B;
     float: left;
-    width: 26px;
+    width: 2.1em;
     position: relative;
   }
 
   #search-button input {
     position: absolute;
-    left: 0px; /*HACK: in firefox this element inherits 'left: 13px' for some reason*/
+    left: 0; /*HACK: in firefox this element inherits 'left: 13px' for some reason*/
     height: 100%;
     width: 100%;
     cursor: pointer;
@@ -940,34 +938,34 @@ header a:hover {
 /** USER ACCOUNT NAVIGATION **/
 
 #auth-forgot {
-    padding-top: 3px;
-    height: 8px;
-    font-size: 10px;
+    padding-top: 0.3em;
+    height: 0.8em;
+    font-size: 1em;
     overflow: hidden;
-    line-height: 10px;
+    line-height: 1em;
     font-weight: 100;
 }
 
 #auth-button {
-    height: 25px;
-    line-height: 25px;
+    height: 2.5em;
+    line-height: 2.5em;
     color: #fff;
-    font-size: 13px;
+    font-size: 1.3em;
     font-weight: 500;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
     overflow: hidden;
     text-align: center;
 }
 
 #auth-tools, #auth-tools-dir {
-    height: 25px;
-    line-height: 25px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    padding: 0 0 0 10px;
+    height: 2.5em;
+    line-height: 2.5em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
+    padding: 0 0 0 1em;
 }
 
 #auth-tools .bullet1, #auth-tools-dir .bullet1 {
@@ -977,43 +975,43 @@ header a:hover {
 #auth-youraccount {
     float: right;
     overflow: hidden;
-    height: 42px;
+    height: 4.2em;
 }
 
 #auth-yourfavourites a, #auth-yournotifications a, #auth-youraccount a {
     display: block;
     cursor: pointer;
     float: left;
-    height: 19px;
+    height: 1.9em;
     overflow: hidden;
-    width: 21px;
+    width: 2.1em;
     border: none;
-    padding: 4px 0 0 4px;
+    padding: 0.4em 0 0 0.4em;
     position: relative;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #auth-youraccount a {
     width: inherit;
-    padding: 0 10px 0 10px;
-    height: 23px;
-    line-height: 22px;
+    padding: 0 1em 0 1em;
+    height: 2.3em;
+    line-height: 2.2em;
     font-size: 1.2em;
     display: inline;
 }
 
 #auth-youraccount .bullet2 {
-    margin: 9px 0 0 6px;
+    margin: 0.9em 0 0 0.6em;
     float: right;
     display: inline;
 }
 
 #auth-tools .icon-alert, #auth-tools-dir .icon-alert {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
 }
 
 #auth-yourfavourites a:hover, #auth-yournotifications a:hover, #auth-youraccount a:hover {
@@ -1024,13 +1022,13 @@ header a:hover {
 #auth-forgot {
     display: block;
     text-align: right;
-    line-height: 11px;
-    height: 14px;
+    line-height: 1.1em;
+    height: 1.4em;
 }
 
 #auth-forgot a {
     font-weight: bold;
-    font-size: 10px;
+    font-size: 1em;
 }
 
 #auth-forgot a:hover {
@@ -1056,7 +1054,7 @@ header a:hover {
 }
 
 #auth-tools #auth-youraccount a.auth-youraccount-start {
-   padding: 0px;
+   padding: 0;
 }
 
 #auth-tools #auth-youraccount .auth-youraccount-start:hover {
@@ -1067,25 +1065,25 @@ header a:hover {
 .auth-dash {
     position: absolute;
     z-index: 2;
-    top: 48px;
-    right: 50px;
-    width: 285px;
-    height: 278px;
+    top: 4.8em;
+    right: 5em;
+    width: 28.5em;
+    height: 27.8em;
     background-color: #f2f2f2;
-    border: 8px solid #d5e8c2;
-    -moz-border-radius-bottomleft: 2px;
-    -moz-border-radius-bottomright: 2px;
-    -webkit-border-bottom-left-radius: 2px;
-    -webkit-border-bottom-right-radius: 2px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border: 0.8em solid #d5e8c2;
+    -moz-border-radius-bottomleft: 0.2em;
+    -moz-border-radius-bottomright: 0.2em;
+    -webkit-border-bottom-left-radius: 0.2em;
+    -webkit-border-bottom-right-radius: 0.2em;
+    border-bottom-left-radius: 0.2em;
+    border-bottom-right-radius: 0.2em;
     margin: 0;
 }
 
 #auth-youraccount .auth-dash li {
     border: 0;
     float: left;
-    margin-top: 4px;
+    margin-top: 0.4em;
 }
 
 #auth-youraccount .auth-toolbox a {
@@ -1093,18 +1091,18 @@ header a:hover {
     background-color: inherit;
     display: block;
     float: left;
-    width: 132px;
+    width: 13.2em;
     color: #666;
-    font-size: 11px;
-    height: 40px;
+    font-size: 1.1em;
+    height: 4em;
     overflow: hidden;
     line-height: normal;
-    padding: 2px;
+    padding: 0.2em;
 }
 
 #auth-youraccount .icon-listcheck, #auth-youraccount .icon-add,#auth-youraccount .icon-mail, 
 #auth-youraccount .icon-book, #auth-youraccount .icon-star {
-    margin-bottom: 40px;
+    margin-bottom: 4em;
 }
 
 #auth-youraccount .moreinfo {
@@ -1128,19 +1126,19 @@ header a:hover {
     height: auto;
     width: auto;
     background: none;
-    -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    border-radius: 0px;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
 }
 
 #auth-tools .auth-dash li .what {
     display: block;
-    width: 214px;
+    width: 17em;
     float: right;
-    font-size: 12px;
+    font-size: 1.2em;
     font-weight: 600;
-    padding-top: 4px;
-    line-height: 13px;
+    padding-top: 0.4em;
+    line-height: 1.3em;
 }
 
 #auth-tools .auth-dash li .when {
@@ -1148,18 +1146,18 @@ header a:hover {
 }
 
 #auth-tools .auth-dash li {
-    margin: 0 6px 0 6px;
+    margin: 0 0.6em 0 0.6em;
 }
 
 #auth-tools .auth-dash li a {
-    height: 39px;
+    height: 3.9em;
     display: block;
-    padding: 3px 6px 3px 6px;
+    padding: 0.3em 0.6em 0.3em 0.6em;
     color: #666;
     vertical-align: middle;
-    width: 260px;
+    width: 26em;
     overflow: hidden;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 0.1em solid #ccc;
 }
 
 #auth-tools .auth-dash li a:hover {
@@ -1168,24 +1166,24 @@ header a:hover {
 }
 
 #auth-tools .auth-dash img {
-    border: 1px solid #fff;
-    margin: 1px 8px 0 0;
+    border: 0.1em solid #fff;
+    margin: 0.1em 0.8em 0 0;
 }
 
 #auth-tools .auth-dash li.auth-dash-title {
     color: #666;
-    height: 19px;
+    height: 1.9em;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 1.4em;
     display: block;
     overflow: hidden;
 }
 
 #auth-tools .auth-dash .auth-dash-link {
     float: left;
-    width: 222px;
-    margin: 2px 0 2px 8px;
-    font-size: 14px;
+    width: 22.2em;
+    margin: 0.2 0 0.2em 0.8em;
+    font-size: 1.4em;
 }
 
 #auth-tools .auth-dash .auth-dash-link:hover {
@@ -1196,10 +1194,10 @@ header a:hover {
 #auth-tools .auth-dash li.auth-dash-seeall {
     font-weight: bold;
     text-align: center;
-    height: 21px;
+    height: 2.1em;
     border: 0;
     background-color: #666;
-    margin: 4px 4px 4px 4px;
+    margin: 0.4em 0.4em 0.4em 0.4em;
     overflow: hidden;
 }
 
