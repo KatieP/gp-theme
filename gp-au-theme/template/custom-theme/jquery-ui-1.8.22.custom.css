@@ -53,7 +53,7 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget { font-family: Helvetica, Arial, Sans-Serif; font-size: 0.9em; }
+.ui-widget { font-family: Helvetica, Arial, Sans-Serif; /*font-size: 0.9em;*/ }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Helvetica, Arial, Sans-Serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #e1e0e0; background: #F2F2F2 url(images/ui-bg_flat_100_f2f2f2_40x100.png) 50% 50% repeat-x; color: #808080; }
