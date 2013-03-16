@@ -117,7 +117,6 @@ ul, ol {margin:0;padding:0;}
 
 #content h1.loop-title a {
     font-size: 1.6em;
-    line-height: 2em;
 }
 
 #content h3 {
@@ -644,14 +643,14 @@ ul, ol {margin:0;padding:0;}
 
 .arrow-previous {
     background-position: 0px 0px;
-    top: 5px;
-    left: 5px;
+    top: 0.5em;
+    left: 0.5em;
 }
 
 .arrow-next {
     background-position: -30px 0px;
-    top: 5px;
-    right: 5px;
+    top: 0.5em;
+    right: 0.5em;
 }
 
 /** ADVERTISEMENT **/
@@ -1999,32 +1998,32 @@ header a:hover {
 /** FOOTER LEADER BOARD **/
 #footer-ad {
     background-color: #f8f8f8;
-    margin: 10px 0 0 0;
+    margin: 1em 0 0 0;
 }
 
 #footer-ad div {
-    width: 728px;
+    width: 72.8em;
     margin: 0 auto;
-    padding: 9px 0 9px 0;
+    padding: 0.9em 0 0.9em 0;
     position: relative;
 }
 
 #footer-ad .icon-advertisement {
-    margin-bottom: 4px;
+    margin-bottom: 0.4em;
 }
 
 /** CERTIFICATION **/
 .ecocert-logo {
     float: left;
-    padding: 5px 10px 50px 5px;
+    padding: 0.5em 1em 5em 0.5em;
 }
 
 .ecocert-panel {
-    padding: 6px;
-    margin-top: 10px;
-    height: 80px;
+    padding: 0.6em;
+    margin-top: 1em;
+    height: 8em;
     overflow: hidden;
-    border: 1px solid #A1A7AF;
+    border: 0.1em solid #A1A7AF;
 }
 
 /** STEPS BREADCRUMBS **/
@@ -2032,34 +2031,34 @@ header a:hover {
     display: block;
     margin: 0;
     background-color: #01aed8;
-    margin: 20px 0 20px;
+    margin: 2em 0 2em;
     background-color: #01aed8;
-    min-width: 448px;
+    min-width: 44.8em;
     overflow: hidden;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content #breadcrumb-steps li {
     float: left;
     display: block;
-    height: 21px;
-    line-height: 21px;
+    height: 2.1em;
+    line-height: 2.1em;
     text-transform: capitalize;
     position: relative;
     list-style: none;
     text-indent: 0;
     margin: 0;
-    padding: 0 18px 0 8px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    padding: 0 1.8em 0 0.8em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content #breadcrumb-steps li,#content #breadcrumb-steps a {
     color: #fff;
-    font-size: 11px;
+    font-size: 1.1em;
 }
 
 #content #breadcrumb-steps a:hover {
@@ -2088,12 +2087,12 @@ header a:hover {
 
 #content #breadcrumb-steps .go-l {
     background: url(../../template/map-steps.png) no-repeat;
-    height: 25px;
-    width: 13px;
+    height: 2.5em;
+    width: 1.3em;
     float: left;
-    margin-left: -18px;
-    margin-right: 10px;
-    margin-top: -2px;
+    margin-left: -1.8em;
+    margin-right: 1em;
+    margin-top: -0.2em;
 }
 
 #content #breadcrumb-steps .active .go-l {
@@ -2118,8 +2117,8 @@ header a:hover {
 
 #content #breadcrumb-steps .alert-icon {
     float: left;
-    margin-top: 2px;
-    margin-right: 4px;
+    margin-top: 0.2em;
+    margin-right: 0.4em;
 }
 
 #content #breadcrumb-steps .text-button {
@@ -2128,8 +2127,8 @@ header a:hover {
     font-weight: normal;
     cursor: pointer;
     margin: 0;
-    padding: 0px;
-    height: 20px;
+    padding: 0;
+    height: 2em;
     background: none;
 }
 
@@ -2138,37 +2137,37 @@ header a:hover {
 }
 
 #post-nav {
-    padding: 1px;
-    margin: 40px 0 0 0;
-    line-height: 42px;
+    padding: 0.1em;
+    margin: 4em 0 0 0;
+    line-height: 4.2em;
     background-color: #61c201;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #post-nav ul {
     overflow: hidden;
-    height: 40px;
+    height: 4em;
     margin: 0;
 }
 
 #post-nav .post-previous,#post-nav .post-next {
     list-style: none;
-    margin: 0px;
-    padding: 0px;
-    text-indent: 0px;
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
 }
 
 #post-nav .post-previous {
     float: left;
-    width: 234px;
+    width: 23.4em;
     position: relative;
 }
 
 #post-nav .post-next {
     float: right;
-    width: 234px;
+    width: 23.4em;
     position: relative;
     text-align: right;
 }
@@ -2177,8 +2176,8 @@ header a:hover {
     color: #fff;
     display: block;
     font-weight: 600;
-    font-size: 15px;
-    padding: 0px 43px 0 43px;
+    font-size: 1.5em;
+    padding: 0 4.3em 0 4.3em;
 }
 
 #post-nav a:hover {
@@ -2186,38 +2185,38 @@ header a:hover {
 }
 
 .post-socialnav {
-    border: 1px solid #e7e7e7;
+    border: 0.1em solid #e7e7e7;
     background-color: #f2f2f2;
     color: #666;
-    font-size: 11px;
-    padding: 2px;
-    height: 20px;
-    margin-top: 15px;
-    margin-bottom: 40px;
+    font-size: 1.1em;
+    padding: 0.2em;
+    height: 2em;
+    margin-top: 1.5em;
+    margin-bottom: 4em;
     position: relative;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 .post-facebook,.post-twitter,.post-google,.post-disqus {
-    padding: 0 4px 0 4px;
+    padding: 0 0.4em 0 0.4em;
     overflow: hidden;
     float: left;
-    height: 20px;
+    height: 2em;
     overflow: hidden;
 }
 
 .post-google {
-    width: 70px;
+    width: 7em;
 }
 
 .post-twitter {
-    width: 106px;
+    width: 10.6em;
 }
 
 .post-facebook {
-    width: 140px;
+    width: 14em;
 }
 
 #content .post-mini-calendar {
@@ -2246,36 +2245,36 @@ header a:hover {
 }
 
 .post-authorsdisclaimer {
-    margin-top: 10px;
-    padding: 6px;
-    font-size: 11px;
-    line-height: 14px;
+    margin-top: 1em;
+    padding: 0.6em;
+    font-size: 1.1em;
+    line-height: 1.4em;
     font-style: italic;
-    border: 1px solid #e7e7e7;
+    border: 0.1em solid #e7e7e7;
     background-color: #f2f2f2;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content .post-authorsdisclaimer img {
-    margin: 0 10px 10px 0;
+    margin: 0 1em 1em 0;
     float: left;
 }
 
 #content .post-authorsdisclaimer-content, #content .post-authorsdisclaimer-details {
-    width: 396px;
+    width: 39.6em;
     float: right;
 }
 
 #content .post-authorsdisclaimer-details {
-    font-size: 11px;
+    font-size: 1.1em;
     font-style: italic;
-    margin-bottom: 8px;
+    margin-bottom: 0.8em;
 }
 
 #content .post-authorsdisclaimer-details a {
-    font-size: 11px;
+    font-size: 1.1em;
     color: #666;
 }
 
@@ -2283,23 +2282,22 @@ header a:hover {
     position: relative;
     display: block;
     float: right;
-    height: 20px;
-    line-height: 21px;
+    height: 2em;
+    line-height: 2.1em;
     color: #fff;
     padding: 0;
     z-index: 2;
     font-weight: bold;
-    font-size: 14px;
-    min-width: 20px;
-    margin-right: 6px;
+    font-size: 1.4em;
+    min-width: 2em;
+    margin-right: 0.6em;
 }
 
 #content .post-disqus:hover {
     color: #fff;
 }
 
-.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini, .star-mini, .comment-mini-closed
-    {
+.comment-leftcap, .comment-rightcap, .comment-background, .comment-mini, .star-mini, .comment-mini-closed {
     background: url(../../template/map-comments.png) no-repeat;
 }
 
@@ -2364,19 +2362,19 @@ header a:hover {
 }
 
 #disqus_thread {
-    margin-top: 50px;
+    margin-top: 5em;
 }
 
 .post-details {
-    font-size: 11px;
+    font-size: 1.1em;
     color: #9da2a8;
-    max-width: 500px;
+    max-width: 50em;
     float: left;
-    line-height: 16px;
+    line-height: 1.6em;
 }
 
 #content .post-details a, .post-details a {
-    font-size: 11px;
+    font-size: 1.1em;
     color: #134;
 }
 
