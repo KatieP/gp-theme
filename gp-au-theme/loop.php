@@ -339,8 +339,7 @@ function theme_index_feed_item() {
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);	
 
-	?><h1 class="profile-title"><a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a></h1><?php
-	
+		
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
@@ -353,7 +352,12 @@ function theme_index_feed_item() {
 	}
 	
 	echo '<div class="profile-postbox">';			 		
-			
+    ?>
+    <h1 class="profile-title">
+        <a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
+    </h1>
+    <?php
+	
 	        $site_posttypes = Site::getPostTypes();
 	        foreach ( $site_posttypes as $site_posttype ) {
 	            if ( $site_posttype['id'] == get_post_type() ) {
@@ -366,7 +370,7 @@ function theme_index_feed_item() {
 			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . 
 					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
 					'</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</span>';
-			the_excerpt();			
+			#the_excerpt();			
 			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Learn More</a>';
 			
 			if ( comments_open($post->ID) ) {

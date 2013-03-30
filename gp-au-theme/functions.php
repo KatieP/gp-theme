@@ -2381,7 +2381,6 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 				<div class="profile-postbox">
 			    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
 			    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
-			    	the_excerpt();
 					echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 					
 				if ( comments_open() ) {

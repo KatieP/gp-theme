@@ -2386,22 +2386,20 @@ header a:hover {
 /** AUTHOR DETAILS **/
 #content .author-photo {
     float: left;
-    width: 160px;
+    width: 26%;
     overflow-x: hidden;
-    margin-right: 20px;
+    margin-right: 2%;
 }
 
 #content .author-photo img {
     margin: 0;
 }
 
-#content .author-box { /** 
-  width: 290px;
-  float: right;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
-    width: 456px;
+#content .author-box { 
+    width: 72%;
     float: left;
-    font-size: 11px;
-    line-height: 24px;
+    font-size: 1.1em;
+    line-height: 1.8em;
 }
 
 #content .author-www, #content .author-views {
@@ -2409,25 +2407,25 @@ header a:hover {
 }
 
 #content .author-box a {
-    font-size: 11px;
+    font-size: 1em;
     color: #134;
 }
 
 #content .author-name {
-    font-size: 44px;
+    font-size: 3.3em;
     font-weight: 500;
-    margin-bottom: 14px;
-    line-height: 44px;
+    margin-bottom: 0.4em;
+    line-height: 1em;
 }
 
 #content .author-connect {
-    height: 16px;
+    height: 1.6em;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 1.6em;
 }
 
 #content .author-connect a {
-    margin: 0 2px 0 2px;
+    margin: 0 0.2em 0 0.2em;
     float: left;
 }
 
@@ -2445,35 +2443,35 @@ header a:hover {
 }
 
 #content .author-blurb {
-    margin-top: 10px;
-    font-size: 12px;
+    margin-top: 1em;
+    font-size: 1.2em;
 }
 
 #content .author-archive {
-    margin-top: 20px;
+    margin-top: 2em;
 }
 
 #content .author-postthumbnail {
-    width: 100px;
+    width: 10em;
     overflow: hidden;
-    margin-left: 10px;
+    margin-left: 1em;
     float: right;
 }
 
 #content .author-postthumbnail .wp-post-image {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 
 #content .author-postdetails {
-    width: 360px;
+    width: 36em;
     float: left;
 }
 
 #content .author-posttitle a {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 1.4em;
     color: #717171;
-    line-height: 18px;
+    line-height: 1.8em;
 }
 
 #content h1 a:hover, #content h2 a:hover {
@@ -2481,10 +2479,10 @@ header a:hover {
 }
 
 #content .author-postdate, #content .author-postcomments {
-    width: 180px;
+    width: 18em;
     overflow: hidden;
-    margin-top: 6px;
-    font-size: 10px;
+    margin-top: 0.6em;
+    font-size: 1em;
 }
 
 #content .author-postdate {
@@ -2503,14 +2501,14 @@ header a:hover {
 }
 
 #content .author-postexcerpt p {
-    margin-top: 8px;
+    margin-top: 0.8em;
 }
 
 /** 3 COLUMN - MEDIUM RECTANGLE AD  **/
 .col3-ad {
-    width: 300px;
-    height: 256px;
-    margin-bottom: 10px;
+    width: 30em;
+    height: 25.6em;
+    margin-bottom: 1em;
 }
 
 /** OLD SITE DIRECTORY **/
@@ -2740,25 +2738,25 @@ ul.categorieslistmain {
     display: block;
     float: left;
     padding: 0;
-    margin: 0 0 15px 0;
-    width: 140px;
+    margin: 0 0 1.5em 0;
+    width: 14em;
     position: relative;
     overflow: hidden;
 }
 
 #content .hp_minifeatured .hp_minipanel_mid {
-    margin: 0 25px 0 25px;
+    margin: 0 2.5em 0 2.5em;
 }
 
 #content .hp_minithumb {
-    width: 132px;
-    height: 80px;
+    width: 13.2em;
+    height: 8em;
     overflow: hidden;
 }
 
 #content .hp_featuredthumb {
-    width: 240px;
-    height: 180px;
+    width: 24em;
+    height: 18em;
     overflow: hidden;
 }
 
@@ -2767,16 +2765,16 @@ ul.categorieslistmain {
 }
 
 #content .hp_minifeatured h1 {
-    margin: 0 0 21px 0;
+    margin: 0 0 2.1em 0;
 }
 
 #content .hp_featuredpanel h1 {
-    margin: 8px 0 0 0;
+    margin: 0.8em 0 0 0;
 }
 
 #content .hp_minifeatured h1 a, #content .hp_featuredpanel h1 a {
-    font-size: 13px;
-    line-height: 16px;
+    font-size: 1.3em;
+    line-height: 1.6em;
     display: block;
     margin: 0;
     color: #555;
@@ -2784,12 +2782,12 @@ ul.categorieslistmain {
 }
 
 #content .hp_minifeatured p {
-    font-size: 11px;
+    font-size: 1.1em;
     color: #666666;
     font-weight: 100;
-    line-height: 14px;
+    line-height: 1.4em;
     color: #888;
-    margin: 4px 0 21px 0;
+    margin: 0.4em 0 2.1em 0;
 }
 
 #content .hp_link, #content .hp_linkcompetitions {
@@ -2805,13 +2803,13 @@ ul.categorieslistmain {
 
 #content .hp_minitype {
     display: block;
-    margin: 10px 0 10px 0;
+    margin: 1em 0 1em 0;
 }
 
 #content .hp_minitype a, #content .hp_minitype {
     font-weight: 500;
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 1.8em;
+    line-height: 2.4em;
     color: #717171;
 }
 
@@ -2821,28 +2819,28 @@ ul.categorieslistmain {
 
 #content .comment-hp {
     position: absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 0;
+    right: 0;
 }
 
 #content .comment-hp a, #relevant-posts .comment-hp a {
     display: block;
     position: relative;
     float: left;
-    line-height: 14px;
+    line-height: 1.4em;
 }
 
 #relevant-posts .comment-hp a {
-    margin-top: 2px;
+    margin-top: 0.2em;
     float: right;
 }
 
 #content .comment-mini-number, #content .star-mini-number, #content .star-mini-number-plus-one, 
 #content .star-mini-number-minus-one, #relevant-posts .comment-mini-number {
     color: #333;
-    font-size: 11px;
+    font-size: 0.8em;
     font-weight: bold;
-    padding-left: 3px;
+    padding-left: 0.3em;
 }
 
 #content .comment-profile a:hover {
@@ -2856,54 +2854,54 @@ ul.categorieslistmain {
 
 #content .hp_miniauthor, #content .hp_featuredauthor {
     color: #9da2a8;
-    font-size: 11px;
+    font-size: 1.1em;
     display: block;
-    line-height: 12px;
-    margin: 4px 0 8px 0;
+    line-height: 1.2em;
+    margin: 0.4em 0 0.8em 0;
 }
 
 #content .hp_miniauthor {
-    margin: 0 0 4px 0;
+    margin: 0 0 0.4em 0;
 }
 
 #content .hp_miniauthor img, #content .post-details img {
-    margin: 0 5px 0px 0;
+    margin: 0 0.5em 0 0;
     vertical-align: middle;
-    margin: 0 5px 2px 0;
+    margin: 0 0.5em 0.2em 0;
     vertical-align: middle;
-    padding: 2px;
-    border: 1px solid #e7e7e7;
+    padding: 0.2em;
+    border: 0.1em solid #e7e7e7;
     background-color: #f2f2f2;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content .hp_miniauthor a, #content .hp_featuredauthor a {
-    font-size: 11px;
+    font-size: 1.1em;
     color: #134;
 }
 
 #content .hp_featured {
-    margin-bottom: 15px;
+    margin-bottom: 1.5em;
 }
 
 #content .hp_featuredpanel {
-    width: 220px;
-    margin-left: 10px;
+    width: 22em;
+    margin-left: 1em;
     float: right;
     position: relative;
 }
 
 #content .hp_featuredtitle {
-    font-size: 16px;
+    font-size: 1.6em;
     display: block;
-    font-size: 20px;
+    font-size: 2em;
     font-weight: 600;
 }
 
 #content .profile-tabs {
-    border-bottom: 1px solid #61c201;
+    border-bottom: 0.1em solid #61c201;
     margin: 0;
     clear: both;
     float: left;
@@ -2924,18 +2922,18 @@ ul.categorieslistmain {
 }
 
 #content .profile-tabs li a {
-    margin: 0px 4px 0 4px;
-    padding: 4px 10px 4px 10px;
+    margin: 0 0.4em 0 0.4em;
+    padding: 0.4em 1em 0.4em 1em;
     display: block;
     background-color: #afde7f;
     color: #fff;
     font-weight: bold;
-    -moz-border-radius-topleft: 4px;
-    -moz-border-radius-topright: 4px;
-    -webkit-border-top-left-radius: 4px;
-    -webkit-border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 0.4em;
+    -moz-border-radius-topright: 0.4em;
+    -webkit-border-top-left-radius: 0.4em;
+    -webkit-border-top-right-radius: 0.4em;
+    border-top-left-radius: 0.4em;
+    border-top-right-radius: 0.4em;
     /*color: #eff8e5;*/
 }
 
@@ -2950,11 +2948,11 @@ ul.categorieslistmain {
 
 #content .profile-tab-posts, #content .profile-tab-favourites {
     display: none;
-    line-height: 21px;
+    line-height: 2.1em;
 }
 
 #content .profile-tab-posts ul, #content .profile-tab-favourites ul {
-    padding: 0 1px 1px 1px;
+    padding: 0 0.1em 0.1em 0.1em;
     background-color: #61c201;
     margin: 0;
     overflow: auto;
@@ -2971,18 +2969,17 @@ ul.categorieslistmain {
 
 #content .profile-tab-posts a, #content .profile-tab-favourites a {
     display: block;
-    padding: 2px 8px;
+    padding: 0.2em 0.8em;
     color: #fff;
-    margin-right: 1px;
+    margin-right: 0.1em;
 }
 
-#content .profile-tab-posts a:hover, #content .profile-tab-favourites a:hover
-    {
+#content .profile-tab-posts a:hover, #content .profile-tab-favourites a:hover {
     background-color: #afde7f;
     text-decoration: none;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content .profile-tabs li.profile-tab-man {
@@ -2999,20 +2996,18 @@ ul.categorieslistmain {
 
 #content .profile-postbox {
     float: right;
-    /** width: 310px;  ORIGINAL STYLING TO BE USED WHEN SIDEBAR LEFT VISIBLE **/
-    width: 472px;
-    margin: 4px 0 0 10px;
-    padding: 6px 6px 0 6px;
+    width: 74%;
+    margin-bottom: 0.6em;
     background-color: #f8f8f8;
     position: relative;
 }
 
 #content .profile-postbox p {
-    margin: 6px 0 6px 0;
+    margin: 0.6em 0 0.6em 0;
 }
 
 #content .profile_minithumb img {
-    margin: 4px 0 18px 0;
+    margin: 0.4em 0 1.8em 0;
     float: left;
 }
 
@@ -3023,22 +3018,22 @@ ul.categorieslistmain {
 #content .profile_postlink {
     font-weight: bold;
     float: left;
-    margin-bottom: 4px;
-    margin-top: 4px;
+    margin-bottom: 0.4em;
+    margin-top: 0.4em;
 }
 
 #content .comment-profile, #content .favourite-profile {
     color: #000;
-    border: 1px solid #d7edbc;
+    border: 0.1em solid #d7edbc;
     background-color: #f6faf0;
     float: right;
     overflow: hidden;
-    max-lenght: 100px;
-    height: 15px;
-    padding: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px
+    max-length: 10em;
+    height: 1.5em;
+    padding: 0.2em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em
 }
 
 #content .favourite-profile {
@@ -3054,7 +3049,7 @@ ul.categorieslistmain {
 }
 
 #content span.comment-mini, #content span.star-mini {
-    margin: 0 2px;
+    margin: 0 0.2em;
 }
 
 #content span.fb_comments_count, #content span.star-mini-number, #content span.star-mini-number-plus-one, 
@@ -3062,16 +3057,16 @@ ul.categorieslistmain {
     color: #134;
     font-weight: bold;
     display: block;
-    padding: 0 2px;
-    margin: 0 1px 0 2px;
-    border: 1px solid #d7edbc;
+    padding: 0 0.2em;
+    margin: 0 0.1em 0 0.2em;
+    border: 0.1em solid #d7edbc;
     background-color: #FFF;
     overflow: hidden;
-    height: 13px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    line-height: 14px;
+    height: 1.3em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
+    line-height: 1.4em;
 }
 
 #content .favourite-profile {
