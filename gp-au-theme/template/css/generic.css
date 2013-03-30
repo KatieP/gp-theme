@@ -3070,20 +3070,20 @@ ul.categorieslistmain {
 }
 
 #content .favourite-profile {
-    margin-right: 8px;
+    margin-right: 0.8em;
     background-color: #f5f2ca;
 }
 
 #content span.star-mini-number, #content span.star-mini-number-plus-one, 
 #content span.star-mini-number-minus-one, #content .favourite-profile {
-    border: 1px solid #f1e0b4;
+    border: 0.1em solid #f1e0b4;
 }
 
 #content .favourite-profile .star-login {
     color: #f7cc0c;
     font-weight: bold;
-    line-height: 16px;
-    padding: 0 4px;
+    line-height: 1.6em;
+    padding: 0 0.4em;
 }
 
 #content span.fb_comments_count:hover, #content span.star-mini-number:hover, 
@@ -3097,8 +3097,8 @@ ul.categorieslistmain {
 }
 
 .medrec {
-    width: 350px;
-    height: 250px;
+    width: 35em;
+    height: 25em;
     border: 0;
     overflow: hidden;
 }
@@ -3108,27 +3108,27 @@ ul.categorieslistmain {
 }
 
 .competition-enddate {
-    margin-bottom: 30px;
+    margin-bottom: 3em;
 }
 
 /** HIDE ANALYTICS AND ADVERTISE PANELS ON PROFILE PAGES **/
 #content #my-analytics .big-number {
-    margin: 0px;
-    font-size: 40px;
+    margin: 0;
+    font-size: 4em;
 }
 
 /** AUTHOR ANALYTICS TABLES ON PROFILE PAGES  **/
 #content .author_analytics tr td {
     border-style: solid;
-    border-width: 1px;
+    border-width: 0.1em;
     border-color: gray;
     text-align: left;
-    padding: 7px;
+    padding: 0.7em;
     vertical-align: top;
 }
 
 #content .author_analytics {
-    margin-bottom: 10px;
+    margin-bottom: 1em;
     width: 100%;
 }
 
@@ -3148,19 +3148,19 @@ ul.categorieslistmain {
 
 /** ADVERTISE PANEL ON PROFILE PAGE BUTTONS **/
 #my-advertise input[type="button"] {
-    height: 32px;
-    line-height: 36px;
-    width: 160px;
-    border-radius: 4px;
-    margin-left: 3px;
-    margin-bottom: 10px;
+    height: 2.6em;
+    line-height: 2.6em;
+    width: 14em;
+    border-radius: 0.4em;
+    margin-left: 0.3em;
+    margin-bottom: 1em;
 }
 
 #my-advertise input[type="button"]:hover {
-    border: solid 1px #F2F2F2;
-    box-shadow: 0 0 3px 3px #F2F2F2;
-    -moz-box-shadow: 0 0 3px 3px #F2F2F2;
-    -webkit-box-shadow: 0 0 3px 3px #F2F2F2;
+    border: solid 0.1em #F2F2F2;
+    box-shadow: 0 0 0.3em 0.3em #F2F2F2;
+    -moz-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
+    -webkit-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
     cursor: pointer;
 }
 
@@ -3171,7 +3171,7 @@ ul.categorieslistmain {
 
 #my-advertise a {
     color: grey;
-    margin-left: 3px;
+    margin-left: 0.3em;
 }
 
 /** AJAX LIKE FEATURE  **/
@@ -3185,7 +3185,7 @@ ul.categorieslistmain {
 }
 
 .like_heart.favorited {
-    background-position: 0px 0px;
+    background-position: 0 0;
 }
 
 .like_heart.hover {
@@ -3194,36 +3194,36 @@ ul.categorieslistmain {
 }
 
 .like-button {
-    width: 16px;
-    height: 16px;
+    width: 1.6em;
+    height: 1.6em;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 4px;
-    margin-bottom: 0px;
-    margin-top: -66px;
+    margin-left: 0.4em;
+    margin-bottom: 0;
+    margin-top: -6.6em;
 }
 
 /** FORM ERRORS **/
 #content .form-error {
-    margin: 0 0 20px;
+    margin: 0 0 2em;
     background-color: #ffebe8;
-    min-width: 448px;
+    min-width: 44.8em;
     overflow: hidden;
-    padding: 3px 8px 3px 8px;
-    font-size: 12px;
-    border: 1px solid #cc0000;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    padding: 0.3em 0.8em 0.3em 0.8em;
+    font-size: 1.2em;
+    border: 0.1em solid #cc0000;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #relevant-posts #post-filter, #content .new-action {
-    border-width: 0px 0px;
+    border-width: 0 0;
     border-style: none;
     border-color: #aaa;
-    padding: 3px 0px;
-    margin-bottom: 10px;
-    font-size: 11px;
+    padding: 0.3em 0;
+    margin-bottom: 1em;
+    font-size: 1.1em;
 }
 
 #relevant-posts #post-filter .left {
@@ -3235,14 +3235,14 @@ ul.categorieslistmain {
 }
 
 #relevant-posts #post-filter select, #content #post-filter select {
-    height: 21px;
+    height: 2em;
     color: grey;
     background-color: #F2F2F2;
-    border: 1px solid #CCC;
+    border: 0.1em solid #CCC;
     font-weight: 700;
-    font-size: 11px;
-    margin: 0px;
-    padding: 2px;
+    font-size: 1.1em;
+    margin: 0;
+    padding: 0.2em;
     float: right;
 }
 
