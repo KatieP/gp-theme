@@ -3374,27 +3374,26 @@ ul.categorieslistmain {
 #content .contentpartnerslist a {
     float: left;
     display: block;
-    width: 246px;
-    height: 50px;
+    width: 30%;
+    height: 3.5em;
     overflow: hidden;
-    padding: 8px;
-    border: 1px solid #e7e7e7;
-    margin: 2px;
+    padding: 0.6em;
+    border: 0.1em solid #e7e7e7;
+    margin: 0.2em;
     color: #666666;
     font-weight: bold;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px; 
+    border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em; 
 }
 
-#content .contentpartnerslist img.avatar, #content .memberslist img.avatar
-    {
+#content .contentpartnerslist img.avatar, #content .memberslist img.avatar {
     margin: 0;
 }
 
 #content .contentpartnerslist span {
     display: block;
-    width: 188px;
+    width: 12.5em;
     float: right;
 }
 
@@ -3409,31 +3408,31 @@ ul.categorieslistmain {
 #content .memberslist a {
     float: left;
     display: block;
-    width: 616px;
-    height: 100px;
+    width: 96%;
+    height: 8.3em;
     overflow: hidden;
-    padding: 10px;
-    border: 0px solid #e7e7e7;
-    margin: 2px;
+    padding: 1em;
+    border: 0 solid #e7e7e7;
+    margin: 0.2em;
     color: #666666;
     font-weight: bold;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content .memberslist h1 {
-    margin: 0px;
+    margin: 0;
 }
 
 #content .memberslist p {
     font-weight: normal;
-    margin: 0px;
+    margin: 0;
 }
 
 #content .memberslist span {
     display: block;
-    width: 500px;
+    width: 41em;
     float: right;
 }
 
@@ -3504,7 +3503,7 @@ ul.categorieslistmain {
 #cse {
     font-family: Helvetica;
     line-height: 1.5em;
-    font-size: 13px;
+    font-size: 1em;
     color: #666;
 }
 
@@ -3523,8 +3522,8 @@ ul.categorieslistmain {
 }
 
 #cse .gs-title {
-    font-size: 16px;
-    margin: 10px 0 3px 0;
+    font-size: 1.1em;
+    margin: 0.8em 0 0.3em 0;
     text-replace: " | Green Pages (US Edition)" "";
 }
 
@@ -3533,11 +3532,11 @@ ul.categorieslistmain {
 }
 
 #cse .gs-snippet {
-    padding: 0 0 12px 0;
+    padding: 0 0 0.6em 0;
 }
 
 #cse .gsc-cursor-box {
-    padding: 20px 0 20px 0;
+    padding: 1.6em 0 1.6em 0;
     float: left;
     width: 100%;
 }
@@ -3547,16 +3546,16 @@ ul.categorieslistmain {
     text-decoration: none;
     color: #fff;
     font-weight: 600;
-    line-height: 30px;
-    font-size: 11px;
+    line-height: 2.5em;
+    font-size: 0.9em;
     display: block;
-    height: 30px;
-    min-width: 30px;
+    height: 2.5em;
+    min-width: 2.5em;
     background-color: #bbb;
     float: left;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #cse .gsc-cursor-page:hover {
@@ -3568,7 +3567,7 @@ ul.categorieslistmain {
 }
 
 #cse .gs-image {
-    margin: 10px 0 0 0;
+    margin: 0.8em 0 0 0;
 }
 
 #cse .gsc-branding {
@@ -3577,36 +3576,7 @@ ul.categorieslistmain {
 
 #cse .gsc-result-info {
     color: #000;
-    font-size: 10px;
-}
-
-#content #disqus_thread li {
-    list-style-position: inside;
-    list-style-type: none;
-    text-indent: 0;
-    margin: 0;
-    padding: 0;
-}
-
-#content #dsq-content img {
-    margin: 0;
-}
-
-#content .dsq-comment-body {
-    margin-top: 20px;
-}
-
-#content #dsq-content select {
-    border: 1px solid #cccccc;
-    padding: 4px;
-    box-shadow: 0pt 1px 2px rgba(0, 0, 0, 0.15) inset;
-    background-color: rgba(255, 255, 255, 0.85);
-    color: #000;
-    font-size: 12px;
-    height: auto;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    font-size: 0.9em;
 }
 
 /** SOCIALBAR **/
@@ -3616,25 +3586,25 @@ ul.categorieslistmain {
 
 #gp_sharebar {
     float: left;
-    margin-left: -90px;
+    margin-left: -7em;
     position: absolute;
 }
 
 #gp_sharebar .wdt {
     float: left;
     clear: left;
-    padding: 5px;
-    width: 58px;
+    padding: 0.4em;
+    width: 5em;
     text-align: center;
 }
 
 #gp_sharebox, #gp_commentbox {
     background: #f0fafd;
-    margin-bottom: 10px;
-    width: 68px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    margin-bottom: 1em;
+    width: 5.7em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #gp_commentbox {
@@ -3644,9 +3614,10 @@ ul.categorieslistmain {
 
 #gp_sharebar .title {
     text-transform: uppercase;
-    font-size: 8px;
+    font-size: 0.7em;
     font-weight: bold;
-    padding-bottom: 0px;
+    padding-bottom: 0em;
+    width: 100%;
 }
 
 #gp_sharebox .title {
@@ -3658,28 +3629,28 @@ ul.categorieslistmain {
 }
 
 #gp_commentbox .commentcount {
-    padding: 5px;
+    padding: 0.4em;
 }
 
 #gp_commentbox .commentcount a {
     display: block;
-    border: 1px solid #ccc;
+    border: 0.1em solid #ccc;
     background-color: #fff;
-    padding: 0 7px 0 7px;
-    height: 34px;
-    width: 42px;
+    padding: 0 0.6em 0 0.7em;
+    height: 2.8em;
+    width: 3.5em;
     color: #333;
-    font-size: 16px;
+    font-size: 1.3em;
     text-align: center;
-    line-height: 36px;
+    line-height: 3em;
     overflow: hidden;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #gp_commentbox .comment-mini {
-    margin-top: 8px;
+    margin-top: 0.8em;
 }
 
 #content .topic-select {
