@@ -1303,7 +1303,7 @@ function coming_events() {
 		?>
 		
 		<div id="post-filter">
-		    <span class="left">Jump to Region:&nbsp;&nbsp;
+		   <!-- <span class="left">Jump to Region:&nbsp;&nbsp; --> 
 		        <select name="filterby_state" id="filterby_state">
 		            <option value="/events/<?php echo strtolower( $gp->location['country_iso2'] ); ?>/">All regions</option>
 		
@@ -1333,7 +1333,7 @@ function coming_events() {
 		?>
 		
 		        </select>
-		    </span>
+		    <!-- </span> -->
 		    <div class="clear"></div>
 		</div>
 		

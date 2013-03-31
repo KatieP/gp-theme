@@ -151,8 +151,8 @@ ul, ol {margin:0;padding:0;}
     font-weight: bold;
 }
 
-#content p, #content a,pre {
-    font-size: 1.1em;
+#content p, #content a, pre {
+    font-size: 1.2em;
 }
 
 #content a:hover {
@@ -1437,22 +1437,13 @@ header a:hover {
     margin: 0.9em 0 0 0;
 }
 
-#footer-nav ul {
+#footer-nav ul, #footer-contact ul {
     -moz-border-radius-topleft: 0.2em;
     -moz-border-radius-bottomleft: 0.2em;
     -webkit-border-top-left-radius: 0.2em;
     -webkit-border-bottom-left-radius: 0.2em;
     border-top-left-radius: 0.2em;
     border-bottom-left-radius: 0.2em;
-}
-
-#footer-contact ul {
-    -moz-border-radius-topright: 0.2em;
-    -moz-border-radius-bottomright: 0.2em;
-    -webkit-border-top-right-radius: 0.2em;
-    -webkit-border-bottom-right-radius: 0.2em;
-    border-top-right-radius: 0.2em;
-    border-bottom-right-radius: 0.2em;
 }
 
 #footer-nav li, #footer-contact li {
@@ -3156,19 +3147,6 @@ ul.categorieslistmain {
     margin-bottom: 1em;
 }
 
-#my-advertise input[type="button"]:hover {
-    border: solid 0.1em #F2F2F2;
-    box-shadow: 0 0 0.3em 0.3em #F2F2F2;
-    -moz-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
-    -webkit-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
-    cursor: pointer;
-}
-
-#my-advertise a:hover {
-    pointer: cursor;
-    text-decoration: none;
-}
-
 #my-advertise a {
     color: grey;
     margin-left: 0.3em;
@@ -3243,36 +3221,35 @@ ul.categorieslistmain {
     font-size: 1.1em;
     margin: 0;
     padding: 0.2em;
-    float: right;
 }
 
 #relevant-posts #post-filter option, #content #post-filter option {
-    margin: 2px;
-    padding: 2px;
+    margin: 0.2em;
+    padding: 0.2em;
 }
 
 /** Button that links front end index pages to create new post backend admin pages **/
 #content .new-action .new-post-action {
     display: inline;
     float: right;
-    line-height: 17px;
+    line-height: 1.7em;
     color: grey;
     background-color: #F2F2F2;
-    border: 1px solid #CCC;
-    margin: 0 0 0 10px;
-    padding: 1px 10px;
+    border: 0.1em solid #CCC;
+    margin: 0 0 0 1em;
+    padding: 0.1em 1em;
     font-weight: bold;
-    font-size: 11px;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    font-size: 0.9em;
+    border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
 }
 
 #content .new-action .new-post-action:hover {
-    border: solid 1px #CCC;
-    box-shadow: 0 0 3px 3px #F2F2F2;
-    -moz-box-shadow: 0 0 3px 3px #F2F2F2;
-    -webkit-box-shadow: 0 0 3px 3px #F2F2F2;
+    border: solid 0.1em #CCC;
+    box-shadow: 0 0 0.3em 0.3em #F2F2F2;
+    -moz-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
+    -webkit-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
     cursor: pointer;
     text-decoration: none;
 }
@@ -3281,96 +3258,60 @@ ul.categorieslistmain {
 /** TAGS **/
 
 #content .post-tags {
-    margin: 30px 0 50px 0;
+    margin: 2em 0 4em 0;
 }
 
 #content .post-tags a {
-    padding: 7px 10px 7px 10px;
+    padding: 0.7em 1em 0.7em 1em;
     overflow: hidden;
-    height: 20px;
+    height: 2em;
     display: inline;
-    margin: 3px 0px 30px 5px;
-    line-height: 38px;
+    margin: 0.3em 0 0.3em 0.3em;
+    line-height: 3.8em;
     color: grey;
-    font-size: 14px;
+    font-size: 1.2em;
     text-align: center;
     -webkit-box-align: center;
     box-sizing: border-box;
     cursor: pointer;
     font-family: inherit;
     border: 0;
-    border-radius: 3px;
+    border-radius: 0.3em;
     background-color: #F0FAFD;
-
-
 }
-
-
-
-
 
 /** CONTRIBUTOR DONATE | JOIN BAR / BUTTONS & PRODUCT BUTTON BAR **/
 #post-donate-join-bar, #post-product-button-bar {
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin-top: 2em;
+    margin-bottom: 3em;
 }
 
 #index-donate-join-bar {
-    margin-top: 0px;
-    margin-bottom: 20px;
-    margin-left: 164px;
+    margin-top: 0em;
+    margin-bottom: 2em;
+    min-width: 74%;
+    float: right;
 }
 
-#post-donate-join-bar span, #index-donate-join-bar span, #post-product-button-bar span
-    {
-    padding: 2px 4px 0 4px;
+#post-donate-join-bar span, #index-donate-join-bar span, #post-product-button-bar span {
+    padding: 0.2em 0.4em 0 0.4em;
     overflow: hidden;
     float: left;
-    height: 24px;
+    height: 2em;
     display: inline;
-    margin: 5px 15px 10px 0px;
-    line-height: 17px;
+    margin: 0 1.2em 1em 0;
+    line-height: 1.5em;
     color: white;
     font-weight: 600;
-    font-size: 11px;
+    font-size: 1em;
     text-align: center;
     -webkit-box-align: center;
     box-sizing: border-box;
     cursor: pointer;
     font-family: inherit;
-    border: 1px solid #CCC;
-    border-radius: 4px;
-    width: 80px;
-}
-
-#index-donate-join-bar span {
-    margin: 0 18px 35px 0px;
-}
-
-#index-donate-join-bar span:hover {
-    border: solid 1px #F2F2F2;
-    box-shadow: 0 0 3px 3px #F2F2F2;
-    -moz-box-shadow: 0 0 3px 3px #F2F2F2;
-    -webkit-box-shadow: 0 0 3px 3px #F2F2F2;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-#post-donate-join-bar span:hover {
-    border: solid 1px #F2F2F2;
-    box-shadow: 0 0 3px 3px #F2F2F2;
-    -moz-box-shadow: 0 0 3px 3px #F2F2F2;
-    -webkit-box-shadow: 0 0 3px 3px #F2F2F2;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-#index-donate-join-bar a:hover {
-    text-decoration: none;
-}
-
-#post-donate-join-bar a:hover {
-    text-decoration: none;
+    border: 0.1em solid #CCC;
+    border-radius: 0.4em;
+    width: 7.87em;
 }
 
 #post-donate-join-bar #donate, #index-donate-join-bar #donate,
@@ -3395,29 +3336,35 @@ ul.categorieslistmain {
 
 #post-donate-join-bar #volunteer, #index-donate-join-bar #volunteer {
     background-color: #EBA006;
-    margin-right: 0px;
+    margin-right: 0;
 }
 
-/** PRODUCT 'BUY IT! BUTTON **/
+/** PRODUCT 'BUY IT!' BUTTON **/
 #post-product-button-bar span {
-    padding: 8px 4px 0 4px;
-    height: 44px;
-    line-height: 24px;
-    width: 130px;
-    font-size: 18px;
-    border-radius: 4px;
-    margin-left: 3px;
+    padding: 0.4em 0.4em 0 0.4em;
+    height: 3em;
+    line-height: 2em;
+    width: 7em;
+    font-size: 1.5em;
+    border-radius: 0.4em;
+    margin-left: 0.3em;
 }
 
+/** BUTTON HOVER EFFECTS **/
+
+#my-advertise input[type="button"]:hover,
+#index-donate-join-bar span:hover, #post-donate-join-bar span:hover,
 #post-product-button-bar span:hover {
-    border: solid 1px #F2F2F2;
-    box-shadow: 0 0 3px 3px #F2F2F2;
-    -moz-box-shadow: 0 0 3px 3px #F2F2F2;
-    -webkit-box-shadow: 0 0 3px 3px #F2F2F2;
+    border: solid 0.1em #F2F2F2;
+    box-shadow: 0 0 0.3em 0.3em #F2F2F2;
+    -moz-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
+    -webkit-box-shadow: 0 0 0.3em 0.3em #F2F2F2;
     cursor: pointer;
     text-decoration: none;
 }
 
+#my-advertise a:hover,
+#index-donate-join-bar a:hover, #post-donate-join-bar a:hover,
 #post-product-button-bar a:hover {
     text-decoration: none;
     cursor: pointer;
