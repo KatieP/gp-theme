@@ -153,6 +153,7 @@ ul, ol {margin:0;padding:0;}
 
 #content p, #content a, pre {
     font-size: 1.2em;
+    line-height: 1.6em;
 }
 
 #content a:hover {
@@ -2869,7 +2870,7 @@ ul.categorieslistmain {
 }
 
 #content .hp_miniauthor a, #content .hp_featuredauthor a {
-    font-size: 1.1em;
+    font-size: 1em;
     color: #134;
 }
 
@@ -4080,19 +4081,19 @@ ul.categorieslistmain {
    ========================================================================== */
 
 .widecolumn {
-    padding: 100px 0;
+    padding: 10em 0;
 }
 
 form#setupform {
     display: block;
     position: relative;
-    width: 292px;
-    margin: 20px auto 0;
-    padding: 0px 24px 0px 24px;
+    width: 29.2em;
+    margin: 2em auto 0;
+    padding: 0 0.4em 0 2.4em;
     background-color: #f2f2f2;
-    border: 8px solid #d5e8c2;
-    border-radius: 2px;
-    font-size: 11px;
+    border: 0.8em solid #d5e8c2;
+    border-radius: 0.2em;
+    font-size: 1.1em;
 }
 
 .mu_register input[type="submit"], .mu_register #blog_title, .mu_register #user_email, .mu_register #blogname, .mu_register #user_name {
@@ -4102,20 +4103,20 @@ form#setupform {
 form#setupform input[type="text"] {
     background-color: #fff;
     min-width: 0!important;
-    width: 268px!important;
-    margin-bottom: 4px;
+    width: 26.8em!important;
+    margin-bottom: 0.4em;
 }
 
 form#setupform input[type="submit"] {
     float: right;
-    margin-top: 10px
+    margin-top: 1em
 }
 
 form#setupform label {
     font-weight: 600;
     color: #01aed8!important;
     display: block;
-    font-size: 12px!important;
+    font-size: 1.2em!important;
     clear: both;
     margin: 0;
 }
@@ -4165,12 +4166,12 @@ form#setupform p.submit {display:block;height:44px;}
 .visuallyhidden {
     border: 0;
     clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
+    height: 0.1em;
+    margin: -0.1em;
     overflow: hidden;
     padding: 0;
     position: absolute;
-    width: 1px;
+    width: 0.1em;
 }
 
 .visuallyhidden.focusable:active,
@@ -4238,7 +4239,7 @@ form#setupform p.submit {display:block;height:44px;}
 
     pre,
     blockquote {
-        border: 1px solid #999;
+        border: 0.1em solid #999;
         page-break-inside: avoid;
     }
 

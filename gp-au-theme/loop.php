@@ -371,7 +371,7 @@ function theme_index_feed_item() {
 					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
 					'</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</span>';
 			#the_excerpt();			
-			echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Learn More</a>';
+			#echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Learn More</a>';
 			
 			if ( comments_open($post->ID) ) {
 				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
