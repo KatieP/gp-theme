@@ -3656,19 +3656,19 @@ ul.categorieslistmain {
 #content .topic-select {
     position: absolute;
     bottom: 0;
-    padding: 4px 10px;
+    padding: 0.3em 0.8em;
     background-color: #eee;
-    left: 220px;
+    left: 18em;
     font-weight: bold;
-    font-size: 11px;
+    font-size: 0.9em;
     color: #9da2a8;
     display: none;
-    -moz-border-radius-topright: 4px;
-    -moz-border-radius-topleft: 4px;
-    -webkit-border-top-left-radius: 4px;
-    -webkit-border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    -moz-border-radius-topright: 0.4em;
+    -moz-border-radius-topleft: 0.4em;
+    -webkit-border-top-left-radius: 0.4em;
+    -webkit-border-top-right-radius: 0.4em;
+    border-top-left-radius: 0.4em;
+    border-top-right-radius: 0.4em;
 }
 
 #content .topic-select:hover {
@@ -3678,23 +3678,23 @@ ul.categorieslistmain {
 #content .topic-container {
     position: relative;
     background-color: #eee;
-    min-height: 5px;
-    width: 484px;
+    min-height: 0.4em;
+    width: 40em;
     float: right;
-    margin-bottom: 18px;
+    margin-bottom: 1.5em;
 }
 
 #content .topic-content {
     display: none;
-    padding: 8px;
-    padding-bottom: 3px;
+    padding: 0.8em;
+    padding-bottom: 0.3em;
 }
 
 #content .topic-bookmark {
     float: left;
     position: relative;
-    margin-bottom: 2px;
-    margin-right: 10px;
+    margin-bottom: 0.2em;
+    margin-right: 1em;
 }
 
 #content .topic-bookmark a {
@@ -3704,12 +3704,12 @@ ul.categorieslistmain {
 #content .topic-bookmark-box {
     display: block;
     float: right;
-    border: 1px solid #bae0e9;
+    border: 0.1em solid #bae0e9;
     background-color: #fff;
-    padding: 0px 6px;
-    font-size: 11px;
-    line-height: 18px;
-    height: 18px;
+    padding: 0 0.5em;
+    font-size: 0.9em;
+    line-height: 1.5em;
+    height: 1.5em;
 }
 
 #content .topic-bookmark-box:hover {
@@ -3756,25 +3756,25 @@ ul.categorieslistmain {
 
 #content .topic-bookmark-options {
     background-color: #134;
-    border: 1px solid #bae0e9;
-    padding: 4px 6px;
+    border: 0.1em solid #bae0e9;
+    padding: 0.3em 0.5em;
     position: absolute;
-    left: 14px;
-    top: 21px;
-    width: 170px;
+    left: 1.2em;
+    top: 1.75em;
+    width: 14em;
     display: none;
     z-index: 1;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -moz-box-shadow: 1px 2px 3px 0px #000;
-    -webkit-box-shadow: 1px 2px 3px 0px #000;
-    box-shadow: 1px 2px 3px 0px #000;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    border-radius: 0.5em;
+    -moz-box-shadow: 0.1em 0.2em 0.3em 0 #000;
+    -webkit-box-shadow: 0.1em 0.2em 0.3em 0.0em #000;
+    box-shadow: 0.1em 0.2em 0.3em 0 #000;
 }
 
 #content .topic-bookmark-options a {
     color: #bae0e9;
-    font-size: 11px;
+    font-size: 0.9em;
 }
 
 #content .topic-bookmark-options a:hover {
@@ -3782,31 +3782,31 @@ ul.categorieslistmain {
 }
 
 #content .profile-loading, #content .profile-timeout {
-    margin: 0px 4px 10px 4px;
-    padding: 8px 4px;
+    margin: 0em 0.3em 0.8em 0.3em;
+    padding: 0.7em 0.3em;
     text-align: center;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 1.2em;
     background-color: #d4f2fa;
-    border: 1px solid #a2e7f8;
+    border: 0.1em solid #a2e7f8;
     display: none;
 }
 
 #content .profile-loading.top {
-    margin-top: 20px;
+    margin-top: 1.6em;
     margin-bottom: 0;
 }
 
 #content .profile-loading img {
     display: inline;
-    margin: 0 0 -4px 10px;
+    margin: 0 0 -0.1em 0.8em;
 }
 
 #content .total-posts {
     color: #134;
     font-weight: 500;
-    font-size: 24px;
-    padding: 30px 0px 22px 2px;
+    font-size: 2em;
+    padding: 1em 0 0.75em 0.1em;
     overflow: visible;
 }
 
@@ -3816,7 +3816,7 @@ ul.categorieslistmain {
 
 #content .post-number-paging {
     text-align: center;
-    margin: 20px 0 15px 0;
+    margin: 1.6em 0 1.25em 0;
 }
 
 #content .post-number-paging div {
@@ -3824,14 +3824,14 @@ ul.categorieslistmain {
     display: inline-block;
     color: #134;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 1.7em;
 }
 
 #content .post-number-paging a {
     color: #134;
     font-weight: 500;
-    font-size: 20px;
-    padding: 0px;
+    font-size: 1em;
+    padding: 0;
 }
 
 #content .post-number-paging a.active-page {
@@ -3843,13 +3843,13 @@ ul.categorieslistmain {
 }
 
 #content .post-number-paging a.post-number-arrow {
-    font-size: 30px;
-    line-height: 19px;
-    margin: 0px 6px;
+    font-size: 1.5em;
+    line-height: 0.7em;
+    margin: 0 0.2em
 }
 
 #content .profile-container {
-    min-height: 200px;
+    min-height: 20em;
     overflow: visible;
 }
 
@@ -3859,18 +3859,19 @@ ul.categorieslistmain {
 }
 
 #content .profile-action {
-    border: 1px solid #a2e7f8;
+	font-size: 0.6em;
+    border: 0.1em solid #a2e7f8;
     background-color: #d4f2fa;
     color: #01aed8;
-    padding: 3px 8px;
-    margin: -5px 4px 0 4px;
+    padding: 0.3em 0.8em;
+    margin: -0.5em 0.4em 0 0.4em;
     font-weight: bold;
-    line-height: 13px;
+    line-height: 1.3em;
     display: block;
     float: right;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content .profile-action:hover {
@@ -3879,22 +3880,23 @@ ul.categorieslistmain {
 
 #content .profile-action .bullet5 {
     float: right;
-    margin: 4px 0 0 5px;
+    margin: 0.4em 0 0 0.5em;
 }
 
 #content .profile-action-items {
     display: none;
+    font-size: 0.5em;
     position: absolute;
     z-index: 2;
-    top: -1px;
-    right: 4px;
-    width: 160px;
-    padding: 4px;
-    border: 1px solid #a2e7f8;
+    top: -0.1em;
+    right: 0.4em;
+    width: 16em;
+    padding: 0.4em;
+    border: 0.1em solid #a2e7f8;
     background-color: #d4f2fa;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0.2em;
+    -webkit-border-radius: 0.2em;
+    border-radius: 0.2em;
 }
 
 #content .profile-action-items li {
@@ -3906,7 +3908,7 @@ ul.categorieslistmain {
 
 #content .profile-action-items a {
     display: block;
-    padding: 2px 8px;
+    padding: 0.2em 0.8em;
 }
 
 #content .profile-action-container:hover .profile-action-items.no-js {
@@ -3919,18 +3921,18 @@ ul.categorieslistmain {
 }
 
 #content .profile-action-join {
-    font-size: 20px;
-    padding: 10px 20px;
+    font-size: 1.6em;
+    padding: 0.5em 1em;
     display: inline-block;
     width: auto;
     height: auto;
     cursor: pointer;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -o-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    border-radius: 8px;
+    -moz-border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    -o-border-radius: 0.4em;
+    -ms-border-radius: 0.4em;
+    -khtml-border-radius: 0.4em;
+    border-radius: 0.4em;
     background-color: #b6e18a;
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b6e18a),
         color-stop(70%, #5fbd00) );
@@ -3939,13 +3941,13 @@ ul.categorieslistmain {
     background: -o-linear-gradient(#b6e18a, #5fbd00 70%);
     background: -ms-linear-gradient(#b6e18a, #5fbd00 70%);
     background: linear-gradient(#b6e18a, #5fbd00 70%);
-    -moz-box-shadow: #d7eebe 0 1px 0 inset;
-    -webkit-box-shadow: #d7eebe 0 1px 0 inset;
-    -o-box-shadow: #d7eebe 0 1px 0 inset;
-    box-shadow: #d7eebe 0 1px 0 inset;
-    border: 1px solid #90d14e;
+    -moz-box-shadow: #d7eebe 0 0.1em 0 inset;
+    -webkit-box-shadow: #d7eebe 0 0.1em 0 inset;
+    -o-box-shadow: #d7eebe 0 0.1em 0 inset;
+    box-shadow: #d7eebe 0 0.1em 0 inset;
+    border: 0.1em solid #90d14e;
     color: white;
-    text-shadow: #44960d 0 -1px 0;
+    text-shadow: #44960d 0 -0.1em 0;
 }
 
 #content .profile-action-join:hover {
@@ -3953,21 +3955,21 @@ ul.categorieslistmain {
 }
 
 #content .profile-action-why {
-    font-size: 11px;
+    font-size: 1em;
 }
 
 #content .profile-edit-title {
     font-weight: 500;
-    font-size: 24px;
-    margin: 10px 4px 24px 4px;
+    font-size: 2em;
+    margin: 0.5em 0.2em 1em 0.2em;
     color: #134;
 }
 
 /**WEBFONTS FOR ICONS (WEBDINGS) TO REPRESENT POST TYPES FOR NEW USERS ON WELCOME PAGE**/
 .big-webdings-entypoRegular {
     font-family: EntypoRegular;
-    font-size: 80px;
-    line-height: 100px;
+    font-size: 6em;
+    line-height: 1.25em;
 }
 
 /* Pictonic webdings */
@@ -3990,12 +3992,12 @@ ul.categorieslistmain {
 .icon-cog-thick a, .icon-cog-narrow, .icon-cog-narrow a, .icon-cog-full, .icon-cog-full a,
 .icon-cog-semifull, .icon-cog-semifull a {
     font-family: pictonic;
-    font-size: 80px;
-    line-height: 100px;
-    letter-spacing: 25px;
-    margin-top: 70px;
+    font-size: 6em;
+    line-height: 1.25em;
+    letter-spacing: 0.3em;
+    margin-top: 0.8em;
     color: grey;
-    padding-left: 22px;
+    padding-left: 0.25em;
 }
 
 #content .inner-icon-container:hover, .icon-thunderbolt:hover, .icon-party-balloon:hover, .icon-trophy-2:hover,
@@ -4007,50 +4009,55 @@ ul.categorieslistmain {
 /* Containers for webding icon display */
 
 #content .icon-container {
-    width: 80%;
-    margin: 33px 10% 20% 10%;
+    width: 70%;
+    margin: 5% 15% 20% 15%;
 }
 
 #content .icon-container-row {
     width: 100%;
-    margin-top: 33px;
+    margin-top: 3em;
 }
 
 #content .icon-container-row img {
-    margin: 0px;
+    margin: 0;
+    width: 100%;
 }
 
 #content .icon-container .loop-title, #content .icon-container .loop-title a {
     text-align: center; 
-    margin-top: 50px;
+    margin-top: 3em;
     color: #666;    
 }
 
 #content .inner-icon-container {
     color: grey;
-    width: 20%;
+    width: 25%;
     float: left;
     text-align: center;
     display: inline;
-    margin: 0 0 60px 0;
+    margin: 0 0 4em 0;
 }
 
 #content .icon-heading-text {
-    font-size: 18px;
+    font-size: 1.3em;
+    display: block;
+}
+
+#content .icon-heading-desc {
+    line-height: 1.8em;
     display: block;
 }
 
 #content .icon-body-text {
-    font-size: 16px;
+    font-size: 1.4em;
     line-height: 1.5em;
     color: grey;
 }
 
 #content .icon-body-text a {
-    font-size: 16px;
+    font-size: 1em;
     line-height: 1.5em;
 }
-
 
 #content .icon-container-row #post-product-button-bar {
     width: 20%;
@@ -4062,9 +4069,9 @@ ul.categorieslistmain {
 /* Google maps that go under each post */
 
 #post_google_map_canvas {
-    width: 636px; 
-    height:300px;
-    margin-top: 30px;
+    width: 100%; 
+    height:25em;
+    margin-top: 2.5em;
 }
 
 
