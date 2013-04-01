@@ -38,7 +38,6 @@
 					<span class="title">Subscribe to the Green Razor</span>
 					<span id="subscribe-tag">The latest green news straight to you! <a href="/about/green-razor-newsletter">Read more...</a></span>
 					<form>
-						<div class="icon-subscribe"></div>
 						<div id="subscribe-email">Email address: <span>(e.g. citizen@green.com)</span></div>
 						<div id="subscribe-field"><input type="text" name="subscriber-email" id="subscriber-email" maxlength="255" /></div>
 						<div id="subscribe-button">Subscribe<input type="button" name="subscribe" title="subscribe" onclick='return create();' /></div>
