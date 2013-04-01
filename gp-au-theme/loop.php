@@ -255,7 +255,7 @@ function theme_singlecomments() {
 		?>
 		<div id="facebook-comments">
 			<h3 id="reply-title">Leave a Reply</h3>
-			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="636"></fb:comments>
+			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="567px"></fb:comments>
 		</div>
 		<?php
 	}

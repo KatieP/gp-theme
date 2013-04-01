@@ -80,7 +80,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 .pos, .widecolumn {
-    width: 97.2em;
+    width: 87.2em;
     margin: 0 auto;
     position: relative;
     clear: both;
@@ -1422,11 +1422,11 @@ header a:hover {
 }
 
 #footer-nav {
-    width: 79em;
+    width: 69%;
 }
 
 #footer-contact {
-    width: 18.2em;
+    width: 31%;
     position: relative;
 }
 
@@ -1962,7 +1962,7 @@ header a:hover {
 #relevant-posts .relevant-item .title {
     display: block;
     float: right;
-    width: 72%;
+    width: 70%;
     font-size: 1.4em;
     line-height: 1.6em;
     display: block;
@@ -2383,7 +2383,7 @@ header a:hover {
 /** AUTHOR DETAILS **/
 #content .author-photo {
     float: left;
-    width: 26%;
+    width: 29%;
     overflow-x: hidden;
     margin-right: 2%;
 }
@@ -2393,7 +2393,7 @@ header a:hover {
 }
 
 #content .author-box { 
-    width: 72%;
+    width: 69%;
     float: left;
     font-size: 1.1em;
     line-height: 1.8em;
@@ -2898,6 +2898,7 @@ ul.categorieslistmain {
 }
 
 #content .profile-tabs {
+	font-size: 0.9em;
     border-bottom: 0.1em solid #61c201;
     margin: 0;
     clear: both;
