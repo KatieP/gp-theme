@@ -344,7 +344,7 @@ function theme_index_feed_item() {
     if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 		$imageURL = $imageArray[0];
-		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="140" /></a>';
+		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"/></a>';
     }
     else {	/** DISPLAY LOGO/PROFILE PICTURE INSTEAD **/
 		echo '<span class="profile_minithumb"><a href="' . $post_author_url . '">' . 
@@ -828,14 +828,8 @@ function home_index() {
 		foreach ( $pageposts as $post ) { 
 			setup_postdata($post);
 			
-			# Display post, if project display activist bar also
-			if ( get_post_type() != 'gp_projects' ) {
-				theme_index_feed_item();
-			} 
-			else {
-				theme_index_feed_item();		 
-				theme_index_contributor_donate_join_bar();
-			}
+			# Display feed item
+			theme_index_feed_item();
 			
 			# Add post location data to JSON string
 			$json .= get_post_location_json_data();

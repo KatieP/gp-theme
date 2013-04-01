@@ -1303,7 +1303,6 @@ function coming_events() {
 		?>
 		
 		<div id="post-filter">
-		   <!-- <span class="left">Jump to Region:&nbsp;&nbsp; --> 
 		        <select name="filterby_state" id="filterby_state">
 		            <option value="/events/<?php echo strtolower( $gp->location['country_iso2'] ); ?>/">All regions</option>
 		
@@ -1333,7 +1332,6 @@ function coming_events() {
 		?>
 		
 		        </select>
-		    <!-- </span> -->
 		    <div class="clear"></div>
 		</div>
 		
@@ -1370,11 +1368,11 @@ function coming_events() {
 				if ( has_post_thumbnail() ) {	# DISPLAY EVENTS FEATURED IMAGE
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
 					$imageURL = $imageArray[0];
-					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="50" height="50" /></a>';
+					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
 				} else {
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(322), 'icon-thumbnail' ); 	# DEFAULT IMAGE STORED IN POST WHERE ID = 322
 					$imageURL = $imageArray[0];
-					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" width="50" height="50" /></a>';
+					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
 				}
 				?>
 				<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>

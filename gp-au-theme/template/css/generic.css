@@ -786,14 +786,14 @@ header a:hover {
 
 #header-search {
 	overflow: hidden;
-    width: 16em;
+    width: 53%;
     float: right;
     height: 2.4em;
 }
 
 #header-auth {
 	height: 3.6em;
-    width: 14em;
+    width: 47%;
     float: right;
     margin-top: 0.1em;
 }
@@ -808,7 +808,7 @@ header a:hover {
 }
 
 .pos #header-tagline {
-    min-width: 63.6em;
+    min-width: 68%;
     height: 2em;
     line-height: 2em;
     font-size: 1em;
@@ -875,7 +875,7 @@ header a:hover {
   #search-field {
     float: left;
     height: 2.3em;
-    width: 12.6em;
+    width: 75%;
     background-color: #f2f2f2;
     border: 0.1em solid #4bb703;
       -moz-border-top-left-radius: 0.3em;
@@ -1369,8 +1369,8 @@ header a:hover {
 }
 
 /** COLUMN 3 **/
-#col3 {
-    width: 30em;
+#col3, .template-right {
+    width: 31%;
     float: right;
 }
 
@@ -1393,13 +1393,13 @@ header a:hover {
 
 /** COLUMN 2 **/
 #col2 { 
-    width: 63.6em;
+    width: 65%;
     overflow: hidden;
 }
 
 /** 2 COLUMN SETTING **/
-#col2.set2col {
-    width: 80.6em;
+#col2.set2col, .template-left {
+    width: 65%;
     margin-right: 0;
 }
 
@@ -1954,10 +1954,15 @@ header a:hover {
     border-radius: 0.2em;
 }
 
+#relevant-posts .hp_minithumb img {
+    width: 98%;
+    height: 98%;
+}	
+	
 #relevant-posts .relevant-item .title {
     display: block;
     float: right;
-    width: 73%;
+    width: 72%;
     font-size: 1.4em;
     line-height: 1.6em;
     display: block;
@@ -3001,6 +3006,7 @@ ul.categorieslistmain {
 #content .profile_minithumb img {
     margin: 0.4em 0 1.8em 0;
     float: left;
+    width: 22%;
 }
 
 #content .profile-postbox .post-details {
@@ -3287,14 +3293,7 @@ ul.categorieslistmain {
     margin-bottom: 3em;
 }
 
-#index-donate-join-bar {
-    margin-top: 0em;
-    margin-bottom: 2em;
-    min-width: 74%;
-    float: right;
-}
-
-#post-donate-join-bar span, #index-donate-join-bar span, #post-product-button-bar span {
+#post-donate-join-bar span, #post-product-button-bar span {
     padding: 0.2em 0.4em 0 0.4em;
     overflow: hidden;
     float: left;
@@ -3312,30 +3311,30 @@ ul.categorieslistmain {
     font-family: inherit;
     border: 0.1em solid #CCC;
     border-radius: 0.4em;
-    width: 7.87em;
+    width: 7.8em;
 }
 
-#post-donate-join-bar #donate, #index-donate-join-bar #donate,
+#post-donate-join-bar #donate,
 #my-advertise #advertorial input[type="button"] {
     background-color: #00AED7;
 }
 
-#post-donate-join-bar #join, #index-donate-join-bar #join,
+#post-donate-join-bar #join,
 #my-advertise #competition input[type="button"] {
     background-color: #FC0D6B;
 }
 
-#post-donate-join-bar #letter, #index-donate-join-bar #letter,
+#post-donate-join-bar #letter,
 #my-advertise #listing input[type="button"] {
     background-color: #61C201;
 }
 
-#post-donate-join-bar #petition, #index-donate-join-bar #petition, #post-product-button-bar #product-button,
+#post-donate-join-bar #petition, #post-product-button-bar #product-button,
 #my-advertise #email input[type="button"] {
     background-color: #F15C00;
 }
 
-#post-donate-join-bar #volunteer, #index-donate-join-bar #volunteer {
+#post-donate-join-bar #volunteer {
     background-color: #EBA006;
     margin-right: 0;
 }
@@ -3680,7 +3679,7 @@ ul.categorieslistmain {
     position: relative;
     background-color: #eee;
     min-height: 0.4em;
-    width: 40em;
+    width: 74%;
     float: right;
     margin-bottom: 1.5em;
 }

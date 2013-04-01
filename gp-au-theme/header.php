@@ -196,64 +196,64 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 		<!-- End Facebook JavaScript SDK -->
 	
 		<header>
-    		<div class="pos"> 
-                <a id="header-logo" href="/">greenpag.es</a>
-			    <nav id="header-nav">
-				    <ul>
-					    <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
-		                $post_type = ( isset($post) ? get_post_type($post->ID) : "" );
-					    ?>
-					    <li><a href="/news/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
-					    <li><a href="/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
-					    <li><a href="/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
-					    <li><a href="/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-					    <?php 
-					    # Display Directory link only if user in Australia 
-                        # Get location from user ip address function	
-                        $user_country = $gp->location['country'];
-	                    if ( $user_country == 'Australia' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
-	                    ?>					    
-				    </ul>
-			    </nav>
-			   
-			
-			<?php 
-			#if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
-			if ( !is_user_logged_in() ) {
-			?>
-			<nav id="header-auth">
-				<?php if (!isset($_GET['noscript'])) { ?>
-
-				<ul id="auth-tools">
-					<li id="auth-youraccount">
-						<!--
-						Temporarily disabling simple-modal login as register and login are breaking for many users
-						<a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
-						-->
-                        <a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
+    		<div class="pos">
+    		    <div class="template-left">
+                    <a id="header-logo" href="/">greenpag.es</a>
+			        <nav id="header-nav">
+				        <ul>
+					        <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
+		                    $post_type = ( isset($post) ? get_post_type($post->ID) : "" );
+					        ?>
+					        <li><a href="/news/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
+					        <li><a href="/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
+					        <li><a href="/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
+					        <li><a href="/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
+					        <?php 
+					        # Display Directory link only if user in Australia 
+                            # Get location from user ip address function	
+                            $user_country = $gp->location['country'];
+	                        if ( $user_country == 'Australia' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
+	                        ?>					    
+				        </ul>
+			        </nav>
+			    </div>
+			    <div class="template-right">
+			    <?php 
+			    #if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
+			    if ( !is_user_logged_in() ) {
+			    ?>
+			    <nav id="header-auth">
+				    <?php if (!isset($_GET['noscript'])) { ?>
+				    <ul id="auth-tools">
+					    <li id="auth-youraccount">
+						    <!--
+						    Temporarily disabling simple-modal login as register and login are breaking for many users
+						    <a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
+						    -->
+                            <a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
                             Log In
-                        </a>
-                        <span class="in-or-out"> | </span>
-                        <a href="/wp-login.php?action=register" class="lower">Register</a>
-					</li>
-				</ul>
-				<div class="clear"></div>
-				<?php } ?>
-			</nav>
-			<?php 
-			} else { 
+                            </a>
+                            <span class="in-or-out"> | </span>
+                            <a href="/wp-login.php?action=register" class="lower">Register</a>
+					    </li>
+				    </ul>
+				    <div class="clear"></div>
+				    <?php } ?>
+			    </nav>
+			    <?php 
+			    } else { 
 			    
-			    global $wpdb;
-			    global $current_site;
+			        global $wpdb;
+			        global $current_site;
 			    	
-			    $post_author_url = ( isset($current_user) ? get_author_posts_url($current_user->ID) : "" );
-			?>
-			<nav id="header-auth">
-			  	<div id="auth-forgot">
-					<?php echo "Signed in as <a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
-				</div>
-				<ul id="auth-tools">
-					<li id="auth-yourfavourites" class="no-js">
+			        $post_author_url = ( isset($current_user) ? get_author_posts_url($current_user->ID) : "" );
+			    ?>
+			    <nav id="header-auth">
+			  	    <div id="auth-forgot">
+					    <?php echo "<a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
+				    </div>
+				    <ul id="auth-tools">
+					    <li id="auth-yourfavourites" class="no-js">
 							<?php
 							#$querystr = "SELECT REPLACE(meta_key, 'likepost', '') as post_id FROM wp_usermeta WHERE meta_value > 0 and user_id = 5 and meta_key LIKE 'likepost%' order by meta_value DESC limit 5;";
 							$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id 
@@ -292,78 +292,79 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 								echo '<li><div class="account-heart">Love it!</div></li>';
 							}
 							?>
-						</ul>
-					</li>
-					<li id="auth-yournotifications" class="no-js">
-						<a href="#/" class="auth-yournotifications-start" title="Your Notifications">
-							<span class="icon-notifications">My Notifications</span>
-						</a>
-						<ul id="auth-dash-notifications" class="auth-dash">
-							<li class="auth-dash-title">You have no notifications yet.</li>
-						</ul>
-					</li>
-					<li id="auth-youraccount" class="no-js">
-						<a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
-							<span>My Account</span>
-						</a>
-						<ul id="auth-dash-account" class="auth-dash">
-							<li class="auth-dash-title">Account Options</li>
-							<li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
-							<li class="auth-account-options">	
-								<a href="<?php echo $post_author_url; ?>" title="Your profile">View Profile</a> 
-								<a href="/forms/profile-editor/" title="Update Profile">Update Profile</a>
-								<a href="/forms/profile-notifications/" title="Notifications">Notifications</a>
-								<a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
-								<a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
-							</li>
-							<!-- 
-							<li class="auth-dash-title">Your Toolbox</li>
-							<li class="auth-toolbox">
-								<a href="">
-									<span class="icon-listcheck"></span>
-									List your business
-									<span class="moreinfo">More info</span>
-								</a>
+					        </ul>
+					    </li>
+					    <li id="auth-yournotifications" class="no-js">
+						    <a href="#/" class="auth-yournotifications-start" title="Your Notifications">
+							    <span class="icon-notifications">My Notifications</span>
+						    </a>
+						    <ul id="auth-dash-notifications" class="auth-dash">
+							    <li class="auth-dash-title">You have no notifications yet.</li>
+						    </ul>
+					    </li>
+					    <li id="auth-youraccount" class="no-js">
+						    <a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
+							    <span>My Account</span>
+						    </a>
+						    <ul id="auth-dash-account" class="auth-dash">
+							    <li class="auth-dash-title">Account Options</li>
+							    <li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
+							    <li class="auth-account-options">	
+								    <a href="<?php echo $post_author_url; ?>" title="Your profile">View Profile</a> 
+								    <a href="/forms/profile-editor/" title="Update Profile">Update Profile</a>
+								    <a href="/forms/profile-notifications/" title="Notifications">Notifications</a>
+								    <a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
+								    <a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
+							    </li>
+							    <!-- 
+							    <li class="auth-dash-title">Your Toolbox</li>
+							    <li class="auth-toolbox">
+								    <a href="">
+									    <span class="icon-listcheck"></span>
+									    List your business
+									    <span class="moreinfo">More info</span>
+								    </a>
 								
-								<?php
-								# $story_contributors = array('administrator', 'contributor', 'author', 'editor');
-								# if ( get_user_role($story_contributors) )  {
-								?>
-								<a href="">
-									<span class="icon-book"></span>
-									Submit a story
-									<span class="moreinfo">More info</span>
-								</a>
-								<?php # } else { ?>
-								<a href="">
-									<span class="icon-book"></span>
-									Become a content partner
-									<span class="moreinfo">More info</span>
-								</a>
-								<?php # } ?>
+								    <?php
+								    # $story_contributors = array('administrator', 'contributor', 'author', 'editor');
+								    # if ( get_user_role($story_contributors) )  {
+								    ?>
+								    <a href="">
+									    <span class="icon-book"></span>
+									    Submit a story
+									    <span class="moreinfo">More info</span>
+								    </a>
+								    <?php # } else { ?>
+								    <a href="">
+									    <span class="icon-book"></span>
+									    Become a content partner
+									    <span class="moreinfo">More info</span>
+								    </a>
+								    <?php # } ?>
 								
-								<a href="">
-									<span class="icon-star"></span>
-									Put GP on my site
-									<span class="moreinfo">More info</span>
-								</a>
-							</li>
-							//-->
-						</ul>
-					</li>
-				</ul>
-				<div class="clear"></div>
-			</nav>
-			<?php } ?>
-			<!-- Google CSE Search Box -->
-            <div id="header-search">
-                <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
-			        <div id="search-field"><input type="text" maxlength="255" size="40" name="q" placeholder="Search" /></div>
-			        <div id="search-button"><input type="submit" value=""/></div>
-			    </form>
-			</div>
-			<div class="clear"></div>
-            <!-- Google CSE Search Box Ends -->			
+								    <a href="">
+									    <span class="icon-star"></span>
+									    Put GP on my site
+									    <span class="moreinfo">More info</span>
+								    </a>
+							    </li>
+							    //-->
+						    </ul>
+					    </li>
+				    </ul>
+				    <div class="clear"></div>
+			    </nav>
+			    <?php } ?>
+			    <!-- Google CSE Search Box -->
+                <div id="header-search">
+                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
+			            <div id="search-field"><input type="text" maxlength="255" size="40" name="q" placeholder="Search" /></div>
+			            <div id="search-button"><input type="submit" value=""/></div>
+			        </form>
+			    </div>
+			    <div class="clear"></div>
+                <!-- Google CSE Search Box Ends -->
+            </div>			
             <?php
        	    # Display location tag line and change region filter option
 	        # Get location from user ip address function
