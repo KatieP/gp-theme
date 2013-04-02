@@ -1067,8 +1067,8 @@ header a:hover {
     z-index: 2;
     top: 4.8em;
     right: 5em;
-    width: 28.5em;
-    height: 27.8em;
+    width: 25%;
+    height: 19em;
     background-color: #f2f2f2;
     border: 0.8em solid #d5e8c2;
     -moz-border-radius-bottomleft: 0.2em;
@@ -1133,7 +1133,7 @@ header a:hover {
 
 #auth-tools .auth-dash li .what {
     display: block;
-    width: 17em;
+    width: 80%;
     float: right;
     font-size: 1.2em;
     font-weight: 600;
@@ -1155,7 +1155,7 @@ header a:hover {
     padding: 0.3em 0.6em 0.3em 0.6em;
     color: #666;
     vertical-align: middle;
-    width: 26em;
+    width: 98%;
     overflow: hidden;
     border-bottom: 0.1em solid #ccc;
 }
@@ -1204,7 +1204,7 @@ header a:hover {
 #auth-tools .auth-dash li.auth-dash-seeall a {
     color: #fff;
     line-height: 1.3em;
-    width: 27em;
+    width: 100%;
     font-size: 1.1em;
 }
 
@@ -1215,12 +1215,12 @@ header a:hover {
 
 #auth-tools #auth-dash-account .auth-dash-title {
     margin-bottom: 0.6em;
-    width: 27em;
+    width: 95%;
 }
 
 #auth-tools .auth-dash .auth-account-options {
     float: right;
-    width: 20.8em;
+    width: 70%;
 }
 
 #auth-tools .auth-dash .auth-account-options a {

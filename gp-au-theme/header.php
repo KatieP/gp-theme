@@ -266,7 +266,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							                 AND m0.user_id = $current_user->ID 
 							                 AND m0.meta_key LIKE 'likepost%' 
 							                 AND m1.meta_value >= 1 
-							             ORDER BY m0.meta_value DESC LIMIT 5;";
+							             ORDER BY m0.meta_value DESC LIMIT 3;";
 							$pageposts = $wpdb->get_results($querystr, OBJECT);
 							$numPosts = $wpdb->num_rows-1;
 
