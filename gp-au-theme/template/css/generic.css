@@ -1722,7 +1722,7 @@ header a:hover {
     width: 86%;
     height: 1.3em;
     overflow: hidden;
-    padding: 0 0 0.5em 0.4em;
+    padding: 0 0 0.5em 0;
     margin-top: -0.5em;
 }
 
@@ -1747,7 +1747,7 @@ header a:hover {
     width: 15.6em;
     background-color: #f2f2f2;
     border: 0.1em solid #00aed7;
-    margin: 0 0 0 0.4em;
+    margin: 0;
     -moz-border-radius: 0.2em;
     -webkit-border-radius: 0.2em;
     border-radius: 0.2em;

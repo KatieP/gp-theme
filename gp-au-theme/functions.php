@@ -1301,12 +1301,16 @@ function coming_events() {
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
 		?>
-		
+		<!-- THIS FILTER BY REGION FUNCTIONALITY SHOULD BE PROVIDED IN HEADER.PHP BY USER CLICKING ON THE 
+		     LOCATION STRING AT THE END OF THE TAGLINE TO REVEAL DROPDOWN MENU (OR TEXTFIELD WITH AUTOCOMPLETE):
+		     'Everything environmental happening around <location_string>.'
+		      
 		<div id="post-filter">
 		        <select name="filterby_state" id="filterby_state">
-		            <option value="/events/<?php echo strtolower( $gp->location['country_iso2'] ); ?>/">All regions</option>
+		            <option value="/events/<?php #echo strtolower( $gp->location['country_iso2'] ); ?>/">All regions</option>
 		
 		<?php
+		/**
 		$optgroup = null;
 		foreach ($edition_states as $state) {
 		    if ( !isset( $state['parent'] ) ) {
@@ -1329,12 +1333,13 @@ function coming_events() {
 		}
 		
 		echo "</optgroup>";
+		**/
 		?>
 		
 		        </select>
 		    <div class="clear"></div>
 		</div>
-		
+		 -->
 		<?php
 		$i = 0;
 		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR
