@@ -1087,7 +1087,8 @@ function events_index() {
 			#}
 			#theme_indextitle();
 			echo '<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
-			echo '<a href="' . get_permalink($post->ID) . '" class="more-link">Continue reading...</a><div>';
+			#echo '<a href="' . get_permalink($post->ID) . '" class="more-link">Continue reading...</a>
+			echo '<div>';
 			theme_indexdetails('author');
 			echo '<div class="post-loc"><a href="/events/' . strtolower($post->gp_google_geo_country) . '/' . strtolower($post->gp_google_geo_administrative_area_level_1) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a> | <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' . strtolower($post->gp_google_geo_administrative_area_level_1) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a></div><div class="clear"></div></div>';
 			#the_content('Continue reading...');
@@ -1125,10 +1126,6 @@ function events_index() {
 		<?php
 		}
 	}
-	
-	echo  '<h3>Like to post an environmental event here? 
-	       <a href="/register">Sign up for an account</a> and 
-	       <a href="/forms/create-event-post/">upload</a> - it\'s free!<h3>';
 }
 
 function jobs_index() {
