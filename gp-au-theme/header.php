@@ -372,7 +372,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 
 	        $geo_currentlocation = $gp->location;
             $user_location = $geo_currentlocation['city'];
-    
+            $posttype_slug = getPostTypeSlug($post_type);
 	        ?>
             <script type="text/javascript">
                 function show_location_field() {
@@ -384,11 +384,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		<div class="post-details" id="header-tagline">
 	            Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
 	            <span id="header_location_list" class="hidden">
-	                <select name="filterby_state" id ="filterby_state">
+	                <select name="filterby_state" id="filterby_state">
 	                    <?php
 	                    $editions = Site::getEditions();
 	                    foreach ( $editions as $edition ) {
-                            echo "<option value=\"/news/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+                            echo "<option value=\"/". $posttype_slug ."/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
                         }
                         ?>
 	                </select>

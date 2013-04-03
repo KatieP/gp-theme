@@ -2580,7 +2580,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 			        break;
 				case 'gp_advertorial':
 					$post_title = 'Products';
-					$post_url = '/news-stuff';
+					$post_url = '/products';
 			        break;
 				case 'gp_competitions':
 					$post_title = 'Competitions';
