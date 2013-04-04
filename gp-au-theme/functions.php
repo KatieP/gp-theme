@@ -1446,15 +1446,15 @@ function coming_events() {
    								dialog_str = dialog_str.concat(next_str);
    							}
    							
-   							var x = $(this).offset().left - $(document).scrollLeft() - $(this).outerWidth() - 4;
+   							var x = $(this).offset().left - $(document).scrollLeft() - $(this).outerWidth() - 30;
                             var y = $(this).offset().top - $(document).scrollTop();
    							
 							$(function() {
 								$( "#event-dialog" ).html(dialog_str);
 								$( "#event-dialog" ).dialog({ 
 								    position: [x,y], 
-								    minHeight: 142, 
-								    width: 288, 
+								    minHeight: 170, 
+								    width: 270, 
 								    dialogClass: "event-dialog-wrap",
 								    open: function(e, ui) { 
 								        $(document).bind(\'click\', function(e) {
