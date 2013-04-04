@@ -1,181 +1,49 @@
-		<footer class="pos">
-			<nav id="footer-nav"> 
-				<ul>
-					<li class="title">Get involved</li>
-					<?php
-					if ( is_user_logged_in() ) {
-						wp_list_pages('show_count=0&hide_empty=0&depth=2&title_li=&child_of=83&exclude=85,6338');
-					} else {
-						wp_list_pages('show_count=0&hide_empty=0&depth=2&title_li=&child_of=83&exclude=6338');
-					} 
-					?>
-				</ul>	
-			</nav>
-			<nav id="footer-contact">
-				<div id="footer-contact-click-box">
-					<div class="click-contact-info" id="click-contact-address">
-					    Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre>
-					</div>
-					<div class="click-contact-info" id="click-contact-phone">
-					    Phone:<pre>Promoting an event? <br /><a href="/welcome/">Post it on Green Pages for free</a>.<br /><br /><?php echo get_option('gp_phone1'); ?></pre>
-					</div>
-					<div class="click-contact-info" id="click-contact-email">
-					    Email Address:<pre>Promoting a product or company? <br /><a href="/welcome/">Post it on Green Pages for $89</a>.<br /><br /><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
-					</div>
-					<div class="click-contact-info" id="click-contact-skype">
-					    Skype ID:<pre><?php echo get_option('gp_skype1'); ?></pre>
-					</div>
-				</div>
-				<ul>
-					<li class="title">Contact us</li>
-					<li class="contact-icon" id="contact-address"></li>
-					<li class="contact-icon" id="contact-phone"></li>
-					<li class="contact-icon" id="contact-email"></li>
-					<li class="contact-icon" id="contact-skype"></li>
-				</ul>
-			</nav>
-			<div class="clear"></div>
-			<div id="footer-ad">
-				<div>
-					<span class="icon-advertisement">Advertisement</span>
-					<!-- stg1_ldrbrd -->
-					<script type='text/javascript'>
-						GA_googleFillSlot("stg1_ldrbrd");
-					</script>
-				</div>
-			</div>
-			<nav id="footer-web">
-				<ul>
-					<li class="pagenav">Site Map
-						<ul>
-							<li><a href="http://directory.thegreenpages.com.au/">Directory</a></li>
-							<li><a href="/news">News</a></li>
-							<li><a href="/events">Events</a></li>
-							<li><a href="/eco-friendly-products">New Stuff</a></li>
-							<li><a href="/competitions">Competitions</a></li>
-							<li><a href="/people">People</a></li>
-							<li><a href="/projects">Projects</a></li>
-						</ul>
-					</li>
-				</ul>
-			</nav>
-			<nav id="footer-dir">
-				<ul>
-					<li>Home &amp; Building
-						<ul>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4330"); ?>">Appliances</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4331"); ?>">Building Products</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4332"); ?>">Building Services</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4333"); ?>">Cleaning</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4334"); ?>">Energy Efficiency</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4337"); ?>">Gardening</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4336"); ?>">Home Products &amp; Furnishings</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4338"); ?>">Information &amp; Tools</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4335"); ?>">Solar</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4339"); ?>">Water Savings</a></li>
-						</ul>
-					</li>
-					<li>Business
-						<ul>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4340"); ?>">Associations &amp; Certifications</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4341"); ?>">Carbon Trading &amp; Offsets</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4343"); ?>">Design &amp; Marketing</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4350"); ?>">Environmental Services & Consultants</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4348"); ?>">Finance</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4349"); ?>">Industrial Water Products</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4345"); ?>">Landscape</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4344"); ?>">Office Products &amp; Fitout</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4347"); ?>">Printing &amp; Paper</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4346"); ?>">Professional Training</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4351"); ?>">Recycling &amp; Waste</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4342"); ?>">Technology</a></li>
-						</ul>
-					</li>
-					<li>Life &amp; Style
-						<ul>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4352"); ?>">Beauty &amp; Organic Health</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4359"); ?>">Books, Mags &amp; DVD's</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4362"); ?>">Cars, Bikes &amp; Scooters</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4353"); ?>">Children &amp; Baby</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4358"); ?>">Consumer Electronics</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4355"); ?>">Eco Retail Stores</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4361"); ?>">Eco Travel</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4363"); ?>">Education &amp; Short Courses</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4354"); ?>">Fashion &amp; Clothing</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4360"); ?>">Green Organisations</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4364"); ?>">Money</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4357"); ?>">Organic Food &amp; Beverage Products</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4356"); ?>">Organic Stores, Cafes &amp; Markets</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4365"); ?>">Pet Care</a></li>
-							<li><a href="<?php echo esc_url("http://directory.thegreenpages.com.au/index.asp?page_id=80&id=4366"); ?>">Weddings &amp; Events</a></li>
-						</ul>
-					</li>
-				</ul>
-			</nav>
-			<nav id="footer-about">
-				<ul>
-					<?php wp_list_pages('show_count=0&hide_empty=0&depth=1&title_li=About Us&child_of=2') ?>
-				</ul>
-			</nav>
-			<div class="clear"></div>
-			<div id="footer-copy"><?php echo get_option('gp_footertagline'); ?></div>
+		<footer>
+    		<div class="pos">
+    		    <div class="template-left">
+			        <nav id="footer-nav"> 
+				        <ul>
+				            <li><a href="/welcome/">Get Started</a></li>
+					        <li><a href="/about/partners/">Content Partners</a></li>
+					        <li><a href="/about/badges/">Badges</a></li>
+					        <li><a href="/about/faq/">FAQ</a></li>
+					        <li><a href="about/our-vision/">About</a></li>
+					        <li><a href="/about/advertisers/">Advertisers</a></li>
+					        <li><a href="/about/rate-card/">Rate Card</a></li>
+					        <li><a href="/about/media-kit/">Media Kit</a></li>
+				        </ul>	
+			        </nav>
+			    </div>
+			    <div class="template-right">
+			        <nav id="footer-contact">
+				        <div id="footer-contact-click-box">
+					        <div class="click-contact-info" id="click-contact-address">
+					            Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre>
+					        </div>
+					        <div class="click-contact-info" id="click-contact-phone">
+					            Phone:<pre>Promoting an event? <br /><a href="/welcome/">Post it on Green Pages for free</a>.<br /><br /><?php echo get_option('gp_phone1'); ?></pre>
+					        </div>
+					        <div class="click-contact-info" id="click-contact-email">
+					            Email Address:<pre>Promoting a product or company? <br /><a href="/welcome/">Post it on Green Pages for $89</a>.<br /><br /><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
+					        </div>
+				        </div>
+				        <ul>
+					        <li class="title">Contact us</li>
+					        <li class="contact-icon" id="contact-address"></li>
+					        <li class="contact-icon" id="contact-phone"></li>
+					        <li class="contact-icon" id="contact-email"></li>
+				        </ul>
+			        </nav>
+			    </div>
+            </div>
 		</footer>
-		
 		<?php 
         /* Always have wp_footer() just before the closing </body>
          * tag of your theme, or you will break many plugins, which
          * generally use this hook to reference JavaScript files.
          */
-		
         wp_footer();
-        global $current_user, $wpdb;
-
-        if ( ( isset( $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] ) && $current_user->{$wpdb->prefix . 'subscription'}["subscription-greenrazor"] != "true" ) || !is_user_logged_in()) {
         ?>
-		<script type='text/javascript'>
-			var allDialogs = [];
-			var seq = 0;
-			function create(options) {
-				options = $.extend({title: "Dialog"}, options || {});
-				var subemail = document.getElementById("subscriber-email").value;
-				var formInner = '<form action="http://greenpages.createsend.com/t/r/s/jhdkdh/" method="post" class="boxy" id="subForm" >' +
-							'<div>' +
-								'<label for="jhdkdh-jhdkdh">Email:</label>';
-								if ( $.trim(subemail).length > 0 ) {
-									formInner = formInner + '<input type="text" name="cm-jhdkdh-jhdkdh" id="jhdkdh-jhdkdh" value="' + subemail + '" />';
-        						} else {
-        							formInner = formInner + '<input type="text" name="cm-jhdkdh-jhdkdh" id="jhdkdh-jhdkdh" value="<?php if ( isset($current_user->user_email) ) echo esc_attr($current_user->user_email); ?>" />';
-        						}
-        						<?php 
-								if (!is_user_logged_in()) { ?>
-									formInner = formInner + '<label for="name">Name:</label>' +
-									'<input type="text" name="cm-name" id="name" />';
-								<?php } else { ?>
-									formInner = formInner + '<input type="hidden" name="cm-name" id="name" value="<?php if ( isset($current_user->display_name) ) echo esc_attr($current_user->display_name); ?>" />';
-								<?php } ?>
-								formInner = formInner + '<label for="Postcode">Postcode:</label>' +
-								'<input type="text" name="cm-f-ulaut" id="Postcode" maxlength="4" value="<?php if ( isset($current_user->locale_postcode) ) echo esc_attr($current_user->locale_postcode); ?>" />';
-								<?php if (is_user_logged_in()) { ?>
-									formInner = formInner + '<input type="hidden" name="cm-f-otyqu" id="Wordpress-id" value="<?php if ( isset($current_user->ID) ) echo esc_attr($current_user->ID); ?>" />';
-								<?php } ?>
-								formInner = formInner + '<input type="submit" value="Subscribe Now" />' +
-								'<input type="button" value="Cancel" class="close" />' +
-							'</div>' +
-							'<div class="clear"></div>' +
-						'</form>';
-				var dialog = new Boxy(formInner, {title: "<h2>Subscribe to the Green Razor</h2>", modal:true}, options);
-				
-				allDialogs.push(dialog);
-				return false;
-			}
-			function recent() { return allDialogs[allDialogs.length-1]; }
-			function tweenUp() { recent().tween(400,400); }
-			function tweenDown() { recent().tween(100,100); }
-			function getTitle() { alert(recent().getTitle()); }
-			function setTitle() { recent().setTitle(prompt("Enter new title:")); }
-		</script>
-		<?php } ?>
 		<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
 	</body>
-	
 </html>
