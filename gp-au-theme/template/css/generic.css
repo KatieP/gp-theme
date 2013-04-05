@@ -1483,6 +1483,12 @@ footer {
     height: 1.5em;
 }
 
+#footer-nav #footer-social li {
+    font-size: 2em;
+    line-height: 2.3em;
+    padding-right: 0.05em;
+}
+
 #footer-nav a:hover {
     text-decoration: underline;
 }
@@ -1494,6 +1500,12 @@ footer {
     border-radius: 0.2em;
     cursor: pointer;
 }
+
+#footer-social a:hover {
+	color: #34bee0;
+	text-decoration: none;
+	cursor: pointer;
+}	
 
 #footer-nav .bullet1 {
     text-indent: -9999px;
@@ -2180,7 +2192,7 @@ footer {
 }
 
 #post-nav a {
-    color: #fff;
+    color: #FAFAFA;
     display: block;
     font-weight: 600;
     font-size: 1.5em;
@@ -2189,7 +2201,7 @@ footer {
 }
 
 #post-nav a:hover {
-    background-color: #88d140;
+    color: #fff;
 }
 
 .post-socialnav {

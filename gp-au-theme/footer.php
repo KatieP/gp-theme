@@ -15,6 +15,13 @@
 			        </nav>
 			    </div>
 			    <div class="template-right">
+			        <nav id="footer-nav">
+			            <ul id="footer-social">
+					        <li><a href="<?php show_facebook_by_location(); ?>" target="_blank"><i class="af-icon-facebook-sign"></i></a></li>
+					        <li><a href="https://twitter.com/GreenPagesAu" target="_blank"><i class="af-icon-twitter-sign"></i></a></li>
+					        <li><a href="/news/rss/" target="_blank"><i class="af-icon-rss"></i></a></li>
+				        </ul>			            
+			        </nav>
 			        <nav id="footer-contact">
 				        <div id="footer-contact-click-box">
 					        <div class="click-contact-info" id="click-contact-address">

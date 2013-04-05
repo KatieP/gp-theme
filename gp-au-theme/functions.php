@@ -2144,9 +2144,14 @@ function show_facebook_by_location() {
     if ( isset($edition_meta['facebook_id']) && !empty($edition_meta['facebook_id']) ) {
     
     	// Echo facebook iframe with country based facebook page ID inserted into iframe
-    	echo '<iframe src="http://www.facebook.com/plugins/likebox.php?id=' . $edition_meta['facebook_id'] .
+    	/**
+        echo '<iframe src="http://www.facebook.com/plugins/likebox.php?id=' . $edition_meta['facebook_id'] .
     	      '&amp;width=270&amp;connections=4&amp;stream=false&amp;header=false&amp;height=212" 
     	      frameborder="0" scrolling="no" id="facebook-frame" allowTransparency="true"></iframe>';
+        **/
+        
+        // Link to appropriate facebook page - TODO replace this link with facebox above in dialog box
+        echo 'http://www.facebook.com/'. $edition_meta['facebook_id'];
     }
 }	
 
