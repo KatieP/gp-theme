@@ -529,7 +529,7 @@ function default_index() {
     }
 	
 	#$ppp = intval(get_query_var('posts_per_page'));
-	$ppp = 10;
+	$ppp = 20;
 
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
@@ -540,7 +540,7 @@ function default_index() {
 
     /** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
     $querystr = $wpdb->prepare(
-        "SELECT
+        "SELECT DISTINCT
             " . $wpdb->prefix . "posts.*,
             m0.meta_value AS _thumbnail_id,
             m1.meta_value AS gp_google_geo_country,
@@ -569,7 +569,11 @@ function default_index() {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 
 	$posttype_slug = getPostTypeSlug( get_query_var('post_type') );
-	
+
+/**	Region filter functionality to be provided in header.php by clicking on 
+ *  <location> string in 'Everything environmental happening in <location>' tagline
+ *  - do we need to move this code block into header.php?
+   
 	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state">';
 	if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
 	    echo '<option value="/' . $posttype_slug . '/' . strtolower($querystring_country) . '/">All regions</option>';
@@ -598,7 +602,7 @@ function default_index() {
 	
 	echo "</optgroup>";
 	echo "</select></span><div class=\"clear\"></div>";
-	
+**/	
 	if ( $pageposts ) {
 
         # Construct location data in JSON for google map display
@@ -776,7 +780,7 @@ function home_index() {
 	
 	/** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/         
     $querystr = $wpdb->prepare(
-        "SELECT
+        "SELECT DISTINCT
             " . $wpdb->prefix . "posts.*,
             m0.meta_value AS _thumbnail_id,
             m1.meta_value AS gp_enddate,
@@ -983,7 +987,7 @@ function events_index() {
     }
 	
 	#$ppp = intval(get_query_var('posts_per_page'));
-	$ppp = 10;
+	$ppp = 20;
 
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
@@ -1029,7 +1033,11 @@ function events_index() {
 
 	#please fix this and make it accessable to non js users
 	theme_eventcreate_post();
-	
+
+/**	Region filter functionality to be provided in header.php by clicking on 
+ *  <location> string in 'Everything environmental happening in <location>' tagline
+ *  - do we need to move this code block into header.php?
+   
 	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state">';
 	if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
 	    echo '<option value="/events/' . strtolower($querystring_country) . '/">All regions</option>'; 
@@ -1058,7 +1066,7 @@ function events_index() {
 
 	echo "</optgroup>";
 	echo "</select></span><div class=\"clear\"></div>"; 
-
+**/
 	if ($pageposts) {
 	    # Construct location data in JSON for google map display
         $json = '[';	    
@@ -1204,7 +1212,6 @@ function competitions_index() {
 
 function people_index() {
 	theme_profilecreate_post();
-	#default_index();
 	
 	# LIST VIEW OF MEMBERS WITH SUBSCRIBER STATUS SHOWING DISPLAY NAME, JOB TITLE, EMPLOYER AND FIRST FEW WORDS OF PROJECTS I NEED HELP WITH
 	
