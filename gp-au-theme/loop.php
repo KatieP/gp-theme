@@ -201,21 +201,33 @@ function theme_singlesocialbar() {
 				<div class="clear"></div>
 			</div>';*/
 		
+		$link = get_permalink($post->ID);
+		
 		echo '
 		<div id="gp_share">
 		    <div id="gp_sharebar">
 		    	<div id="gp_sharebox">
 			    	<div class="wdt title">Share</div>			    	
 			        <div class="wdt twitter">
-			            <a href="http://twitter.com/share" class="twitter-share-button" data-url="' . get_permalink($post->ID) . '" data-text="' . esc_attr(get_the_title($post->ID)) . '"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
+			            <a href="http://twitter.com/share" class="twitter-share-button" data-url="' . $link . '" data-text="' . esc_attr(get_the_title($post->ID)) . '"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
 			            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 			        </div>
+			        <div class="wdt google-plus">
+						<g:plusone size="tall" href="' . $link . '"></g:plusone>
+						<script type="text/javascript">
+							(function() {
+								var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
+								po.src = \'https://apis.google.com/js/plusone.js\';
+								var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
+							})();
+						</script>
+					</div>
 			        <div class="wdt linkedin">
 			        	<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
-						<script type="IN/Share" data-url="' . get_permalink($post->ID) . '" data-counter="top"></script>
+						<script type="IN/Share" data-url="' . $link . '" data-counter="top"></script>
 			        </div>			        		        		        	
 			        <div class="wdt facebook">
-			            <div class="fb-like" data-href="' . get_permalink($post->ID) . '" data-send="true" data-layout="box_count"></div>
+			            <div class="fb-like" data-href="' . $link . '" data-send="true" data-layout="box_count"></div>
 			        </div>			        
 			        <div class="wdt stumbleupon">
 			            <script type="text/javascript">
@@ -227,24 +239,14 @@ function theme_singlesocialbar() {
     							var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(li, s);
   							})();
 						</script>
-						<su:badge layout="5" location="' . get_permalink($post->ID) . '"></su:badge>
-			        </div>
-			        <div class="wdt pinterest">
-			            <a href="http://pinterest.com/pin/create/button/?url='. get_permalink($post->ID) .'" class="pin-it-button" count-layout="vertical"><img border="0" src="' . get_permalink($post->ID) . '" title="Pin It" width="50px" /></a>
+						<su:badge layout="5" location="' . $link . '"></su:badge>
 			        </div>
 			        <div class="clear"></div>
-		        </div>';
-				/*if ( comments_open() ) {
-			        echo '<div id="gp_commentbox">
-			    		<div class="wdt title">Comments</div>
-			    		<div class="clear"></div>
-			    		<div class="commentcount"><a href="#comments"><span class="comment-mini"></span><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></a></div>
-			    		<div class="clear"></div>
-			    	</div>';
-				}*/
-		    echo '</div>
+		        </div>
+		    </div>
 		</div>
 		';
+		unset($link);
 	}
 }
 

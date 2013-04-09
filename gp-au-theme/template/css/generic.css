@@ -204,7 +204,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content .green {
-    color: #61c201;
+    color: #6eb83f;
 }
 
 #content .blue {
@@ -240,7 +240,7 @@ ul, ol {margin:0;padding:0;}
 
 #content .msg-complete {
     font-weight: 600;
-    color: #61c201;
+    color: #6eb83f;
     font-size: 1.4em;
     margin: 2em 0 2em 0;
 }
@@ -304,7 +304,7 @@ ul, ol {margin:0;padding:0;}
 
 #content input[type="submit"] {
     font-size: 1.2em;
-    background-color: #61c201;
+    background-color: #6eb83f;
     margin: 4em 0 9em 0;
     min-width: 8em;
 }
@@ -868,7 +868,7 @@ header a:hover {
   }
 
   #search-tag span {
-    color: #f15c00;
+    color: #F97231;
     font-weight: 600;
   }
 
@@ -1238,7 +1238,7 @@ header a:hover {
 }
 
 #auth-tools .auth-dash .auth-account-options a:hover {
-    background-color: #61c201;
+    background-color: #6eb83f;
     color: #fff;
 }
 
@@ -1314,7 +1314,7 @@ header a:hover {
 #account-tools ul {
     height: 2.3em;
     margin: 0 0 1.3em 0;
-    background-color: #61c201;
+    background-color: #6eb83f;
     padding: 0.1em;
     overflow: hidden;
     -moz-border-radius: 0.2em;
@@ -1562,7 +1562,7 @@ footer {
 }
 
 #footer-web .pagenav {
-    color: #61c201;
+    color: #6eb83f;
     font-weight: 600;
     font-size: 1.1em;
 }
@@ -1580,7 +1580,7 @@ footer {
 }
 
 #footer-about .pagenav {
-    color: #eba006;
+    color: #fc468c;
     font-weight: 600;
     font-size: 1.1em;
 }
@@ -1729,7 +1729,7 @@ footer {
 #subscribe-email {
     font-size: 1em;
     font-weight: bold;
-    color: #00aed7;
+    color: #01AED8;
     float: left;
     width: 86%;
     height: 1.3em;
@@ -1758,7 +1758,7 @@ footer {
     height: 2.3em;
     width: 15.6em;
     background-color: #f2f2f2;
-    border: 0.1em solid #00aed7;
+    border: 0.1em solid #01AED8;
     margin: 0;
     -moz-border-radius: 0.2em;
     -webkit-border-radius: 0.2em;
@@ -1788,7 +1788,7 @@ footer {
     overflow: hidden;
     text-align: center;
     margin: 0 0 0 0.6em;
-    background-color: #00aed7;
+    background-color: #01AED8;
     float: left;
     width: 31%;
     position: relative;
@@ -1851,15 +1851,15 @@ footer {
 }
 
 #advertisewus a {
-    border: 0.1em solid #fc0d6b;
+    border: 0.1em solid #21A778;
 }
 
 #renew-directory a {
-    border: 0.1em solid #61C201;
+    border: 0.1em solid #6eb83f;
 }
 
 #media-kit a {
-    border: 0.1em solid #00AED7;
+    border: 0.1em solid #01AED8;
 }
 
 #followus {
@@ -1891,19 +1891,19 @@ footer {
 }
 
 #advertisewus .title {
-    background-color: #fc0d6b;
+    background-color: #21A778;
 }
 
 #followus .title {
-    background-color: #00aed7;
+    background-color: #01AED8;
 }
 
 #renew-directory .title {
-    background-color: #61C201;
+    background-color: #6eb83f;
 }
 
 #media-kit .title {
-    background-color: #00AED7;
+    background-color: #01AED8;
 }
 
 #lyb .content:hover, #advertisewus .content:hover, #renew-directory .content:hover, #media-kit .content:hover {
@@ -2075,7 +2075,7 @@ footer {
 }
 
 #content #breadcrumb-steps .active {
-    background-color: #61c201;
+    background-color: #6eb83f;
 }
 
 #content #breadcrumb-steps .inactive {
@@ -2513,11 +2513,11 @@ footer {
 #content .author-postcomments {
     float: right;
     text-align: right;
-    color: #61c201;
+    color: #6eb83f;
 }
 
 #content .author-postcomments a {
-    color: #61c201;
+    color: #6eb83f;
 }
 
 #content .author-postexcerpt p {
@@ -2922,7 +2922,7 @@ ul.categorieslistmain {
 
 #content .profile-tabs {
 	font-size: 0.9em;
-    border-bottom: 0.1em solid #61c201;
+    border-bottom: 0.1em solid #6eb83f;
     margin: 0;
     clear: both;
     float: left;
@@ -2946,7 +2946,7 @@ ul.categorieslistmain {
     margin: 0 0.4em 0 0.4em;
     padding: 0.4em 1em 0.4em 1em;
     display: block;
-    background-color: #afde7f;
+    background-color: #AFDE7F;
     color: #fff;
     font-weight: bold;
     -moz-border-radius-topleft: 0.4em;
@@ -2960,11 +2960,11 @@ ul.categorieslistmain {
 
 #content .profile-tabs li a:hover {
     text-decoration: none;
-    background-color: #61c201;
+    background-color: #6eb83f;
 }
 
 #content .profile-tabs .profile-tab-active {
-    background-color: #61c201;
+    background-color: #6eb83f;
 }
 
 #content .profile-tab-posts, #content .profile-tab-favourites {
@@ -2974,7 +2974,7 @@ ul.categorieslistmain {
 
 #content .profile-tab-posts ul, #content .profile-tab-favourites ul {
     padding: 0 0.1em 0.1em 0.1em;
-    background-color: #61c201;
+    background-color: #6eb83f;
     margin: 0;
     overflow: auto;
 }
@@ -2996,7 +2996,7 @@ ul.categorieslistmain {
 }
 
 #content .profile-tab-posts a:hover, #content .profile-tab-favourites a:hover {
-    background-color: #afde7f;
+    background-color: #AFDE7F;
     text-decoration: none;
     -moz-border-radius: 0.2em;
     -webkit-border-radius: 0.2em;
@@ -3340,26 +3340,26 @@ ul.categorieslistmain {
 
 #post-donate-join-bar #donate,
 #my-advertise #advertorial input[type="button"] {
-    background-color: #00AED7;
+    background-color: #01AED8;
 }
 
 #post-donate-join-bar #join,
 #my-advertise #competition input[type="button"] {
-    background-color: #FC0D6B;
+    background-color: #21A778;
 }
 
 #post-donate-join-bar #letter,
 #my-advertise #listing input[type="button"] {
-    background-color: #61C201;
+    background-color: #6eb83f;
 }
 
 #post-donate-join-bar #petition, #post-product-button-bar #product-button,
 #my-advertise #email input[type="button"] {
-    background-color: #F15C00;
+    background-color: #F97231;
 }
 
 #post-donate-join-bar #volunteer {
-    background-color: #EBA006;
+    background-color: #fc468c;
     margin-right: 0;
 }
 
@@ -3583,7 +3583,7 @@ ul.categorieslistmain {
 }
 
 #cse .gsc-cursor-page:hover {
-    background-color: #61c201;
+    background-color: #6eb83f;
 }
 
 #cse .gsc-cursor-current-page {
