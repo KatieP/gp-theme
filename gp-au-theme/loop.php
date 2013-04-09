@@ -174,78 +174,36 @@ function theme_singlepagination() {
 function theme_singlesocialbar() {
 	if (get_post_type() != "page") { 
 		global $post;
-		/*echo '
-			<div class="post-socialnav">
-				<div class="post-google">
-					<g:plusone size="medium" href="' . urlencode(get_permalink($post->ID)) . '"></g:plusone>
-				</div>
-				<div class="post-twitter">
-					<a href="http://twitter.com/share" class="twitter-share-button" data-url="' . get_permalink($post->ID) . '" data-text="' . esc_attr(get_the_title($post->ID)) . '" data-count="horizontal" data-via="GreenPagesAu">Tweet</a>
-				</div>
-				<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-				<div class="post-facebook">
-					<iframe src="http://www.facebook.com/plugins/like.php?href=' . urlencode(get_permalink($post->ID)) . '&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;font=arial&amp;colorscheme=light" scrolling="no" frameborder="0" style="border:none; overflow:hidden;" allowTransparency="true"></iframe>
-				</div>';
-		if ( comments_open() && !is_attachment() ) {
-			echo '
-				<a href="' . get_permalink($post->ID) . '#comments" class="post-disqus">
-					<div class="comment-background">
-						<span class="comment-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span>
-					</div>
-				</a>
-				<div class="comment-leftcap"></div>
-				<div class="comment-rightcap"></div>';
-		}
-		
-		echo '
-				<div class="clear"></div>
-			</div>';*/
-		
 		$link = get_permalink($post->ID);
-		
-		echo '
+		$title = esc_attr(get_the_title($post->ID));	 
+		?>
 		<div id="gp_share">
 		    <div id="gp_sharebar">
 		    	<div id="gp_sharebox">
 			    	<div class="wdt title">Share</div>			    	
 			        <div class="wdt twitter">
-			            <a href="http://twitter.com/share" class="twitter-share-button" data-url="' . $link . '" data-text="' . esc_attr(get_the_title($post->ID)) . '"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
-			            <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			            <a href="http://twitter.com/share" class="twitter-share-button" data-text="<?php echo $title; ?>"  data-count="vertical" data-via="GreenPagesAu">Tweet</a>
 			        </div>
 			        <div class="wdt google-plus">
-						<g:plusone size="tall" href="' . $link . '"></g:plusone>
-						<script type="text/javascript">
-							(function() {
-								var po = document.createElement(\'script\'); po.type = \'text/javascript\'; po.async = true;
-								po.src = \'https://apis.google.com/js/plusone.js\';
-								var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(po, s);
-							})();
-						</script>
+						<g:plusone size="tall"></g:plusone>
 					</div>
 			        <div class="wdt linkedin">
-			        	<script src="http://platform.linkedin.com/in.js" type="text/javascript"></script>
-						<script type="IN/Share" data-url="' . $link . '" data-counter="top"></script>
+			        	<script src="//platform.linkedin.com/in.js" type="text/javascript"> 
+			        		lang: en_US
+						</script>
+						<script type="IN/Share" data-counter="top"></script>
 			        </div>			        		        		        	
 			        <div class="wdt facebook">
-			            <div class="fb-like" data-href="' . $link . '" data-send="true" data-layout="box_count"></div>
+			            <div class="fb-like" data-href="<?php echo $link; ?>" data-send="true" data-layout="box_count"></div>
 			        </div>			        
 			        <div class="wdt stumbleupon">
-			            <script type="text/javascript">
-  							(function() {
-    							var li = document.createElement(\'script\'); 
-    							li.type = \'text/javascript\'; 
-    							li.async = true;
-    							li.src = \'https://platform.stumbleupon.com/1/widgets.js\';
-    							var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(li, s);
-  							})();
-						</script>
-						<su:badge layout="5" location="' . $link . '"></su:badge>
+						<su:badge layout="5"></su:badge>
 			        </div>
 			        <div class="clear"></div>
 		        </div>
 		    </div>
 		</div>
-		';
+		<?php 
 		unset($link);
 	}
 }
