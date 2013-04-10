@@ -51,6 +51,7 @@
          */
         wp_footer();
         ?>
+        <!-- JS for social media sharebar: Twitter, Google+ and Stumbleupon -->
         <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <script type="text/javascript">
 			(function() {

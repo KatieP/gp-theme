@@ -125,6 +125,9 @@ function get_posttemplate($template='default_index') {
 	if ( in_array($template, $templates) ) {
 		return $template;
 	}	
+
+    unset($wp_query, $current_user, $current_page_id, $profile_author, 
+          $templateRoutes, $template, $templates, $post_type);
 }
 
 $set_template = get_posttemplate();
@@ -141,17 +144,28 @@ function theme_singletitle() {
 	global $wp_query;
 	global $post;
 	$titleClass = '';
+	$title = esc_attr(get_the_title($post->ID));
+	$link = get_permalink($post->ID);
+	
 	if ($wp_query->current_post == 0 || $wp_query->current_post == -1) {$titleClass = ' class="loop-title"';}
-	echo '<h1' . $titleClass. '><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
+	echo '<h1' . $titleClass. '><a href="' . $link . '" title="' . $title . '" rel="bookmark">' . $title . '</a></h1>';
+	
+	unset($wp_query, $post, $titleClass, $title, $link);
 }
 
 function theme_singledetails() {
 	global $posts;
 	$post_author = get_userdata($posts[0]->post_author);
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
-	echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
+	
+	echo '<div class="post-details">
+	          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>
+	          Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
+	      </div>';
 	theme_like();
 	echo '<div class="clear"></div>';
+	
+	unset($posts, $post_author, $post_author_url);	
 }
 
 function theme_singlecontributorstagline() {
@@ -159,11 +173,14 @@ function theme_singlecontributorstagline() {
 	$post_author = get_userdata($posts[0]->post_author);
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
 	$post_author_tagline = get_the_author_meta( 'contributors_posttagline', $post_author->ID );
+
 	if ( !empty($post_author_tagline) ) {
 		echo '<div class="post-authorsdisclaimer"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '50', '', $post_author->display_name ) . '</a><div class="post-authorsdisclaimer-details">Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 1) . ' ago</div><div class="post-authorsdisclaimer-content">' . $post_author_tagline . '</div><div class="clear"></div></div>';
 	} else {
 		theme_singledetails();
 	}
+	
+	unset($posts, $post_author, $post_author_url, $post_author_tagline);
 }
 
 function theme_singlepagination() {
@@ -204,7 +221,7 @@ function theme_singlesocialbar() {
 		    </div>
 		</div>
 		<?php 
-		unset($link);
+		unset($post, $link, $title);
 	}
 }
 
@@ -229,6 +246,7 @@ function theme_indexdetails($format='full') {
 	global $post;
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);
+	
 	if ($format == 'full') {
 		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
 	}
@@ -236,6 +254,8 @@ function theme_indexdetails($format='full') {
 	if ($format == 'author') {
 		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
 	}
+
+	unset($post, $post_author, $post_author_url);
 }
 
 function theme_indexsocialbar() {
@@ -254,6 +274,8 @@ function theme_indexpagination() {
 		</nav>
 	<?php
 	}
+	
+	unset($wp_query);
 }
 
 function theme_like() {
@@ -273,117 +295,172 @@ function theme_like() {
 	}
 	
 	if ( comments_open($post->ID) ) {
-		echo '<div class="comment-profile"><a href="#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+		echo '<div class="comment-profile">
+                  <a href="#comments">
+                      <span class="comment-mini"></span>
+                      <span class="comment-mini-number dsq-postid">
+                          <fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count>
+                      </span>
+                  </a>
+              </div>';
 	}
 	
 	if ( is_single() ) {
-		#echo '<div id="post-' . $post->ID . '" class="like-button"><a href="#" class="like_heart' . $likedclass . '">Favorite Me!</a></div>';
 		if (is_user_logged_in()) {
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+                      <a href="#/">
+                          <span class="star-mini' . $likedclass . '"></span>
+                          <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
+                          <span class="star-mini-number-plus-one" style="display:none;">+1</span>
+                          <span class="star-mini-number-minus-one" style="display:none;">-1</span>
+                      </a>
+                  </div>';
 		} else {
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</span></a></div>';
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+			          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+			             class="simplemodal-login">
+			              <span class="star-mini"></span>
+			              <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
+			              <span class="star-login" style="display:none;">Login...</span>
+			          </a>
+			      </div>';
 		}
 	}
+	
+	unset($post, $current_user, $current_site, $likecount, $showlikecount, $likedclass);
 }
 
 /** INDEX FEED STYLE **/
 
 function theme_index_feed_item() {
     /**
-     * Shows excerpt of post for dislay in index pages,
+     * Shows title of post as link for dislay in index pages,
      * If featured image present then thumbnail displayed
      * Otherwise thumbnail of user profile picture shown instead 
      */
-	global $post;
-
+	
+    global $post, $current_user, $current_site;
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);	
+	$link = get_permalink($post->ID);
+	$likedclass = '';
 
-		
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 		$imageURL = $imageArray[0];
-		echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"/></a>';
+		echo '<a href="' . $link . '" class="profile_minithumb">
+		          <img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"/>
+		      </a>';
     }
     else {	/** DISPLAY LOGO/PROFILE PICTURE INSTEAD **/
-		echo '<span class="profile_minithumb"><a href="' . $post_author_url . '">' . 
-    		  get_avatar( $post_author->ID, '142', '', $post_author->display_name ) . '</a></span>';
+		echo '<span class="profile_minithumb">
+		          <a href="' . $post_author_url . '">' . 
+    		          get_avatar( $post_author->ID, '142', '', $post_author->display_name ) . '
+    		      </a>
+    		  </span>';
 	}
 	
 	echo '<div class="profile-postbox">';			 		
     ?>
     <h1 class="profile-title">
-        <a href="<?php the_permalink(); ?>"  title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
+        <a href="<?php echo $link; ?>"  title="<?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
     </h1>
     <?php
 	
-	        $site_posttypes = Site::getPostTypes();
-	        foreach ( $site_posttypes as $site_posttype ) {
-	            if ( $site_posttype['id'] == get_post_type() ) {
-	                $post_title = $site_posttype['title'];
-	                $post_url = $site_posttype['slug'];
-	            }   
-	        }
+    $site_posttypes = Site::getPostTypes();
+    foreach ( $site_posttypes as $site_posttype ) {
+	    if ( $site_posttype['id'] == get_post_type() ) {
+	        $post_title = $site_posttype['title'];
+	        $post_url = $site_posttype['slug'];
+	    }   
+	}
 			
-			/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
-			echo '<span class="hp_miniauthor"><a href="' . $post_author_url . '">' . 
-					get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
-					'</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</span>';
-			#the_excerpt();			
-			#echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Learn More</a>';
+	/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
+	echo '<span class="hp_miniauthor">
+              <a href="' . $post_author_url . '">' . 
+			      get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . 
+			 '</a>
+			 Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> 
+			 in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
+          </span>';
 			
-			if ( comments_open($post->ID) ) {
-				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
-			}
+    if ( comments_open($post->ID) ) {
+		echo '<div class="comment-profile">
+		          <a href="' . get_permalink($post->ID) . '#comments">
+		              <span class="comment-mini"></span>
+		              <span class="comment-mini-number dsq-postid">
+		                  <fb:comments-count href="' . $link . '"></fb:comments-count>
+		              </span>
+		          </a>
+		      </div>';
+	}	
 			
-			global $current_user, $current_site;
+	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
+		$likedclass = ' favorited';
+	}
 			
-			$likedclass = '';
-			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
-				$likedclass = ' favorited';
-			}
-			
-			echo '<a href="#/" class="topic-select">Topics<span class="topic-select-down"></span></a>';
+	echo '<a href="#/" class="topic-select">Topics<span class="topic-select-down"></span></a>';
 
-			$likecount = get_post_meta($post->ID, 'likecount', true);
-			if ($likecount > 0) {
-				$showlikecount = '';
-			} else {
-				$likecount = 0;
-				$showlikecount = ' style="display:none;"';
-			}
+	$likecount = get_post_meta($post->ID, 'likecount', true);
+	if ($likecount > 0) {
+		$showlikecount = '';
+	} else {
+		$likecount = 0;
+		$showlikecount = ' style="display:none;"';
+	}
+      
+	$likecount = abbr_number($likecount);
 			
-			$likecount = abbr_number($likecount);
-			
-			if (is_user_logged_in()) {
-				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
-			} else {
-				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</span></a></div>';
-			}
-		echo '</div>
-			<div class="topic-container">
-				<div class="topic-content">
-					<div class="topic-bookmark">
-						<a href="#/" class="topic-bookmark">
-							<span class="topic-bookmark-false"></span>
-							<span class="topic-bookmark-box">test topic</span>
-						</a>
-						<div class="topic-bookmark-options">
-							<a href="#/">Subscribe<span class="topic-subscribe-count">0</span><span class="topic-subscribe-count-plus-one">+1</span><span class="topic-subscribe-count-minus-one">-1</span></a>
-							<a href="#/">RSS</a>
-						</div>
-					</div>
-					<div class="clear"></div>
-				</div>
-			</div>';
+	if (is_user_logged_in()) {
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+                  <a href="#/">
+                      <span class="star-mini' . $likedclass . '"></span>
+                      <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
+                      <span class="star-mini-number-plus-one" style="display:none;">+1</span>
+                      <span class="star-mini-number-minus-one" style="display:none;">-1</span>
+                  </a>
+              </div>';
+	} else {
+        echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+		          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+		             class="simplemodal-login">
+		              <span class="star-mini"></span>
+		              <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
+		              <span class="star-login" style="display:none;">Login...</span>
+		          </a>
+		      </div>';
+	}
+
+	echo '</div>
+		  <div class="topic-container">
+              <div class="topic-content">
+                  <div class="topic-bookmark">
+                      <a href="#/" class="topic-bookmark">
+                          <span class="topic-bookmark-false"></span>
+                          <span class="topic-bookmark-box">test topic</span>
+                      </a>
+                      <div class="topic-bookmark-options">
+                          <a href="#/">Subscribe
+                              <span class="topic-subscribe-count">0</span>
+                              <span class="topic-subscribe-count-plus-one">+1</span>
+                              <span class="topic-subscribe-count-minus-one">-1</span>
+                          </a>
+						  <a href="#/">RSS</a>
+                      </div>
+                  </div>
+                  <div class="clear"></div>
+              </div>
+		  </div>';
 	echo '<div class="clear"></div>';
+	
+	unset($post, $post_author, $post_author_url, $link, $imageArray, $imageURL, $site_posttypes, $site_posttype, 
+          $post_title, $post_url, $current_user, $current_site, $likedclass, $likecount, $showlikecount);
 }
 
 /*** TEMPLATE RENDERING ***/
 
 function default_index() {
-
     global $wpdb, $post, $gp;
 
     $querystring_country = strtoupper( get_query_var( 'country' ) );
@@ -399,7 +476,7 @@ function default_index() {
     $filterby_city = "";
     $filterby_state = "";
     $filterby_country = "";
-
+    
     if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
         if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
             require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
@@ -421,7 +498,7 @@ function default_index() {
                     $querystring_country,
                     $querystring_state
                 );
-             
+                
                 $result = $wpdb->get_row( $query, ARRAY_A );
              
                 if ($result['count'] >= 1) {
@@ -527,7 +604,6 @@ function default_index() {
     );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
-
 	$posttype_slug = getPostTypeSlug( get_query_var('post_type') );
 
 /**	Region filter functionality to be provided in header.php by clicking on 
@@ -604,8 +680,14 @@ function default_index() {
 		}	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
-			  <p>No there\'s nothing wrong. It just means there\'s no posts for this section yet! Which is admittedly a little strange but if you\'d like to help and write for us (In a volunteer capacity at this stage.) send us a email to info[at]thegreenpages.com.au and we\'ll be in touch.</p>';
+			  <p>No there\'s nothing wrong. It just means there\'s no posts for this section yet!</p>';
 	}
+
+	unset($wpdb, $post, $gp, $querystring_country, $querystring_state, $querystring_city, $querystring_page,
+          $geo_currentlocation, $edition_states, $epochtime, $filterby_city, $filterby_state, $filterby_country,
+          $ns_loc_alt, $edition_states, $state_subset, $query, $result, $value, $querytotal, $querytotal, $ppp, 
+          $totalposts, $on_page, $offset, $querystr, $pageposts, $post, $posttype_slug, $json, $map_canvas, 
+          $previous, $next);
 }
 
 function default_page() {
@@ -659,7 +741,7 @@ function attachment_single() {
 /** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS - EXCLUDING EVENTS **/
 function home_index() {
 	global $wpdb, $post, $gp;
-	
+
 	$querystring_country = strtoupper( get_query_var( 'country' ) );
 	$querystring_state = strtoupper( get_query_var( 'state' ) );
 	$querystring_city = get_query_var( 'city' );
@@ -813,7 +895,11 @@ function home_index() {
 			<li class="post-previous"><a href="/news/page/2/"><div class="arrow-previous"></div>More Posts</a></li>
 		</ul>
 	</nav>
-	<?php 
+	<?php
+	unset($wpdb, $post, $gp, $querystring_country, $querystring_state, $querystring_city, $querystring_page,
+          $geo_currentlocation, $edition_states, $epochtime, $filterby_city, $filterby_state, $filterby_country,
+          $ns_loc_alt, $edition_states, $state_subset, $query, $result, $value, $querytotal, $querytotal, $ppp, 
+          $totalposts, $on_page, $offset, $querystr, $pageposts, $post, $posttype_slug, $json, $map_canvas);	 
 }
 
 function search_index() {
@@ -844,7 +930,6 @@ function events_index() {
 	$geo_currentlocation = $gp->location;
 	$edition_states = $gp->states;
 	
-
 	//if ( empty($selected_country) && isset($geo_currentlocation['country_iso2']) ) {
 	    # Not sure if you should use permanent redirects in this way?
 	    //wp_redirect( '/events/' . $geo_currentlocation['country_iso2'] . '/', 302 ); 
@@ -1094,6 +1179,12 @@ function events_index() {
 		<?php
 		}
 	}
+
+	unset($wpdb, $post, $gp, $querystring_country, $querystring_state, $querystring_city, $querystring_page,
+          $geo_currentlocation, $edition_states, $epochtime, $filterby_city, $filterby_state, $filterby_country,
+          $ns_loc_alt, $edition_states, $state_subset, $query, $result, $value, $querytotal, $querytotal, $ppp, 
+          $totalposts, $on_page, $offset, $querystr, $pageposts, $post, $posttype_slug, $json, $map_canvas, 
+          $previous, $next);
 }
 
 function jobs_index() {
@@ -1168,6 +1259,12 @@ function competitions_index() {
 		<?php
 		}
 	}
+
+	unset($wpdb, $post, $gp, $querystring_country, $querystring_state, $querystring_city, $querystring_page,
+          $geo_currentlocation, $edition_states, $epochtime, $filterby_city, $filterby_state, $filterby_country,
+          $ns_loc_alt, $edition_states, $state_subset, $query, $result, $value, $querytotal, $querytotal, $ppp, 
+          $totalposts, $on_page, $offset, $querystr, $pageposts, $post, $posttype_slug, $json, $map_canvas, 
+          $displaydate, $metas, $i);	
 }
 
 function people_index() {
@@ -1201,8 +1298,7 @@ function people_index() {
       		$this_user_change = '';
       		$this_user_stuff = '';
       		
-      		# Check profile builder and original meta fields for values
-      		
+      		# Check profile builder and original meta fields for values     		
       		# Check to see if 'Projects I Need Help With' filled in
             if (!empty($thisuser->custom_field_projects) ) {
       		    $this_user_project = $thisuser->custom_field_projects;
@@ -1265,6 +1361,9 @@ function people_index() {
    	    echo $member_string;
    	    $member_string = '';
   	}
+
+  	unset($current_user, $wpdb, $wp_roles, $query, $subscribers, $subscriber, $member_string, $thisuser, 
+          $this_user_project, $this_user_change, $this_user_stuff, $this_user_job_employer);   	
 }
 
 function advertorial_index() {
@@ -1298,8 +1397,10 @@ function projects_index() {
 	    theme_indexpagination();	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
-			<p>No there\'s nothing wrong. It just means there\'s no posts for this section yet! Which is admittedly a little strange but if you\'d like to help and write for us (In a volunteer capacity at this stage.) send us a email to info[at]thegreenpages.com.au and we\'ll be in touch.</p>';
+			<p>No there\'s nothing wrong. It just means there\'s no posts for this section yet!</p>';
 	}
+	
+	unset($json, $map_canvas);
 }
 
 
@@ -1329,6 +1430,7 @@ function author_index() {
 			subscriber_index($profile_author);
 		}	
 	}
+	unset($profile_author, $authorprofiles, $profiletypes_user);
 }
 
 function author_edit() {
@@ -1337,8 +1439,7 @@ function author_edit() {
 	$user_roles = $current_user->roles;
 	$user_role = array_shift($user_roles);
 	$profiletypes_user = get_the_author_meta( 'profiletypes', $user->ID );
-	$profiletypes_values = array('administrator', 'editor', 'contributor', 'subscriber');
-	
+	$profiletypes_values = array('administrator', 'editor', 'contributor', 'subscriber');	
 	$profile_author = get_profile_author();
 	
 	#if ( !is_user_logged_in() || ( is_user_logged_in() && $user_id != $profile_author->ID) ) {
@@ -1443,6 +1544,10 @@ function author_edit() {
 		<input type="button" name="Save Changes" />
 	</form>
 	<?php
+	
+	unset($current_user, $user_id, $user_roles, $user_role, $profiletypes_user, $profiletypes_values, $profile_author,
+	      $rolesubscriber, $roleauthor, $roleeditor, $rolecontributor, $bio_change, $bio_projects, $bio_stuff, $editors_blurb,
+	      $contributors_blurb, $contributors_posttagline, $employment_jobtitle, $employment_currentemployer);
 }
 
 function author_account() {
@@ -1505,13 +1610,13 @@ function author_account() {
 			}
 		} 
 		?>
-		
 		<Label>Delete Account</Label>
 		<p>This will permanently delete your account. All your settings will be removed and we will not be able to recover them at a later date.</p>
-		<input type="button" name="Delete Now" value="Delete Now" />
-		
+		<input type="button" name="Delete Now" value="Delete Now" />		
 	</form>
 	<?php
+	unset($current_user, $user_id, $user_first_name, $user_last_name, $profiletypes_values, $profiletypes_user,
+		  $profiletypes_items, $value, $checked, $itemvalue, $profiletypes_values, $checkthis);
 }
 
 function author_notifications() {
@@ -1554,6 +1659,7 @@ function author_notifications() {
 		?>
 	</form>
 	<?php
+	unset($notification_items, $notification_user, $key, $value, $checked);
 }
 
 function author_locale() {
@@ -1571,6 +1677,7 @@ function author_locale() {
 		<input type="text" value="<?php echo $locale_postcode; ?>" name="locale_postcode" id="locale_postcode" maxlenght="4" style="width:74px"/>
 	</form>
 	<?php
+	unset($locale_postcode);
 }
 
 function author_newsletters() {
@@ -1624,6 +1731,7 @@ function author_newsletters() {
 		</table>
 	</form>
 	<?php
+	unset($current_user, $current_site, $gp, $wpdb, $profile_author, $subscription_user, $cm_lists, $key, $value, $checked);
 }
 
 function author_privacy() {
@@ -1678,6 +1786,7 @@ function theme_authoreditnav() {
 	</nav>
 	<div class="clear"></div>
 	<?php
+	unset($current_user, $authoredit_page, $profile_author, $profile_author_url);
 }
 
 function theme_authorphoto($profile_author) {
@@ -1720,7 +1829,9 @@ function theme_authorlocation($profile_author) {
 function theme_authoremail($profile_author) {
     /** Display member email on profile - not in use **/
 	if ( is_user_logged_in() && !empty($profile_author->user_email) ) {
-		echo '<a href="mailto://' . str_replace('@', '[at]', $profile_author->user_email) . '" class="author-email"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/email-16x16.png" /></a>';
+		echo '<a href="mailto://' . str_replace('@', '[at]', $profile_author->user_email) . '" class="author-email">
+		          <img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/email-16x16.png" />
+		      </a>';
 	}
 }
 
@@ -1731,7 +1842,7 @@ function theme_authorfacebook($profile_author) {
      **/    
 
     $profile_author_id = $profile_author->ID;
-
+    
 	if ( !empty($profile_author->custom_field_facebook) ) {
 		$profile_author_facebook = $profile_author->custom_field_facebook;
 		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
@@ -1741,6 +1852,8 @@ function theme_authorfacebook($profile_author) {
 		$click_track_tag = '\'/outbound/profile-facebook/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->facebook . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-facebook"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/facebook-16x16.png" /></a>';
 	}
+	
+	unset($profile_author_id, $profile_author_facebook, $click_track_tag);
 }
 
 function theme_authorlinkedin($profile_author) {
@@ -1749,7 +1862,7 @@ function theme_authorlinkedin($profile_author) {
      * from either profile builder field of original meta field   
      **/      
     $profile_author_id = $profile_author->ID;
-
+    
     if ( !empty($profile_author->custom_field_linkedin) ) {	
 		$profile_author_linkedin = $profile_author->custom_field_linkedin;
 		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
@@ -1759,6 +1872,8 @@ function theme_authorlinkedin($profile_author) {
 		$click_track_tag = '\'/outbound/profile-linkedin/' . $profile_author_id .'/\'';
 		echo '<a href="' . $profile_author->linkedin . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-linkedin"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/linkedin-16x16.png" /></a>';
 	}
+	
+	unset($profile_author_id, $profile_author_linkedin, $click_track_tag);
 }
 
 function theme_authortwitter($profile_author) {
@@ -1777,6 +1892,8 @@ function theme_authortwitter($profile_author) {
 		$click_track_tag = '\'/outbound/profile-twitter/' . $profile_author_id .'/\'';
 		echo '<a href="http://www.twitter.com/' .$profile_author->twitter . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-twitter"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/twitter-16x16.png" /></a>';
 	}
+	
+	unset($profile_author_id, $profile_author_twitter, $click_track_tag);
 }
 
 function theme_authorskype($profile_author) {
@@ -1801,10 +1918,14 @@ function theme_authorskype($profile_author) {
 			echo '<a href="callto://' .$profile_author->skype . '" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);" class="author-skype"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/skype-16x16.png" /></a>';
 		#} 
 	}
+	
+	unset($profile_author_id, $profile_author_skype, $click_track_tag);
 }
 
 function theme_authorrss($profile_author) {
-	echo '<a href="" class="author-rss"><img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/feed-16x16.png" /></a>';
+	echo '<a href="" class="author-rss">
+	          <img src="' . get_bloginfo('template_url') . '/template/socialmediaicons_v170/feed-16x16.png" />
+	      </a>';
 }
 
 function theme_authorwww($profile_author) {
@@ -1814,7 +1935,9 @@ function theme_authorwww($profile_author) {
 		$profile_author_url = $profile_author->user_url;
 		$click_track_tag = '\'/outbound/profile-website/' . $profile_author_id .'/\'';
 		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);">' . $profile_author->user_url . '</a></div>';
-	}	
+	}
+	
+	unset($profile_author_id, $profile_author_url, $click_track_tag);
 }
 
 function theme_authorviews($profile_author) {
@@ -1824,6 +1947,7 @@ function theme_authorviews($profile_author) {
 	if ( !$profile_views || !is_numeric($profile_views) ) {$profile_views = 0;}
 	
 	#echo "<div class=\"author-views\">Profile Views: <span>{$profile_views}</span></div>";
+	unset($profile_author, $profile_views);
 }
 
 function theme_authorbio($profile_author) {
@@ -1862,6 +1986,7 @@ function theme_single_product_button() {
 		<?php
 	 	}
 	}
+	unset($post, $custom, $product_url, $post_author, $post_id, $post_author_id, $product_url, $click_track_tag);
 }
 
 /** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BARS **/
@@ -1875,7 +2000,7 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 		$join_url = $post_author->contributors_join_url;
 		$letter_url = $post_author->contributors_letter_url;
 		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url	
+		$volunteer_url = $post_author->contributors_volunteer_url;
 		
 		?>
 		<div id="post-donate-join-bar">
@@ -1890,6 +2015,7 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 		<div class="clear"></div>
 		<?php				
 	}
+	unset($post, $post_author, $post_author_id, $donate_url, $join_url, $letter_url, $petition_url, $volunteer_url);
 }
 
 function theme_index_contributor_donate_join_bar() {
@@ -1917,6 +2043,7 @@ function theme_index_contributor_donate_join_bar() {
 		<div class="clear"></div>
 		<?php		
 	}
+	unset($post, $post_author, $post_author_id, $post_author_url, $donate_url, $join_url, $letter_url, $petition_url, $volunteer_url);
 }
 
 function theme_single_contributor_donate_join_bar() {
@@ -1945,6 +2072,7 @@ function theme_single_contributor_donate_join_bar() {
 		<div class="clear"></div>
 		<?php		
 	}
+	unset($post, $post_author, $post_author_id, $post_author_url, $donate_url, $join_url, $letter_url, $petition_url, $volunteer_url);
 }
 
 /** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
@@ -1954,6 +2082,7 @@ function theme_contributors_donate($donate_url, $post_author_id) {
 		$click_track_tag = '\'/outbound/activist-donate-button/' . $post_author_id . '/' . $donate_url .'/\'';
 		echo '<a href="' . $donate_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="donate">Donate</span></a>';
 	}
+	unset($click_track_tag);
 }
 
 function theme_contributors_join($join_url, $post_author_id) {
@@ -1961,6 +2090,7 @@ function theme_contributors_join($join_url, $post_author_id) {
 		$click_track_tag = '\'/outbound/activist-join-button/' . $post_author_id . '/' . $join_url .'/\'';
 		echo '<a href="' . $join_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="join">Join</span></a>';
 	}
+	unset($click_track_tag);
 }
 
 function theme_contributors_letter($letter_url, $post_author_id) {
@@ -1968,6 +2098,7 @@ function theme_contributors_letter($letter_url, $post_author_id) {
 		$click_track_tag = '\'/outbound/activist-letter-button/' . $post_author_id . '/' . $letter_url .'/\'';
 		echo '<a href="'. $letter_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="letter">Send Letter</span></a>';
 	}
+	unset($click_track_tag);
 }
 
 function theme_contributors_petition($petition_url, $post_author_id) {
@@ -1975,6 +2106,7 @@ function theme_contributors_petition($petition_url, $post_author_id) {
 		$click_track_tag = '\'/outbound/activist-petition-button/' . $post_author_id . '/' . $petition_url .'/\'';
 		echo '<a href="'. $petition_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="petition">Sign Petition</span></a>';
 	}
+	unset($click_track_tag);
 }
 
 function theme_contributors_volunteer($volunteer_url, $post_author_id) {
@@ -1982,6 +2114,7 @@ function theme_contributors_volunteer($volunteer_url, $post_author_id) {
 		$click_track_tag = '\'/outbound/activist-volunteer-button/' . $post_author_id . '/' . $volunteer_url .'/\'';
 		echo '<a href="'. $volunteer_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="volunteer">Volunteer</span></a>';
 	}
+	unset($click_track_tag);
 }
 
 /** ENDS - DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
@@ -1995,8 +2128,8 @@ function theme_editorsblurb($profile_author) {
 function theme_authorjoined($profile_author) {
 	$author_meta = get_userdata($profile_author->ID);
 	$author_registered = $author_meta->user_registered;
-	
 	$author_registered_diff = _date_diff(strtotime($author_registered), time());
+	
 	if ($author_registered_diff['y'] > 1) {
 		$author_registered = $author_registered_diff['y'] . ' year, ' .  $author_registered_diff['m'] . ' months';
 	}
@@ -2010,6 +2143,8 @@ function theme_authorjoined($profile_author) {
 	}
 	
 	echo '<div class="author-joined">Joined: ' . $author_registered . '</div>';
+	
+	unset($author_meta, $author_registered, $author_registered_diff);
 }
 
 function theme_authorseen($profile_author) {
@@ -2038,6 +2173,8 @@ function theme_authorseen($profile_author) {
 	}
     
     echo '<div class="author-seen">Last Seen: <span>' . $last_login . '</span></div>';
+    
+    unset($last_login, $epochtime, $last_login_diff);
 }
 
 function theme_authorschange($profile_author) {
@@ -2193,8 +2330,8 @@ function theme_subscribertabs($profile_author) {
 	        <div class=\"profile-timeout bottom\">ERROR: Timeout <a href=\"\">Try refreshing</a>.</div>
 	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
-
 	}
+	unset($current_user, $post_author_url, $template_path, $directory_page_url_redirect, $directory_page_url);
 }
 
 function theme_editortabs($profile_author) {
@@ -2208,7 +2345,7 @@ function theme_editortabs($profile_author) {
 		$directory_page_url_redirect = "<li><a href=\"{$directory_page_url_redirect}\">Directory</a></li>";
 		$directory_page_url = "<li><a href=\"{$post_author_url}#tab:posts;post:directory;\">Directory</a></li>";
 	}
-	
+	unset($current_user, $post_author_url, $template_path, $directory_page_url_redirect);
 	# User is logged in and IS viewing their own profile
 	if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
 		echo "
@@ -2288,6 +2425,7 @@ function theme_editortabs($profile_author) {
 	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
+	unset($current_user, $post_author_url, $template_path, $directory_page_url_redirect, $directory_page_url);
 }
 
 function theme_contributortabs($profile_author) {
@@ -2381,6 +2519,7 @@ function theme_contributortabs($profile_author) {
 	        <div class=\"profile-loading bottom\">Loading...<img src=\"{$template_path}loading-16x16-lblue.gif\" alt=\"Loading\" /></div>
 		";
 	}
+	unset($current_user, $post_author_url, $template_path, $directory_page_url_redirect, $directory_page_url);
 }
 
 /** Administrators Profile **/
