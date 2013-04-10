@@ -47,11 +47,6 @@ function addCustomFields(){
 
 }
 
-
-
-
-
-
 global $wp_role;
 
 $sitemaptypes = array(
@@ -1231,15 +1226,18 @@ function relevant_posts() {
 			if ( has_post_thumbnail() ) {
 				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($rpost->ID), 'icon-thumbnail' );
 				$imageURL = $imageArray[0];
-				echo '<a href="' . get_permalink($rpost->ID) . '" class="hp_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($rpost->ID) ) . '" width="50" height="50" /></a>';
+				$link = get_permalink($rpost->ID);
+				echo '<a href="' . $link . '" class="hp_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($rpost->ID) ) . '" width="50" height="50" /></a>';
+				unset($imageArray, $imageURL);
 			}
 			?>
-			<a href="<?php echo get_permalink($rpost->ID); ?>" title="Permalink to <?php esc_attr($rpost->post_title); ?>" rel="bookmark" class="title"><?php echo $rpost->post_title; ?></a>
+			<a href="<?php echo $link; ?>" title="<?php esc_attr($rpost->post_title); ?>" rel="bookmark" class="title"><?php echo $rpost->post_title; ?></a>
 			<?php if ( $rpost->comment_status == 'open' ) { ?>
-				<div class="clear"></div><div class="comment-hp"><a href="<?php echo get_permalink($rpost->ID); ?>#comments"><span class="comment-mini"></span></a><a href="<?php echo get_permalink($rpost->ID); ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><?php echo $rpost->comment_count; ?></span></a></div>
+				<div class="clear"></div><div class="comment-hp"><a href="<?php echo $link; ?>#comments"><span class="comment-mini"></span></a><a href="<?php echo $link; ?>#disqus_thread" class="comment-hp"><span class="comment-mini-number dsq-postid"><?php echo $rpost->comment_count; ?></span></a></div>
 			<?php
 			}
 			echo '<div class="clear"></div></div>';
+			unset($link, $rpost);
 		}
 		echo '</div>';
 	}
@@ -1354,7 +1352,7 @@ function coming_events() {
 			$event_link_url = get_permalink($post->ID);
 			$post_id = $post->ID;
 			
-			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"Permalink to '. $event_title .'\">'. $event_title .'</a>';
+			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"'. $event_title .'\">'. $event_title .'</a>';
 			
 			$event_date_string = 'new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'")';
 			$event_str .= '{ Title: "'. $displaytitle .'", Date: new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'") },';
@@ -1365,14 +1363,14 @@ function coming_events() {
 				if ( has_post_thumbnail() ) {	# DISPLAY EVENTS FEATURED IMAGE
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'icon-thumbnail' );
 					$imageURL = $imageArray[0];
-					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
+					echo '<a href="' . $event_link_url . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
 				} else {
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id(322), 'icon-thumbnail' ); 	# DEFAULT IMAGE STORED IN POST WHERE ID = 322
 					$imageURL = $imageArray[0];
-					echo '<a href="' . get_permalink($post->ID) . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
+					echo '<a href="' . $event_link_url . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
 				}
 				?>
-				<a href="<?php the_permalink(); ?>" title="Permalink to <?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
+				<a href="<?php echo $event_link_url; ?>" title="<?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
 				<?php 
 				echo '<div class="post-details"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a>, <a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a><br />';
 				if ($displayday == $displayendday) {
@@ -1383,6 +1381,10 @@ function coming_events() {
 				echo '</div><div class="clear"></div></div>';
 				$i++;
 			}
+			
+			unset($event_title, $displayday, $displaymonth, $str_month, $displayyear, $displayendday, 
+                  $displayendmonth, $str_endmonth, $event_link_url, $post_id, $displaytitle, $event_date_string, 
+                  $imageArray, $imageURL, $post);
 		}
 		
 		$event_str .= ']';
@@ -2343,6 +2345,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 			foreach ($pageposts as $post) {
 			
 				setup_postdata($post);
+				$link = get_permalink($post->ID);
 				
 				switch (get_post_type()) {
 				    case 'gp_news':
@@ -2374,17 +2377,16 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 				if ( has_post_thumbnail() ) {
 					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 					$imageURL = $imageArray[0];
-					echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+					echo '<a href="' . $link . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
 				}
 
 				echo '
 				<div class="profile-postbox">
-			    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
+			    	<h1><a href="' . $link . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
 			    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
-					#echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 					
 				if ( comments_open() ) {
-					echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+					echo '<div class="comment-profile"><a href="' . $link . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . $link . '"></fb:comments-count></span></a></div>';
 				}
 				
 				global $current_user, $current_site;
@@ -2419,6 +2421,8 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 		    		</div>
 		    		<div class="clear"></div>
 		    	';
+			    unset($post_title, $post_url, $link, $imageArray, $imageURL, $current_user, $current_site, $likedclass, $likecount, 
+                      $showlikecount, $post);
 			}
 			
 			if ( $wp_query->max_num_pages > 1 ) {
@@ -2566,6 +2570,8 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 		foreach ($pageposts as $post) {
 		
 			setup_postdata($post);
+			$link = get_permalink($post->ID);
+			
 			switch (get_post_type()) {
 			    case 'gp_news':
 			        $post_title = 'News';
@@ -2596,18 +2602,17 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 			if ( has_post_thumbnail() ) {
                                 $imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
                                 $imageURL = $imageArray[0];
-                                echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
+                                echo '<a href="' . $link . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
                         }
 
 			echo '
 			<div class="profile-postbox">
-		    	<h1><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
+		    	<h1><a href="' . $link . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
 		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
 		    	the_excerpt();
-				#echo '<a href="' . get_permalink($post->ID) . '" class="profile_postlink">Read more...</a>';
 				
 			if ( comments_open() ) {
-				echo '<div class="comment-profile"><a href="' . get_permalink($post->ID) . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count></span></a></div>';
+				echo '<div class="comment-profile"><a href="' . $link . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . $link . '"></fb:comments-count></span></a></div>';
 			}
 			
 			$likedclass = '';
@@ -2632,12 +2637,11 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 			}
 				
 	    	echo '</div><div class="topic-container"><div class="topic-content"><a href="#/" class="topic-bookmark">test topic</a></div></div>';
-/*			if ( has_post_thumbnail() ) {
-				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-				$imageURL = $imageArray[0];
-				echo '<a href="' . get_permalink($post->ID) . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-			}*/
 			echo '<div class="clear"></div>';
+		
+		    unset($post_title, $post_url, $link, $imageArray, $imageURL, $current_user, $current_site, $likedclass, $likecount, 
+                      $showlikecount, $post);
+			
 		}
 		
 		if ( $wp_query->max_num_pages > 1 ) {
@@ -2656,31 +2660,32 @@ function theme_profile_advertise($profile_pid) {
 	# Set form urls for creating ad posts for regular monthly subscription advertisers and non regular advertisers
 	$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
     $post_my_competition_form  = ($profile_author->reg_advertiser == 1) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
+    $template_url = get_bloginfo('template_url');
     
 	echo "
 	<div id=\"my-advertise\">
 		<div id=\"advertorial\">
 			<span><a href=\"". $post_my_product_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
 			<div class=\"clear\"></div>			
-			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
+			<span><a href=\"" . $template_url . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"competition\">
 			<span><a href=\"". $post_my_competition_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
 			<div class=\"clear\"></div>				
-			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#competition\" target=\"_blank\">Learn more</a></span>
+			<span><a href=\"" . $template_url . "/about/rate-card/#competition\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"listing\">
 			<span><a href=\"" . get_permalink(472) . "\" target=\"_blank\"><input type=\"button\" value=\"Directory Page $39/m\" /></a></span>
 			<div class=\"clear\"></div>
-			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#directory\" target=\"_blank\">Learn more</a></span>
+			<span><a href=\"" . $template_url . "/about/rate-card/#directory\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"email\">
 			<span><a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry\" ><input type=\"button\" value=\"Exclusive Email $3500\" /></a></span>
 			<div class=\"clear\"></div>
-			<span><a href=\"" . get_bloginfo('template_url') . "/about/rate-card/#email\" target=\"_blank\">Learn more</a></span>
+			<span><a href=\"" . $template_url . "/about/rate-card/#email\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 	</div>
@@ -2931,7 +2936,7 @@ function theme_profile_analytics($profile_pid) {
 			
 											# DISPLAY ROW OF ANALYTICS DATA FOR EACH POST BY THIS AUTHOR (PAGE IMPRESSIONS ETC)
 			echo '<tr>				
-					<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="Permalink to ' . 
+					<td class="author_analytics_title"><a href="' . get_permalink($post->ID) . '" title="' . 
 					esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></td>				
 					<td class="author_analytics_type"><a href="' . $post_url . '">' . $post_title . '</a></td>					
 					<td class="author_analytics_cost">' . $post_price . '</td>				
