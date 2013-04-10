@@ -605,7 +605,6 @@ function my_show_extra_profile_fields( $user ) {
 		$contributors_posttagline = get_the_author_meta( 'contributors_posttagline', $user->ID );
 		$contributors_donate_url = get_the_author_meta( 'contributors_donate_url', $user->ID );
 		$contributors_join_url = get_the_author_meta( 'contributors_join_url', $user->ID );
-		$contributors_letter_url = get_the_author_meta( 'contributors_letter_url', $user->ID );
 		$contributors_petition_url = get_the_author_meta( 'contributors_petition_url', $user->ID );
 		$contributors_volunteer_url = get_the_author_meta( 'contributors_volunteer_url', $user->ID );
 		echo ('
@@ -638,12 +637,6 @@ function my_show_extra_profile_fields( $user ) {
 				<td><input type="text" maxlength="255" name="contributors_join_url" id="contributors_join_url" class="regular-text" value="' . $contributors_join_url . '" /><br />
 				<span class="description">Enter the url you use to sign up new members and a \'Join\' button 
 				will be visible on each post you create and your profile page!</span></td>
-			</tr>
-			<tr>
-				<th><label for="contributors_letter_url">Send Letter</label></th>
-				<td><input type="text" maxlength="255" name="contributors_letter_url" id="contributors_letter_url" class="regular-text" value="' . $contributors_letter_url . '" /><br />
-				<span class="description">Enter the url you use to encourage sending a letter to a 
-				decision maker and a \'Send Letter\' button will be visible on each post you create and your profile page!</span></td>
 			</tr>
 			<tr>
 				<th><label for="contributors_petition_url">Sign Petition</label></th>
@@ -902,7 +895,6 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'contributors_posttagline', $_POST['contributors_posttagline'] );
 	update_usermeta($user_id, 'contributors_donate_url', $_POST['contributors_donate_url'] );
 	update_usermeta($user_id, 'contributors_join_url', $_POST['contributors_join_url'] );
-	update_usermeta($user_id, 'contributors_letter_url', $_POST['contributors_letter_url'] );
 	update_usermeta($user_id, 'contributors_petition_url', $_POST['contributors_petition_url'] );
 	update_usermeta($user_id, 'contributors_volunteer_url', $_POST['contributors_volunteer_url'] );	
 	update_usermeta($user_id, 'notification', $notification_post );
@@ -3082,13 +3074,11 @@ function theme_profile_analytics($profile_pid) {
 
   			$donate_url = $profile_author->contributors_donate_url;
 			$join_url = $profile_author->contributors_join_url;
-			$letter_url = $profile_author->contributors_letter_url;
 			$petition_url = $profile_author->contributors_petition_url;
 			$volunteer_url = $profile_author->contributors_volunteer_url;
 			
   			$button_labels = array('donate' => $donate_url, 
-  									'join' =>  $join_url, 
-  									'letter' =>  $letter_url, 
+  									'join' =>  $join_url,
   									'petition' =>  $petition_url, 
   									'volunteer' =>  $volunteer_url);
   			$activist_clicks_sum = 0;

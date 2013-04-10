@@ -1456,7 +1456,7 @@ function author_edit() {
 	$roleeditor = 'editor';
 	$rolecontributor = 'contributor';
 	
-	if ( !get_user_role( array( $profiletypes_user['profiletypes'] ) ) && in_array( $profiletypes_user['profiletypes'], $profiletypes_values ) && in_array( $user_role, $profiletypes_values ) ) {
+	if ( !get_user_role( array( $profiletypes_user['profiletypes'] ) ) && in_array( $profciletypes_user['profiletypes'], $profiletypes_values ) && in_array( $user_role, $profiletypes_values ) ) {
 		${'role'. $profiletypes_user['profiletypes']} = $user_role;
 		${'role'. $user_role} = $profiletypes_user['profiletypes'];
 	}
@@ -1998,7 +1998,6 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 		$post_author_id = $post_author->ID;
 		$donate_url = $post_author->contributors_donate_url;
 		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
 		$petition_url = $post_author->contributors_petition_url;
 		$volunteer_url = $post_author->contributors_volunteer_url;
 		
@@ -2007,7 +2006,6 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 			<?php
 			theme_contributors_donate($donate_url, $post_author_id);
 			theme_contributors_join($join_url, $post_author_id);
-			theme_contributors_letter($letter_url, $post_author_id);
 			theme_contributors_petition($petition_url, $post_author_id);
 			theme_contributors_volunteer($volunteer_url, $post_author_id);
 			?>			
@@ -2015,7 +2013,7 @@ function theme_profile_contributor_donate_join_bar($profile_author){
 		<div class="clear"></div>
 		<?php				
 	}
-	unset($post, $post_author, $post_author_id, $donate_url, $join_url, $letter_url, $petition_url, $volunteer_url);
+	unset($post, $post_author, $post_author_id, $donate_url, $join_url, $petition_url, $volunteer_url);
 }
 
 function theme_index_contributor_donate_join_bar() {
@@ -2026,7 +2024,6 @@ function theme_index_contributor_donate_join_bar() {
 		$post_author_id = $post_author->ID;
 		$donate_url = $post_author->contributors_donate_url;
 		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
 		$petition_url = $post_author->contributors_petition_url;
 		$volunteer_url = $post_author->contributors_volunteer_url;
 		
@@ -2035,7 +2032,6 @@ function theme_index_contributor_donate_join_bar() {
 			<?php
 			theme_contributors_donate($donate_url, $post_author_id);
 			theme_contributors_join($join_url, $post_author_id);
-			theme_contributors_letter($letter_url, $post_author_id);
 			theme_contributors_petition($petition_url, $post_author_id);
 			theme_contributors_volunteer($volunteer_url, $post_author_id);
 			?>			
@@ -2043,7 +2039,7 @@ function theme_index_contributor_donate_join_bar() {
 		<div class="clear"></div>
 		<?php		
 	}
-	unset($post, $post_author, $post_author_id, $post_author_url, $donate_url, $join_url, $letter_url, $petition_url, $volunteer_url);
+	unset($post, $post_author, $post_author_id, $post_author_url, $donate_url, $join_url, $petition_url, $volunteer_url);
 }
 
 function theme_single_contributor_donate_join_bar() {
@@ -2054,7 +2050,6 @@ function theme_single_contributor_donate_join_bar() {
 		$post_author_id = $post_author->ID;
 		$donate_url = $post_author->contributors_donate_url;
 		$join_url = $post_author->contributors_join_url;
-		$letter_url = $post_author->contributors_letter_url;
 		$petition_url = $post_author->contributors_petition_url;
 		$volunteer_url = $post_author->contributors_volunteer_url;
 		
@@ -2064,7 +2059,6 @@ function theme_single_contributor_donate_join_bar() {
 			<?php
 			theme_contributors_donate($donate_url, $post_author_id);
 			theme_contributors_join($join_url, $post_author_id);
-			theme_contributors_letter($letter_url, $post_author_id);
 			theme_contributors_petition($petition_url, $post_author_id);
 			theme_contributors_volunteer($volunteer_url, $post_author_id);
 			?>			
@@ -2072,7 +2066,7 @@ function theme_single_contributor_donate_join_bar() {
 		<div class="clear"></div>
 		<?php		
 	}
-	unset($post, $post_author, $post_author_id, $post_author_url, $donate_url, $join_url, $letter_url, $petition_url, $volunteer_url);
+	unset($post, $post_author, $post_author_id, $post_author_url, $donate_url, $join_url, $petition_url, $volunteer_url);
 }
 
 /** CONTRIBUTOR / CONTENT PARTNER DONATE | JOIN | SEND LETTER | SIGN PETITION | VOLUNTEER BUTTONS **/
@@ -2089,14 +2083,6 @@ function theme_contributors_join($join_url, $post_author_id) {
 	if ( !empty($join_url) ) {
 		$click_track_tag = '\'/outbound/activist-join-button/' . $post_author_id . '/' . $join_url .'/\'';
 		echo '<a href="' . $join_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="join">Join</span></a>';
-	}
-	unset($click_track_tag);
-}
-
-function theme_contributors_letter($letter_url, $post_author_id) {
-	if ( !empty($letter_url) ) {
-		$click_track_tag = '\'/outbound/activist-letter-button/' . $post_author_id . '/' . $letter_url .'/\'';
-		echo '<a href="'. $letter_url .'" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"><span id="letter">Send Letter</span></a>';
 	}
 	unset($click_track_tag);
 }
