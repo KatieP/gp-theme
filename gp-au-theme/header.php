@@ -32,31 +32,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 <!--[if IE 8]>         <html <?php echo $htmlattr; ?> class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html <?php echo $htmlattr; ?> class="no-js"> <!--<![endif]-->
 
-    <head>
-	
+    <head>	
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	
-		<?php
-		/*
-		We've removed the follow noscript tags because Facebook Debugger will fail if meta tags are found outsite the head tag. Very annoying! 
-		
-		if (!isset($_GET['noscript'])) { 
-			if ($_GET['noscript'] != '1') { 
-		echo '
-		<noscript>
-			<meta http-equiv=refresh content="0; URL=/?noscript=1" />
-		</noscript>
-		';
-			}
-		}
-		
-		<!--<noscript>
-			<meta http-equiv="X-Frame-Options" content="deny" />
-		</noscript>-->
-		*/
-		?>
-		
+        <meta name="viewport" content="width=device-width">
+                
 		<script type="text/javascript">
 			window.google_analytics_uacct = "UA-2619469-9";
 		</script>
@@ -84,8 +64,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 
         ?></title>
 		
-        <meta name="viewport" content="width=device-width">
-		
 		<?php
 			$out_excerpt = "";
 			if ( is_single() || is_page() ) {
@@ -111,23 +89,24 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 		
 			// Show required info for Facebook attach link functionality and open graph protocol
 			$permalink = ( isset($post) ? get_permalink($post->ID) : "" );
-			
-			echo '<meta property="fb:app_id" content="305009166210437" />';
-            echo '<meta property="og:locale" content="en_US" />';
-			echo '<meta property="og:site_name" content="Green Pages" />';
-			echo '<meta property="og:url" content="' . $permalink . '"/>';
-			echo '<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>';
-	
+			$facebook_app_id = show_facebook_by_location();
+			?>
+			<meta property="fb:app_id" content="<?php echo $facebook_app_id; ?>" />
+            <meta property="og:locale" content="en_US" />
+			<meta property="og:site_name" content="Green Pages" />
+			<meta property="og:url" content="<?php echo $permalink; ?>"/>
+			<meta property="fb:admins" content="100000564996856,katiepatrickgp,eddy.respondek"/>
+	        <?php 
 			if ( is_single() && function_exists('has_post_thumbnail') && has_post_thumbnail($post->ID) ) {
 				$socialThumb = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'thumbnail');
-				echo '<link rel="image_src" href="' . esc_url($socialThumb[0]) . '" />';
-				echo '<meta property="og:image" content="' . esc_url($socialThumb[0]) . '"/>';
+				echo '<link rel="image_src" href="' . esc_url($socialThumb[0]) . '" />
+				      <meta property="og:image" content="' . esc_url($socialThumb[0]) . '"/>';
 			}
 			
 			if ( is_single() || is_page() ) {
-				echo '<meta property="og:type" content="article"/>';
-				echo '<meta name="title" property="og:title" content="' . esc_attr(wp_title('', false, '')) . '" />';
-				echo '<meta name="description" property="og:description" content="' . esc_attr(sanitize_text_field($out_excerpt)) . '" />';
+				echo '<meta property="og:type" content="article"/>
+				      <meta name="title" property="og:title" content="' . esc_attr(wp_title('', false, '')) . '" />
+				      <meta name="description" property="og:description" content="' . esc_attr(sanitize_text_field($out_excerpt)) . '" />';
 			}
 			
 			if ( is_home() || is_front_page() ) {
@@ -159,25 +138,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
          * as styles, scripts, and meta tags.
          */
         wp_head();
-		?>
-		
-		<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
-		</script>
-		<script type='text/javascript'>
-			GS_googleAddAdSenseService("ca-pub-5276108711751681");
-			GS_googleEnableAllServices();
-		</script>
-		<script type='text/javascript'>
-			GA_googleAddSlot("ca-pub-5276108711751681", "stg1_medrec");
-			GA_googleAddSlot("ca-pub-5276108711751681", "stg1_medrec2");
-			GA_googleAddSlot("ca-pub-5276108711751681", "stg1_ldrbrd");
-		</script>
-		<script type='text/javascript'>
-			GA_googleFetchAds();
-		</script>
-		
-		<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
-				
+		?>	
 	</head>
 
 	<body>

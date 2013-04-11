@@ -2128,9 +2128,9 @@ function custom_google_map_styles() {
 }
 
 
-/** SHOWS DIFFERENT COUNTRY FACEBOOK PAGES ON RIGHT SIDEBAR BASED ON USER'S LOCATION BY IP**/
+/** SHOWS DIFFERENT COUNTRY FACEBOOK PAGES BASED ON USER'S LOCATION BY IP**/
 function show_facebook_by_location() {
-    global $post,$wpdb,$gp;
+    global $post, $wpdb, $gp;
     $ns_loc = $gp->location['country_iso2'] . '\\Edition';
     
     $edition_meta = $ns_loc::getMeta();
@@ -2145,7 +2145,7 @@ function show_facebook_by_location() {
         **/
         
         // Link to appropriate facebook page - TODO replace this link with facebox above in dialog box
-        echo 'http://www.facebook.com/'. $edition_meta['facebook_id'];
+        return $edition_meta['facebook_id'];
     }
 }	
 
@@ -2199,54 +2199,6 @@ function simplegeo_ip_user_location() {
 	}
 	
 	return $user_location;									#SUBURB AND CITY IN STRING
-}
-
-/* INSERT KEYWORDS META TAG INTO <head> */
-
-function theme_create_keyword_meta_tag() {
-    # Set first 5 tags as meta keywords if post/page has tags, called from header.php
-    
-    global $post;    
-    
-    $keywords = '<meta name="keywords" content="green, sustainability, green pages, sustainable, ';
-	if ( get_the_tags() ) {
-	    $posttags = get_the_tags();
-	    $i = 0;
-        if ($posttags) {
-            foreach($posttags as $tag) {
-                if ($i < 5) {
-                    $keywords .= $tag->name . ', ';
-                    $i++;
-                } else {
-                    break;
-                }
-            }
-        }
-        
-        $post_type = get_post_type();
-		switch ($post_type) {
-	        case 'gp_news':
-	            $keywords .= 'green news, conservation, ';
-	            break;
-	        case 'gp_projects':
-	  	        $keywords .= 'green projects, conservation, ';
-	            break;
-	        case 'gp_advertorial':
-		        $keywords .= 'green products, environmentally friendly products, eco friendly products, eco services, ';
-	            break;
-	        case 'gp_competitions':
-	            $keywords .= 'competitions, enter, win, ';
-	            break;
-	        case 'gp_events':
-	            $keywords .= 'green events, environmental events, community, sustainability, conference, seminar, workshop, ';
-	            break;
-	        case 'gp_people':
-	            $keywords .= 'activists, sustainability professionals, ';
-	            break;
-	    }
-    }	
-    $keywords .= 'environment">';
-    echo $keywords;
 }
 
 /* SHOW MEMBERS POSTS */
