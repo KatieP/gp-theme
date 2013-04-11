@@ -178,180 +178,183 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			        </nav>
 			    </div>
 			    <div class="template-right">
-			    <?php 
-			    #if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
-			    if ( !is_user_logged_in() ) {
-			    ?>
-			    <nav id="header-auth">
-				    <?php if (!isset($_GET['noscript'])) { ?>
-				    <ul id="auth-tools">
-					    <li id="auth-youraccount">
-						    <!--
-						    Temporarily disabling simple-modal login as register and login are breaking for many users
-						    <a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
-						    -->
-                            <a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
-                            Log In
-                            </a>
-                            <span class="in-or-out"> | </span>
-                            <a href="/wp-login.php?action=register" class="lower">Register</a>
-					    </li>
-				    </ul>
-				    <div class="clear"></div>
-				    <?php } ?>
-			    </nav>
-			    <?php 
-			    } else { 
+				    <?php 
+	    		    #if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
+		    	    if ( !is_user_logged_in() ) {
+			        ?>
+			    	<nav id="header-auth">
+					    <?php 
+					    if (!isset($_GET['noscript'])) { 
+					    ?>
+					    <ul id="auth-tools">
+						    <li id="auth-youraccount">
+							    <!--
+							    Temporarily disabling simple-modal login as register and login are breaking for many users
+							    <a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
+							    -->
+                            	<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
+	    	                        Log In
+    	                        </a>
+            	                <span class="in-or-out"> | </span>
+                	            <a href="/wp-login.php?action=register" class="lower">Register</a>
+						    </li>
+				    	</ul>
+				    	<div class="clear"></div>
+				        <?php 
+					    } 
+					    ?>
+			    	</nav>
+			        <?php 
+    			    } else { 
 			    
-			        global $wpdb;
-			        global $current_site;
-			    	
-			        $post_author_url = ( isset($current_user) ? get_author_posts_url($current_user->ID) : "" );
-			    ?>
-			    <nav id="header-auth">
-			  	    <div id="auth-forgot">
-					    <?php echo "<a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
-				    </div>
-				    <ul id="auth-tools">
-					    <li id="auth-yourfavourites" class="no-js">
-							<?php
-							#$querystr = "SELECT REPLACE(meta_key, 'likepost', '') as post_id FROM wp_usermeta WHERE meta_value > 0 and user_id = 5 and meta_key LIKE 'likepost%' order by meta_value DESC limit 5;";
-							$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id 
-							             FROM " . $wpdb->prefix . "posts 
-							                 LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on 
-							                 REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
-							                 left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID 
-							                 and m1.meta_key='_thumbnail_id' 
-							             WHERE post_status='publish' AND m0.meta_value > 0 
-							                 AND m0.user_id = $current_user->ID 
-							                 AND m0.meta_key LIKE 'likepost%' 
-							                 AND m1.meta_value >= 1 
-							             ORDER BY m0.meta_value DESC LIMIT 3;";
-							$pageposts = $wpdb->get_results($querystr, OBJECT);
-							$numPosts = $wpdb->num_rows-1;
+    			        global $wpdb;
+	    		        global $current_site;    	
+		    	        $post_author_url = ( isset($current_user) ? get_author_posts_url($current_user->ID) : "" );
+			        ?>
+			    	<nav id="header-auth">
+			  	    	<div id="auth-forgot">
+						    <?php echo "<a href=\"" . $post_author_url . "\">" . $current_user->display_name ."</a>"; ?>
+					    </div>
+					    <ul id="auth-tools">
+						    <li id="auth-yourfavourites" class="no-js">
+								<?php
+					    		#$querystr = "SELECT REPLACE(meta_key, 'likepost', '') as post_id FROM wp_usermeta WHERE meta_value > 0 and user_id = 5 and meta_key LIKE 'likepost%' order by meta_value DESC limit 5;";
+						    	$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id 
+							             	 FROM " . $wpdb->prefix . "posts 
+							                 	LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on 
+							                 	REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
+							                 	left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID 
+							                 	and m1.meta_key='_thumbnail_id' 
+							             	 WHERE post_status='publish' AND m0.meta_value > 0 
+							                 	AND m0.user_id = $current_user->ID 
+							                 	AND m0.meta_key LIKE 'likepost%' 
+							                 	AND m1.meta_value >= 1 
+							             	ORDER BY m0.meta_value DESC LIMIT 3;";
+							    $pageposts = $wpdb->get_results($querystr, OBJECT);
+							    $numPosts = $wpdb->num_rows-1;
 
-							echo '<a href="' . $post_author_url . '#favourites" title="Your Favourites">
-								<span class="icon-favourites">My Favourites</span>
-							</a>
-							<ul id="auth-dash-favourites" class="auth-dash">';
+							    echo '<a href="' . $post_author_url . '#favourites" title="Your Favourites">
+	    							      <span class="icon-favourites">My Favourites</span>
+							          </a>
+									  <ul id="auth-dash-favourites" class="auth-dash">';
 							
-							if ($pageposts && $numPosts != -1) {
-								echo '<li class="auth-dash-title">My Favourites<div class="clear"></div></li>';
-								foreach ($pageposts as $post) {
-									setup_postdata($post);
-									echo '<li>';
-									if ( has_post_thumbnail() ) {
-										$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'dash-thumbnail' );
-										$imageURL = $imageArray[0];
-										echo '<a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title()) . '" rel="bookmark"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /><span class="what">' . get_the_title() . '</span></a>';
-									}
-									echo '<div class="clear"></div></li>';
-								}
-								echo '<li class="auth-dash-seeall"><a href="' . $post_author_url . '#tab:favourites;">See all my favourites</a></li>';
-							} else {
-								echo '<li><div class="account-heart">Love it!</div></li>';
-							}
-							?>
-					        </ul>
-					    </li>
-					    <li id="auth-yournotifications" class="no-js">
-						    <a href="#/" class="auth-yournotifications-start" title="Your Notifications">
-							    <span class="icon-notifications">My Notifications</span>
-						    </a>
-						    <ul id="auth-dash-notifications" class="auth-dash">
-							    <li class="auth-dash-title">You have no notifications yet.</li>
-						    </ul>
-					    </li>
-					    <li id="auth-youraccount" class="no-js">
-						    <a href="<?php echo $post_author_url; ?>" class="auth-youraccount-start">
-							    <span>My Account</span>
-						    </a>
-						    <ul id="auth-dash-account" class="auth-dash">
-							    <li class="auth-dash-title">Account Options</li>
-							    <li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
-							    <li class="auth-account-options">	
-								    <a href="<?php echo $post_author_url; ?>" title="Your profile">View Profile</a> 
-								    <a href="/forms/profile-editor/" title="Update Profile">Update Profile</a>
-								    <a href="/forms/profile-notifications/" title="Notifications">Notifications</a>
-								    <a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
-								    <a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
-							    </li>
-							    <!-- 
-							    <li class="auth-dash-title">Your Toolbox</li>
-							    <li class="auth-toolbox">
-								    <a href="">
-									    <span class="icon-listcheck"></span>
-									    List your business
-									    <span class="moreinfo">More info</span>
-								    </a>
+    							if ($pageposts && $numPosts != -1) {
+	    							echo '<li class="auth-dash-title">My Favourites<div class="clear"></div></li>';
+		    						foreach ($pageposts as $post) {
+			    						setup_postdata($post);
+				    					echo '<li>';
+					    				if ( has_post_thumbnail() ) {
+						    				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'dash-thumbnail' );
+							    			$imageURL = $imageArray[0];
+								    		echo '<a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title()) . '" rel="bookmark"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /><span class="what">' . get_the_title() . '</span></a>';
+									    }
+									    echo '<div class="clear"></div></li>';
+								    }
+								    echo '<li class="auth-dash-seeall"><a href="' . $post_author_url . '#tab:favourites;">See all my favourites</a></li>';
+							    } else {
+								    echo '<li><div class="account-heart">Love it!</div></li>';
+							    }
+							    ?>
+					        	</ul>
+					    	</li>
+					    	<li id="auth-yournotifications" class="no-js">
+							    <a href="#/" class="auth-yournotifications-start" title="Your Notifications">
+								    <span class="icon-notifications">My Notifications</span>
+							    </a>
+							    <ul id="auth-dash-notifications" class="auth-dash">
+								    <li class="auth-dash-title">You have no notifications yet.</li>
+							    </ul>
+					    	</li>
+					    	<li id="auth-youraccount" class="no-js">
+						    	<a href="#" class="auth-youraccount-start">
+							    	<span>My Account</span>
+						    	</a>
+						    	<ul id="auth-dash-account" class="auth-dash">
+								    <li class="auth-dash-title">Account Options</li>
+							    	<li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
+								    <li class="auth-account-options">	
+									    <a href="<?php echo $post_author_url; ?>" title="Your profile">View Profile</a> 
+									    <a href="/forms/profile-editor/" title="Update Profile">Update Profile</a>
+									    <a href="/forms/profile-notifications/" title="Notifications">Notifications</a>
+									    <a href="/about/contact-information/" title="Help">Help</a><!-- TO DO Make a real help page!-->
+									    <a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
+								    </li>
+								    <!-- 
+							    	<li class="auth-dash-title">Your Toolbox</li>
+								    <li class="auth-toolbox">
+									    <a href="">
+										    <span class="icon-listcheck"></span>
+										    List your business
+										    <span class="moreinfo">More info</span>
+									    </a>
 								
-								    <?php
-								    # $story_contributors = array('administrator', 'contributor', 'author', 'editor');
-								    # if ( get_user_role($story_contributors) )  {
-								    ?>
-								    <a href="">
-									    <span class="icon-book"></span>
-									    Submit a story
-									    <span class="moreinfo">More info</span>
-								    </a>
-								    <?php # } else { ?>
-								    <a href="">
-									    <span class="icon-book"></span>
-									    Become a content partner
-									    <span class="moreinfo">More info</span>
-								    </a>
-								    <?php # } ?>
+									    <?php
+	    							    # $story_contributors = array('administrator', 'contributor', 'author', 'editor');
+		    						    # if ( get_user_role($story_contributors) )  {
+			    					    ?>
+									    <a href="">
+										    <span class="icon-book"></span>
+										    Submit a story
+										    <span class="moreinfo">More info</span>
+									    </a>
+								        <?php # } else { ?>
+								    	<a href="">
+										    <span class="icon-book"></span>
+										    Become a content partner
+										    <span class="moreinfo">More info</span>
+									    </a>
+									    <?php # } ?>
 								
-								    <a href="">
-									    <span class="icon-star"></span>
-									    Put GP on my site
-									    <span class="moreinfo">More info</span>
-								    </a>
-							    </li>
-							    //-->
-						    </ul>
-					    </li>
-				    </ul>
-				    <div class="clear"></div>
-			    </nav>
-			    <?php } ?>
-			    <!-- Google CSE Search Box -->
-                <div id="header-search">
-                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
-			            <div id="search-field"><input type="text" maxlength="255" size="40" name="q" placeholder="Search" /></div>
-			            <div id="search-button"><input type="submit" value=""/></div>
-			        </form>
-			    </div>
-			    <div class="clear"></div>
-                <!-- Google CSE Search Box Ends -->
-            </div>			
-            <?php
-       	    # Display location tag line and change region filter option
-	        # Get location from user ip address function
-            global $gp;	
+									    <a href="">
+										    <span class="icon-star"></span>
+										    Put GP on my site
+										    <span class="moreinfo">More info</span>
+								    	</a>
+							    	</li>
+								    //-->
+							    </ul>
+						    </li>
+					    </ul>
+					    <div class="clear"></div>
+				    </nav>
+			        <?php } ?>
+			    	<!-- Google CSE Search Box -->
+                	<div id="header-search">
+	                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
+				            <div id="search-field"><input type="text" maxlength="255" size="40" name="q" placeholder="Search" /></div>
+				            <div id="search-button"><input type="submit" value=""/></div>
+				        </form>
+			    	</div>
+			    	<div class="clear"></div>
+                	<!-- Google CSE Search Box Ends -->
+            	</div>			
+                <?php
+       	        # Display location tag line and change region filter option
+	            # Get location from user ip address function
+                global $gp;	
 
-	        $geo_currentlocation = $gp->location;
-            $user_location = $geo_currentlocation['city'];
-            $posttype_slug = getPostTypeSlug($post_type);
-	        ?>
-            <script type="text/javascript">
-                function show_location_field() {
-                    <!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
-                    document.getElementById("header_user_location").className = "hidden";
-                    document.getElementById("header_location_list").className = "";
-                }
-            </script>
-    		<div class="post-details" id="header-tagline">
-	            Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
-	            <span id="header_location_list" class="hidden">
-	                <select name="filterby_state" id="filterby_state">
-	                    <?php
-	                    $editions = Site::getEditions();
-	                    foreach ( $editions as $edition ) {
-                            echo "<option value=\"/". $posttype_slug ."/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
-                        }
-                        ?>
-	                </select>
-	            </span> 
-            </div>
-        </header>
+	            $geo_currentlocation = $gp->location;
+                $user_location = $geo_currentlocation['city'];
+                $posttype_slug = getPostTypeSlug($post_type);
+	            ?>
+            	<script type="text/javascript">
+                	function show_location_field() {
+                    	<!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
+                    	document.getElementById("header_user_location").className = "hidden";
+                    	document.getElementById("header_location_list").className = "";
+                	}
+            	</script>
+    			<div class="post-details" id="header-tagline">
+	            	Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
+	            	<span id="header_location_list" class="hidden">
+	                	<select name="filterby_state" id="filterby_state">
+		                    <?php
+	                        $editions = Site::getEditions();
+	                        foreach ( $editions as $edition ) {
+                                echo "<option value=\"/". $posttype_slug ."/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+                            }
+                            ?>
+	                	</select>
+	            	</span> 
+            	</div>
+        	</header>
