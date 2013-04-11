@@ -168,7 +168,14 @@ function theme_singlecontributorstagline() {
 	$post_author_tagline = get_the_author_meta( 'contributors_posttagline', $post_author->ID );
 
 	if ( !empty($post_author_tagline) ) {
-		echo '<div class="post-authorsdisclaimer"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '50', '', $post_author->display_name ) . '</a><div class="post-authorsdisclaimer-details">Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 1) . ' ago</div><div class="post-authorsdisclaimer-content">' . $post_author_tagline . '</div><div class="clear"></div></div>';
+		echo '<div class="post-authorsdisclaimer">
+		          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '50', '', $post_author->display_name ) . '</a>
+		          <div class="post-authorsdisclaimer-details">
+		              Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 1) . ' ago
+		          </div>
+		          <div class="post-authorsdisclaimer-content">' . $post_author_tagline . '</div>
+		          <div class="clear"></div>
+		      </div>';
 	} else {
 		theme_singledetails();
 	}
@@ -238,11 +245,15 @@ function theme_indexdetails($format='full') {
 	$post_author_url = get_author_posts_url($post->post_author);
 	
 	if ($format == 'full') {
-		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
+		echo '<div class="post-details">
+		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
+		      </div>';
 	}
 	
 	if ($format == 'author') {
-		echo '<div class="post-details"><a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
+		echo '<div class="post-details">
+		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
+		      </div>';
 	}
 }
 
