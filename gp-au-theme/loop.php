@@ -159,7 +159,6 @@ function theme_singledetails() {
 	      </div>';
 	theme_like();
 	echo '<div class="clear"></div>';
-	print_r(var_dump($post_author));
 }
 
 function theme_singlecontributorstagline() {
