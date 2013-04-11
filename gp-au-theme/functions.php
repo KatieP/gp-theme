@@ -1243,7 +1243,7 @@ function relevant_posts() {
 	}
 }
 
-/* SHOWS THE NEXT 5 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
+/* SHOWS THE NEXT 3 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
 function coming_events() {			
 	global $wpdb, $post, $gp;
 	
@@ -1338,7 +1338,7 @@ function coming_events() {
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			
-			$event_title =  get_the_title($post->ID);
+			$event_title = get_the_title($post->ID);
 			
 			$displayday = date('j', $post->gp_events_startdate);
 			$displaymonth = date('M', $post->gp_events_startdate);
@@ -1370,7 +1370,7 @@ function coming_events() {
 					echo '<a href="' . $event_link_url . '" class="hp_minithumb"><img src="' . $imageURL . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"  /></a>';
 				}
 				?>
-				<a href="<?php echo $event_link_url; ?>" title="<?php esc_attr(the_title()); ?>" rel="bookmark" class="title"><?php the_title(); ?></a>
+				<a href="<?php echo $event_link_url; ?>" title="<?php echo $event_title; ?>" rel="bookmark" class="title"><?php echo $event_title; ?></a>
 				<?php 
 				echo '<div class="post-details"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a>, <a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a><br />';
 				if ($displayday == $displayendday) {
@@ -2659,7 +2659,6 @@ function theme_profile_advertise($profile_pid) {
 
 	# Set form urls for creating ad posts for regular monthly subscription advertisers and non regular advertisers
 	$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
-    $post_my_competition_form  = ($profile_author->reg_advertiser == 1) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
     $template_url = get_bloginfo('template_url');
     
 	echo "
@@ -2668,12 +2667,6 @@ function theme_profile_advertise($profile_pid) {
 			<span><a href=\"". $post_my_product_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
 			<div class=\"clear\"></div>			
 			<span><a href=\"" . $template_url . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
-		</div>
-		<div class=\"clear\"></div>
-		<div id=\"competition\">
-			<span><a href=\"". $post_my_competition_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Competition $250\" /></a></span>	
-			<div class=\"clear\"></div>				
-			<span><a href=\"" . $template_url . "/about/rate-card/#competition\" target=\"_blank\">Learn more</a></span>
 		</div>
 		<div class=\"clear\"></div>
 		<div id=\"listing\">
@@ -2792,7 +2785,7 @@ function theme_profile_analytics($profile_pid) {
 		<div id="my-analytics">
 		    <br />
 			<?php theme_advertorialcreate_post(); ?>
-			<p>Create your complementary Product of the Week Advertorial to unlock your Analytics.</p>
+			<p>Create your first Product of the Week Advertorial to unlock your Analytics.</p>
 		</div>
 		<?php 
 		return;
@@ -2808,7 +2801,6 @@ function theme_profile_analytics($profile_pid) {
 	# TABLE HEADINGS FOR POST ANALYTICS
 	?>
 	<div id="my-analytics">
-		<?php gp_select_createpost(); ?>
 	
 		<h2>Post Analytics</h2>		
 		
@@ -3134,7 +3126,7 @@ function theme_profile_analytics($profile_pid) {
 			?>
 			<div class="post-details"><a href="/wp-admin/profile.php">Enter or update urls for Activist Bar buttons</a></div>
 			<br />
-			<div id="post-details"></div>
+			<div class="clear"></div>
 			<?php 
 		} 
 		?>
@@ -3201,11 +3193,7 @@ function theme_profile_analytics($profile_pid) {
 			<div id="post-details"></div>   
         <?php     
 		}
-    	?>
-		
-		<div class="post-details">Why are Clicks showing as 'Unavailable'?</div>
-		<div class="post-details">As it's a new feature, the clicks column is showing data from late 01/2012 onwards, all preceding click data is unavailable here.</div>
-		<div class="post-details">Earlier clicks may be found by looking for thegreenpages.com.au under 'Traffic Source' in your own Google Analytics account.</div>	
+    	?>		
 	</div>
 <?php 
 }
@@ -3369,8 +3357,6 @@ function gp_select_createpost() {
     # Set links to forms for monthly advertisers and non monthly advertisers
     $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
     $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($89)</a>"; 
-    $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
-    $post_my_competition_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". $post_my_competition_form ."\">Competition</a>" : "<a href=\"". $post_my_competition_form ."\">Competition ($250)</a>"; 
     
 	echo "
 	<div class=\"profile-action-container no-js\">
@@ -3379,7 +3365,6 @@ function gp_select_createpost() {
 		    ". $post_my_news_link ."
             <li><a href=\"/forms/create-event-post/\">Event (Free)</a></li>
             <li>". $post_my_product_link ."</li>
-            <li>". $post_my_competition_link ."</li>
             <li><a href=\"/forms/create-project-post/\">Project (Free)</a></li>
 		</ul>
 	</div>
