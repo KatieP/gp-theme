@@ -159,6 +159,8 @@ function theme_singledetails() {
 	      </div>';
 	theme_like();
 	echo '<div class="clear"></div>';
+	$user_default_location = get_the_author_meta( 'user_default_location', $post_author->ID );
+	#var_dump($user_default_location);
 }
 
 function theme_singlecontributorstagline() {

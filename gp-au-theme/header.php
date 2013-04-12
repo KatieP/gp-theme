@@ -128,8 +128,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
         /* Add google geo location javascript to pages so location autocomplete 
          * works on Gravity forms and select location function in header
          */
-        add_action('wp_head', 'gp_js_postGeoLoc_meta');
-        
+        add_action('wp_head', 'gp_js_postGeoLoc_meta');      
 
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which

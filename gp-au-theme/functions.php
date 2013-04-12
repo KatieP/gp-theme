@@ -29,7 +29,7 @@ function addCustomFields(){
       $item_options = ''; //item options in case of ckeckbox, radio, select etc
 
 
-     $max_id = 0;
+    $max_id = 0;
     $max_sort = 0;
     
     foreach( $wppbFetchArray as $value ){
@@ -3387,10 +3387,94 @@ function theme_single_tags() {
     <?php
 }
 
-// In your functions.php file
 function add_suggest_script()
 {
     wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
 }
 add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
+
+function auto_complete_location_field($input, $field, $value, $lead_id, $form_id) {
+    /**
+     *	Uses Gravity Form filter to assign appropriate id values to specific location 
+     *  input fields of Gravity Forms. Location input fields are identified by a 
+     *  css class name assigned to the field's wrapper during form creation.
+     *  This enables Google Places autocomplete to work and forms to capture 
+     *  location data i.e. lat, long etc for posts and member registration.
+     *  http://www.gravityhelp.com/documentation/page/Gform_field_input
+     *  
+     *  Author: Jesse Browne
+     *  		jesse.browne@greenpag.es 
+     *
+     */
+    
+    $field_css_class =  $field['cssClass'];
+    $input_name_id =    $field['id'];
+    $location = 		'gp_google_geo_location';
+    $latitude = 		'gp_google_geo_latitude';
+    $longitude = 		'gp_google_geo_longitude';
+    $country = 			'gp_google_geo_country';
+    $admin_lvl_one = 	'gp_google_geo_administrative_area_level_1';
+    $admin_lvl_two = 	'gp_google_geo_administrative_area_level_2';
+    $admin_lvl_three = 	'gp_google_geo_administrative_area_level_3';
+    $locality = 		'gp_google_geo_locality';
+    $locality_slug = 	'gp_google_geo_locality_slug';
+    $read_only = 		'readonly="readonly"';    
+    
+    # Check css class name for match with location class names above and define id on match
+    switch ($field_css_class) {
+        case $location:
+            $read_only = '';
+            $input_id = $location;
+            break;
+        case $latitude:
+            $input_id = $latitude;
+            break;
+        case $longitude:
+            $input_id = $longitude;
+            break;
+        case $country:
+            $input_id = $country;
+            break;
+        case $admin_lvl_one:
+            $input_id = $admin_lvl_one;
+            break;
+        case $admin_lvl_two:
+            $input_id = $admin_lvl_two;
+            break;
+        case $admin_lvl_three:
+            $input_id = $admin_lvl_three;
+            break;
+         case $locality:
+            $input_id = $locality;
+            break;
+         case $locality_slug:
+            $input_id = $locality_slug;
+            break;        
+    }
+
+    $input = (isset($input_id)) ? get_location_input_field($input_name_id, $input_id, $read_only) : '';
+       
+    return $input;
+}
+
+/* Gravity Form filter of all input fields to assign id's to all location related fields */
+add_filter("gform_field_input", "auto_complete_location_field", 10, 5);
+
+function get_location_input_field ($input_name_id, $input_id, $read_only) {
+    /**
+	 *  Returns location input field for Gravity Forms with appropriate id 
+	 *  value to work with Google places autocomplete and location data. 
+	 *  Called by auto_complete_location_field($input, $field, $value, $lead_id, $form_id)
+     *  
+     *  Author: Jesse Browne
+     *  		jesse.browne@greenpag.es
+     */
+    
+    $location_input = '<div class="ginput_container">
+                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" type="text" value="" '. $read_only .' class="medium" tabindex="5">
+                       </div>';
+
+    return $location_input;
+}
+
 ?>
