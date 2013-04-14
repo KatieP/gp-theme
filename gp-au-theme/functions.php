@@ -539,14 +539,16 @@ function my_show_extra_profile_fields( $user ) {
 				<td>
 					<input type="text" name="gp_google_geo_location" id="gp_google_geo_location" value="' . $gp_google_geo_location . '"/>
 					<br /><span class="description">Location!</span>
-					<input name="gp_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="' . $gp_google_geo_latitude . '" readonly="readonly">
-					<input name="gp_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="' . $gp_google_geo_longitude . '" readonly="readonly">
-					<input name="gp_google_geo_country" id="gp_google_geo_country" type="text" value="' . $gp_google_geo_country . '" readonly="readonly">
-					<input name="gp_google_geo_administrative_area_level_1" id="gp_google_geo_administrative_area_level_1" type="text" value="' . $gp_google_geo_administrative_area_level_1 . '" readonly="readonly">
-					<input name="gp_google_geo_administrative_area_level_2" id="gp_google_geo_administrative_area_level_2" type="text" value="' . $gp_google_geo_administrative_area_level_2 . '" readonly="readonly">
-					<input name="gp_google_geo_administrative_area_level_3" id="gp_google_geo_administrative_area_level_3" type="text" value="' . $gp_google_geo_administrative_area_level_3 . '" readonly="readonly">
-					<input name="gp_google_geo_locality" id="gp_google_geo_locality" type="text" value="' . $gp_google_geo_locality . '" readonly="readonly">
-					<input name="gp_google_geo_locality_slug" id="gp_google_geo_locality_slug" type="text" value="' . $gp_google_geo_locality_slug . '" readonly="readonly">
+					<div class="gp-meta">
+					    <input name="gp_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="' . $gp_google_geo_latitude . '" readonly="readonly">
+					    <input name="gp_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="' . $gp_google_geo_longitude . '" readonly="readonly">
+					    <input name="gp_google_geo_country" id="gp_google_geo_country" type="text" value="' . $gp_google_geo_country . '" readonly="readonly">
+					    <input name="gp_google_geo_administrative_area_level_1" id="gp_google_geo_administrative_area_level_1" type="text" value="' . $gp_google_geo_administrative_area_level_1 . '" readonly="readonly">
+					    <input name="gp_google_geo_administrative_area_level_2" id="gp_google_geo_administrative_area_level_2" type="text" value="' . $gp_google_geo_administrative_area_level_2 . '" readonly="readonly">
+					    <input name="gp_google_geo_administrative_area_level_3" id="gp_google_geo_administrative_area_level_3" type="text" value="' . $gp_google_geo_administrative_area_level_3 . '" readonly="readonly">
+					    <input name="gp_google_geo_locality" id="gp_google_geo_locality" type="text" value="' . $gp_google_geo_locality . '" readonly="readonly">
+					    <input name="gp_google_geo_locality_slug" id="gp_google_geo_locality_slug" type="text" value="' . $gp_google_geo_locality_slug . '" readonly="readonly">
+					</div>
 				</td>
 			</tr>
 			<tr>
