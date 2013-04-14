@@ -501,8 +501,16 @@ function my_show_extra_profile_fields( $user ) {
 		$bio_change = get_the_author_meta( 'bio_change', $user->ID );
 		$bio_projects = get_the_author_meta( 'bio_projects', $user->ID );
 		$bio_stuff = get_the_author_meta( 'bio_stuff', $user->ID );
-		$user_default_location = get_the_author_meta( 'user_default_location', $user->ID );
-		$user_tags = get_the_author_meta( 'user_tags', $user->ID );
+		$gp_google_geo_location = get_the_author_meta( 'gp_google_geo_location', $user->ID );
+		$gp_google_geo_latitude = get_the_author_meta( 'gp_google_geo_latitude', $user->ID );
+		$gp_google_geo_longitude = get_the_author_meta( 'gp_google_geo_longitude', $user->ID );
+		$gp_google_geo_country = get_the_author_meta( 'gp_google_geo_country', $user->ID );
+		$gp_google_geo_administrative_area_level_1 = get_the_author_meta( 'gp_google_geo_administrative_area_level_1', $user->ID );
+		$gp_google_geo_administrative_area_level_2 = get_the_author_meta( 'gp_google_geo_administrative_area_level_2', $user->ID );
+		$gp_google_geo_administrative_area_level_3 = get_the_author_meta( 'gp_google_geo_administrative_area_level_3', $user->ID );
+		$gp_google_geo_locality = get_the_author_meta( 'gp_google_geo_locality', $user->ID );
+		$gp_google_geo_locality_slug = get_the_author_meta( 'gp_google_geo_locality_slug', $user->ID );
+		$gp_user_tags = get_the_author_meta( 'gp_user_tags', $user->ID );
 		
 		echo ('
 		<table class="form-table">
@@ -527,16 +535,24 @@ function my_show_extra_profile_fields( $user ) {
 				</td>
 			</tr>
 			<tr>
-				<th><label for="user_default_location">My Location</label></th>
+				<th><label for="gp_google_geo_location">My Location</label></th>
 				<td>
-					<input type="text" name="user_default_location" id="user_default_location" value="' . $user_default_location . '"/>
+					<input type="text" name="gp_google_geo_location" id="gp_google_geo_location" value="' . $gp_google_geo_location . '"/>
 					<br /><span class="description">Location!</span>
+					<input name="gp_google_geo_latitude" id="gp_google_geo_latitude" type="text" value="' . $gp_google_geo_latitude . '" readonly="readonly">
+					<input name="gp_google_geo_longitude" id="gp_google_geo_longitude" type="text" value="' . $gp_google_geo_longitude . '" readonly="readonly">
+					<input name="gp_google_geo_country" id="gp_google_geo_country" type="text" value="' . $gp_google_geo_country . '" readonly="readonly">
+					<input name="gp_google_geo_administrative_area_level_1" id="gp_google_geo_administrative_area_level_1" type="text" value="' . $gp_google_geo_administrative_area_level_1 . '" readonly="readonly">
+					<input name="gp_google_geo_administrative_area_level_2" id="gp_google_geo_administrative_area_level_2" type="text" value="' . $gp_google_geo_administrative_area_level_2 . '" readonly="readonly">
+					<input name="gp_google_geo_administrative_area_level_3" id="gp_google_geo_administrative_area_level_3" type="text" value="' . $gp_google_geo_administrative_area_level_3 . '" readonly="readonly">
+					<input name="gp_google_geo_locality" id="gp_google_geo_locality" type="text" value="' . $gp_google_geo_locality . '" readonly="readonly">
+					<input name="gp_google_geo_locality_slug" id="gp_google_geo_locality_slug" type="text" value="' . $gp_google_geo_locality_slug . '" readonly="readonly">
 				</td>
 			</tr>
 			<tr>
-				<th><label for="user_tags">My Tags</label></th>
+				<th><label for="gp_user_tags">My Tags</label></th>
 				<td>
-					<input type="text" name="user_tags" id="user_tags" value="' . $user_tags . '"/>
+					<input type="text" name="gp_user_tags" id="gp_user_tags" value="' . $gp_user_tags . '"/>
 					<br /><span class="description">Tags!</span>
 				</td>
 			</tr>			
@@ -898,8 +914,16 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
 	update_usermeta($user_id, 'chargify_self_service_page_url', $_POST['chargify_self_service_page_url'] );
 	update_usermeta($user_id, 'video_news_id', $_POST['video_news_id'] );
-	update_usermeta($user_id, 'user_default_location', $_POST['user_default_location'] );
-	update_usermeta($user_id, 'user_default_tags', $_POST['user_default_tags'] );
+	update_usermeta($user_id, 'gp_google_geo_location', $_POST['gp_google_geo_location'] );
+	update_usermeta($user_id, 'gp_google_geo_latitude', $_POST['gp_google_geo_latitude'] );
+	update_usermeta($user_id, 'gp_google_geo_longitude', $_POST['gp_google_geo_longitude'] );
+	update_usermeta($user_id, 'gp_google_geo_country', $_POST['gp_google_geo_country'] );
+	update_usermeta($user_id, 'gp_google_geo_administrative_area_level_1', $_POST['gp_google_geo_administrative_area_level_1'] );
+	update_usermeta($user_id, 'gp_google_geo_administrative_area_level_2', $_POST['gp_google_geo_administrative_area_level_2'] );
+	update_usermeta($user_id, 'gp_google_geo_administrative_area_level_3', $_POST['gp_google_geo_administrative_area_level_3'] );
+	update_usermeta($user_id, 'gp_google_geo_locality', $_POST['gp_google_geo_locality'] );
+	update_usermeta($user_id, 'gp_google_geo_locality_slug', $_POST['gp_google_geo_locality_slug'] );
+	update_usermeta($user_id, 'gp_user_tags', $_POST['gp_user_tags'] );
 	
 	/* UPDATE CAMPAIGN MONITOR - USER GREENRAZOR SUBSCRIPTION */
 	$subscription_post = array();
@@ -3393,13 +3417,14 @@ function add_suggest_script()
 }
 add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
 
-function auto_complete_location_field($input, $field, $value, $lead_id, $form_id) {
+function add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id) {
     /**
      *	Uses Gravity Form filter to assign appropriate id values to specific location 
      *  input fields of Gravity Forms. Location input fields are identified by a 
      *  css class name assigned to the field's wrapper during form creation.
      *  This enables Google Places autocomplete to work and forms to capture 
      *  location data i.e. lat, long etc for posts and member registration.
+     *  Also captures and stores members tags /key words of interest in their profile. 
      *  http://www.gravityhelp.com/documentation/page/Gform_field_input
      *  
      *  Author: Jesse Browne
@@ -3418,11 +3443,14 @@ function auto_complete_location_field($input, $field, $value, $lead_id, $form_id
     $admin_lvl_three = 	'gp_google_geo_administrative_area_level_3';
     $locality = 		'gp_google_geo_locality';
     $locality_slug = 	'gp_google_geo_locality_slug';
+    $user_tags =        'gp_user_tags';
+    $type =             'type="hidden"';
     $read_only = 		'readonly="readonly"';    
     
     # Check css class name for match with location class names above and define id on match
     switch ($field_css_class) {
         case $location:
+            $type = 'type="text"';
             $read_only = '';
             $input_id = $location;
             break;
@@ -3444,37 +3472,43 @@ function auto_complete_location_field($input, $field, $value, $lead_id, $form_id
         case $admin_lvl_three:
             $input_id = $admin_lvl_three;
             break;
-         case $locality:
+        case $locality:
             $input_id = $locality;
             break;
-         case $locality_slug:
+        case $locality_slug:
             $input_id = $locality_slug;
-            break;        
+            break;
+        case $user_tags:
+            $type = 'type="text"'; 
+            $read_only = '';
+            $input_id = $user_tags;
+            break;
     }
 
-    $input = (isset($input_id)) ? get_location_input_field($input_name_id, $input_id, $read_only) : '';
+    $input = (isset($input_id)) ? get_correct_input_field($input_name_id, $input_id, $type, $read_only) : '';
        
     return $input;
 }
 
 /* Gravity Form filter of all input fields to assign id's to all location related fields */
-add_filter("gform_field_input", "auto_complete_location_field", 10, 5);
+add_filter("gform_field_input", "add_location_and_tag_fields", 10, 5);
 
-function get_location_input_field ($input_name_id, $input_id, $read_only) {
+function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) {
     /**
 	 *  Returns location input field for Gravity Forms with appropriate id 
-	 *  value to work with Google places autocomplete and location data. 
-	 *  Called by auto_complete_location_field($input, $field, $value, $lead_id, $form_id)
+	 *  value to work with Google places autocomplete, location data 
+	 *  and user tags / topics of interest. 
+	 *  Called by add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
      *  
      *  Author: Jesse Browne
      *  		jesse.browne@greenpag.es
      */
     
-    $location_input = '<div class="ginput_container">
-                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" type="text" value="" '. $read_only .' class="medium" tabindex="5">
+    $correct_input = '<div class="ginput_container">
+                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" '. $type .' value="" '. $read_only .' class="medium" tabindex="5">
                        </div>';
 
-    return $location_input;
+    return $correct_input;
 }
 
 ?>
