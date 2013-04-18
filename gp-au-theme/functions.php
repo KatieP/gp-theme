@@ -822,37 +822,12 @@ function my_show_extra_profile_fields( $user ) {
     } else {
         $check_monthly_email = '';
     }
-	?>
-	<script type="text/javascript">
-		function uncheck_other_notifications(checked_option) {
 
-			switch (checked_option) {
-				case "daily_email":
-					document.getElementById("daily_email").checked=true;
-					document.getElementById("weekly_email").checked=false;
-					document.getElementById("monthly_email").checked=false;
-					break;
-				case "weekly_email":
-					document.getElementById("weekly_email").checked=true;
-					document.getElementById("daily_email").checked=false;
-					document.getElementById("monthly_email").checked=false;	
-					break;
-				case "monthly_email":
-					document.getElementById("monthly_email").checked=true;
-					document.getElementById("daily_email").checked=false;
-					document.getElementById("weekly_email").checked=false;
-					break;
-				default: 
-					document.getElementById("daily_email").checked=true;
-			}	
-		}
-	</script>
-	<?php 
 	echo '<h3>Notification Settings</h3>
 		  <table class="form-table">
-		      <tr><th>daily_email</th><td><input onclick="uncheck_other_notifications(\'daily_email\')" type="checkbox" name="daily_email" id="daily_email" value="daily_email"' . $check_daily_email . ' /></td></tr>
-		      <tr><th>weekly_email</th><td><input onclick="uncheck_other_notifications(\'weekly_email\')" type="checkbox" name="weekly_email" id="weekly_email" value="weekly_email"' . $check_weekly_email . ' /></td></tr>
-		      <tr><th>monthly_email</th><td><input onclick="uncheck_other_notifications(\'monthly_email\')" type="checkbox" name="monthly_email" id="monthly_email" value="monthly_email"' . $check_monthly_email . ' /></td></tr>
+		      <tr><th>daily_email</th><td><input type="radio" name="notification_setting" id="daily_email" value="daily_email"' . $check_daily_email . ' /></td></tr>
+		      <tr><th>weekly_email</th><td><input type="radio" name="notification_setting" id="weekly_email" value="weekly_email"' . $check_weekly_email . ' /></td></tr>
+		      <tr><th>monthly_email</th><td><input type="radio" name="notification_setting" id="monthly_email" value="monthly_email"' . $check_monthly_email . ' /></td></tr>
 		  </table>';
 
     /* HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
@@ -951,9 +926,6 @@ function my_save_extra_profile_fields( $user_id ) {
 	}
 	
 	$reg_advertiser = isset( $_POST[ 'reg_advertiser' ] ) ? true : false;
-	$daily_email = isset( $_POST[ 'daily_email' ] ) ? true : false;
-	$weekly_email = isset( $_POST[ 'weekly_email' ] ) ? true : false;
-	$monthly_email = isset( $_POST[ 'monthly_email' ] ) ? true : false;
 	
 	update_usermeta($user_id, 'bio_change', $_POST['bio_change'] );
 	update_usermeta($user_id, 'bio_projects', $_POST['bio_projects'] );
@@ -968,9 +940,7 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'contributors_join_url', $_POST['contributors_join_url'] );
 	update_usermeta($user_id, 'contributors_petition_url', $_POST['contributors_petition_url'] );
 	update_usermeta($user_id, 'contributors_volunteer_url', $_POST['contributors_volunteer_url'] );	
-	update_usermeta($user_id, 'daily_email', $daily_email );
-	update_usermeta($user_id, 'weekly_email', $weekly_email );
-	update_usermeta($user_id, 'monthly_email', $monthly_email );
+	update_usermeta($user_id, 'notification_setting', $_POST['notification_setting'] );
 	update_usermeta($user_id, 'notification', $notification_post );
 	update_usermeta($user_id, 'reg_advertiser', $reg_advertiser );
 	update_usermeta($user_id, 'old_crm_id', $_POST['old_crm_id'] );
@@ -3507,7 +3477,7 @@ function add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
     $locality = 		'gp_google_geo_locality';
     $locality_slug = 	'gp_google_geo_locality_slug';
     $user_tags =        'gp_user_tags';
-    $daily_email =      'daily_email';
+    $notification_set = 'notification_setting';
     $weekly_email =     'weekly_email';
     $monthly_email =    'monthly_email';
     $type =             'type="hidden"';
@@ -3549,26 +3519,16 @@ function add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
             $read_only = '';
             $input_id = $user_tags;
             break;
-        case $daily_email:
+        case $notification_set:
             $type = 'type="radio"';
             $read_only = '';
-            $input_id = $daily_email;
-            break;
-        case $weekly_email:
-            $type = 'type="radio"';
-            $read_only = '';
-            $input_id = $weekly_email;
-            break;
-        case $monthly_email:
-            $type = 'type="radio"';
-            $read_only = '';
-            $input_id = $monthly_email;
+            $input_id = $notification_set;
             break;
     }
 
     switch ($type) {
         case 'type="radio"':
-            $input = (isset($input_id)) ? get_correct_radio_button($input_name_id, $input_id, $type, $read_only) : '';
+            $input = (isset($input_id)) ? get_correct_radio_buttons($input_name_id, $input_id, $type, $read_only) : '';
             break;
         default:
             $input = (isset($input_id)) ? get_correct_input_field($input_name_id, $input_id, $type, $read_only) : '';
@@ -3602,7 +3562,7 @@ function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) 
     return $correct_input;
 }
 
-function get_correct_radio_button ($input_name_id, $input_id, $type, $read_only) {
+function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only) {
     /**
 	 *  Returns notification setting radio button for Gravity Forms with appropriate id  
 	 *  Called by add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
@@ -3611,53 +3571,49 @@ function get_correct_radio_button ($input_name_id, $input_id, $type, $read_only)
      *  		jb@greenpag.es
      */
     global $current_user;
+    $notification_setting = $current_user->notification_setting;
+    $daily = 'daily_email';
+    $weekly = 'weekly_email';
+    $monthly = 'monthly_email';
+    $daily_decription = '<strong>\'The Green Laser\'</strong> Get notified immediately of news, events and projects happening near you';
+    $weekly_decription = '<strong>\'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
+    $monthly_decription = '<strong>\'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
     
-    if ( $current_user->daily_email == true ) {
-        $check_daily_email = ' checked="checked"';
-        $check_weekly_email = '';
-        $check_monthly_email = '';
-    } else {
-        $check_daily_email = '';
-    }
-    
-    if ( $current_user->weekly_email == true ) {
-        $check_weekly_email = ' checked="checked"';
-        $check_daily_email = '';
-        $check_monthly_email = '';
-    } else {
-        $check_weekly_email = '';
-    }
-    
-    if ( $current_user->monthly_email == true ) {
-        $check_monthly_email = ' checked="checked"';
-        $check_daily_email = '';
-        $check_weekly_email = '';
-    } else {
-        $check_monthly_email = '';
-    }    
-    
-    switch ($input_id) {
+    switch ($notification_setting) {
         case 'daily_email':
-             $check_status = $check_daily_email;
-             $decription = '<strong>\'The Green Laser\'</strong> Get notified immediately of news, events and projects happening near you';
+            $check_daily_email = ' checked="checked"';
+            $check_weekly_email = '';
+            $check_monthly_email = '';
             break;
         case 'weekly_email':
-             $check_status = $check_weekly_email;
-             $decription = '<strong>\'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
+            $check_weekly_email = ' checked="checked"';
+            $check_daily_email = '';
+            $check_monthly_email = '';
             break;
         case 'monthly_email':
-            $check_status = $check_monthly_email; 
-            $decription = '<strong>\'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
+            $check_monthly_email = ' checked="checked"';
+            $check_daily_email = '';
+            $check_weekly_email = ''; 
             break;
     }
-    
+       
     $correct_input = '<div class="ginput_container">
-                          <input onclick="uncheck_other_notifications(\''. $input_id .'\')"
-                                 name="input_'. $input_name_id .'" id="'. $input_id .'" '. $type .' 
-                                 value="'. $input_id .'" '. $check_status .' tabindex="5"> 
-                          '. $decription .'  
+                          <input name="input_'. $input_name_id .'" id="'. $daily .'" '. $type .' 
+                                 value="'. $daily .'" '. $check_daily_email .' tabindex="5"> 
+                          '. $daily_decription .'  
+                      </div>
+                      <div class="ginput_container">
+                          <input name="input_'. $input_name_id .'" id="'. $weekly .'" '. $type .' 
+                                 value="'. $weekly .'" '. $check_weekly_email .' tabindex="5"> 
+                          '. $weekly_decription .'  
+                      </div>
+                      <div class="ginput_container">
+                          <input name="input_'. $input_name_id .'" id="'. $monthly .'" '. $type .' 
+                                 value="'. $monthly .'" '. $check_monthly_email .' tabindex="5"> 
+                          '. $monthly_decription .'  
                       </div>';
     
-    return $correct_input;
+    return $correct_input; 
+   
 }
 ?>
