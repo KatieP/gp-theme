@@ -105,7 +105,7 @@ function set_min_year($min_year){
 
 add_filter( 'admin_footer_text', 'gp_add_admin_footer' );
 function gp_add_admin_footer() {
-	echo 'Welcome to the Green Pages backend editor! Go back to <a href="http://www.thegreenpages.com.au/">front end</a>';
+	echo 'Welcome to the Green Pages backend editor! Go back to <a href="'. get_site_url() .'">front end</a>';
 }
 
 add_filter( 'update_footer', 'gp_remove_version_footer', 9999);
@@ -501,6 +501,8 @@ function my_show_extra_profile_fields( $user ) {
 		$bio_change = get_the_author_meta( 'bio_change', $user->ID );
 		$bio_projects = get_the_author_meta( 'bio_projects', $user->ID );
 		$bio_stuff = get_the_author_meta( 'bio_stuff', $user->ID );
+		$user_default_location = get_the_author_meta( 'user_default_location', $user->ID );
+		$user_default_tags = get_the_author_meta( 'user_default_tags', $user->ID );
 		$gp_google_geo_location = get_the_author_meta( 'gp_google_geo_location', $user->ID );
 		$gp_google_geo_latitude = get_the_author_meta( 'gp_google_geo_latitude', $user->ID );
 		$gp_google_geo_longitude = get_the_author_meta( 'gp_google_geo_longitude', $user->ID );
@@ -947,6 +949,8 @@ function my_save_extra_profile_fields( $user_id ) {
 	update_usermeta($user_id, 'directory_page_url', $_POST['directory_page_url'] );
 	update_usermeta($user_id, 'chargify_self_service_page_url', $_POST['chargify_self_service_page_url'] );
 	update_usermeta($user_id, 'video_news_id', $_POST['video_news_id'] );
+	update_usermeta($user_id, 'user_default_location', $_POST['user_default_location'] );
+	update_usermeta($user_id, 'user_default_tags', $_POST['user_default_tags'] );
 	update_usermeta($user_id, 'gp_google_geo_location', $_POST['gp_google_geo_location'] );
 	update_usermeta($user_id, 'gp_google_geo_latitude', $_POST['gp_google_geo_latitude'] );
 	update_usermeta($user_id, 'gp_google_geo_longitude', $_POST['gp_google_geo_longitude'] );
@@ -1346,7 +1350,7 @@ function coming_events() {
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
-		echo '<div id="relevant-posts"><span class="title"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
+		echo '<div id="relevant-posts"><span class="title"><a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="'. get_site_url() .'/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
 		?>
 		<!-- THIS FILTER BY REGION FUNCTIONALITY SHOULD BE PROVIDED IN HEADER.PHP BY USER CLICKING ON THE 
 		     LOCATION STRING AT THE END OF THE TAGLINE TO REVEAL DROPDOWN MENU (OR TEXTFIELD WITH AUTOCOMPLETE):
@@ -1429,7 +1433,7 @@ function coming_events() {
 				?>
 				<a href="<?php echo $event_link_url; ?>" title="<?php echo $event_title; ?>" rel="bookmark" class="title"><?php echo $event_title; ?></a>
 				<?php 
-				echo '<div class="post-details"><a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a>, <a href="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a><br />';
+				echo '<div class="post-details"><a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a>, <a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a><br />';
 				if ($displayday == $displayendday) {
 					echo $displayday . ' ' . $displaymonth;
 				} else {
@@ -1747,7 +1751,7 @@ function email_after_post_approved($post_ID) {
   $body .= '<div style="color: rgb(0, 154, 194);font=size:13px; ">';
   $body .= 'Green Pages Australia &nbsp;p 02 8003 5915&nbsp;<br />';
   $body .= '<a href="mailto:info@thegreenpages.com.au">info@thegreenpages.com.au</a>&nbsp;';
-  $body .= '<a href="http://www.thegreenpages.com.au">www.thegreenpages.com.au</a>';
+  $body .= '<a href="'. get_site_url() .'">'. get_site_url() .'</a>';
   $body .= '<br />';
   $body .= '</div>';
 
@@ -1972,7 +1976,7 @@ function theme_single_google_map() {
         if (!empty($lat) && !empty($long)) {
             ?>        
             <script type="text/javascript"
-                    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
+                src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
             </script>
             <script type="text/javascript">
       
@@ -2724,7 +2728,8 @@ function theme_profile_analytics($profile_pid) {
 
 	$profile_author = get_user_by('slug', $profile_pid);
 	$profile_author_id = $profile_author->ID;
-
+    $site_url = get_site_url();
+	
 	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 
 	require 'ga/analytics.class.php';
@@ -3133,7 +3138,7 @@ function theme_profile_analytics($profile_pid) {
 			<?php
 			}
 			?>
-			<div class="post-details"><a href="/wp-admin/profile.php">Enter or update urls for Activist Bar buttons</a></div>
+			<div class="post-details"><a href="<?php echo $site_url; ?>/wp-admin/profile.php">Enter or update urls for Activist Bar buttons</a></div>
 			<br />
 			<div class="clear"></div>
 			<?php 
@@ -3197,7 +3202,7 @@ function theme_profile_analytics($profile_pid) {
 				<?php
 			}
 			?>
-			<div class="post-details"><a href="/wp-admin/profile.php">Enter or update urls/ids for Profile Page contact buttons</a></div>
+			<div class="post-details"><a href="<?php echo $site_url; ?>/wp-admin/profile.php">Enter or update urls/ids for Profile Page contact buttons</a></div>
 			<br />
 			<div id="post-details"></div>   
         <?php     
@@ -3214,7 +3219,7 @@ function theme_homecreate_post(){
 }
 
 function theme_insert_homecreate_post(){
-	echo '<a href="/welcome" class="new-post-action">Create a post</a>';
+	echo '<a href="'. get_site_url() .'/welcome" class="new-post-action">Create a post</a>';
 }
 
 function theme_profilecreate_post(){
@@ -3230,9 +3235,9 @@ function theme_insert_profilecreate_post(){
 		#echo '<a href="/get-involved/become-a-member/"><input type="button" value="Sign up & create your own profile now!" /></a>';
 		echo "
 			<div class=\"profile-join-dialogue\">
-				<a href=\"/wp-login.php?action=register\" class=\"simplemodal-register profile-action-join\">Sign up & create your profile now!</a>
+				<a href=\"". get_site_url() ."/wp-login.php?action=register\" class=\"simplemodal-register profile-action-join\">Sign up & create your profile now!</a>
 				<br />
-				<a href=\"/get-involved/become-a-member/\" class=\"profile-action-why\">Why join? Find out more about us.</a>
+				<a href=\"". get_site_url() ."/get-involved/become-a-member/\" class=\"profile-action-why\">Why join? Find out more about us.</a>
 			</div>
 		";
 	}	
@@ -3271,12 +3276,12 @@ function theme_insert_newscreate_post(){
 	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
 	if( is_user_logged_in() ) {
 	    if ( is_user_logged_in() && get_user_role( array('contributor'), $current_user->ID ) ) {
-		    echo '<a href="/forms/create-news-post/" class="new-post-action">Post a news story</a>';
+		    echo '<a href="'. get_site_url() .'/forms/create-news-post/" class="new-post-action">Post a news story</a>';
 	    } else {
-	        echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';;
+	        echo '<a href="'. get_site_url() .'/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';;
 	    }
 	} else {
-		echo '<a href="/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';
+		echo '<a href="'. get_site_url() .'/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';
 	}
 }
 
@@ -3290,7 +3295,7 @@ function theme_insert_projectcreate_post(){
      * unless user is logged in, then display member form.
      */
     $post_my_project_form = ( is_user_logged_in() ) ? '/forms/create-project-post/' : '/forms/create-my-project-post-public/';
-    echo '<a href="'. $post_my_project_form .'" class="new-post-action">Post a project</a>';
+    echo '<a href="'. get_site_url() . $post_my_project_form .'" class="new-post-action">Post a project</a>';
 }
 
 function theme_advertorialcreate_post(){
@@ -3313,7 +3318,7 @@ function theme_insert_advertorialcreate_post(){
     } else {
         $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
     }
-	echo '<a href="'. $post_my_product_form .'" class="new-post-action">Post a product ad</a>';
+	echo '<a href="'. get_site_url() . $post_my_product_form .'" class="new-post-action">Post a product ad</a>';
 }
 
 function theme_competitioncreate_post(){
@@ -3335,7 +3340,7 @@ function theme_insert_competitioncreate_post(){
     } else {
         $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
     }    
-	echo '<a href="'. $post_my_competition_form .'" class="new-post-action">Post a competition</a>';
+	echo '<a href="'. get_site_url() . $post_my_competition_form .'" class="new-post-action">Post a competition</a>';
 }
 
 function theme_eventcreate_post(){
@@ -3348,7 +3353,7 @@ function theme_insert_eventcreate_post(){
      * unless user is logged in, then display member form.
      */
     $post_my_event_form = ( is_user_logged_in() ) ? '/forms/create-event-post/' : '/forms/create-my-event-post-public/';
-    echo '<a href="'. $post_my_event_form .'" class="new-post-action">Post an Event</a>';
+    echo '<a href="'. get_site_url() . $post_my_event_form .'" class="new-post-action">Post an Event</a>';
 }
 
 function gp_select_createpost() {
@@ -3361,20 +3366,20 @@ function gp_select_createpost() {
     global $current_user;
     
     # Set link to create news post for Content Partners
-    $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"/forms/create-news-post/\">News (Free)</a></li>" : "";
+    $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"". get_site_url() ."/forms/create-news-post/\">News (Free)</a></li>" : "";
     
     # Set links to forms for monthly advertisers and non monthly advertisers
     $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
-    $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($89)</a>"; 
+    $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". get_site_url() . $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($89)</a>"; 
     
 	echo "
 	<div class=\"profile-action-container no-js\">
-		<a href=\"/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
+		<a href=\"". get_site_url() ."/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
 		<ul class=\"profile-action-items\">
 		    ". $post_my_news_link ."
-            <li><a href=\"/forms/create-event-post/\">Event (Free)</a></li>
+            <li><a href=\"". get_site_url() ."/forms/create-event-post/\">Event (Free)</a></li>
             <li>". $post_my_product_link ."</li>
-            <li><a href=\"/forms/create-project-post/\">Project (Free)</a></li>
+            <li><a href=\"". get_site_url() ."/forms/create-project-post/\">Project (Free)</a></li>
 		</ul>
 	</div>
 	";
@@ -3575,9 +3580,9 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
     $daily = 'daily_email';
     $weekly = 'weekly_email';
     $monthly = 'monthly_email';
-    $daily_decription = '<strong>\'The Green Laser\'</strong> Get notified immediately of news, events and projects happening near you';
-    $weekly_decription = '<strong>\'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
-    $monthly_decription = '<strong>\'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
+    $daily_decription = '<strong>Daily: \'The Green Laser\'</strong> Get notified each day of news, events and projects happening near you';
+    $weekly_decription = '<strong>Weekly: \'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
+    $monthly_decription = '<strong>Monthly: \'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
     
     switch ($notification_setting) {
         case 'daily_email':
@@ -3613,7 +3618,6 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
                           '. $monthly_decription .'  
                       </div>';
     
-    return $correct_input; 
-   
+    return $correct_input;  
 }
 ?>

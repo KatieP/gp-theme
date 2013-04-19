@@ -1,16 +1,17 @@
+        <?php $site_url = get_site_url(); ?>
 		<footer>
     		<div class="pos">
     		    <div class="template-left">
 			        <nav id="footer-nav"> 
 				        <ul>
-				            <li><a href="/welcome/">Get Started</a></li>
-					        <li><a href="/about/partners/">Content Partners</a></li>
-					        <li><a href="/about/badges/">Badges</a></li>
-					        <li><a href="/about/faq/">FAQ</a></li>
-					        <li><a href="about/our-vision/">About</a></li>
-					        <li><a href="/about/advertisers/">Advertisers</a></li>
-					        <li><a href="/about/rate-card/">Rate Card</a></li>
-					        <li><a href="/about/media-kit/">Media Kit</a></li>
+				            <li><a href="<?php echo $site_url; ?>/welcome/">Get Started</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/partners/">Content Partners</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/badges/">Badges</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/faq/">FAQ</a></li>
+					        <li><a href="<?php echo $site_url; ?>about/our-vision/">About</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/advertisers/">Advertisers</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/rate-card/">Rate Card</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/media-kit/">Media Kit</a></li>
 				        </ul>	
 			        </nav>
 			    </div>
@@ -28,10 +29,10 @@
 					            Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre>
 					        </div>
 					        <div class="click-contact-info" id="click-contact-phone">
-					            Phone:<pre>Promoting an event? <br /><a href="/welcome/">Post it on Green Pages for free</a>.<br /><br /><?php echo get_option('gp_phone1'); ?></pre>
+					            Phone:<pre>Promoting an event? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for free</a>.<br /><br /><?php echo get_option('gp_phone1'); ?></pre>
 					        </div>
 					        <div class="click-contact-info" id="click-contact-email">
-					            Email Address:<pre>Promoting a product or company? <br /><a href="/welcome/">Post it on Green Pages for $89</a>.<br /><br /><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
+					            Email Address:<pre>Promoting a product or company? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for $89</a>.<br /><br /><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
 					        </div>
 				        </div>
 				        <ul>

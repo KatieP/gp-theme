@@ -3,33 +3,12 @@
 				<!-- Event Calendar -->
 				<div id="eventCalendar"></div>
 				<div id="event-dialog" title="Event Details" class="hidden"></div> 
-				<!-- BookAd -->
-				<!--  
-				<div id='div-gpt-ad-1344935271926-0' style='width:300px; height:150px;'>
-					<script type='text/javascript'>
-						googletag.cmd.push(function() { googletag.display('div-gpt-ad-1344935271926-0'); });
-					</script>
-				</div>
-				-->
-				<?php 
-				/** SHOW VIDEO IF CURRENT CONTENT AVAILABLE **/
-				$video_news_id = get_the_author_meta( 'video_news_id', '2' );
-				if ( !empty($video_news_id) ) {
-				?>
-					<div id="video">
-						<?php 
-						/** CREATE VIDEO URL FROM VARIABLE IN KATIES PROFILE USERMETA, DISPLAY VIDEO NEWS **/
-						$video_news_url = 'http://player.vimeo.com/video/' . $video_news_id;
-						?>
-						<iframe src="<?php echo $video_news_url; ?>" width="300" height="177" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>				
-					</div>
+				
 				<?php
-				}
 				
 				/**SHOWS THE NEXT 5 UP AND COMING EVENTS UNDER THE EVENT CALENDAR**/ 				
 				coming_events();
 
-				#relevant_posts();
 				?>
 				<!--  
 				<table>

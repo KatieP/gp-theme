@@ -2,6 +2,7 @@
 
 <?php
 global $gp;
+$site_url = get_site_url();
 
 if ( is_user_logged_in() ) {
 	global $current_user;
@@ -163,10 +164,10 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					        <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
 		                    $post_type = ( isset($post) ? get_post_type($post->ID) : "" );
 					        ?>
-					        <li><a href="/news/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
-					        <li><a href="/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
-					        <li><a href="/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
-					        <li><a href="/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
+					        <li><a href="<?php echo $site_url; ?>/news/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
+					        <li><a href="<?php echo $site_url; ?>/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
+					        <li><a href="<?php echo $site_url; ?>/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
+					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
 					        <?php 
 					        # Display Directory link only if user in Australia 
                             # Get location from user ip address function	
@@ -195,7 +196,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	    	                        Log In
     	                        </a>
             	                <span class="in-or-out"> | </span>
-                	            <a href="/wp-login.php?action=register" class="lower">Register</a>
+                	            <a href="<?php echo $site_url ;?>/wp-login.php?action=register" class="lower">Register</a>
 						    </li>
 				    	</ul>
 				    	<div class="clear"></div>
@@ -273,10 +274,10 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							    	<li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
 								    <li class="auth-account-options">	
 									    <a href="<?php echo $post_author_url; ?>" title="My profile">View Profile</a>
-									    <a href="/forms/edit-profile-details/" title="Edit Profile">Edit Profile</a>
-									    <a href="/forms/profile-picture-editor/" title="Profile Picture">Profile Picture</a>
-									    <a href="/forms/profile-email-editor/" title="Email">Email</a>
-									    <a href="/forms/profile-notifications/" title="Notifications">Notifications</a>
+									    <a href="<?php echo $site_url; ?>/forms/edit-profile-details/" title="Edit Profile">Edit Profile</a>
+									    <a href="<?php echo $site_url; ?>/forms/profile-picture-editor/" title="Profile Picture">Profile Picture</a>
+									    <a href="<?php echo $site_url; ?>/forms/profile-email-editor/" title="Email">Email</a>
+									    <a href="<?php echo $site_url; ?>/forms/profile-notifications/" title="Notifications">Notifications</a>
 									    <a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
 								    </li>
 								    <!-- 
@@ -320,7 +321,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			        <?php } ?>
 			    	<!-- Google CSE Search Box -->
                 	<div id="header-search">
-	                    <form id="cref_iframe" method="get" action="<?php echo get_site_url();?>/search/">
+	                    <form id="cref_iframe" method="get" action="<?php echo $site_url; ?>/search/">
 				            <div id="search-field"><input type="text" maxlength="255" size="40" name="q" placeholder="Search" /></div>
 				            <div id="search-button"><input type="submit" value=""/></div>
 				        </form>
@@ -358,3 +359,4 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	            	</span> 
             	</div>
         	</header>
+        	
