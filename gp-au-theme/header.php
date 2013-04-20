@@ -158,7 +158,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 		<header>
     		<div class="pos">
     		    <div class="template-left">
-                    <a id="header-logo" href="/">greenpag.es</a>
+                    <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
 			        <nav id="header-nav">
 				        <ul>
 					        <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
