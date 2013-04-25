@@ -1350,7 +1350,10 @@ function coming_events() {
 	$numPosts = $wpdb->num_rows-1;
 					
 	if ($pageposts && $numPosts != -1) {
-		echo '<div id="relevant-posts"><span class="title"><a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="'. get_site_url() .'/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a></span>'; 
+		echo '<div id="relevant-posts">
+				<span class="title">
+					<a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="'. get_site_url() .'/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a>
+				</span>'; 
 		?>
 		<!-- THIS FILTER BY REGION FUNCTIONALITY SHOULD BE PROVIDED IN HEADER.PHP BY USER CLICKING ON THE 
 		     LOCATION STRING AT THE END OF THE TAGLINE TO REVEAL DROPDOWN MENU (OR TEXTFIELD WITH AUTOCOMPLETE):
@@ -1443,9 +1446,9 @@ function coming_events() {
 				$i++;
 			}
 			
-			unset($event_title, $displayday, $displaymonth, $str_month, $displayyear, $displayendday, 
-                  $displayendmonth, $str_endmonth, $event_link_url, $post_id, $displaytitle, $event_date_string, 
-                  $imageArray, $imageURL, $post);
+			#unset($event_title, $displayday, $displaymonth, $str_month, $displayyear, $displayendday, 
+            #      $displayendmonth, $str_endmonth, $event_link_url, $post_id, $displaytitle, $event_date_string, 
+            #      $imageArray, $imageURL, $post);
 		}
 		
 		$event_str .= ']';
@@ -1878,7 +1881,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
                                ?>
                            );
 
-            var styles = <?php custom_google_map_styles(); ?>
+            var styles = <?php custom_google_map_styles(); ?>;
             
             var mapOptions = {
                 zoom: 4,
@@ -1940,33 +1943,11 @@ function theme_display_google_map_posts($json, $map_canvas) {
 function theme_single_google_map() {
     if (get_post_type() != "page") { 
         global $post;
-        
         # Find ID 
         $post_id = $post->ID;
                 
-        # Set location meta keys depending on post type
-        switch (get_post_type()) {
-		    case 'gp_news':
-                $lat_key = 'gp_news_google_geo_latitude';
-                $long_key = 'gp_news_google_geo_longitude';
-		        break;
-		    case 'gp_projects':
-		    	$lat_key = 'gp_projects_google_geo_latitude';
-                $long_key = 'gp_projects_google_geo_longitude';
-		        break;
-			case 'gp_advertorial':
-				$lat_key = 'gp_advertorial_google_geo_latitude';
-                $long_key = 'gp_advertorial_google_geo_longitude';
-		        break;
-			case 'gp_competitions':
-				$lat_key = 'gp_competitions_google_geo_latitude';
-                $long_key = 'gp_competitions_google_geo_longitude';
-		        break;
-		    case 'gp_events':
-		    	$lat_key = 'gp_events_google_geo_latitude';
-                $long_key = 'gp_events_google_geo_longitude';
-		        break;
-		}
+        $lat_key = 'gp_google_geo_latitude';
+        $long_key = 'gp_google_geo_longitude';
                 
         # get post location meta (post id, key, true/false)
         $lat = get_post_meta($post_id, $lat_key, true);
@@ -1975,9 +1956,10 @@ function theme_single_google_map() {
         # display google map if proper location data found
         if (!empty($lat) && !empty($long)) {
             ?>        
-            <script type="text/javascript"
+            
+            <script type="text/javascript" 
                 src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
-            </script>
+        	</script>
             <script type="text/javascript">
       
                 var lat = <?php echo $lat; ?>;
@@ -2021,8 +2003,9 @@ function theme_single_google_map() {
 
 		    </script>
 
-            <div onload="initialize()">
+            <div onload="initialize()"></div>
             <div id="post_google_map_canvas"></div>
+            
 	    <?php 
 	    }
 	}
@@ -2422,7 +2405,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 				if ( is_user_logged_in() ) {
 					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
 				} else {
-					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" ><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
 				}
 					
 		    	echo '

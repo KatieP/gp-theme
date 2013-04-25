@@ -123,14 +123,15 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
          * to support sites with threaded comments (when in use).
          */
         if ( is_singular() && get_option( 'thread_comments' ) ) {
-                wp_enqueue_script( 'comment-reply' );
+            wp_enqueue_script( 'comment-reply' );
         }
         
         /* Add google geo location javascript to pages so location autocomplete 
          * works on Gravity forms and select location function in header
          */
-        add_action('wp_head', 'gp_js_postGeoLoc_meta');      
 
+        add_action('wp_head', 'gp_js_postGeoLoc_meta');
+        
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which
          * generally use this hook to add elements to <head> such
@@ -168,11 +169,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					        <li><a href="<?php echo $site_url; ?>/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
 					        <li><a href="<?php echo $site_url; ?>/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
 					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-					        <?php 
+					        <?php
 					        # Display Directory link only if user in Australia 
                             # Get location from user ip address function	
-                            $user_country = $gp->location['country'];
-	                        if ( $user_country == 'Australia' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
+                            $user_country = $gp->location['country_iso2'];
+	                        if ( $user_country == 'AU' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
 	                        ?>					    
 				        </ul>
 			        </nav>
@@ -332,8 +333,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 <?php
        	        # Display location tag line and change region filter option
 	            # Get location from user ip address function
-                global $gp;	
-
 	            $geo_currentlocation = $gp->location;
                 $user_location = $geo_currentlocation['city'];
                 $posttype_slug = getPostTypeSlug($post_type);

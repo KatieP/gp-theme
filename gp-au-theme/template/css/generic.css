@@ -1846,12 +1846,12 @@ footer {
 }
 
 #col3 table {
-    width: 106%;
+    width: 100%;
 }
 
 #lyb, #advertisewus, #followus, #renew-directory, #media-kit {
-    margin: 2.2em 0 0 0;
-    width: 14em;
+    margin: 2em 0 0 0;
+    width: 13em;
 }
 
 #lyb a, #advertisewus a, #renew-directory a, #followus, #media-kit a {

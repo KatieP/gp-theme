@@ -648,7 +648,7 @@ function default_index() {
 	    
      	# Define map canvas id and display google map with custom markers for each post
 	    $map_canvas = 'post_google_map_canvas';
-	    theme_display_google_map_posts($json, $map_canvas);
+	    #theme_display_google_map_posts($json, $map_canvas);
 	    
 	    if (  $wp_query->max_num_pages > 1 ) {
             $page_url = "/" . $posttype_slug . "/";
@@ -872,7 +872,7 @@ function home_index() {
 
 	# Define map canvas id and display google map with custom markers for each post
 	$map_canvas = 'post_google_map_canvas';
-	theme_display_google_map_posts($json, $map_canvas);
+	#theme_display_google_map_posts($json, $map_canvas);
 	?>
 	
 	<nav id="post-nav">										
@@ -1140,7 +1140,7 @@ function events_index() {
 
 	    # Define map canvas id and display google map with custom markers for each post
 	    $map_canvas = 'post_google_map_canvas';
-	    theme_display_google_map_posts($json, $map_canvas);			
+	    #theme_display_google_map_posts($json, $map_canvas);			
 		
 		if (  $wp_query->max_num_pages > 1 ) {
             $page_url = "/events/";
@@ -1349,7 +1349,7 @@ function projects_index() {
 		while ( have_posts() ) { 
 			the_post(); 
 			theme_index_feed_item();
-			theme_index_contributor_donate_join_bar();
+			#theme_index_contributor_donate_join_bar();
 			
 			# Add post location data to JSON string
 			$json .= get_post_location_json_data();			
@@ -1360,7 +1360,7 @@ function projects_index() {
 
 	    # Define map canvas id and display google map with custom markers for each post
 	    $map_canvas = 'post_google_map_canvas';
-	    theme_display_google_map_posts($json, $map_canvas);	    
+	    #theme_display_google_map_posts($json, $map_canvas);	    
 	    
 	    theme_indexpagination();	
 	} else {
