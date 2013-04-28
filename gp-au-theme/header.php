@@ -292,31 +292,35 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 	<!-- Google CSE Search Box Ends -->
             	</div>			
                 <?php
-       	        # Display location tag line and change region filter option
-	            # Get location from user ip address function
-	            $geo_currentlocation = $gp->location;
-                $user_location = $geo_currentlocation['city'];
-                $posttype_slug = getPostTypeSlug($post_type);
-	            ?>
-            	<script type="text/javascript">
-                	function show_location_field() {
-                    	<!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
-                    	document.getElementById("header_user_location").className = "hidden";
-                    	document.getElementById("header_location_list").className = "";
-                	}
-            	</script>
-    			<div class="post-details" id="header-tagline">
-	            	Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
-	            	<span id="header_location_list" class="hidden">
-	                	<select name="filterby_state" id="filterby_state">
-		                    <?php
-	                        $editions = Site::getEditions();
-	                        foreach ( $editions as $edition ) {
-                                echo "<option value=\"/". $posttype_slug ."/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
-                            }
-                            ?>
-	                	</select>
-	            	</span> 
-            	</div>
+                if (!is_page()) {
+       	            # Display location tag line and change region filter option
+	                # Get location from user ip address function
+	                $geo_currentlocation = $gp->location;
+                    $user_location = $geo_currentlocation['city'];
+                    $posttype_slug = getPostTypeSlug($post_type);
+	                ?>
+            		<script type="text/javascript">
+                		function show_location_field() {
+                    		<!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
+                    		document.getElementById("header_user_location").className = "hidden";
+                    		document.getElementById("header_location_list").className = "";
+                		}
+            		</script>
+    				<div class="post-details" id="header-tagline">
+	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
+	            		<span id="header_location_list" class="hidden">
+	                		<select name="filterby_state" id="filterby_state">
+		                        <?php
+	                            $editions = Site::getEditions();
+	                            foreach ( $editions as $edition ) {
+                                    echo "<option value=\"/". $posttype_slug ."/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+                                }
+                                ?>
+	                		</select>
+	            		</span> 
+            		</div>
+            	<?php
+            	}
+            	?>
         	</header>
         	
