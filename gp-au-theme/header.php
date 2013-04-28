@@ -214,50 +214,15 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    </div>
 					    <ul id="auth-tools">
 						    <li id="auth-yourfavourites" class="no-js">
-								<?php
-					    		#$querystr = "SELECT REPLACE(meta_key, 'likepost', '') as post_id FROM wp_usermeta WHERE meta_value > 0 and user_id = 5 and meta_key LIKE 'likepost%' order by meta_value DESC limit 5;";
-						    	$querystr = "SELECT " . $wpdb->prefix . "posts.*, m1.meta_value as _thumbnail_id 
-							             	 FROM " . $wpdb->prefix . "posts 
-							                 	LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on 
-							                 	REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
-							                 	left join " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID 
-							                 	and m1.meta_key='_thumbnail_id' 
-							             	 WHERE post_status='publish' AND m0.meta_value > 0 
-							                 	AND m0.user_id = $current_user->ID 
-							                 	AND m0.meta_key LIKE 'likepost%' 
-							                 	AND m1.meta_value >= 1 
-							             	ORDER BY m0.meta_value DESC LIMIT 3;";
-							    $pageposts = $wpdb->get_results($querystr, OBJECT);
-							    $numPosts = $wpdb->num_rows-1;
-
-							    echo '<a href="' . $post_author_url . '#favourites" title="Your Favourites">
-	    							      <span class="icon-favourites">My Favourites</span>
-							          </a>
-									  <ul id="auth-dash-favourites" class="auth-dash">';
-							
-    							if ($pageposts && $numPosts != -1) {
-	    							echo '<li class="auth-dash-title">My Favourites<div class="clear"></div></li>';
-		    						foreach ($pageposts as $post) {
-			    						setup_postdata($post);
-				    					echo '<li>';
-					    				if ( has_post_thumbnail() ) {
-						    				$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'dash-thumbnail' );
-							    			$imageURL = $imageArray[0];
-								    		echo '<a href="' . get_permalink($post->ID) . '" title="Permalink to ' . esc_attr(get_the_title()) . '" rel="bookmark"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /><span class="what">' . get_the_title() . '</span></a>';
-									    }
-									    echo '<div class="clear"></div></li>';
-								    }
-								    echo '<li class="auth-dash-seeall"><a href="' . $post_author_url . '#tab:favourites;">See all my favourites</a></li>';
-							    } else {
-								    echo '<li><div class="account-heart">Love it!</div></li>';
-							    }
-							    ?>
-					        	</ul>
-					    	</li>
+							    <a href="<?php echo $post_author_url ?>#favourites" title="My Favourites">
+	    						    <span class="icon-favourites">My Favourites</span>
+							    </a>
+							</li>
 					    	<li id="auth-yournotifications" class="no-js">
-							    <a href="#/" class="auth-yournotifications-start" title="Your Notifications">
+							    <a href="#/" class="auth-yournotifications-start" title="My Notifications">
 								    <span class="icon-notifications">My Notifications</span>
 							    </a>
+							    
 							    <ul id="auth-dash-notifications" class="auth-dash">
 								    <li class="auth-dash-title">You have no notifications yet.</li>
 							    </ul>
