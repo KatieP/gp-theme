@@ -376,6 +376,10 @@ ul, ol {margin:0;padding:0;}
     margin-left: 0;
 }
 
+#content .gform_heading, #content .gfield_description {
+	max-width: 80%;
+} 
+
 #content [class*=" validation_message"] {
     color: red;	
 }
