@@ -189,15 +189,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    ?>
 					    <ul id="auth-tools">
 						    <li id="auth-youraccount">
-							    <!--
-							    Temporarily disabling simple-modal login as register and login are breaking for many users
-							    <a href="<?php #echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="simplemodal-login">
-							    -->
                             	<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
 	    	                        Log In
     	                        </a>
             	                <span class="in-or-out"> | </span>
-                	            <a href="<?php echo $site_url ;?>/wp-login.php?action=register" class="lower">Register</a>
+                	            <a href="<?php echo $site_url ;?>/welcome" class="lower">Register</a>
 						    </li>
 				    	</ul>
 				    	<div class="clear"></div>

@@ -5,13 +5,12 @@
 			        <nav id="footer-nav"> 
 				        <ul>
 				            <li><a href="<?php echo $site_url; ?>/welcome/">Get Started</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/partners/">Content Partners</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/partners/">Partners</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/badges/">Badges</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/faq/">FAQ</a></li>
 					        <li><a href="<?php echo $site_url; ?>about/our-vision/">About</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/advertisers/">Advertisers</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/rate-card/">Rate Card</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/media-kit/">Media Kit</a></li>
+					        <li><a href="http://greenpages.myshopify/">Shop</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/terms-and-conditions/">Terms</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/advertisers/">Advertise</a></li>
 				        </ul>	
 			        </nav>
 			    </div>

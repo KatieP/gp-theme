@@ -1765,6 +1765,57 @@ function email_after_post_approved($post_ID) {
 }
 add_action('pending_to_publish', 'email_after_post_approved');
 
+function set_default_post_location_data($post_id) {
+    /** 
+     * Set post author location as post location for all their posts
+     * if no post location is defined during post creation. 
+     * To be executed when post is published, including those coming
+     * from rss feeds set to auto publish. 
+     *    
+     * Author: Jesse Browne
+     * 	       jb@greenpag.es
+     **/
+    
+    $post = get_post($post_id);
+    $post_author = get_userdata($post->post_author);
+    $post_author_id = $post_author->ID;
+    
+    $location_meta_key = 'gp_google_geo_location';
+    $lat_meta_key = 'gp_google_geo_latitude';
+    $long_meta_key = 'gp_google_geo_longitude';
+    $country_meta_key = 'gp_google_geo_country';
+    $admin_lvl_one_key = 'gp_google_geo_administrative_area_level_1';
+    $admin_lvl_two_key = 'gp_google_geo_administrative_area_level_2';
+    $admin_lvl_three_key = 'gp_google_geo_administrative_area_level_3';
+    $locality_key = 'gp_google_geo_locality';
+    $locality_slug_key = 'gp_google_geo_locality_slug';
+
+    $post_location = get_post_meta($post_id, $location_meta_key, true);
+
+    if (empty($post_location)) {
+        $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
+        $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
+        $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
+        $author_country =          get_user_meta($post_author_id, $country_meta_key, true);
+        $author_admin_lvl_one =    get_user_meta($post_author_id, $admin_lvl_one_key, true);
+        $author_admin_lvl_two =    get_user_meta($post_author_id, $admin_lvl_two_key, true);
+        $author_admin_lvl_three =  get_user_meta($post_author_id, $admin_lvl_three_key, true);
+        $author_locality =         get_user_meta($post_author_id, $locality_key, true);
+        $author_location_slug =    get_user_meta($post_author_id, $locality_slug_key, true);
+        
+        add_post_meta($post_id, $location_meta_key, $author_location, true);
+        add_post_meta($post_id, $lat_meta_key, $author_lat, true); 
+        add_post_meta($post_id, $long_meta_key, $author_long, true); 
+        add_post_meta($post_id, $country_meta_key, $author_country, true);
+        add_post_meta($post_id, $admin_lvl_one_key, $author_admin_lvl_one, true);
+        add_post_meta($post_id, $admin_lvl_two_key, $author_admin_lvl_two, true);
+        add_post_meta($post_id, $admin_lvl_three_key, $author_admin_lvl_three, true);
+        add_post_meta($post_id, $locality_key, $author_locality, true);
+        add_post_meta($post_id, $locality_slug_key, $author_location_slug, true);
+    }
+}
+add_action ('publish_gp_news', 'set_default_post_location_data');
+
 /** CONSTRUCT POST LOCATION OBJECT DATA IN JSON **/
 
 function get_post_location_json_data() {

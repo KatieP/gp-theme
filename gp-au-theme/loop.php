@@ -644,6 +644,7 @@ function default_index() {
 	    }
 
       	# Close JSON string
+      	
 	    $json .= ']';	    
 	    
      	# Define map canvas id and display google map with custom markers for each post
@@ -707,6 +708,24 @@ function default_single() {
 			theme_single_product_button();
 			theme_single_google_map();
 			theme_singlecomments();
+
+			$post_id = $post->ID;
+                
+            $lat_key = 'gp_google_geo_latitude';
+            $long_key = 'gp_google_geo_longitude';
+            $location_meta_key = 'gp_google_geo_location';
+            
+            # get post location meta (post id, key, true/false)
+            $lat = get_post_meta($post_id, $lat_key, true);
+            $long = get_post_meta($post_id, $long_key, true);
+            $location = get_post_meta($post_id, $location_meta_key, true);
+            if ( empty($location) ) {
+                echo 'no location';
+            } else {
+                echo 'location';
+            }
+            echo '<br />'. $post_id .'<br />';
+            #var_dump($post);
 		echo '</article>';
 	}
 }

@@ -3350,7 +3350,7 @@ ul.categorieslistmain {
     box-sizing: border-box;
     cursor: pointer;
     font-family: inherit;
-    border: 0.1em solid #CCC;
+    border: 0.05em solid #CCC;
     border-radius: 0.4em;
     width: 7.8em;
 }
@@ -3370,8 +3370,7 @@ ul.categorieslistmain {
     background-color: #6eb83f;
 }
 
-#post-donate-join-bar #petition, #post-product-button-bar #product-button,
-#my-advertise #email input[type="button"] {
+#post-donate-join-bar #petition, #my-advertise #email input[type="button"] {
     background-color: #F97231;
 }
 
@@ -3389,6 +3388,10 @@ ul.categorieslistmain {
     font-size: 1.5em;
     border-radius: 0.4em;
     margin-left: 0.3em;
+}
+
+#post-product-button-bar #product-button {
+    background-color: #FC468C;	
 }
 
 /** BUTTON HOVER EFFECTS **/
@@ -4093,6 +4096,7 @@ ul.categorieslistmain {
     font-size: 1.4em;
     line-height: 1.5em;
     color: grey;
+    text-align: center;
 }
 
 #content .icon-body-text a {
@@ -4102,7 +4106,7 @@ ul.categorieslistmain {
 
 #content .icon-container-row #post-product-button-bar {
     width: 20%;
-    margin: 5% 40% 30% 40%;
+    margin: 5% 40% 20% 40%;
 }
 
 /**GOOGLE MAPS STYLING**/
