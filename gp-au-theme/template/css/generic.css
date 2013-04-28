@@ -3370,7 +3370,8 @@ ul.categorieslistmain {
     background-color: #6eb83f;
 }
 
-#post-donate-join-bar #petition, #my-advertise #email input[type="button"] {
+#post-donate-join-bar #petition, #my-advertise #email input[type="button"],
+#post-product-button-bar #product-button {
     background-color: #F97231;
 }
 
@@ -3390,7 +3391,7 @@ ul.categorieslistmain {
     margin-left: 0.3em;
 }
 
-#post-product-button-bar #product-button {
+.icon-container .icon-container-row #post-product-button-bar #product-button {
     background-color: #FC468C;	
 }
 
