@@ -994,7 +994,7 @@ function my_get_posts( $query ) {
 # note: http://emrahgunduz.com/categories/development/wordpress/wordpress-how-to-show-the-featured-image-of-posts-in-social-sharing-sites/
 # note: http://markjaquith.wordpress.com/2009/12/23/new-in-wordpress-2-9-post-thumbnail-images/
 add_theme_support( 'post-thumbnails', array( 'post', 'gp_news', 'gp_events', 'gp_competitions', 'gp_jobs', 'gp_people', 'gp_advertorial', 'gp_projects', 'gp_katiepatrick', 'gp_productreview', 'gp_greengurus' ) );
-add_image_size('homepage-thumbnail', 140, 105, true);
+add_image_size('homepage-thumbnail', 110, 110, true);
 add_image_size('icon-thumbnail', 50, 50, true);
 add_image_size('dash-thumbnail', 35, 35, true);
 # add_image_size('homepage-featured', 240, 180, true);

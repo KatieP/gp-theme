@@ -341,7 +341,7 @@ function theme_index_feed_item() {
 	$post_author_url = get_author_posts_url($post->post_author);	
 	$link = get_permalink($post->ID);
 	$likedclass = '';
-
+	
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
@@ -359,11 +359,6 @@ function theme_index_feed_item() {
 	}
 	
 	echo '<div class="profile-postbox">';			 		
-    ?>
-    <h1 class="profile-title">
-        <a href="<?php echo $link; ?>"  title="<?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
-    </h1>
-    <?php
 	
     $site_posttypes = Site::getPostTypes();
     foreach ( $site_posttypes as $site_posttype ) {
@@ -372,7 +367,13 @@ function theme_index_feed_item() {
 	        $post_url = $site_posttype['slug'];
 	    }   
 	}
-			
+
+	?>
+    <h1 class="profile-title">
+        <a href="<?php echo $link; ?>"  title="<?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
+    </h1>
+    <?php
+	
 	/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
 	echo '<span class="hp_miniauthor">
 			 By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> 

@@ -95,9 +95,10 @@ ul, ol {margin:0;padding:0;}
 }
 
 #content h1, #content h1 a {
-    font-size: 1.3em;
+    font-size: 1.23em;
     font-weight: 600;
     margin: 3em 0 3em 0;
+    line-height: 1em;
 }
 
 #content h2, #content h2 a {
@@ -3034,7 +3035,7 @@ ul.categorieslistmain {
 
 #content .profile-postbox {
     float: right;
-    width: 74%;
+    width: 77%;
     margin-bottom: 0.6em;
     background-color: #f8f8f8;
     position: relative;
@@ -3045,9 +3046,9 @@ ul.categorieslistmain {
 }
 
 #content .profile_minithumb img {
-    margin: 0.4em 0 1.8em 0;
+    margin: 0.4em 0 0.5em 0;
     float: left;
-    width: 22%;
+    max-width: 22%;
 }
 
 #content .profile-postbox .post-details {
@@ -3723,8 +3724,8 @@ ul.categorieslistmain {
 #content .topic-container {
     position: relative;
     background-color: #eee;
-    min-height: 0.4em;
-    width: 74%;
+    min-height: 0.2em;
+    width: 100%;
     float: right;
     margin-bottom: 1.5em;
 }
