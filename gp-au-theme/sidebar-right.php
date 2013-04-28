@@ -6,8 +6,14 @@
 				
 				<?php
 				
-				/**SHOWS THE NEXT 5 UP AND COMING EVENTS UNDER THE EVENT CALENDAR**/ 				
-				coming_events();
+				global $post;
+				$post_type = ( isset($post) ? get_post_type($post->ID) : "" );
+				
+                if ( is_home() || is_front_page() || ($post_type == 'gp_events') ) {
+                    /**SHOWS THE THE EVENT CALENDAR AND THE NEXT 3 UP AND COMING EVENTS **/ 				
+				    coming_events();
+                }
+				
 
 				?>
 			</div>
