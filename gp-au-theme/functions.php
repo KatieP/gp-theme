@@ -1947,8 +1947,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
             
             // Creating a global infoWindow object that will be reused by all markers
 		    var infoWindow = new google.maps.InfoWindow();
-		
-		        		
+	        		
     		//Loop through the json surrounding event objects
 	    	for (var i = 0, length = json.length; i < length; i++) {
 		        var data = json[i],

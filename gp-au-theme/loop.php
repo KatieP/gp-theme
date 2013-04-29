@@ -353,7 +353,7 @@ function theme_index_feed_item() {
     else {	/** DISPLAY LOGO/PROFILE PICTURE INSTEAD **/
 		echo '<span class="profile_minithumb">
 		          <a href="' . $post_author_url . '">' . 
-    		          get_avatar( $post_author->ID, '142', '', $post_author->display_name ) . '
+    		          get_avatar( $post_author->ID, '110', '', $post_author->display_name ) . '
     		      </a>
     		  </span>';
 	}
