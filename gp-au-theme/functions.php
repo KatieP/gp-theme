@@ -1916,7 +1916,7 @@ function get_post_location_json_data() {
 
 /** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP, CENTERED BY USER IP LOCATION **/
 
-function theme_display_google_map_posts($json, $map_canvas) {
+function theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long) {
     global $gp;
     
     /**
@@ -1924,33 +1924,6 @@ function theme_display_google_map_posts($json, $map_canvas) {
      * Construcs google map and places marker on each post location,
      * Each marker shows a lightbox with a link to post on click
      **/
-
-    // Grabs user's IP address and gets lat and long via geoplugin free website.
-    // TO DO: Script is loading the map really slowly, not sure how to fix, but needs to be fixed!
-
-    $ip_addr = $_SERVER['REMOTE_ADDR'];
-    $geoplugin = unserialize( file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip_addr) );
-
-    if ( is_numeric($geoplugin['geoplugin_latitude']) && is_numeric($geoplugin['geoplugin_longitude']) ) {
-        //$user_lat = $geoplugin['geoplugin_latitude'];
-        //$user_long = $geoplugin['geoplugin_longitude'];
-    }
-
-    // For testing
-    // echo $ip_addr.';'.$user_lat.';'.$user_long;
-    // note $_SERVER['REMOTE_ADDR']; doesn't work on local host dev environment so I explicitly declare
-    // the IP for various use locations who have sign up, and it works well.
-
-
-    //Centre of Australia default lat and long in case remote IP does not load.
-    
-    $default_lat = $gp->location['latitude'];
-    $default_long = $gp->location['longitude'];
-    
-    if ( empty( $default_lat ) || empty( $default_long ) ) {
-        $default_lat = -32;
-        $default_long = 134;
-    }
 
     ?>
     <script type="text/javascript">
@@ -1961,12 +1934,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
         function initialize() {
             var myLatlng = new google.maps.LatLng(
                                <?php
-                               # If user ip grab successful centre map on user location, otherwise default to Australia
-                               if ( isset( $user_lat ) && isset( $user_long ) ) {
-                                   echo $user_lat .','. $user_long; 
-                               } else {
-                                   echo $default_lat .','. $default_long;
-                               }
+                               echo $center_map_lat .','. $center_map_long; 
                                ?>
                            );
 
@@ -2056,7 +2024,9 @@ function show_google_map() {
             
             $post_lat = $post->post_latitude;
             $post_long = $post->post_longitude;
+            
         } else {
+            # Set user location lat and long here
             $lat = '';
             $long = '';
             return;
@@ -2085,37 +2055,55 @@ function show_google_map() {
             
             global $wpdb, $gp;
             
+            $center_map_lat = $lat;
+            $center_map_long = $long;
+            
             $ppp = 20;
             
-            /** SQL QUERIES GET 20 MOST RECENT POSTS IN 1 DEGREE LAT AND LONG OF POST LOCATION TO SHOW ON MAP**/
+            /** SQL QUERIES GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF POST LOCATION TO SHOW ON MAP**/
 
             $querystr = $wpdb->prepare(
         		"SELECT DISTINCT
-            		" . $wpdb->prefix . "posts.*,
-            		m0.meta_value AS _thumbnail_id,
-            		m1.meta_value AS " . $lat_key . ",
-            		m2.meta_value AS " . $long_key . "
+            		" . $wpdb->prefix . "posts.*
         		FROM $wpdb->posts
-            		LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
-            		LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='" . $lat_key . "'
-            		LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='" . $long_key . "'
         		WHERE
             		post_status='publish'
-            		AND m0.meta_value >= 1
             		AND post_type='" . $post_type . "' 
-            		AND " . $lat_min . " < 'm1.meta_value' < " . $lat_max . "
-            		AND " . $long_min . " < 'm2.meta_value' < " . $long_max . "
+            		AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
+            		AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
         		ORDER BY post_date DESC
         		LIMIT " . $ppp
             );
            
             $pageposts = $wpdb->get_results($querystr, OBJECT);
-            $posttype_slug = getPostTypeSlug( get_query_var('post_type') );
             
             if ( $pageposts ) {
-                echo 'We have posts! <br />';
+                echo 'We have '. count($pageposts)  .' posts! <br />';
             } else {
                 echo 'We have no posts. :( <br />';
+            }
+            
+            if ($pageposts) {
+
+                echo 'Build json string <br />';
+                
+                # Construct location data in JSON for google map display
+                $json = '[';	
+
+                foreach ($pageposts as $post) {
+
+                    # Add post location data to JSON string
+                    $json .= get_post_location_json_data();	
+
+                }
+
+                # Close JSON string
+                $json .= ']';
+
+                # Define map canvas id and display google map with custom markers for each post
+                $map_canvas = 'post_google_map_canvas';
+                echo 'Display map <br />';
+    	        theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long);	
             }
             
             echo "It didn't break! :)";
