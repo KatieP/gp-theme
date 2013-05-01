@@ -1,6 +1,6 @@
 			<div id="col3"  class="set3col">
 				
-				<?php show_google_map(); ?>
+				<?php get_google_map(); ?>
 				
 				<!-- Event Calendar -->
 				<div id="eventCalendar"></div>
@@ -8,7 +8,7 @@
 				
 				<?php
                 if ( is_home() || is_front_page() || ($post_type == 'gp_events') ) {
-                    coming_events(); 
+                    get_events(); 
                 } 
 				?>
 

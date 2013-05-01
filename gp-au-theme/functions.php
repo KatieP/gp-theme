@@ -1305,7 +1305,7 @@ function relevant_posts() {
 }
 
 /* SHOWS THE NEXT 3 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
-function coming_events() {			
+function get_events() {			
 	global $wpdb, $post, $gp;
 	
 	$edition_states = $gp->states;
@@ -1860,7 +1860,9 @@ function get_post_location_json_data() {
     /**
      * Returns a single JSON structured string holding post data:
      * title, link, lat, long and custom marker of an indivdual post.
-     * TODO: add excerpt
+     * 
+     * Authors: Jesse Browne
+     * 			jb@greenpag.es
      **/
 
     global $post;
@@ -1914,15 +1916,22 @@ function get_post_location_json_data() {
 	return $json;
 }
 
-/** GOOGLE MAPS TO SHOW ALL POSTS ON WORLD MAP, CENTERED BY USER IP LOCATION **/
+/** GOOGLE MAP SHOWS SURROUNDING POSTS ON MAP **/
 
-function theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long) {
-    global $gp;
+function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom) {
     
     /**
-     * Accepts json structured string holding post title link, lat and long data on each relevant post
-     * Construcs google map and places marker on each post location,
+     * Accepts json structured string holding post title link, lat and long data on each relevant post;
+     * name of map container element; lat and long of map center; and map zoom 
+     * 
+     * Construcs google map and places custom marker on each post location,
      * Each marker shows a lightbox with a link to post on click
+     * 
+     * Called by get_google_map() 
+     * 
+     * Authors: Katie Patrick & Jesse Browne
+     * 			katie.patrick@greenpag.es
+     * 			jb@greenpag.es
      **/
 
     ?>
@@ -1933,15 +1942,13 @@ function theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $ce
         //Function that calls map, centres map around post location, styles map
         function initialize() {
             var myLatlng = new google.maps.LatLng(
-                               <?php
-                               echo $center_map_lat .','. $center_map_long; 
-                               ?>
+                               <?php echo $center_map_lat .','. $center_map_long; ?>
                            );
 
             var styles = <?php custom_google_map_styles(); ?>;
             
             var mapOptions = {
-                zoom: 4,
+                zoom: <?php echo $zoom; ?>,
                 center: myLatlng, 
                 styles: styles,          
                 mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -1970,7 +1977,6 @@ function theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $ce
 		 	    // Creating a closure to retain the correct data, notice how I pass the current 
             	// data in the loop into the closure (marker, data)
 	    		(function(custom_marker, data) {
-
 		        	// Attaching a click event to the current marker
 		        	google.maps.event.addListener(custom_marker, "click", function(e) {
 			        	infoWindow.setContent(data.Title);
@@ -1987,19 +1993,20 @@ function theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $ce
       		document.body.appendChild(script);
 	    }
 	    window.onload = loadScript;
-   
+
+   </script>
    <?php
    echo '<div onload="initialize()"></div>
          <div id="'. $map_canvas .'"></div>'; 
 } 
 
-/** GOOGLE MAP FOR INDIVIDUAL POSTS **/
-// This function grabs meta data for lat and long from each posts and displays them in a google map.
-
-function show_google_map() {
+function get_google_map() {
     /**
-     * Centre map on lat and long from post if single post
+     * Sets lat and long to centre map on from post if single post
      * or on users location if home page or feed. 
+     * Grabs data from posts surrounding map center and formats in json.
+     * Then calls display_google_map_posts($json,[etc])
+     * 
      * Called from sidebar-right.php
      * 
      * Authors: Katie Patrick & Jesse Browne
@@ -2008,59 +2015,35 @@ function show_google_map() {
      */
     
     if (get_post_type() != "page") { 
-        global $post;
         
-        # Find ID 
+        global $post;
         $post_id = $post->ID;
         $post_type = get_post_type();
-                
         $lat_key = 'gp_google_geo_latitude';
         $long_key = 'gp_google_geo_longitude';
         
         if ( is_single() ) {
-            # get post location meta (post id, key, true/false)
-            $lat = get_post_meta($post_id, $lat_key, true);
-            $long = get_post_meta($post_id, $long_key, true);
-            
-            $post_lat = $post->post_latitude;
-            $post_long = $post->post_longitude;
-            
+            $center_map_lat = get_post_meta($post_id, $lat_key, true);
+            $center_map_long = get_post_meta($post_id, $long_key, true);
         } else {
             # Set user location lat and long here
-            $lat = '';
-            $long = '';
+            $center_map_lat = '';
+            $center_map_long = '';
             return;
         }
         
-        echo '$post_lat = '. $post_lat .'<br />';
-        echo '$post_long = '. $post_long .'<br />';
-        
-        echo '$lat = '. $lat .'<br />';
-        echo '$long = '. $long .'<br />';
-         
-        $lat_min = $lat - 1;
-        $lat_max = $lat + 1;
-        $long_min = $long - 1;
-        $long_max = $long + 1;
-
-        echo '	$lat_min = '.  $lat_min .'<br />
-        		$lat_max = '.  $lat_max .'<br />
-        		$long_min = '.  $long_min .'<br />
-        		$long_max = '. $long_max .'<br />';
-        
-        
-        
-        # display google map if proper location data found
-        if (!empty($lat) && !empty($long)) {
+        # set up data for surrounding posts query and google map if proper location data found
+        if (!empty($center_map_lat) && !empty($center_map_long)) {
             
-            global $wpdb, $gp;
-            
-            $center_map_lat = $lat;
-            $center_map_long = $long;
-            
+            global $wpdb;
+            $lat_min = $center_map_lat - 1;
+            $lat_max = $center_map_lat + 1;
+            $long_min = $center_map_long - 1;
+            $long_max = $center_map_long + 1;
+            $zoom = 11;
             $ppp = 20;
             
-            /** SQL QUERIES GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF POST LOCATION TO SHOW ON MAP**/
+            /** SQL TO GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF MAP CENTER **/
 
             $querystr = $wpdb->prepare(
         		"SELECT DISTINCT
@@ -2077,36 +2060,20 @@ function show_google_map() {
            
             $pageposts = $wpdb->get_results($querystr, OBJECT);
             
-            if ( $pageposts ) {
-                echo 'We have '. count($pageposts)  .' posts! <br />';
-            } else {
-                echo 'We have no posts. :( <br />';
-            }
-            
+            # Construct location data in JSON for google map display
             if ($pageposts) {
-
-                echo 'Build json string <br />';
                 
-                # Construct location data in JSON for google map display
-                $json = '[';	
-
-                foreach ($pageposts as $post) {
-
-                    # Add post location data to JSON string
+                $json = '[';	                
+                foreach ($pageposts as $post) {                    
                     $json .= get_post_location_json_data();	
-
                 }
-
-                # Close JSON string
                 $json .= ']';
-
-                # Define map canvas id and display google map with custom markers for each post
+                
+                # Define map canvas div id
                 $map_canvas = 'post_google_map_canvas';
-                echo 'Display map <br />';
-    	        theme_display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long);	
+    	        display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);
+    	        	
             }
-            
-            echo "It didn't break! :)";
 	    }
 	}
 }
