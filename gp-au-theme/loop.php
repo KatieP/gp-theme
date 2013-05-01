@@ -707,9 +707,9 @@ function default_single() {
 			theme_single_tags();
 			theme_single_contributor_donate_join_bar();
 			theme_single_product_button();
-			theme_single_google_map();
 			theme_singlecomments();
-
+            
+            /** FOR TESTING **/
 			$post_id = $post->ID;
                 
             $lat_key = 'gp_google_geo_latitude';
@@ -727,6 +727,7 @@ function default_single() {
             }
             echo '<br />'. $post_id .'<br />';
             #var_dump($post);
+            /** END TESTING **/
 		echo '</article>';
 	}
 }

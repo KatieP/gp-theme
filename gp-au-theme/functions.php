@@ -1765,30 +1765,39 @@ function email_after_post_approved($post_ID) {
 }
 add_action('pending_to_publish', 'email_after_post_approved');
 
-function set_default_post_location_data($post_id) {
+function set_post_location_data_as_decimal($post_id) {
     /** 
-     * Set post author location as post location for all their posts
-     * if no post location is defined during post creation. 
-     * To be executed when post is published, including those coming
+     * Store post latitude and longitude as decimal in wp_posts so
+     * we can do math on the values when getting surrounding posts of 
+     * map centre co-ordinates for users and posts in show_google_maps().
+     * 
+     * We have to do this as wp_post_meta only stores lat and long as 
+     * a string which is useless for querying surrounding posts later on.
+     * 
+     * Also if no post location defined sets post author location as 
+     * post location.
+     *   
+     * Executed when post is published, including those coming
      * from rss feeds set to auto publish. 
      *    
      * Author: Jesse Browne
      * 	       jb@greenpag.es
      **/
     
+    global $wpdb;
     $post = get_post($post_id);
     $post_author = get_userdata($post->post_author);
     $post_author_id = $post_author->ID;
     
-    $location_meta_key = 'gp_google_geo_location';
-    $lat_meta_key = 'gp_google_geo_latitude';
-    $long_meta_key = 'gp_google_geo_longitude';
-    $country_meta_key = 'gp_google_geo_country';
-    $admin_lvl_one_key = 'gp_google_geo_administrative_area_level_1';
-    $admin_lvl_two_key = 'gp_google_geo_administrative_area_level_2';
-    $admin_lvl_three_key = 'gp_google_geo_administrative_area_level_3';
-    $locality_key = 'gp_google_geo_locality';
-    $locality_slug_key = 'gp_google_geo_locality_slug';
+    $location_meta_key = 	'gp_google_geo_location';
+    $lat_meta_key = 		'gp_google_geo_latitude';
+    $long_meta_key = 		'gp_google_geo_longitude';
+    $country_meta_key = 	'gp_google_geo_country';
+    $admin_lvl_one_key = 	'gp_google_geo_administrative_area_level_1';
+    $admin_lvl_two_key = 	'gp_google_geo_administrative_area_level_2';
+    $admin_lvl_three_key = 	'gp_google_geo_administrative_area_level_3';
+    $locality_key = 		'gp_google_geo_locality';
+    $locality_slug_key = 	'gp_google_geo_locality_slug';
 
     $post_location = get_post_meta($post_id, $location_meta_key, true);
 
@@ -1813,8 +1822,37 @@ function set_default_post_location_data($post_id) {
         add_post_meta($post_id, $locality_key, $author_locality, true);
         add_post_meta($post_id, $locality_slug_key, $author_location_slug, true);
     }
+    
+    $post_lat  = (float) get_post_meta($post_id, $lat_meta_key, true);
+    $post_long = (float) get_post_meta($post_id, $long_meta_key, true);
+    
+    // Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+		remove_action('publish_gp_news', 'set_post_location_data_as_decimal');
+	    
+		// update the post, which calls publish_gp_news again
+		$table = 'wp_posts';
+		$data = array(
+		            'post_latitude' => $post_lat,
+		            'post_longitude' => $post_long
+		        );
+		$where = array(
+		             'ID' => $post_id
+		         );
+		$format = array(
+				      '%s',
+		              '%s'
+				  );
+
+        $wpdb->update($table, $data, $where, $format);
+		
+		// re-hook this function
+		add_action('publish_gp_news', 'set_post_location_data_as_decimal');
+	}
 }
-add_action ('publish_gp_news', 'set_default_post_location_data');
+add_action ('publish_gp_news', 'set_post_location_data_as_decimal');
 
 /** CONSTRUCT POST LOCATION OBJECT DATA IN JSON **/
 
@@ -1941,7 +1979,7 @@ function theme_display_google_map_posts($json, $map_canvas) {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
         
-            //Adds map to map_canvas div in DOM to it is visible
+            //Adds map to map_canvas div in DOM so it is visible
             var map = new google.maps.Map(document.getElementById('<?php echo $map_canvas; ?>'),
                       mapOptions);
             
@@ -1990,73 +2028,97 @@ function theme_display_google_map_posts($json, $map_canvas) {
 /** GOOGLE MAP FOR INDIVIDUAL POSTS **/
 // This function grabs meta data for lat and long from each posts and displays them in a google map.
 
-function theme_single_google_map() {
+function show_google_map() {
+    /**
+     * Centre map on lat and long from post if single post
+     * or on users location if home page or feed. 
+     * Called from sidebar-right.php
+     * 
+     * Authors: Katie Patrick & Jesse Browne
+     * 			katie.patrick@greenpag.es
+     * 			jb@greenpag.es
+     */
+    
     if (get_post_type() != "page") { 
         global $post;
+        
         # Find ID 
         $post_id = $post->ID;
+        $post_type = get_post_type();
                 
         $lat_key = 'gp_google_geo_latitude';
         $long_key = 'gp_google_geo_longitude';
-                
-        # get post location meta (post id, key, true/false)
-        $lat = get_post_meta($post_id, $lat_key, true);
-        $long = get_post_meta($post_id, $long_key, true);
+        
+        if ( is_single() ) {
+            # get post location meta (post id, key, true/false)
+            $lat = get_post_meta($post_id, $lat_key, true);
+            $long = get_post_meta($post_id, $long_key, true);
+            
+            $post_lat = $post->post_latitude;
+            $post_long = $post->post_longitude;
+        } else {
+            $lat = '';
+            $long = '';
+            return;
+        }
+        
+        echo '$post_lat = '. $post_lat .'<br />';
+        echo '$post_long = '. $post_long .'<br />';
+        
+        echo '$lat = '. $lat .'<br />';
+        echo '$long = '. $long .'<br />';
+         
+        $lat_min = $lat - 1;
+        $lat_max = $lat + 1;
+        $long_min = $long - 1;
+        $long_max = $long + 1;
+
+        echo '	$lat_min = '.  $lat_min .'<br />
+        		$lat_max = '.  $lat_max .'<br />
+        		$long_min = '.  $long_min .'<br />
+        		$long_max = '. $long_max .'<br />';
+        
+        
         
         # display google map if proper location data found
         if (!empty($lat) && !empty($long)) {
-            ?>        
             
-            <script type="text/javascript" 
-                src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false">
-        	</script>
-            <script type="text/javascript">
-      
-                var lat = <?php echo $lat; ?>;
-                var lng = <?php echo $long; ?>;
-        
-                function initialize() {
-                    var myLatlng = new google.maps.LatLng(lat,lng);
-                    var mapOptions = {
-                        zoom: 10,
-                        center: myLatlng,          
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }
-
-                    var styles = <?php custom_google_map_styles(); ?>
-                    
-                    var mapOptions = {
-                        zoom: 7,
-                        center: myLatlng, 
-                        styles: styles,          
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-        
-                    var map = new google.maps.Map(document.getElementById("post_google_map_canvas"),
-                          mapOptions);
-        
-                    var marker = new google.maps.Marker({
-        	            position: myLatlng,
-      		            map: map,
-      		            title:"<?php echo $post->title; ?>"
-                    })  
-                }
-      
-                function loadScript() {
-  		            var script = document.createElement("script");
-  		            script.type = "text/javascript";
-  		            script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
-  		            document.body.appendChild(script);
-                }
-
-		        window.onload = loadScript;
-
-		    </script>
-
-            <div onload="initialize()"></div>
-            <div id="post_google_map_canvas"></div>
+            global $wpdb, $gp;
             
-	    <?php 
+            $ppp = 20;
+            
+            /** SQL QUERIES GET 20 MOST RECENT POSTS IN 1 DEGREE LAT AND LONG OF POST LOCATION TO SHOW ON MAP**/
+
+            $querystr = $wpdb->prepare(
+        		"SELECT DISTINCT
+            		" . $wpdb->prefix . "posts.*,
+            		m0.meta_value AS _thumbnail_id,
+            		m1.meta_value AS " . $lat_key . ",
+            		m2.meta_value AS " . $long_key . "
+        		FROM $wpdb->posts
+            		LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
+            		LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='" . $lat_key . "'
+            		LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='" . $long_key . "'
+        		WHERE
+            		post_status='publish'
+            		AND m0.meta_value >= 1
+            		AND post_type='" . $post_type . "' 
+            		AND " . $lat_min . " < 'm1.meta_value' < " . $lat_max . "
+            		AND " . $long_min . " < 'm2.meta_value' < " . $long_max . "
+        		ORDER BY post_date DESC
+        		LIMIT " . $ppp
+            );
+           
+            $pageposts = $wpdb->get_results($querystr, OBJECT);
+            $posttype_slug = getPostTypeSlug( get_query_var('post_type') );
+            
+            if ( $pageposts ) {
+                echo 'We have posts! <br />';
+            } else {
+                echo 'We have no posts. :( <br />';
+            }
+            
+            echo "It didn't break! :)";
 	    }
 	}
 }
