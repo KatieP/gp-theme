@@ -1,7 +1,6 @@
 			<div id="col3"  class="set3col">
 				
 				<?php get_google_map(); ?>
-				<p><a href="<?php echo $site_url; ?>/world-map/">See World Map</a></p>
 				
 				<!-- Event Calendar -->
 				<div id="eventCalendar"></div>

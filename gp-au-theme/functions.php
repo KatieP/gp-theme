@@ -2000,9 +2000,14 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
 	    window.onload = loadScript;
 
    </script>
-   <?php
-   echo '<div onload="initialize()"></div>
-         <div id="'. $map_canvas .'"></div>'; 
+   
+   <div onload="initialize()"></div>
+   <div id="<?php echo $map_canvas; ?>"></div>   
+   
+   <div class="right">
+       <a href="<?php echo $site_url; ?>/world-map/">See World Map</a>
+   </div>
+   <?php  
 } 
 
 function get_google_map() {
@@ -2052,22 +2057,21 @@ function get_google_map() {
                         
             # Set zoom level for map depending on number of surrounding posts
             $num_posts = count($pageposts);
-            $zoom = ($num_posts > 5) ? 11 : 7;
+            $zoom = ($num_posts > 5) ? 11 : 6;
             
             # If number of posts is less that 20, expand location bounding box to 3 degrees of post
             if ($num_posts < 20) {
-            
-            	$new_post_limit = 20 - $num_posts;
             	
             	$lat_min = $center_map_lat - 3;
             	$lat_max = $center_map_lat + 3;
            		$long_min = $center_map_long - 3;
-            	$long_max = $center_map_long + 3;
-            	$post_limit = $new_post_limit;
-            	
+            	$long_max = $center_map_long + 3;            	
             	$pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
-			}
+			
+            }
             
+            $num_posts = count($pageposts);
+            $zoom = ($num_posts > 5) ? 11 : 6;
             
             # Construct location data in JSON for google map display
             if ($pageposts) {
