@@ -2045,27 +2045,29 @@ function get_google_map() {
             $lat_max = $center_map_lat + 1;
             $long_min = $center_map_long - 1;
             $long_max = $center_map_long + 1;
-            $ppp = 20;
+            $post_limit = 20;
             
-            /** SQL TO GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF MAP CENTER **/
             
-            $querystr = $wpdb->prepare(
-        		"SELECT DISTINCT
-            		" . $wpdb->prefix . "posts.*
-        		FROM $wpdb->posts
-        		WHERE
-            		post_status='publish'
-            		AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
-            		AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
-        		ORDER BY post_date DESC
-        		LIMIT " . $ppp
-            );
-           
-            $pageposts = $wpdb->get_results($querystr, OBJECT);
-            
+            $pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
+                        
             # Set zoom level for map depending on number of surrounding posts
             $num_posts = count($pageposts);
-            $zoom = ($num_posts > 3) ? 11 : 8;
+            $zoom = ($num_posts > 5) ? 11 : 7;
+            
+            # If number of posts is less that 20, expand location bounding box to 3 degrees of post
+            if ($num_posts < 20) {
+            
+            	$new_post_limit = 20 - $num_posts;
+            	
+            	$lat_min = $center_map_lat - 3;
+            	$lat_max = $center_map_lat + 3;
+           		$long_min = $center_map_long - 3;
+            	$long_max = $center_map_long + 3;
+            	$post_limit = $new_post_limit;
+            	
+            	$pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
+			}
+            
             
             # Construct location data in JSON for google map display
             if ($pageposts) {
@@ -2085,6 +2087,34 @@ function get_google_map() {
 	    }
 	}
 }
+
+/**  GET SURROUNDING POSTS QUERY FOR MAP **/
+
+
+function get_surrounding_posts ($lat_min, $lat_max, $long_min, $long_max, $post_limit) {
+
+    global $wpdb;
+
+	/** SQL TO GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF MAP CENTER **/
+    $querystr = $wpdb->prepare(
+        		    "SELECT DISTINCT
+            		" . $wpdb->prefix . "posts.*
+        		    FROM $wpdb->posts
+        		    WHERE
+            		    post_status='publish'
+            		    AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
+            		    AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
+        		    ORDER BY post_date DESC
+        		    LIMIT " . $post_limit
+                );
+           
+    $pageposts = $wpdb->get_results($querystr, OBJECT);
+
+    return $pageposts;
+
+}
+
+
 
 /** WORLD MAP OF ALL POSTS - LINK ON FOOTER**/
 
