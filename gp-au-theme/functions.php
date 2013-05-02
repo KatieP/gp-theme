@@ -1831,6 +1831,9 @@ function set_post_location_data_as_decimal($post_id) {
 	
 		// unhook this function so it doesn't loop infinitely
 		remove_action('publish_gp_news', 'set_post_location_data_as_decimal');
+		remove_action('publish_gp_events', 'set_post_location_data_as_decimal');
+		remove_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
+		remove_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 	    
 		// update the post, which calls publish_gp_news again
 		$table = 'wp_posts';
@@ -1850,12 +1853,17 @@ function set_post_location_data_as_decimal($post_id) {
 		
 		// re-hook this function
 		add_action('publish_gp_news', 'set_post_location_data_as_decimal');
+		add_action('publish_gp_events', 'set_post_location_data_as_decimal');
+		add_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
+		add_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 	}
 }
-add_action ('publish_gp_news', 'set_post_location_data_as_decimal');
+add_action('publish_gp_news', 'set_post_location_data_as_decimal');
+add_action('publish_gp_events', 'set_post_location_data_as_decimal');
+add_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
+add_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 
 /** CONSTRUCT POST LOCATION OBJECT DATA IN JSON **/
-
 function get_post_location_json_data() {
     /**
      * Returns a single JSON structured string holding post data:
@@ -2018,7 +2026,6 @@ function get_google_map() {
         
         global $post;
         $post_id = $post->ID;
-        $post_type = get_post_type();
         $lat_key = 'gp_google_geo_latitude';
         $long_key = 'gp_google_geo_longitude';
         
@@ -2040,18 +2047,16 @@ function get_google_map() {
             $lat_max = $center_map_lat + 1;
             $long_min = $center_map_long - 1;
             $long_max = $center_map_long + 1;
-            $zoom = 11;
             $ppp = 20;
             
             /** SQL TO GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF MAP CENTER **/
-
+            
             $querystr = $wpdb->prepare(
         		"SELECT DISTINCT
             		" . $wpdb->prefix . "posts.*
         		FROM $wpdb->posts
         		WHERE
             		post_status='publish'
-            		AND post_type='" . $post_type . "' 
             		AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
             		AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
         		ORDER BY post_date DESC
@@ -2059,6 +2064,10 @@ function get_google_map() {
             );
            
             $pageposts = $wpdb->get_results($querystr, OBJECT);
+            
+            # Set zoom level for map depending on number of surrounding posts
+            $num_posts = count($pageposts);
+            $zoom = ($num_posts > 3) ? 11 : 8;
             
             # Construct location data in JSON for google map display
             if ($pageposts) {
