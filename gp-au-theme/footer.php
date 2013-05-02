@@ -10,7 +10,8 @@
 					        <li><a href="<?php echo $site_url; ?>about/our-vision/">About</a></li>
 					        <li><a href="http://greenpages.myshopify/">Shop</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/terms-and-conditions/">Terms</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/advertisers/">Advertise</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/rate-card/">Advertise</a></li>
+					        <li><a href="<?php echo $site_url; ?>/world-map/">World Map</a></li>
 				        </ul>	
 			        </nav>
 			    </div>

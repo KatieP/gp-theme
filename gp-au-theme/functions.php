@@ -2078,6 +2078,59 @@ function get_google_map() {
 	}
 }
 
+/** WORLD MAP OF ALL POSTS - LINK ON FOOTER**/
+
+function get_google_word_map() {
+    /**
+     * Shows all posts from the last 4 weeks on a world map
+     * TO DO - centre map on user's location
+     * Found on worldpress page www.greenpag.es/world-map using shortcode gp-world-map
+     * Called from gp-word-map.php
+     * 
+     * Authors: Katie Patrick & Jesse Browne
+     * 			katie.patrick@greenpag.es
+     * 			jb@greenpag.es
+     */
+    
+       
+    global $post;
+   
+    $center_map_lat = '0.0';
+    $center_map_long = '20.0';
+            
+    global $wpdb;
+    $zoom = 2;
+    $ppp = 100;
+            
+    /** SQL TO GET 100 MOST RECENT POSTS **/
+
+    $querystr = $wpdb->prepare(
+         		    "SELECT DISTINCT
+            		" . $wpdb->prefix . "posts.*
+        		    FROM $wpdb->posts
+        		    WHERE
+            		    post_status='publish'           		
+        		    ORDER BY post_date DESC
+        			LIMIT " . $ppp
+            	);
+           
+    $pageposts = $wpdb->get_results($querystr, OBJECT);
+            
+    # Construct location data in JSON for google map display
+    if ($pageposts) {            
+        $json = '[';	                
+        foreach ($pageposts as $post) {                    
+            $json .= get_post_location_json_data();	
+        }
+        $json .= ']';                
+        # Define map canvas div id
+        $map_canvas = 'world_google_map_canvas';
+    	display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);        	
+    }
+}
+
+
+
 /** CUSTOM STYLES FOR GOOGLE MAPS  **/
 function custom_google_map_styles() {
     echo  '[ 
