@@ -2098,19 +2098,49 @@ function get_google_map() {
 function get_surrounding_posts ($lat_min, $lat_max, $long_min, $long_max, $post_limit) {
 
     global $wpdb;
+    
+    $epochtime = strtotime('now');
 
 	/** SQL TO GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF MAP CENTER **/
     $querystr = $wpdb->prepare(
         		    "SELECT DISTINCT
-            		" . $wpdb->prefix . "posts.*
-        		    FROM $wpdb->posts
-        		    WHERE
-            		    post_status='publish'
-            		    AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
-            		    AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
-        		    ORDER BY post_date DESC
-        		    LIMIT " . $post_limit
-                );
+            		" . $wpdb->prefix . "posts.*,
+            		 m0.meta_value AS _thumbnail_id,
+            m1.meta_value AS gp_enddate,
+            m2.meta_value AS gp_startdate,
+            m3.meta_value AS gp_google_geo_country,
+            m4.meta_value AS gp_google_geo_administrative_area_level_1,
+            m5.meta_value AS gp_google_geo_locality_slug,
+            m6.meta_value AS gp_google_geo_locality
+        FROM $wpdb->posts
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
+           LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_administrative_area_level_1'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality_slug'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_google_geo_locality'
+       WHERE
+            post_status='publish'
+            AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
+            AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
+            AND m0.meta_value >= 1
+            AND (
+                post_type='gp_news' 
+                OR post_type='gp_advertorial' 
+                OR ( post_type='gp_competitions' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+                OR post_type='gp_projects' 
+                OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+            )
+            " . $filterby_country . "
+            " . $filterby_state . "
+            " . $filterby_city . "
+        ORDER BY post_date DESC
+        LIMIT %d;",
+        $epochtime,
+        $epochtime,
+        $post_limit
+    );
            
     $pageposts = $wpdb->get_results($querystr, OBJECT);
 
