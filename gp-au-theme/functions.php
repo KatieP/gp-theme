@@ -1864,7 +1864,7 @@ add_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
 add_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 
 /** CONSTRUCT POST LOCATION OBJECT DATA IN JSON **/
-function get_post_location_json_data() {
+function get_post_location_json_data($current_post = false) {
     /**
      * Returns a single JSON structured string holding post data:
      * title, link, lat, long and custom marker of an indivdual post.
@@ -1881,33 +1881,29 @@ function get_post_location_json_data() {
     $post_id = $post->ID;
     $post_title =  get_the_title($post->ID);
     $post_link_url = get_permalink($post->ID);
-    $displaytitle = '<a href=\"'. $post_link_url . '\" title=\"'. $post_title .'\">'. $post_title .'</a>';
+    $title_link = '<a href=\"'. $post_link_url . '\" title=\"'. $post_title .'\">'. $post_title .'</a>';
     
     # Set location keys
     $lat_post_key = 'gp_google_geo_latitude';
     $long_post_key = 'gp_google_geo_longitude';
     
 	# Assign icon for custom marker depending on post type
+	$post_icon = $template_url . '/template/icons/post-type-icons/';
 	switch ($post_type) {
 	    case 'gp_news':
-	        $post_icon = $template_url .'/template/icons/post-type-icons/news-icon.png';
+            $post_icon .= ($current_post == false) ? 'news-icon.png' : 'news-icon-large.png';
 	        break;
 	    case 'gp_projects':
-	    	$post_icon = $template_url .'/template/icons/post-type-icons/project-icon.png';
+	    	$post_icon .= ($current_post == false) ? 'project-icon.png' : 'project-icon-large.png';
 	        break;
 		case 'gp_advertorial':
-			$post_icon = $template_url .'/template/icons/post-type-icons/product-icon.png';
-	        break;
-		case 'gp_competitions':
-			$post_icon = $template_url .'/template/icons/post-type-icons/competition-icon.png';
+			$post_icon .= ($current_post == false) ? 'product-icon.png' : 'product-icon-large.png';
 	        break;
 	    case 'gp_events':
-	    	$post_icon = $template_url .'/template/icons/post-type-icons/event-icon.png';
-	        break;
-	    case 'gp_people':
-	    	$post_icon = '';
+	    	$post_icon .= ($current_post == false) ? 'event-icon.png' : 'event-icon-large.png';
 	        break;
 	}
+	
     
 	# Get post location meta (post id, key, true/false)
     $lat_post = get_post_meta($post_id, $lat_post_key, true);
@@ -1915,7 +1911,8 @@ function get_post_location_json_data() {
 
 	# Construct json data and return for google map marker display
 	$json = '{ 
-	             Title: "'. $displaytitle .'", 
+	             Title: "'. $post_title .'",
+	             Title_link: "'. $title_link .'",
 	             Post_lat: "'. $lat_post .'", 
 	             Post_long: "'. $long_post .'", 
 	             Post_icon: "'. $post_icon .'" 
@@ -1987,7 +1984,7 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
 	    		(function(custom_marker, data) {
 		        	// Attaching a click event to the current marker
 		        	google.maps.event.addListener(custom_marker, "click", function(e) {
-			        	infoWindow.setContent(data.Title);
+			        	infoWindow.setContent(data.Title_link);
 			    	    infoWindow.open(map, custom_marker);
     				});
 	    		})(custom_marker, data);       	
@@ -2025,13 +2022,14 @@ function get_google_map() {
     if (get_post_type() != "page") { 
         
         global $post;
-        $post_id = $post->ID;
+        $current_post_id = $post->ID;
         $lat_key = 'gp_google_geo_latitude';
         $long_key = 'gp_google_geo_longitude';
         
         if ( is_single() ) {
-            $center_map_lat = get_post_meta($post_id, $lat_key, true);
-            $center_map_long = get_post_meta($post_id, $long_key, true);
+            $center_map_lat = get_post_meta($current_post_id, $lat_key, true);
+            $center_map_long = get_post_meta($current_post_id, $long_key, true);
+            $current_post_json = get_post_location_json_data(true);
         } else {
             # Set user location lat and long here
             $center_map_lat = '';
@@ -2072,9 +2070,10 @@ function get_google_map() {
             # Construct location data in JSON for google map display
             if ($pageposts) {
                 
-                $json = '[';	                
+                $json = '[';
+                $json .= (isset($current_post_json)) ? $current_post_json : '' ;
                 foreach ($pageposts as $post) {                    
-                    $json .= get_post_location_json_data();	
+                    $json .= ($current_post_id != $post->ID) ? get_post_location_json_data() : '';	
                 }
                 $json .= ']';
                 
@@ -2129,7 +2128,7 @@ function get_google_word_map() {
     if ($pageposts) {            
         $json = '[';	                
         foreach ($pageposts as $post) {                    
-            $json .= get_post_location_json_data();	
+            $json .= get_post_location_json_data(true);	
         }
         $json .= ']';                
         # Define map canvas div id
