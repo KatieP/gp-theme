@@ -26,7 +26,7 @@ function addCustomFields(){
       $item_title    = ''; //the title of the field
       $item_desc     = ''; //description
       $item_type     = ''; //the type: input, checkbox, radio, select, countrySelect, timeZone, datepicker, textarea, upload, avatar
-      $item_options = ''; //item options in case of ckeckbox, radio, select etc
+      $item_options  = ''; //item options in case of ckeckbox, radio, select etc
 
 
     $max_id = 0;
@@ -486,7 +486,6 @@ function my_show_extra_profile_fields( $user ) {
 	$roleauthor = 'author';
 	$roleeditor = 'editor';
 	$rolecontributor = 'contributor';
-	
 	
 	global $current_user, $current_site, $gp, $wpdb;
 	$user_roles = $current_user->roles;
@@ -2030,7 +2029,7 @@ function get_google_map() {
     
     if (get_post_type() != "page") { 
         
-        global $post;
+        global $post, $gp;
         $current_post_id = $post->ID;
         $lat_key = 'gp_google_geo_latitude';
         $long_key = 'gp_google_geo_longitude';
@@ -2041,24 +2040,12 @@ function get_google_map() {
             $current_post_json =   get_post_location_json_data(true);
         } else {
             # Set user location lat and long here
-            global $gp;
-            $user_lat =            $gp->location['latitude'];           
-            $user_long =           $gp->location['longitude'];
+            $ip_addr = $_SERVER['REMOTE_ADDR'];
+            $location = getLocationByIP($ip_addr);
+            $user_lat =            $location['latitude'];
+            $user_long =           $location['longitude'];
             $center_map_lat =      ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
             $center_map_long =     ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
-            
-            $current_location = Geo::getCurrentLocation();
-            echo '$current_location <br />';
-            var_dump($current_location);
-            echo '<br />';
-            echo '$user_lat <br />';
-            var_dump($user_lat);
-            echo '<br />';            
-            echo '$user_long <br />';
-            var_dump($user_long);
-            echo '<br />';
-         
-            #return;
         }
         
         # set up data for surrounding posts query and google map if proper location data found
@@ -2094,10 +2081,10 @@ function get_google_map() {
             if ($pageposts) {
                 
                 $json = '[';
-                $json .= (isset($current_post_json)) ? $current_post_json : '' ;
                 foreach ($pageposts as $post) {                    
                     $json .= ($current_post_id != $post->ID) ? get_post_location_json_data() : '';	
                 }
+                $json .= (isset($current_post_json)) ? $current_post_json : '' ;
                 $json .= ']';
                 
                 # Define map canvas div id
