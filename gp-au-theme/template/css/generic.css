@@ -1707,6 +1707,7 @@ footer {
 /** EVENT CALENDAR **/
 #eventCalendar {
     width: 100%;
+    margin-top: 2.5em;
 }
 
 #eventCalendar>.ui-datepicker {

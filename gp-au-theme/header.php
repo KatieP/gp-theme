@@ -6,7 +6,6 @@ $site_url = get_site_url();
 
 if ( is_user_logged_in() ) {
 	global $current_user;
-	#$current_user = wp_get_current_user();
 }
 
 $template_url = get_bloginfo('template_url');
@@ -130,7 +129,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
          * works on Gravity forms and select location function in header
          */
 
-        add_action('wp_head', 'gp_js_postGeoLoc_meta');
+        ( is_page() ) ? add_action('wp_head', 'gp_js_postGeoLoc_meta') : '';
         
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which
@@ -155,7 +154,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			}());
 		</script>
 		<!-- End Facebook JavaScript SDK -->
-	
+		
 		<header>
     		<div class="pos">
     		    <div class="template-left">
@@ -170,8 +169,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					        <li><a href="<?php echo $site_url; ?>/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
 					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
 					        <?php
-					        # Display Directory link only if user in Australia 
-                            # Get location from user ip address function	
+					        # Display Directory link only if user in Australia 	
                             $user_country = $gp->location['country_iso2'];
 	                        if ( $user_country == 'AU' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
 	                        ?>					    
@@ -193,7 +191,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	    	                        Log In
     	                        </a>
             	                <span class="in-or-out"> | </span>
-                	            <a href="<?php echo $site_url ;?>/welcome" class="lower">Register</a>
+                	            <a href="<?php echo $site_url ;?>/welcome" class="lower">Join</a>
 						    </li>
 				    	</ul>
 				    	<div class="clear"></div>

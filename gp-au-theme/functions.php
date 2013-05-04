@@ -2032,14 +2032,29 @@ function get_google_map() {
         $long_key = 'gp_google_geo_longitude';
         
         if ( is_single() ) {
-            $center_map_lat = get_post_meta($current_post_id, $lat_key, true);
-            $center_map_long = get_post_meta($current_post_id, $long_key, true);
-            $current_post_json = get_post_location_json_data(true);
+            $center_map_lat =      get_post_meta($current_post_id, $lat_key, true);
+            $center_map_long =     get_post_meta($current_post_id, $long_key, true);
+            $current_post_json =   get_post_location_json_data(true);
         } else {
             # Set user location lat and long here
-            $center_map_lat = '';
-            $center_map_long = '';
-            return;
+            global $gp;
+            $current_location = Geo::getCurrentLocation();
+            $user_lat =            $gp->location['latitude'];           
+            $user_long =           $gp->location['longitude'];
+            $center_map_lat =      ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
+            $center_map_long =     ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
+        /*
+            echo '$current_location <br />';
+            var_dump($current_location);
+            echo '<br />';
+            echo '$user_lat <br />';
+            var_dump($user_lat);
+            echo '<br />';            
+            echo '$user_long <br />';
+            var_dump($user_long);
+            echo '<br />';
+         */
+            #return;
         }
         
         # set up data for surrounding posts query and google map if proper location data found
@@ -2051,13 +2066,11 @@ function get_google_map() {
             $long_min = $center_map_long - 1;
             $long_max = $center_map_long + 1;
             $post_limit = 20;
-            
-            
+                     
             $pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
                         
             # Set zoom level for map depending on number of surrounding posts
             $num_posts = count($pageposts);
-            $zoom = ($num_posts > 5) ? 11 : 6;
             
             # If number of posts is less that 20, expand location bounding box to 3 degrees of post
             if ($num_posts < 20) {
@@ -2071,7 +2084,7 @@ function get_google_map() {
             }
             
             $num_posts = count($pageposts);
-            $zoom = ($num_posts > 5) ? 11 : 6;
+            $zoom = ($num_posts > 5) ? 11 : 7;
             
             # Construct location data in JSON for google map display
             if ($pageposts) {
@@ -2092,34 +2105,30 @@ function get_google_map() {
 	}
 }
 
-/**  GET SURROUNDING POSTS QUERY FOR MAP **/
-
-
-function get_surrounding_posts ($lat_min, $lat_max, $long_min, $long_max, $post_limit) {
-
-    global $wpdb;
+function get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit) {
+    /*
+     * Get posts surrounding map center sql query
+     * Called by get_google_map()
+     * 
+     * Authors: Katie Patrick & Jesse Browne
+     * 			katie.patrick@greenpag.es
+     * 			jb@greenpag.es
+     */
     
+    global $wpdb;
     $epochtime = strtotime('now');
 
-	/** SQL TO GET 20 MOST RECENT POSTS IN +-1 DEGREE LAT AND LONG OF MAP CENTER **/
+	/** SQL TO GET 20 MOST RECENT POSTS AROUND MAP CENTER **/
     $querystr = $wpdb->prepare(
         		    "SELECT DISTINCT
             		" . $wpdb->prefix . "posts.*,
             		 m0.meta_value AS _thumbnail_id,
             m1.meta_value AS gp_enddate,
-            m2.meta_value AS gp_startdate,
-            m3.meta_value AS gp_google_geo_country,
-            m4.meta_value AS gp_google_geo_administrative_area_level_1,
-            m5.meta_value AS gp_google_geo_locality_slug,
-            m6.meta_value AS gp_google_geo_locality
+            m2.meta_value AS gp_startdate
         FROM $wpdb->posts
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
-           LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_administrative_area_level_1'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality_slug'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_google_geo_locality'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_events_enddate' 
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_events_startdate'
        WHERE
             post_status='publish'
             AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
@@ -2128,16 +2137,11 @@ function get_surrounding_posts ($lat_min, $lat_max, $long_min, $long_max, $post_
             AND (
                 post_type='gp_news' 
                 OR post_type='gp_advertorial' 
-                OR ( post_type='gp_competitions' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
                 OR post_type='gp_projects' 
                 OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
             )
-            " . $filterby_country . "
-            " . $filterby_state . "
-            " . $filterby_city . "
         ORDER BY post_date DESC
         LIMIT %d;",
-        $epochtime,
         $epochtime,
         $post_limit
     );
@@ -2147,8 +2151,6 @@ function get_surrounding_posts ($lat_min, $lat_max, $long_min, $long_max, $post_
     return $pageposts;
 
 }
-
-
 
 /** WORLD MAP OF ALL POSTS - LINK ON FOOTER**/
 
@@ -2200,8 +2202,6 @@ function get_google_word_map() {
     	display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);        	
     }
 }
-
-
 
 /** CUSTOM STYLES FOR GOOGLE MAPS  **/
 function custom_google_map_styles() {
