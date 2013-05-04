@@ -2043,7 +2043,7 @@ function get_google_map() {
             $user_long =           $gp->location['longitude'];
             $center_map_lat =      ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
             $center_map_long =     ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
-        /*
+        
             echo '$current_location <br />';
             var_dump($current_location);
             echo '<br />';
@@ -2053,7 +2053,7 @@ function get_google_map() {
             echo '$user_long <br />';
             var_dump($user_long);
             echo '<br />';
-         */
+         
             #return;
         }
         
