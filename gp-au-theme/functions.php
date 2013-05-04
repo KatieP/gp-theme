@@ -2004,10 +2004,14 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
    <div onload="initialize()"></div>
    <div id="<?php echo $map_canvas; ?>"></div>   
    
+   <?php 
+   if (!is_page()) {
+   ?>
    <div class="right">
        <a href="<?php echo $site_url; ?>/world-map/">See World Map</a>
    </div>
    <?php  
+   }
 } 
 
 function get_google_map() {
@@ -2038,12 +2042,12 @@ function get_google_map() {
         } else {
             # Set user location lat and long here
             global $gp;
-            $current_location = Geo::getCurrentLocation();
             $user_lat =            $gp->location['latitude'];           
             $user_long =           $gp->location['longitude'];
             $center_map_lat =      ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
             $center_map_long =     ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
-        
+            
+            $current_location = Geo::getCurrentLocation();
             echo '$current_location <br />';
             var_dump($current_location);
             echo '<br />';
@@ -2154,7 +2158,7 @@ function get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_l
 
 /** WORLD MAP OF ALL POSTS - LINK ON FOOTER**/
 
-function get_google_word_map() {
+function get_google_world_map() {
     /**
      * Shows all posts from the last 4 weeks on a world map
      * TO DO - centre map on user's location
