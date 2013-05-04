@@ -159,6 +159,14 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		<div class="pos">
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
+                    <?php 
+                    $ip_addr =          $_SERVER['REMOTE_ADDR'];
+                    $location =         getLocationByIP($ip_addr);
+                    $user_lat =         $location['latitude'];
+                    $user_long =        $location['longitude'];
+                    $user_city =        $location['city'];
+                    $user_country =     $location['country_iso2'];
+                    ?>
 			        <nav id="header-nav">
 				        <ul>
 					        <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
@@ -170,7 +178,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
 					        <?php
 					        # Display Directory link only if user in Australia 	
-                            $user_country = $gp->location['country_iso2'];
 	                        if ( $user_country == 'AU' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
 	                        ?>					    
 				        </ul>
@@ -292,9 +299,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 <?php
                 if (!is_page()) {
        	            # Display location tag line and change region filter option
-	                # Get location from user ip address function
-	                $geo_currentlocation = $gp->location;
-                    $user_location = $geo_currentlocation['city'];
                     $posttype_slug = getPostTypeSlug($post_type);
 	                ?>
             		<script type="text/javascript">
@@ -305,7 +309,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 		}
             		</script>
     				<div class="post-details" id="header-tagline">
-	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $user_location; ?></a>.</span>
+    				    <?php $city = ( !empty($user_city) ) ? $user_city : $gp->location['city']; ?>
+	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $city; ?></a>.</span>
 	            		<span id="header_location_list" class="hidden">
 	                		<select name="filterby_state" id="filterby_state">
 		                        <?php
