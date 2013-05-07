@@ -308,18 +308,18 @@ function theme_like() {
 		if (is_user_logged_in()) {
 			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
                       <a href="#/">
-                          <span class="star-mini' . $likedclass . '"></span>
-                          <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
-                          <span class="star-mini-number-plus-one" style="display:none;">+1</span>
-                          <span class="star-mini-number-minus-one" style="display:none;">-1</span>
+                          <span class="af-icon-chevron-up' . $likedclass . '"></span>
+                          <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+                          <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
+                          <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span>
                       </a>
                   </div>';
 		} else {
 			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
 			          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
 			             class="simplemodal-login">
-			              <span class="star-mini"></span>
-			              <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
+			              <span class="af-icon-chevron-up"></span>
+			              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
 			              <span class="star-login" style="display:none;">Login...</span>
 			          </a>
 			      </div>';
@@ -380,17 +380,6 @@ function theme_index_feed_item() {
 			 in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
           </span>';
 			
-    if ( comments_open($post->ID) ) {
-		echo '<div class="comment-profile">
-		          <a href="' . get_permalink($post->ID) . '#comments">
-		              <span class="comment-mini"></span>
-		              <span class="comment-mini-number dsq-postid">
-		                  <fb:comments-count href="' . $link . '"></fb:comments-count>
-		              </span>
-		          </a>
-		      </div>';
-	}	
-			
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
 	}
@@ -409,24 +398,35 @@ function theme_index_feed_item() {
 			
 	if (is_user_logged_in()) {
 		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-                  <a href="#/">
-                      <span class="star-mini' . $likedclass . '"></span>
-                      <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
-                      <span class="star-mini-number-plus-one" style="display:none;">+1</span>
-                      <span class="star-mini-number-minus-one" style="display:none;">-1</span>
+                  <a href="#/" title="Upvote">
+                      <span class="af-icon-chevron-up' . $likedclass . '"></span>
+                      <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+                      <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
+                      <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span>
                   </a>
               </div>';
 	} else {
         echo '<div id="post-' . $post->ID . '" class="favourite-profile">
 		          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
-		             class="simplemodal-login">
-		              <span class="star-mini"></span>
-		              <span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span>
+		             title ="Login to upvote">
+		              <span class="af-icon-chevron-up"></span>
+		              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
 		              <span class="star-login" style="display:none;">Login...</span>
 		          </a>
 		      </div>';
 	}
 
+	if ( comments_open($post->ID) ) {
+		echo '<div class="comment-profile">
+		          <a href="' . get_permalink($post->ID) . '#comments">
+		              <span class="comment-mini"></span>
+		              <span class="comment-mini-number dsq-postid">
+		                  <fb:comments-count href="' . $link . '"></fb:comments-count>
+		              </span>
+		          </a>
+		      </div>';
+	}	
+	
 	echo '</div>
 		  <div class="topic-container">
               <div class="topic-content">
