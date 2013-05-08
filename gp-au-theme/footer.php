@@ -1,10 +1,8 @@
-        <?php $site_url = get_site_url(); ?>
 		<footer>
     		<div class="pos">
     		    <div class="template-left">
 			        <nav id="footer-nav"> 
 				        <ul>
-				            <li><a href="<?php echo $site_url; ?>/welcome/">Get Started</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/partners/">Partners</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/badges/">Badges</a></li>
 					        <li><a href="<?php echo $site_url; ?>about/our-vision/">About</a></li>

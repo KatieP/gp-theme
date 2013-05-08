@@ -320,7 +320,7 @@ function theme_like() {
 			             class="simplemodal-login">
 			              <span class="af-icon-chevron-up"></span>
 			              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-			              <span class="star-login" style="display:none;">Login...</span>
+			              <span class="upvote-login" style="display:none;">Login...</span>
 			          </a>
 			      </div>';
 		}
@@ -411,7 +411,7 @@ function theme_index_feed_item() {
 		             title ="Login to upvote">
 		              <span class="af-icon-chevron-up"></span>
 		              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-		              <span class="star-login" style="display:none;">Login...</span>
+		              <span class="upvote-login" style="display:none;">Login...</span>
 		          </a>
 		      </div>';
 	}

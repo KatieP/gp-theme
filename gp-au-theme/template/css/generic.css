@@ -787,7 +787,7 @@ header a:hover {
     margin: 1.3em 0 0 0;
 }
 
-#header-auth .in-or-out {
+#header-auth .breaker {
     margin: 0 0.2em 0 0.2em;
     float: right;
     line-height: 3em;
@@ -3070,8 +3070,8 @@ ul.categorieslistmain {
 
 #content .comment-profile, #content .favourite-profile {
     color: #000;
-    border: 0.1em solid #d7edbc;
-    background-color: #f6faf0;
+    border: 0.1em solid #D3D3D3;
+    background-color: #FAFAFA;
     float: right;
     overflow: hidden;
     max-length: 10em;
@@ -3085,6 +3085,7 @@ ul.categorieslistmain {
 #content .comment-profile {
 	margin-right: 0.8em;	
 }
+
 #content .favourite-profile {
     display: block;
 }
@@ -3109,7 +3110,7 @@ ul.categorieslistmain {
     display: block;
     padding: 0 0.2em;
     margin: 0 0.1em 0 0.2em;
-    border: 0.1em solid #d7edbc;
+    border: 0.1em solid #D3D3D3;
     background-color: #FFF;
     overflow: hidden;
     height: 1.3em;
@@ -3135,16 +3136,15 @@ ul.categorieslistmain {
 	padding-right: 0.4em;
 }
 
-#content .favourite-profile .star-login {
-    color: #f7cc0c;
-    font-weight: bold;
+#content .favourite-profile .upvote-login {
+    color: #808080;
     line-height: 1.6em;
     padding: 0 0.4em;
 }
 
 #content span.fb_comments_count:hover, #content span.af-icon-chevron-up-number:hover, 
 #content span.af-icon-chevron-up-number-plus-one:hover, #content span.af-icon-chevron-up-number-minus-one:hover, 
-#content .favourite-profile .star-login:hover {
+#content .favourite-profile .upvote-login:hover {
     text-decoration: none;
 }
 
