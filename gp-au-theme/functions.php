@@ -2029,7 +2029,7 @@ function get_google_map() {
     
     if (get_post_type() != "page") { 
         
-        global $post, $gp;
+        global $post, $gp, $wpdb;
         $current_post_id = $post->ID;
         $lat_key = 'gp_google_geo_latitude';
         $long_key = 'gp_google_geo_longitude';
@@ -2040,10 +2040,8 @@ function get_google_map() {
             $current_post_json =   get_post_location_json_data(true);
         } else {
             # Set user location lat and long here
-            $ip_addr = $_SERVER['REMOTE_ADDR'];
-            $location = getLocationByIP($ip_addr);
-            $user_lat =            $location['latitude'];
-            $user_long =           $location['longitude'];
+            $user_lat =            $gp->location['latitude'];
+            $user_long =           $gp->location['longitude'];
             $center_map_lat =      ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
             $center_map_long =     ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
         }
@@ -2051,14 +2049,12 @@ function get_google_map() {
         # set up data for surrounding posts query and google map if proper location data found
         if (!empty($center_map_lat) && !empty($center_map_long)) {
             
-            global $wpdb;
-            $lat_min = $center_map_lat - 1;
-            $lat_max = $center_map_lat + 1;
-            $long_min = $center_map_long - 1;
-            $long_max = $center_map_long + 1;
+            $lat_min =    $center_map_lat - 1;
+            $lat_max =    $center_map_lat + 1;
+            $long_min =   $center_map_long - 1;
+            $long_max =   $center_map_long + 1;
             $post_limit = 20;
-                     
-            $pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
+            $pageposts =  get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
                         
             # Set zoom level for map depending on number of surrounding posts
             $num_posts = count($pageposts);
@@ -2066,10 +2062,10 @@ function get_google_map() {
             # If number of posts is less that 20, expand location bounding box to 3 degrees of post
             if ($num_posts < 20) {
             	
-            	$lat_min = $center_map_lat - 3;
-            	$lat_max = $center_map_lat + 3;
-           		$long_min = $center_map_long - 3;
-            	$long_max = $center_map_long + 3;            	
+            	$lat_min =   $center_map_lat - 3;
+            	$lat_max =   $center_map_lat + 3;
+           		$long_min =  $center_map_long - 3;
+            	$long_max =  $center_map_long + 3;            	
             	$pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
 			
             }
@@ -2087,7 +2083,7 @@ function get_google_map() {
                 $json .= (isset($current_post_json)) ? $current_post_json : '' ;
                 $json .= ']';
                 
-                # Define map canvas div id
+                # Define map canvas div id and show map
                 $map_canvas = 'post_google_map_canvas';
     	        display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);
     	        	
@@ -2354,7 +2350,6 @@ function custom_google_map_styles() {
                       ]';
 }
 
-
 /** SHOWS DIFFERENT COUNTRY FACEBOOK PAGES BASED ON USER'S LOCATION BY IP**/
 function show_facebook_by_location() {
     global $post, $wpdb, $gp;
@@ -2375,58 +2370,6 @@ function show_facebook_by_location() {
         return $edition_meta['facebook_id'];
     }
 }	
-
-
-/* GET USER IP ADDRESS FROM SIMPLEGEO API */
-#Simple GEO has gone out of business! This code will need to be replaced.
-#https://github.com/simplegeo/php-simplegeo
-#https://github.com/simplegeo/php-simplegeo/blob/master/README.md
-
-function simplegeo_ip_user_location() {
-	
-	require_once 'php-simplegeo/SimpleGeo.php';
-
-	$client = new SimpleGeo('bmZFj3mruK3MZ8B3aZnxAvYYzTdS7Dp8', 'F6hR5h2s3Ed9YTgsqeT4kSc3DeWpSjjs');
-				
-	$ip = $_SERVER["REMOTE_ADDR"];							#Gets IP from user
-															#RESULTS ARE NOT VERY ACCURATE BUT AT LEAST GET THE STATE AND COUNTRY
-	$result = $client->ContextIP($ip);
-
-	$i = 0;
-	$user_location = '';
-	
-	foreach($result['features'] as $item) {					#DISPLAY ONLY SUBURB AND CITY
-		
-		switch ($i) {
-			case '0':
-				#$user_location .= $item['name'] .', '; 	#DISPLAY SUBURB
-				$i++;
-				break;
-			case '1':
-				#$user_location .= $item['name'] .', ';		#DISPLAY CITY
-				$i++;
-				break;
-			case '2':
-				#$user_location .= $item['name'] .', ';		#DISPLAY STATE/COUNTRY
-				$i++;
-				break;
-			case '3':
-				$user_location .= $item['name'] .', ';		#DISPLAY STATE
-				$i++;
-				break;								
-			case '4':
-				$user_location .= $item['name'];			#DISPLAY COUNTRY
-				$i++;
-				break;
-		}		
-	}	
-	
-	if($user_location == ''){
-		$user_location = 'your part of the world';
-	}
-	
-	return $user_location;									#SUBURB AND CITY IN STRING
-}
 
 /* SHOW MEMBERS POSTS */
 function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {

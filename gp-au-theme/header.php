@@ -160,12 +160,10 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
                     <?php 
-                    $ip_addr =          $_SERVER['REMOTE_ADDR'];
-                    $location =         getLocationByIP($ip_addr);
-                    $user_lat =         $location['latitude'];
-                    $user_long =        $location['longitude'];
-                    $user_city =        $location['city'];
-                    $user_country =     $location['country_iso2'];
+                    $user_lat =         $gp->location['latitude'];
+                    $user_long =        $gp->location['longitude'];
+                    $user_city =        $gp->location['city'];
+                    $user_country =     $gp->location['country_iso2'];
                     ?>
 			        <nav id="header-nav">
 				        <ul>
@@ -208,7 +206,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			    	</nav>
 			        <?php 
     			    } else { 
-			    
     			        global $wpdb;
 	    		        global $current_site;    	
 		    	        $post_author_url = ( isset($current_user) ? get_author_posts_url($current_user->ID) : "" );
@@ -219,7 +216,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    </div>
 					    <ul id="auth-tools">
 						    <li id="auth-yourfavourites" class="no-js">
-							    <a href="<?php echo $post_author_url ?>#favourites" title="My Favourites">
+							    <a href="<?php echo $post_author_url; ?>#favourites" title="My Favourites">
 	    						    <span class="icon-favourites">My Favourites</span>
 							    </a>
 							</li>
