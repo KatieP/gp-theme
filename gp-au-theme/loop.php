@@ -806,7 +806,7 @@ function home_index() {
 
 	$ppp = 20;
 	
-	/** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/         
+	/** SQL QUERIES GET ALL RECENT POSTS FROM PAST TWO WEEKS **/         
     $querystr = $wpdb->prepare(
         "SELECT DISTINCT
             " . $wpdb->prefix . "posts.*,
@@ -826,7 +826,8 @@ function home_index() {
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality_slug'
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_google_geo_locality'
         WHERE
-            post_status='publish'
+            popularity_score > DATE_SUB(CURDATE(), INTERVAL 2 WEEK) 
+        	AND post_status='publish'
             AND m0.meta_value >= 1
             AND (
                 post_type='gp_news' 
@@ -838,44 +839,40 @@ function home_index() {
             " . $filterby_country . "
             " . $filterby_state . "
             " . $filterby_city . "
-        ORDER BY post_date DESC
-        LIMIT %d;",
+        ORDER BY post_date DESC",
         $epochtime,
-        $epochtime,
-        $ppp
+        $epochtime
     );
     
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
-	/** NEW LIST VIEW OF 20 MOST RECENT POSTS **/
+	/** NEW LIST VIEW OF 20 POSTS WITH HIGHEST POPULARITY SCORE **/
 	if ( $pageposts ) {
-	    
 	    # Display create new post button
 		theme_homecreate_post();
-        
-		# Construct location data in JSON for google map display
-        $json = '[';
+		$sorted_posts = array();
 		
-		# Display most recent posts
+		# Assign popularity score for all posts in last two weeks and store in array for sorting
 		foreach ( $pageposts as $post ) { 
-			setup_postdata($post);
-			
-			# Display feed item
-			theme_index_feed_item();
-			
-			# Add post location data to JSON string
-			$json .= get_post_location_json_data();
+		    setup_postdata($post);
+			$c = user_distance_to_post($post);
+			$popularity_score_thisuser = page_rank($c, $post);
+			$post->popularity_score_thisuser = $popularity_score_thisuser;
+            $sorted_posts[$popularity_score_thisuser] = $post;                       
 		}
+
+		# Sort posts by popularity score and get top 20
+	    krsort($sorted_posts);
+        $display_posts = array_slice($sorted_posts, 0, $ppp, true);
+        
+        # Display home page feed 	
+	    foreach ( $display_posts as $post ) { 
+	        setup_postdata($post);		
+		    theme_index_feed_item();
+	    }
 	}
 	
-	# Close JSON string
-	$json .= ']';
-
-	# Define map canvas id and display google map with custom markers for each post
-	$map_canvas = 'post_google_map_canvas';
-	#theme_display_google_map_posts($json, $map_canvas);
 	?>
-	
 	<nav id="post-nav">										
 		<ul>
 			<li class="post-previous"><a href="/news/page/2/"><div class="arrow-previous"></div>More Posts</a></li>
@@ -1057,7 +1054,7 @@ function events_index() {
             );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
-
+	
 	#please fix this and make it accessable to non js users
 	theme_eventcreate_post();
 

@@ -1709,8 +1709,6 @@ function _date_diff($one, $two)
     return $result;
 }
 
-
-
 function makeIso8601TimeStamp ($dateTime = '') {
     if (!$dateTime) {
         $dateTime = date('Y-m-d H:i:s');
@@ -1724,6 +1722,8 @@ function makeIso8601TimeStamp ($dateTime = '') {
     
     return $isoTS;
 }
+
+/** ACTIONS THAT OCCUR WHEN POSTS ARE PUBLISHED **/
 
 function email_after_post_approved($post_ID) {
 
@@ -1763,6 +1763,55 @@ function email_after_post_approved($post_ID) {
 
 }
 add_action('pending_to_publish', 'email_after_post_approved');
+
+function create_popularity_timestamp ($post_id) {	
+    /** 
+     *  Sets date published in unix time as popularity score.
+     *  Executed when post is published, including those coming
+     *  from rss feeds set to auto publish.
+     *    
+     *  Author: Katie Patrick
+     *  		katie.patrick@greenpag.es
+     */
+    
+	global $wpdb;
+    $post = get_post($post_id);
+    $post_score = strtotime($post->post_date_gmt);
+    
+	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+		remove_action('publish_gp_news', 'create_popularity_timestamp');
+		remove_action('publish_gp_events', 'create_popularity_timestamp');
+		remove_action('publish_gp_advertorial', 'create_popularity_timestamp');
+		remove_action('publish_gp_projects', 'create_popularity_timestamp');
+	    
+		// update the post, which calls publish_gp_news again
+		$table = 'wp_posts';
+		$data = array(
+		            'popularity_score' => $post_score
+		        );
+		$where = array(
+		             'ID' => $post_id
+		         );
+		$format = array(
+				      '%s'
+				  );
+
+        $wpdb->update($table, $data, $where, $format);
+		
+		// re-hook this function
+		add_action('publish_gp_news', 'create_popularity_timestamp');
+		add_action('publish_gp_events', 'create_popularity_timestamp');
+		add_action('publish_gp_advertorial', 'create_popularity_timestamp');
+		add_action('publish_gp_projects', 'create_popularity_timestamp');
+	}
+}
+add_action('publish_gp_news', 'create_popularity_timestamp');
+add_action('publish_gp_events', 'create_popularity_timestamp');
+add_action('publish_gp_advertorial', 'create_popularity_timestamp');
+add_action('publish_gp_projects', 'create_popularity_timestamp');
 
 function set_post_location_data_as_decimal($post_id) {
     /** 
@@ -3684,6 +3733,7 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
      *  Author: Jesse Browne
      *  		jb@greenpag.es
      */
+    
     global $current_user;
     $notification_setting = $current_user->notification_setting;
     $daily = 'daily_email';
@@ -3729,4 +3779,53 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
     
     return $correct_input;  
 }
+
+/** POPULARITY SCORE RELATED CALCULATIONS **/
+
+function user_distance_to_post($post) {
+    /**
+	 *  Calulates distance between user location 
+	 *  and post location using Pythagoras Theorem 
+     *  
+     *  Author: Katie Patrick
+     *  		katie.patrick@greenpag.es
+     */
+    
+    global $post, $gp;  
+	$post_latitude =  (float) $post->post_latitude;
+	$post_longitude = (float) $post->post_longitude;
+	$user_latitude =  (float) $gp->location['latitude'];
+    $user_longitude = (float) $gp->location['longitude'];
+    
+	$a = $post_latitude - $user_latitude;
+	$b = $post_longitude - $user_longitude;
+	$c = sqrt(pow($a,2) + pow($b,2));
+	
+	return $c;
+}
+
+function page_rank($c, $post) {
+    /**
+	 *  Adjusts popularity score depending on distance
+	 *  between user location and post location
+     *  
+     *  Author: Katie Patrick
+     *  		katie.patrick@greenpag.es
+     */
+
+    global $post; 
+	$popularity_score = (int) $post->popularity_score;
+	
+	if ($c > 2) {
+    	$location_as_unix = pow(($c*2000), 1.2);
+    	$location_as_unix = (int) $location_as_unix;
+    	$popularity_score_thisuser = $popularity_score - $location_as_unix;
+	} elseif ($c < 1) {
+		$popularity_score_thisuser = $popularity_score + pow(((1/$c)*3600), 1.2);
+		$popularity_score_thisuser = (int) $popularity_score_thisuser;	
+	}
+
+	return $popularity_score_thisuser;
+}
+
 ?>
