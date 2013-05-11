@@ -4071,8 +4071,8 @@ ul.categorieslistmain {
 /* Containers for webding icon display */
 
 #content .icon-container {
-    width: 70%;
-    margin: 5% 15% 20% 15%;
+    width: 60%;
+    margin: 5% 20% 20% 20%;
 }
 
 #content .icon-container-row {
@@ -4124,8 +4124,8 @@ ul.categorieslistmain {
 }
 
 #content .icon-container-row #post-product-button-bar {
-    width: 20%;
-    margin: 5% 40% 20% 40%;
+    width: 30%;
+    margin: 5% 35% 20% 35%;
 }
 
 /**GOOGLE MAPS STYLING**/
