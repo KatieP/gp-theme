@@ -80,7 +80,7 @@ ul, ol {margin:0;padding:0;}
 }
 
 .pos, .widecolumn {
-    width: 87.2em;
+    max-width: 87.2em;
     margin: 0 auto;
     position: relative;
     clear: both;
