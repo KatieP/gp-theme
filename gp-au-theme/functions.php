@@ -3372,33 +3372,23 @@ function theme_profile_analytics($profile_pid) {
 
 /* BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES */
 
-function theme_homecreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_homecreate_post(); ?></span><div class="clear"></div></div><?php
-}
-
-function theme_insert_homecreate_post(){
-	echo '<a href="'. get_site_url() .'/welcome" class="new-post-action">Create a post</a>';
+function theme_homecreate_post(){ ?>
+    <div class="new-action">
+        <span class="right">
+	        <a href="<?php echo get_site_url(); ?>/welcome" class="new-post-action">Create a post</a>
+	    </span>
+	 </div>
+	<div class="clear"></div> <?php
 }
 
 function theme_profilecreate_post(){
-	#echo "<div id=\"post-filter\"><span class=\"right\">" . theme_insert_profilecreate_post() . "</span><div class=\"clear\"></div></div>";
-	theme_insert_profilecreate_post();
-}
-
-function theme_insert_profilecreate_post(){
-	// if user is logged in link to their own profile back end page, otherwise links to become a member page
-	if ( is_user_logged_in() ) {
-		#echo '<a href="/wp-admin/profile.php"><input type="button" value="Edit My Profile" /></a>';
-	} else {
-		#echo '<a href="/get-involved/become-a-member/"><input type="button" value="Sign up & create your own profile now!" /></a>';
-		echo "
-			<div class=\"profile-join-dialogue\">
-				<a href=\"". get_site_url() ."/wp-login.php?action=register\" class=\"simplemodal-register profile-action-join\">Sign up & create your profile now!</a>
-				<br />
-				<a href=\"". get_site_url() ."/get-involved/become-a-member/\" class=\"profile-action-why\">Why join? Find out more about us.</a>
-			</div>
-		";
-	}	
+	if ( !is_user_logged_in() ) { ?>
+		<div class="profile-join-dialogue">
+			<a href="<?php echo get_site_url(); ?>/welcome/" class="simplemodal-register profile-action-join">Join & create your profile now!</a>
+			<br />
+			<a href="<?php echo get_site_url(); ?>/get-involved/become-a-member/" class="profile-action-why">Why join? Find out more about us.</a>
+		</div> <?php 
+	}
 }	
 
 function theme_singlecreate_post() {
@@ -3424,94 +3414,85 @@ function theme_singlecreate_post() {
 	}
 }
 
-function theme_newscreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_newscreate_post(); ?></span><div class="clear"></div></div><?php
+function theme_newscreate_post() { 
+    
+    global $current_user;           
+    if ( !is_user_logged_in() ) {
+        $link = '/get-involved/become-a-content-partner/';
+    } else if ( is_user_logged_in() && get_user_role( array('subscriber') ) ) {
+        $link = '/get-involved/become-a-content-partner/';
+    } else if ( is_user_logged_in() && get_user_role( array('contributor') ) ) {
+        $link = '/forms/create-news-post/';                         
+    } else if ( is_user_logged_in() && get_user_role( array('administrator') ) ) {
+        $link = '/forms/create-news-post/';
+    } ?>	
+	<div class="new-action">
+	    <span class="right">           
+	        <a href="<?php echo get_site_url() . $link; ?>" class="new-post-action">Post a news story</a>
+	    </span>
+	</div>    
+	<div class="clear"></div> <?php
 }
 
-function theme_insert_newscreate_post(){
-	global $current_user;
-	
-	// if user is loggin in as a contributor links to create new news page, otherwise links to Content Partner info page
-	if( is_user_logged_in() ) {
-	    if ( is_user_logged_in() && get_user_role( array('contributor'), $current_user->ID ) ) {
-		    echo '<a href="'. get_site_url() .'/forms/create-news-post/" class="new-post-action">Post a news story</a>';
-	    } else {
-	        echo '<a href="'. get_site_url() .'/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';;
-	    }
-	} else {
-		echo '<a href="'. get_site_url() .'/get-involved/become-a-content-partner/" class="new-post-action">Post a news story</a>';
-	}
+function theme_projectcreate_post() {	
+
+    $post_my_project_form = '/forms/create-project-post/'; ?>
+    
+    <div class="new-action">
+    	<span class="right">
+    	    <a href="<?php echo get_site_url() . $post_my_project_form ?>" class="new-post-action">Post a project</a>';
+    	</span>
+    </div>
+    <div class="clear"></div><?php
 }
 
-function theme_projectcreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_projectcreate_post(); ?></span><div class="clear"></div></div><?php
-}
-
-function theme_insert_projectcreate_post(){
-    /**
-     * Display public facing form that will create user account on submission
-     * unless user is logged in, then display member form.
-     */
-    $post_my_project_form = ( is_user_logged_in() ) ? '/forms/create-project-post/' : '/forms/create-my-project-post-public/';
-    echo '<a href="'. get_site_url() . $post_my_project_form .'" class="new-post-action">Post a project</a>';
-}
-
-function theme_advertorialcreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_advertorialcreate_post(); ?></span><div class="clear"></div></div><?php 
-}
-
-function theme_insert_advertorialcreate_post(){
+function theme_advertorialcreate_post() {
     /**
      * Link to different forms for creating product posts depending on user status:
-     * - Not logged in : form that creates member account and continues to payment page
      * - Logged in member & non-regular advertiser : continues to payment page
      * - Logged in member & regular advertiser : confirmation message no payment required
      **/
     
     global $current_user;
-    
-    # Check user status and display correct form
-    if ( !is_user_logged_in() ) {
-        $post_my_product_form = '/forms/create-my-product-post-public/';
-    } else {
-        $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
-    }
-	echo '<a href="'. get_site_url() . $post_my_product_form .'" class="new-post-action">Post a product ad</a>';
+    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+    ?>
+    <div class="new-action">
+    	<span class="right">
+    	    <a href="<?php echo get_site_url() . $post_my_product_form; ?>" class="new-post-action">Post a product ad</a>
+    	</span>
+    </div>	
+    <div class="clear"></div> <?php 
 }
 
 function theme_competitioncreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_competitioncreate_post(); ?></span><div class="clear"></div></div><?php
-}
-
-function theme_insert_competitioncreate_post(){
     /**
      * Link to different forms for creating competition posts depending on user status:
-     * - Not logged in : form that creates member account and continues to payment page
      * - Logged in member & non-regular advertiser : continues to payment page
      * - Logged in member & regular advertiser : confirmation message no payment required
      **/    
     
     global $current_user;
+    $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';    
+	?>
+	
+	<div class="new-action">
+		<span class="right">
+		    <a href="<?php echo get_site_url() . $post_my_competition_form; ?>" class="new-post-action">Post a competition</a>';
+		</span>
+	</div>	
+	<div class="clear"></div><?php
+}
+
+function theme_eventcreate_post() {
     
-    if ( !is_user_logged_in() ) {
-        $post_my_competition_form = '/forms/post-my-competition-public/';
-    } else {
-        $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';
-    }    
-	echo '<a href="'. get_site_url() . $post_my_competition_form .'" class="new-post-action">Post a competition</a>';
-}
-
-function theme_eventcreate_post(){
-	?><div class="new-action"><span class="right"><?php theme_insert_eventcreate_post(); ?></span><div class="clear"></div></div><?php
-}
-
-function theme_insert_eventcreate_post(){
-    /**
-     * Display public facing form that will create user account on submission
-     * unless user is logged in, then display member form.
-     */
-    $post_my_event_form = ( is_user_logged_in() ) ? '/forms/create-event-post/' : '/forms/create-my-event-post-public/';
-    echo '<a href="'. get_site_url() . $post_my_event_form .'" class="new-post-action">Post an Event</a>';
+    $post_my_event_form = '/forms/create-event-post/'; ?>
+ 
+    <div class="new-action">
+        <span class="right">
+            <a href="<?php echo get_site_url() . $post_my_event_form; ?>" class="new-post-action">Post an Event</a>
+        </span>
+    </div>    
+    <div class="clear"></div> <?php
 }
 
 function gp_select_createpost() {
