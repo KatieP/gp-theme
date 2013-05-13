@@ -1726,8 +1726,9 @@ function makeIso8601TimeStamp ($dateTime = '') {
 /** ACTIONS THAT OCCUR WHEN POSTS ARE PUBLISHED **/
 
 function email_after_post_approved($post_ID) {
-
-  $posttypeslug = getPostTypeSlug();
+    
+  $type = get_post_type($post_ID);
+  $posttypeslug = getPostTypeSlug($type);
 
   $bcc = "katiepatrickgp@gmail.com, jesse.browne@thegreenpages.com.au";
 
