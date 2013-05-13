@@ -1744,7 +1744,7 @@ function email_after_post_approved($post_ID) {
   $body .= '<table width="640">';
   $body .= '<tr style="padding: 0 20px 5px 5px;">';
   $body .= '<td style="font-size: 18px; text-transform:non; color:rgb(100,100,100);padding:0 0 0 5px;">';
-  $body .= 'Hi ' . $user->user_nicename . "!<br /><br />";
+  $body .= 'Hi ' . $user->display_name . "!<br /><br />";
   $body .= 'Your Green Pages post has been approved.  Thanks for posting!<br /><br />';
   $body .= 'You can see your new post at:<br />';
   $body .= '<a href="'. $post_url . '" >' . $post_url."</a><br /><br />";

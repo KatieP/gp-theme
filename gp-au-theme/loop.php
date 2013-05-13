@@ -1055,7 +1055,6 @@ function events_index() {
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
-	#please fix this and make it accessable to non js users
 	theme_eventcreate_post();
 
 /**	Region filter functionality to be provided in header.php by clicking on 
@@ -1109,22 +1108,29 @@ function events_index() {
 			$link = get_permalink($post->ID);
 			
 			echo '<div class="event-archive-item">';
-			#$displaydate = get_absolutedate( $post->gp_events_startdate, $post->gp_events_enddate, 'jS F Y', '', true, true );
-			#if ( $displayyear ) {
-				#echo '<div class="post-mini-calendar"><img src="' . get_bloginfo('template_url') . '/template/famfamfam_silk_icons_v013/icons/calendar.png" />' . $displaydate . '<span>' . $post->gp_events_locsuburb . ' | <a href="/events/AU/' . $post->gp_events_locstate . '">' . $post->gp_events_locstate . '</a></span></div>';
-				#echo '<img src="' . get_bloginfo('template_url') . '/template/events-calendar-icon.gif" />';
-				if (date('Y', $post->gp_events_startdate) == date('Y')) {
-					echo '<a href="' . $link . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
-				} else {
-					echo '<a href="' . $link . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
-				}
-			#}
-			#theme_indextitle();
+
+			if (date('Y', $post->gp_events_startdate) == date('Y')) {
+				echo '<a href="' . $link . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
+			} else {
+				echo '<a href="' . $link . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
+			}
+
 			echo '<h1><a href="' . $link . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
-			#echo '<a href="' . get_permalink($post->ID) . '" class="more-link">Continue reading...</a>
-			echo '<div>';
+            echo '<div>';
 			theme_indexdetails('author');
-			echo '<div class="post-loc"><a href="/events/' . strtolower($post->gp_google_geo_country) . '/' . strtolower($post->gp_google_geo_administrative_area_level_1) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a> | <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' . strtolower($post->gp_google_geo_administrative_area_level_1) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a></div><div class="clear"></div></div>';
+			echo '    <div class="post-loc">
+			              <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' 
+			                                 . strtolower($post->gp_google_geo_administrative_area_level_1) . '/' 
+			                                 . $post->gp_google_geo_locality_slug . '/">' 
+			                  . $post->gp_google_geo_locality . '
+			              </a> | 
+			              <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' 
+			                                 . strtolower($post->gp_google_geo_administrative_area_level_1) . '/">' 
+			                  . $post->gp_google_geo_administrative_area_level_1 . '
+			              </a>
+			          </div>
+			          <div class="clear"></div>
+			      </div>';
 			#the_content('Continue reading...');
 			echo '</div><div class="clear"></div>';
 		    #theme_indexsocialbar();
