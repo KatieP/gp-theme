@@ -893,13 +893,6 @@ function news_index() {
 //Function that calls upcoming 20 events on events page with pagination
 function events_index() {
 	global $wpdb, $post, $gp;
-
-	//$querystr = "SELECT " . $wpdb->prefix . "posts.ID, m6.meta_value AS gp_google_geo_locality FROM $wpdb->posts LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality' WHERE m6.meta_value IS NOT NULL AND m6.meta_value != \"\"";
-	//$fixes = $wpdb->get_results($querystr, OBJECT);
-	//foreach ($fixes as $fix) {
-        //$slug = sanitize_title($fix->gp_google_geo_locality);
-        //update_post_meta($fix->ID, 'gp_google_geo_locality_slug', $slug );
-    //}
 	
 	$querystring_country = strtoupper( get_query_var( 'country' ) );
 	$querystring_state = strtoupper( get_query_var( 'state' ) );
@@ -908,12 +901,6 @@ function events_index() {
 	
 	$geo_currentlocation = $gp->location;
 	$edition_states = $gp->states;
-	
-	//if ( empty($selected_country) && isset($geo_currentlocation['country_iso2']) ) {
-	    # Not sure if you should use permanent redirects in this way?
-	    //wp_redirect( '/events/' . $geo_currentlocation['country_iso2'] . '/', 302 ); 
-	    //exit;
-	//}
 	
 	$filterby_city = "";
 	$filterby_state = "";
@@ -1010,7 +997,6 @@ function events_index() {
         // redirect or 404
     }
 	
-	#$ppp = intval(get_query_var('posts_per_page'));
 	$ppp = 20;
 
 	$wp_query->found_posts = $totalposts[0]->count;
@@ -1131,10 +1117,9 @@ function events_index() {
 			          </div>
 			          <div class="clear"></div>
 			      </div>';
-			#the_content('Continue reading...');
+
 			echo '</div><div class="clear"></div>';
-		    #theme_indexsocialbar();
-		    
+			
 			# Add post location data to JSON string
 			$json .= get_post_location_json_data();			
 		}
