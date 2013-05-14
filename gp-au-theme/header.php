@@ -310,10 +310,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $city; ?></a>.</span>
 	            		<span id="header_location_list" class="hidden">
 	                		<select name="filterby_state" id="filterby_state">
+	                		    <option>Select Region</option>
 		                        <?php
 	                            $editions = Site::getEditions();
 	                            foreach ( $editions as $edition ) {
-                                    echo "<option value=\"/". $posttype_slug ."/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
+                                    echo '<option value="'. $site_url . '/' . $posttype_slug . '/' . strtolower( $edition['iso2'] ) . '">' . $edition['name'] . '</option>';
                                 }
                                 ?>
 	                		</select>
