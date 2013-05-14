@@ -556,8 +556,7 @@ function default_index() {
 	if ( isset( $querystring_city ) && !empty( $querystring_city ) && $totalposts['count'] <= 0 ) {
         // redirect or 404
     }
-	
-	#$ppp = intval(get_query_var('posts_per_page'));
+
 	$ppp = 20;
 
 	$wp_query->found_posts = $totalposts[0]->count;
@@ -633,24 +632,10 @@ function default_index() {
 **/	
 	if ( $pageposts ) {
 
-        # Construct location data in JSON for google map display
-        $json = '[';
-
 		foreach ( $pageposts as $post ) { 
 			setup_postdata($post);
             theme_index_feed_item();
-
-			# Add post location data to JSON string
-			$json .= get_post_location_json_data();
 	    }
-
-      	# Close JSON string
-      	
-	    $json .= ']';	    
-	    
-     	# Define map canvas id and display google map with custom markers for each post
-	    $map_canvas = 'post_google_map_canvas';
-	    #theme_display_google_map_posts($json, $map_canvas);
 	    
 	    if (  $wp_query->max_num_pages > 1 ) {
             $page_url = "/" . $posttype_slug . "/";
@@ -1076,9 +1061,7 @@ function events_index() {
 	echo "</optgroup>";
 	echo "</select></span><div class=\"clear\"></div>"; 
 **/
-	if ($pageposts) {
-	    # Construct location data in JSON for google map display
-        $json = '[';	    
+	if ($pageposts) {    
 	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
@@ -1119,17 +1102,8 @@ function events_index() {
 			      </div>';
 
 			echo '</div><div class="clear"></div>';
-			
-			# Add post location data to JSON string
-			$json .= get_post_location_json_data();			
-		}
-
-	    # Close JSON string
-	    $json .= ']'; 
-
-	    # Define map canvas id and display google map with custom markers for each post
-	    $map_canvas = 'post_google_map_canvas';
-	    #theme_display_google_map_posts($json, $map_canvas);			
+					
+		}		
 		
 		if (  $wp_query->max_num_pages > 1 ) {
             $page_url = "/events/";
