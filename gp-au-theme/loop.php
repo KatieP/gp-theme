@@ -278,8 +278,7 @@ function theme_indexpagination() {
 }
 
 function theme_like() {
-	global $post;
-	global $current_user, $current_site;
+	global $post, $current_user, $current_site;
 	
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
@@ -291,17 +290,6 @@ function theme_like() {
 	} else {
 		$likecount = 0;
 		$showlikecount = ' style="display:none;"';
-	}
-	
-	if ( comments_open($post->ID) ) {
-		echo '<div class="comment-profile">
-                  <a href="#comments">
-                      <span class="comment-mini"></span>
-                      <span class="comment-mini-number dsq-postid">
-                          <fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count>
-                      </span>
-                  </a>
-              </div>';
 	}
 	
 	if ( is_single() ) {
@@ -325,6 +313,17 @@ function theme_like() {
 			      </div>';
 		}
 	}
+
+	if ( comments_open($post->ID) ) {
+		echo '<div class="comment-profile">
+                  <a href="#comments">
+                      <span class="comment-mini"></span>
+                      <span class="comment-mini-number dsq-postid">
+                          <fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count>
+                      </span>
+                  </a>
+              </div>';
+	}	
 }
 
 /** INDEX FEED STYLE **/
