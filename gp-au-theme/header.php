@@ -61,8 +61,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
         // Add a page number if necessary:
         if ( $paged >= 2 || $page >= 2 )
                 echo ' | ' . sprintf( __( 'Page %s', 'greenpages' ), max( $paged, $page ) );
-
-        ?></title>
+        ?>
+        </title>
 		
 		<?php
 			$out_excerpt = "";
@@ -159,31 +159,33 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		<div class="pos">
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
-                    <?php 
-                    $user_lat =         $gp->location['latitude'];
-                    $user_long =        $gp->location['longitude'];
-                    $user_city =        $gp->location['city'];
-                    $user_country =     $gp->location['country_iso2'];
+                    <?php
+                    // Set location filter data and construct location filter urls for nav bar 
+                    $user_lat =                 $gp->location['latitude'];
+                    $user_long =                $gp->location['longitude'];
+                    $user_city =                $gp->location['city'];
+                    $user_country =             $gp->location['country_iso2'];
+                    $location_filter =          ( !empty($_GET['location']) ) ? $_GET['location'] : $user_city;
+                    $location_country_slug =    ( !empty($_GET['location_slug']) ) ? $_GET['location_slug'] : $gp->uri->country;
+                    $append_location =          ( !empty($_GET['location']) ) ? '?location=' . $location_filter : '';
+	                $append_location_slug =     ( !empty($_GET['location']) ) ? '&location_slug=' . $location_country_slug : '';
+                    $location_filter_uri =      $location_country_slug . $append_location . $append_location_slug;
                     ?>
 			        <nav id="header-nav">
 				        <ul>
-					        <?php # wp_list_pages('show_count=0&title_li=&hide_empty=0&use_desc_for_title=0&child_of=43&exclude=64')
-		                    $post_type = ( isset($post) ? get_post_type($post->ID) : "" );
-					        ?>
-					        <li><a href="<?php echo $site_url; ?>/news/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
-					        <li><a href="<?php echo $site_url; ?>/events/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
-					        <li><a href="<?php echo $site_url; ?>/eco-friendly-products/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products&nbsp;</a></li>
-					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $gp->uri->country; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-					        <?php
-					        # Display Directory link only if user in Australia 	
-	                        if ( $user_country == 'AU' ) {?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} 
-	                        ?>					    
+					        <?php $post_type = ( isset($post) ? get_post_type($post->ID) : "" ); ?>
+					        <li><a href="<?php echo $site_url; ?>/news/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
+					        <li><a href="<?php echo $site_url; ?>/events/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
+					        <li><a href="<?php echo $site_url; ?>/eco-friendly-products/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products</a></li>
+					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
+	                        <?php 
+	                        // Display Directory link only if user in Australia
+	                        if ( $user_country == 'AU' ) { ?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} ?>					    
 				        </ul>
 			        </nav>
 			    </div>
 			    <div class="template-right">
 				    <?php 
-	    		    #if ( !($current_user instanceof WP_User) || $current_user->ID == 0 ) { 
 		    	    if ( !is_user_logged_in() ) {
 			        ?>
 			    	<nav id="header-auth">
@@ -295,7 +297,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
             	</div>			
                 <?php
                 if (!is_page()) {
-       	            # Display location tag line and change region filter option
+       	            # Display location tag line and location filter option
                     $posttype_slug = getPostTypeSlug($post_type);
 	                ?>
             		<script type="text/javascript">
@@ -306,15 +308,20 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 		}
             		</script>
     				<div class="post-details" id="header-tagline">
-    				    <?php $city = ( !empty($user_city) ) ? $user_city : $gp->location['city']; ?>
-	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $city; ?></a>.</span>
+	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $location_filter; ?></a>.</span>
 	            		<span id="header_location_list" class="hidden">
 	                		<select name="filterby_state" id="filterby_state">
 	                		    <option>Select Region</option>
 		                        <?php
 	                            $editions = Site::getEditions();
 	                            foreach ( $editions as $edition ) {
-                                    echo '<option value="'. $site_url . '/' . $posttype_slug . '/' . strtolower( $edition['iso2'] ) . '">' . $edition['name'] . '</option>';
+	                                $select_location_slug =     strtolower( $edition['iso2'] );
+	                                $display_location =         $edition['name'];
+	                                $append_location = 		 	'location=' . $display_location;
+	                                $append_location_slug =  	'location_slug=' . $select_location_slug;
+	                                $location_filter_url =      $site_url . '/' . $posttype_slug . '/' . $select_location_slug . '/?' . 
+                                                                $append_location . '&' . $append_location_slug;
+                                    echo '<option value="'. $location_filter_url . '">' . $display_location . '</option>';
                                 }
                                 ?>
 	                		</select>
