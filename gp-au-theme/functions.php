@@ -16,6 +16,9 @@
  * @var array $sitemaptypes
  */
 
+// Hide wordpress toolbar from front end
+add_filter( 'show_admin_bar', '__return_false' );
+
 //Bug fix for Profile Editor Pro Plugin
 function addCustomFields(){
     $wppbFetchArray = get_option('wppb_custom_fields');
