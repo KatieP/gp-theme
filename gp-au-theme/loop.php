@@ -1998,7 +1998,7 @@ function theme_single_contributor_donate_join_bar() {
 		$volunteer_url = $post_author->contributors_volunteer_url;
 		
 		?>
-		<h3>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h3>
+		<h4>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h4>
 		<div id="post-donate-join-bar">
 			<?php
 			theme_contributors_donate($donate_url, $post_author_id);
