@@ -183,6 +183,45 @@ function theme_singlecontributorstagline() {
 	}
 }
 
+function theme_single_event_details() {
+    /**
+     * Display event when and where data
+     * at top of post.
+     * 
+     * Author: Jesse Browne
+     *         jb@greenpag.es
+     */
+    
+    if ( is_single() && ( get_post_type() == 'gp_events') ) { 
+		
+        global $post;
+		
+		$display_start_day =           date('l', $post->gp_events_startdate);
+		$display_start_date =          date('j', $post->gp_events_startdate);
+		$display_start_date_suffix =   date('S', $post->gp_events_startdate);
+		$display_start_month =         date('M', $post->gp_events_startdate);
+		$str_start_month =             date('m', $post->gp_events_startdate);
+		$display_start_year =          date('Y', $post->gp_events_startdate);
+
+		$start_time =                  $post->gp_events_starttime;
+		$end_time =                    $post->gp_events_endtime;
+		
+		$display_end_day =             date('j', $post->gp_events_enddate);
+		$display_end_month =           date('M', $post->gp_events_enddate);
+		$str_end_month =               date('m', $post->gp_events_enddate);
+		
+		$location =                    $post->gp_google_geo_location;
+		
+		$when =                        '<h4>When: '. $start_time .' '. $display_start_day .', '. $display_start_date.
+                                       $display_start_date_suffix .' '. $display_start_month .', '. $display_start_year .'</h4>';
+		$where =                       (!empty($location)) ? '<h4>Where: '. $location .'</h4>' : '';
+		
+		echo $when;
+		echo $where;
+		
+    }
+}
+
 function theme_singlepagination() {
 	/* NOT USED YET! */
 	/* wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); */
@@ -686,6 +725,7 @@ function default_single() {
 			} else {
 				theme_singledetails();
 			}
+			theme_single_event_details();
 			the_content();
 			theme_singlepagination();
 			theme_single_tags();
