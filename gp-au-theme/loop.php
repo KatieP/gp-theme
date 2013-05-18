@@ -223,10 +223,13 @@ function theme_single_event_details() {
     	    }		    
 		}
 		
-		$when =  'When: '. $start_time .' to '. $end_time .', '. $display_start_day .', '. $display_start_date.
-                 $display_start_date_suffix .' '. $end_date_same_month .' '. $display_start_month .
-                 $end_date_diff_month .', '. $display_start_year;                                   
-		$where = (!empty($location)) ? 'Where: '. $location : '';
+		$times =   ( !empty($start_time) ) ? $start_time.', ' : '';
+		$times =   ( !empty($start_time) && !empty($end_time) ) ? $start_time .' to '. $end_time.', ' : '';
+		
+		$when =    'When: '. $times . $display_start_day .', '. $display_start_date.
+                   $display_start_date_suffix .' '. $end_date_same_month .' '. $display_start_month .
+                   $end_date_diff_month .', '. $display_start_year;                                   
+		$where =   (!empty($location)) ? 'Where: '. $location : '';
         
 		?>
 		<div class="post-details"><?php echo $when; ?></div>
