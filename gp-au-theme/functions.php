@@ -3376,15 +3376,6 @@ function theme_profile_analytics($profile_pid) {
 
 /* BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES */
 
-function theme_homecreate_post(){ ?>
-    <div class="new-action">
-        <span class="right">
-	        <a href="<?php echo get_site_url(); ?>/welcome" class="new-post-action">Create a post</a>
-	    </span>
-	 </div>
-	<div class="clear"></div> <?php
-}
-
 function theme_profilecreate_post(){
 	if ( !is_user_logged_in() ) { ?>
 		<div class="profile-join-dialogue">
@@ -3395,108 +3386,57 @@ function theme_profilecreate_post(){
 	}
 }	
 
-function theme_singlecreate_post() {
-	switch (get_post_type()) {
+function theme_create_post() {
+    /**
+     * Route to appropriate create post button
+     * depending on post type / page being viewed
+     * 
+     * Author: Jesse Browne
+     * 	       jb@greenpag.es
+     */
+    
+    global $current_user;
+    
+    switch (get_post_type()) {
 		case 'gp_news':
-			theme_newscreate_post();
+            if ( !is_user_logged_in() ) {
+                $link = '/get-involved/become-a-content-partner/';
+            } else if ( is_user_logged_in() && get_user_role( array('subscriber') ) ) {
+                $link = '/get-involved/become-a-content-partner/';
+            } else if ( is_user_logged_in() && get_user_role( array('contributor') ) ) {
+                $link = '/forms/create-news-post/';                         
+            } else if ( is_user_logged_in() && get_user_role( array('administrator') ) ) {
+                $link = '/forms/create-news-post/';
+            }
+            $message = 'Post a news story';
 			break;
 		case 'gp_projects':
-			theme_projectcreate_post();
+			$link =    '/forms/create-project-post/';
+			$message = 'Post a project';
 			break;
 		case 'gp_advertorial':
-			theme_advertorialcreate_post();
-			break;
-		case 'gp_competitions':
-			theme_competitioncreate_post();
+			$link =    ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+		    $message = 'Post a product ad';
 			break;
 		case 'gp_events':
-			theme_eventcreate_post();
+			$link =    '/forms/create-event-post/';
+			$message = 'Post an event';
 			break;
-		case 'gp_people':
-			theme_profilecreate_post();
-			break;
+	} 
+	
+	if ( is_home() ) {
+	    $link    = '/welcome';
+	    $message = 'Create a post';
 	}
-}
-
-function theme_newscreate_post() { 
-    
-    global $current_user;           
-    if ( !is_user_logged_in() ) {
-        $link = '/get-involved/become-a-content-partner/';
-    } else if ( is_user_logged_in() && get_user_role( array('subscriber') ) ) {
-        $link = '/get-involved/become-a-content-partner/';
-    } else if ( is_user_logged_in() && get_user_role( array('contributor') ) ) {
-        $link = '/forms/create-news-post/';                         
-    } else if ( is_user_logged_in() && get_user_role( array('administrator') ) ) {
-        $link = '/forms/create-news-post/';
-    } ?>	
+	
+	?>	
+	
 	<div class="new-action">
 	    <span class="right">           
-	        <a href="<?php echo get_site_url() . $link; ?>" class="new-post-action">Post a news story</a>
+	        <a href="<?php echo get_site_url() . $link; ?>" class="new-post-action"><?php echo $message; ?></a>
 	    </span>
 	</div>    
 	<div class="clear"></div> <?php
-}
-
-function theme_projectcreate_post() {	
-
-    $post_my_project_form = '/forms/create-project-post/'; ?>
-    
-    <div class="new-action">
-    	<span class="right">
-    	    <a href="<?php echo get_site_url() . $post_my_project_form ?>" class="new-post-action">Post a project</a>
-    	</span>
-    </div>
-    <div class="clear"></div><?php
-}
-
-function theme_advertorialcreate_post() {
-    /**
-     * Link to different forms for creating product posts depending on user status:
-     * - Logged in member & non-regular advertiser : continues to payment page
-     * - Logged in member & regular advertiser : confirmation message no payment required
-     **/
-    
-    global $current_user;
-    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
-    ?>
-    <div class="new-action">
-    	<span class="right">
-    	    <a href="<?php echo get_site_url() . $post_my_product_form; ?>" class="new-post-action">Post a product ad</a>
-    	</span>
-    </div>	
-    <div class="clear"></div> <?php 
-}
-
-function theme_competitioncreate_post(){
-    /**
-     * Link to different forms for creating competition posts depending on user status:
-     * - Logged in member & non-regular advertiser : continues to payment page
-     * - Logged in member & regular advertiser : confirmation message no payment required
-     **/    
-    
-    global $current_user;
-    $post_my_competition_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-competition-post-subscriber/' : '/forms/create-competition-post/';    
-	?>
-	
-	<div class="new-action">
-		<span class="right">
-		    <a href="<?php echo get_site_url() . $post_my_competition_form; ?>" class="new-post-action">Post a competition</a>';
-		</span>
-	</div>	
-	<div class="clear"></div><?php
-}
-
-function theme_eventcreate_post() {
-    
-    $post_my_event_form = '/forms/create-event-post/'; ?>
- 
-    <div class="new-action">
-        <span class="right">
-            <a href="<?php echo get_site_url() . $post_my_event_form; ?>" class="new-post-action">Post an Event</a>
-        </span>
-    </div>    
-    <div class="clear"></div> <?php
 }
 
 function gp_select_createpost() {
@@ -3592,8 +3532,7 @@ function theme_single_tags() {
     <?php
 }
 
-function add_suggest_script()
-{
+function add_suggest_script() {
     wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
 }
 add_action( 'wp_enqueue_scripts', 'add_suggest_script' );

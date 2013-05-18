@@ -3276,6 +3276,7 @@ ul.categorieslistmain {
 
 #content .new-action .right, .right {
     float: right;
+    margin-bottom: 1em;
 }
 
 #relevant-posts #post-filter select, #content #post-filter select {

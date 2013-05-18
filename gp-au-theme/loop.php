@@ -737,7 +737,7 @@ function default_single() {
 	    global $post; 
 		the_post();
 		echo '<article>';
-			theme_singlecreate_post();
+			theme_create_post();
 			theme_update_delete_post();
 			theme_singletitle();
 			theme_singlesocialbar();
@@ -894,7 +894,7 @@ function home_index() {
 	/** NEW LIST VIEW OF 20 POSTS WITH HIGHEST POPULARITY SCORE **/
 	if ( $pageposts ) {
 	    # Display create new post button
-		theme_homecreate_post();
+		theme_create_post();
 		$sorted_posts = array();
 		
 		# Assign popularity score for all posts in last two weeks and store in array for sorting
@@ -931,7 +931,7 @@ function search_index() {
 }
 
 function news_index() {
-	theme_newscreate_post();
+	theme_create_post();
 	default_index();
 }
 
@@ -1086,7 +1086,7 @@ function events_index() {
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
-	theme_eventcreate_post();
+	theme_create_post();
 
 /**	Region filter functionality to be provided in header.php by clicking on 
  *  <location> string in 'Everything environmental happening in <location>' tagline
@@ -1197,7 +1197,7 @@ function competitions_index() {
 	global $wpdb;
 	global $post;
 	
-	theme_competitioncreate_post();
+	theme_create_post();
 		
 	$epochtime = strtotime('now');
     
@@ -1360,12 +1360,12 @@ function people_index() {
 }
 
 function advertorial_index() {
-	theme_advertorialcreate_post();
+	theme_create_post();
 	default_index();
 }
 
 function projects_index() {
-	theme_projectcreate_post();
+	theme_create_post();
 	if ( have_posts() ) {
 	    
 		# Construct location data in JSON for google map display
