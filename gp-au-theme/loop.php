@@ -656,39 +656,6 @@ function default_index() {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	$posttype_slug = getPostTypeSlug( get_query_var('post_type') );
 
-/**	Region filter functionality to be provided in header.php by clicking on 
- *  <location> string in 'Everything environmental happening in <location>' tagline
- *  - do we need to move this code block into header.php?
-   
-	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state">';
-	if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
-	    echo '<option value="/' . $posttype_slug . '/' . strtolower($querystring_country) . '/">All regions</option>';
-	    $optgroup = null;
-	    foreach ($edition_states as $row) {
-	        if ( !isset( $row['parent'] ) ) {
-	            if ( $optgroup !=  $row['subset'] ) {
-	                if ($optgroup !== null) { echo '</optgroup>'; }
-	                echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
-	                $optgroup = $row['subset'];
-	            }
-	            if ($row['code'] == $querystring_state) {$state_selected = ' selected';} else {$state_selected = '';}
-	            echo '<option value="/' . $posttype_slug . '/' . strtolower($querystring_country) . '/' . strtolower($row['code']) . '/"' . $state_selected . '>' . $row['name'] . '</option>';
-	        }
-	    }
-	    if ($optgroup !== null) { echo '</optgroup>'; }
-	}
-	echo "<option disabled=\"disabled\"></option>";
-	echo "<option value=\"/" . $posttype_slug . "/\">Worldwide</option>";
-	echo "<optgroup label=\"Countries\">";
-	
-	$editions = Site::getEditions();
-	foreach ( $editions as $edition ) {
-	    echo "<option value=\"/" . $posttype_slug . "/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
-	}
-	
-	echo "</optgroup>";
-	echo "</select></span><div class=\"clear\"></div>";
-**/	
 	if ( $pageposts ) {
 
 		foreach ( $pageposts as $post ) { 
@@ -1088,39 +1055,6 @@ function events_index() {
 	
 	theme_create_post();
 
-/**	Region filter functionality to be provided in header.php by clicking on 
- *  <location> string in 'Everything environmental happening in <location>' tagline
- *  - do we need to move this code block into header.php?
-   
-	echo '<span id="post-filter"><select name="filterby_state" id="filterby_state">';
-	if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
-	    echo '<option value="/events/' . strtolower($querystring_country) . '/">All regions</option>'; 
-            $optgroup = null;
-		    foreach ($edition_states as $row) {
-		        if ( !isset( $row['parent'] ) ) {
-		            if ( $optgroup !=  $row['subset'] ) { 
-		                if ($optgroup !== null) { echo '</optgroup>'; } 
-		                echo '<optgroup label="' . ucwords( $row['subset_plural'] ) . '">';
-		                $optgroup = $row['subset']; 
-		            }
-			        if ($row['code'] == $querystring_state) {$state_selected = ' selected';} else {$state_selected = '';}
-  			        echo '<option value="/events/' . strtolower($querystring_country) . '/' . strtolower($row['code']) . '/"' . $state_selected . '>' . $row['name'] . '</option>';
-		        }
-		    }
-		    if ($optgroup !== null) { echo '</optgroup>'; }									
-	}
-	echo "<option disabled=\"disabled\"></option>";
-	echo "<option value=\"/events/\">Worldwide</option>";
-	echo "<optgroup label=\"Countries\">";
-	
-	$editions = Site::getEditions();
-	foreach ( $editions as $edition ) {
-        echo "<option value=\"/events/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
-    }
-
-	echo "</optgroup>";
-	echo "</select></span><div class=\"clear\"></div>"; 
-**/
 	if ($pageposts) {    
 	    
 		foreach ($pageposts as $post) {
@@ -1229,9 +1163,7 @@ function competitions_index() {
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
-	if ($pageposts) {
-	    
-	    
+	if ($pageposts) {    
 	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
