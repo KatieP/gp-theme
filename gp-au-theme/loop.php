@@ -706,14 +706,14 @@ function default_index() {
             if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
             if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
             
-        ?>
+            ?>
 			<nav id="post-nav">
 				<ul>
 					<li class="post-previous"><?php echo $previous; ?></li>
 					<li class="post-next"><?php echo $next; ?></li>
 				</ul>
 			</nav>
-		<?php
+		    <?php
 		}	
 	} else {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
@@ -1231,25 +1231,14 @@ function competitions_index() {
 	
 	if ($pageposts) {
 	    
-	    # Construct location data in JSON for google map display
-        $json = '[';	    
+	    
 	    
 		foreach ($pageposts as $post) {
 			setup_postdata($post);
 			$displaydate = get_competitiondate( strtotime('now'), $post->gp_competitions_enddate );
 			theme_index_feed_item();
-			echo $displaydate.'<div class="clear"></div>';
-
-			# Add post location data to JSON string
-			$json .= get_post_location_json_data();			
-		}
-
-      	# Close JSON string
-	    $json .= ']';  
-
-	    # Define map canvas id and display google map with custom markers for each post
-	    $map_canvas = 'post_google_map_canvas';
-	    theme_display_google_map_posts($json, $map_canvas);	    
+			echo $displaydate.'<div class="clear"></div>';		
+		} 
 
 		if (  $wp_query->max_num_pages > 1 ) { # We don't use theme_pagination() here - this is a fix  ?>
 			<nav id="post-nav">
@@ -1366,26 +1355,12 @@ function advertorial_index() {
 
 function projects_index() {
 	theme_create_post();
-	if ( have_posts() ) {
-	    
-		# Construct location data in JSON for google map display
-        $json = '[';	    
+	if ( have_posts() ) {	    
 	    
 		while ( have_posts() ) { 
 			the_post(); 
-			theme_index_feed_item();
-			#theme_index_contributor_donate_join_bar();
-			
-			# Add post location data to JSON string
-			$json .= get_post_location_json_data();			
-	    }
-
-      	# Close JSON string
-	    $json .= ']';  
-
-	    # Define map canvas id and display google map with custom markers for each post
-	    $map_canvas = 'post_google_map_canvas';
-	    #theme_display_google_map_posts($json, $map_canvas);	    
+			theme_index_feed_item();		
+	    }	    
 	    
 	    theme_indexpagination();	
 	} else {

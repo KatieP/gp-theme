@@ -239,39 +239,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 									    <a href="<?php echo $site_url; ?>/forms/profile-notifications/" title="Notifications">Notifications</a>
 									    <a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
 								    </li>
-								    <!-- 
-							    	<li class="auth-dash-title">Your Toolbox</li>
-								    <li class="auth-toolbox">
-									    <a href="">
-										    <span class="icon-listcheck"></span>
-										    List your business
-										    <span class="moreinfo">More info</span>
-									    </a>
-								
-									    <?php
-	    							    # $story_contributors = array('administrator', 'contributor', 'author', 'editor');
-		    						    # if ( get_user_role($story_contributors) )  {
-			    					    ?>
-									    <a href="">
-										    <span class="icon-book"></span>
-										    Submit a story
-										    <span class="moreinfo">More info</span>
-									    </a>
-								        <?php # } else { ?>
-								    	<a href="">
-										    <span class="icon-book"></span>
-										    Become a content partner
-										    <span class="moreinfo">More info</span>
-									    </a>
-									    <?php # } ?>
-								
-									    <a href="">
-										    <span class="icon-star"></span>
-										    Put GP on my site
-										    <span class="moreinfo">More info</span>
-								    	</a>
-							    	</li>
-								    //-->
 							    </ul>
 						    </li>
 					    </ul>
