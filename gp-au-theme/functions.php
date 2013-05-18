@@ -3444,7 +3444,7 @@ function theme_projectcreate_post() {
     
     <div class="new-action">
     	<span class="right">
-    	    <a href="<?php echo get_site_url() . $post_my_project_form ?>" class="new-post-action">Post a project</a>';
+    	    <a href="<?php echo get_site_url() . $post_my_project_form ?>" class="new-post-action">Post a project</a>
     	</span>
     </div>
     <div class="clear"></div><?php
@@ -3811,6 +3811,26 @@ function page_rank($c, $post) {
 	}
 
 	return $popularity_score_thisuser;
+}
+
+function get_location_filter() {
+    global $gp;
+    $user_city =                $gp->location['city'];
+    $location_filter =          ( !empty($_GET['location']) ) ? $_GET['location'] : $user_city;
+    
+    return $location_filter;
+}
+
+function get_location_filter_uri() {
+    global $gp;
+    // Set location filter data and construct location filter urls for nav bar
+    $location_filter =          get_location_filter();   
+    $location_country_slug =    ( !empty($_GET['location_slug']) ) ? $_GET['location_slug'] : $gp->uri->country;
+    $append_location =          ( !empty($_GET['location']) ) ? '?location=' . $location_filter : '';
+    $append_location_slug =     ( !empty($_GET['location']) ) ? '&location_slug=' . $location_country_slug : '';
+    $location_filter_uri =      $location_country_slug . $append_location . $append_location_slug;
+    
+    return $location_filter_uri;
 }
 
 ?>

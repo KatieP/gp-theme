@@ -393,16 +393,19 @@ function theme_index_feed_item() {
      */
 	
     global $post, $current_user, $current_site;
-	$post_author = get_userdata($post->post_author);
-	$post_author_url = get_author_posts_url($post->post_author);	
-	$link = get_permalink($post->ID);
-	$likedclass = '';
+    
+	$post_author =            get_userdata($post->post_author);
+	$post_author_url =        get_author_posts_url($post_author);
+    $location_filter_uri =    get_location_filter_uri();
+	$link =                   get_permalink($post->ID);
+	$link_location_uri =      $link . $location_filter_uri;
+	$likedclass =             '';
 	
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {
 		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
 		$imageURL = $imageArray[0];
-		echo '<a href="' . $link . '" class="profile_minithumb">
+		echo '<a href="' . $link_location_uri . '" class="profile_minithumb">
 		          <img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"/>
 		      </a>';
     }
@@ -426,7 +429,7 @@ function theme_index_feed_item() {
 
 	?>
     <h1 class="profile-title">
-        <a href="<?php echo $link; ?>"  title="<?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
+        <a href="<?php echo $link_location_uri; ?>"  title="<?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
     </h1>
     <?php
 	
@@ -474,7 +477,7 @@ function theme_index_feed_item() {
 
 	if ( comments_open($post->ID) ) {
 		echo '<div class="comment-profile">
-		          <a href="' . get_permalink($post->ID) . '#comments">
+		          <a href="' . $link . '#comments">
 		              <span class="comment-mini"></span>
 		              <span class="comment-mini-number dsq-postid">
 		                  <fb:comments-count href="' . $link . '"></fb:comments-count>
@@ -949,7 +952,7 @@ function events_index() {
 	$filterby_country = "";
 	
 	$epochtime = strtotime('now');
-
+	
     if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
         if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
             require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
@@ -1127,21 +1130,23 @@ function events_index() {
 			    continue;
 			}
 
-			$displayday = date('j', $post->gp_events_startdate);
-			$displaymonth = date('M', $post->gp_events_startdate);
-			$displayyear = date('y', $post->gp_events_startdate);
+			$displayday =             date('j', $post->gp_events_startdate);
+			$displaymonth =           date('M', $post->gp_events_startdate);
+			$displayyear =            date('y', $post->gp_events_startdate);
 			
-			$link = get_permalink($post->ID);
+			$location_filter_uri =    get_location_filter_uri();
+	        $link =                   get_permalink($post->ID);
+	        $link_location_uri =      $link . $location_filter_uri;
 			
 			echo '<div class="event-archive-item">';
 
 			if (date('Y', $post->gp_events_startdate) == date('Y')) {
-				echo '<a href="' . $link . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
+				echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
 			} else {
-				echo '<a href="' . $link . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
+				echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
 			}
 
-			echo '<h1><a href="' . $link . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
+			echo '<h1><a href="' . $link_location_uri . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
             echo '<div>';
 			theme_indexdetails('author');
 			echo '    <div class="post-loc">
@@ -1172,14 +1177,14 @@ function events_index() {
             if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
             if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
             
-        ?>
+            ?>
 			<nav id="post-nav">
 				<ul>
 					<li class="post-previous"><?php echo $previous; ?></li>
 					<li class="post-next"><?php echo $next; ?></li>
 				</ul>
 			</nav>
-		<?php
+		    <?php
 		}
 	}
 }

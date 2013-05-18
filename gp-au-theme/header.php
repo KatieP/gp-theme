@@ -159,18 +159,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		<div class="pos">
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
-                    <?php
-                    // Set location filter data and construct location filter urls for nav bar 
-                    $user_lat =                 $gp->location['latitude'];
-                    $user_long =                $gp->location['longitude'];
-                    $user_city =                $gp->location['city'];
-                    $user_country =             $gp->location['country_iso2'];
-                    $location_filter =          ( !empty($_GET['location']) ) ? $_GET['location'] : $user_city;
-                    $location_country_slug =    ( !empty($_GET['location_slug']) ) ? $_GET['location_slug'] : $gp->uri->country;
-                    $append_location =          ( !empty($_GET['location']) ) ? '?location=' . $location_filter : '';
-	                $append_location_slug =     ( !empty($_GET['location']) ) ? '&location_slug=' . $location_country_slug : '';
-                    $location_filter_uri =      $location_country_slug . $append_location . $append_location_slug;
-                    ?>
+                    <?php $location_filter_uri = get_location_filter_uri(); ?>
 			        <nav id="header-nav">
 				        <ul>
 					        <?php $post_type = ( isset($post) ? get_post_type($post->ID) : "" ); ?>
@@ -298,7 +287,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 <?php
                 if (!is_page()) {
        	            # Display location tag line and location filter option
-                    $posttype_slug = getPostTypeSlug($post_type);
+                    $posttype_slug =      getPostTypeSlug($post_type);
+                    $location_filter =    get_location_filter(); 
 	                ?>
             		<script type="text/javascript">
                 		function show_location_field() {
