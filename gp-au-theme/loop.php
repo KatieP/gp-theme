@@ -226,10 +226,10 @@ function theme_single_event_details() {
 		$times =   ( !empty($start_time) ) ? $start_time.', ' : '';
 		$times =   ( !empty($start_time) && !empty($end_time) ) ? $start_time .' to '. $end_time.', ' : '';
 		
-		$when =    'When: '. $times . $display_start_day .', '. $display_start_date.
+		$when =    $times . $display_start_day .', '. $display_start_date.
                    $display_start_date_suffix .' '. $end_date_same_month .' '. $display_start_month .
                    $end_date_diff_month .', '. $display_start_year;                                   
-		$where =   (!empty($location)) ? 'Where: '. $location : '';
+		$where =   (!empty($location)) ? $location : '';
         
 		?>
 		<div class="post-details"><?php echo $when; ?></div>
