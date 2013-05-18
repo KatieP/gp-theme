@@ -159,7 +159,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		<div class="pos">
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
-                    <?php $location_filter_uri = get_location_filter_uri(); ?>
+                    <?php 
+                    $location_filter_uri = get_location_filter_uri();
+                    $location_filter_uri = ( !empty($location_filter_uri) ) ? $location_filter_uri : $gp->uri->country;
+                    $user_country =        $gp->location['country_iso2'];
+                    ?>
 			        <nav id="header-nav">
 				        <ul>
 					        <?php $post_type = ( isset($post) ? get_post_type($post->ID) : "" ); ?>

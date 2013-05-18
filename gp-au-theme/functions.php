@@ -3494,7 +3494,7 @@ function theme_update_delete_post() {
 			$update_delete_post_page = '/forms/update-competition';
 			break;
 		case 'gp_events';
-		    $update_delete_post_page = '/forms/edit-and-update-post-forms';
+		    $update_delete_post_page = '/forms/update-event/';
 			break;
 	}
 	
@@ -3767,7 +3767,12 @@ function get_location_filter_uri() {
     $location_country_slug =    ( !empty($_GET['location_slug']) ) ? $_GET['location_slug'] : $gp->uri->country;
     $append_location =          ( !empty($_GET['location']) ) ? '?location=' . $location_filter : '';
     $append_location_slug =     ( !empty($_GET['location']) ) ? '&location_slug=' . $location_country_slug : '';
-    $location_filter_uri =      $location_country_slug . $append_location . $append_location_slug;
+    
+    if ( !empty($append_location) && !empty($append_location_slug) ) {
+        $location_filter_uri =  $append_location . $append_location_slug;
+    } else {
+        $location_filter_uri = '';
+    }
     
     return $location_filter_uri;
 }
