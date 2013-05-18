@@ -207,18 +207,33 @@ function theme_single_event_details() {
 		$end_time =                    $post->gp_events_endtime;
 		
 		$display_end_day =             date('j', $post->gp_events_enddate);
+		$display_end_date_suffix =     date('S', $post->gp_events_enddate);
 		$display_end_month =           date('M', $post->gp_events_enddate);
 		$str_end_month =               date('m', $post->gp_events_enddate);
 		
 		$location =                    $post->gp_google_geo_location;
+
+    	if ($post->gp_events_enddate != $post->gp_events_startdate) {
+    	    if ( ($display_end_month == $display_start_month) && ($display_end_day != $display_start_day) ) {
+    	        $end_date_diff_month = '';
+    	        $end_date_same_month = '- '. $display_end_day . $display_end_date_suffix;    
+    	    } else {
+    	        $end_date_diff_month = ' - '. $display_end_day . $display_end_date_suffix .' '. $display_end_month;
+    	        $end_date_same_month = '';
+    	    }		    
+		}
 		
-		$when =                        '<h4>When: '. $start_time .' '. $display_start_day .', '. $display_start_date.
-                                       $display_start_date_suffix .' '. $display_start_month .', '. $display_start_year .'</h4>';
-		$where =                       (!empty($location)) ? '<h4>Where: '. $location .'</h4>' : '';
-		
-		echo $when;
-		echo $where;
-		
+		$when =  'When: '. $start_time .' to '. $end_time .', '. $display_start_day .', '. $display_start_date.
+                 $display_start_date_suffix .' '. $end_date_same_month .' '. $display_start_month .
+                 $end_date_diff_month .', '. $display_start_year;                                   
+		$where = (!empty($location)) ? 'Where: '. $location : '';
+        
+		?>
+		<div class="post-details"><?php echo $when; ?></div>
+		<div class="clear"></div>
+		<div class="post-details"><?php echo $where; ?></div>
+		<div class="clear"></div>
+		<?php 
     }
 }
 
