@@ -160,9 +160,9 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
                     <?php 
-                    $location_filter_uri_prefix = get_location_filter_uri_prefix();
+                    $location_filter_uri_prefix = ( !empty($_GET['location_slug_filter']) ) ? get_location_filter_uri_prefix() : $gp->uri->country;
                     $location_filter_uri_suffix = get_location_filter_uri();
-                    $location_filter_uri =        $location_filter_uri_prefix . '/' . $location_filter_uri_suffix;
+                    $location_filter_uri =        $location_filter_uri_prefix . $location_filter_uri_suffix;
                     $user_country =               $gp->location['country_iso2'];
                     ?>
 			        <nav id="header-nav">

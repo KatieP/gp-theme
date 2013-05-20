@@ -589,7 +589,11 @@ function default_index() {
 
         $filterby_country = $wpdb->prepare( " AND m1.meta_value=%s ", $querystring_country );
     }
-
+/*
+    var_dump($filterby_state);
+    var_dump($filterby_city);
+    var_dump($filterby_country);
+*/    
     $querytotal = $wpdb->prepare(
         "SELECT COUNT(*) AS count 
         FROM $wpdb->posts 
@@ -622,7 +626,7 @@ function default_index() {
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
 	$on_page = intval($querystring_page);	
 	
-	if($on_page == 0){ $on_page = 1; }		
+	if ($on_page == 0) { $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
 
     /** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
@@ -657,7 +661,7 @@ function default_index() {
 	$posttype_slug = getPostTypeSlug( get_query_var('post_type') );
 
 	if ( $pageposts ) {
-
+	    
 		foreach ( $pageposts as $post ) { 
 			setup_postdata($post);
             theme_index_feed_item();
@@ -755,6 +759,7 @@ function home_index() {
 	$filterby_country = "";
 	
     if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
+
         if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
             require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
             $ns_loc_alt = $querystring_country . '\\Edition';
