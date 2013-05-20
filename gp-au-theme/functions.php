@@ -1975,16 +1975,25 @@ function get_post_location_json_data($current_post = false) {
 
 /** GOOGLE MAP SHOWS SURROUNDING POSTS ON MAP **/
 
-function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom) {
+function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $center_map_lat, $center_map_long, $zoom) {
     
     /**
      * Accepts json structured string holding post title link, lat and long data on each relevant post;
      * name of map container element; lat and long of map center; and map zoom 
      * 
-     * Construcs google map and places custom marker on each post location,
+     * Constructs google map and places custom marker on each post location,
      * Each marker shows a lightbox with a link to post on click
      * 
+     * Also calls google maps api places library, this enables text input autocomplete
+     * for the location filter in the header tagline.
+     * 
+     * Additional work to set location filtering data i.e. lat/long, country,
+     * city name, state etc also done here
+     * 
      * Called by get_google_map() 
+     * 
+     * @todo Map display and location filtering / autocomplete should 
+     *       probably be decoupled in the future
      * 
      * Authors: Katie Patrick & Jesse Browne
      * 			katie.patrick@greenpag.es
@@ -1993,10 +2002,10 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
 
     ?>
     <script type="text/javascript">
-        //Event Objects to make surrounding markers
+        //Event Objects to make surrounding markers 
         var json = <?php echo $json; ?>;
       
-        //Function that calls map, centres map around post location, styles map
+        //Function that calls map, centres map around post location, styles map 
         function initialize() {
             var myLatlng = new google.maps.LatLng(
                                <?php echo $center_map_lat .','. $center_map_long; ?>
@@ -2011,19 +2020,93 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
         
-            //Adds map to map_canvas div in DOM so it is visible
+            //Adds map to map_canvas div in DOM so it is visible 
             var map = new google.maps.Map(document.getElementById('<?php echo $map_canvas; ?>'),
                       mapOptions);
             
-            // Creating a global infoWindow object that will be reused by all markers
+            // Creating a global infoWindow object that will be reused by all markers 
 		    var infoWindow = new google.maps.InfoWindow();
-	        		
-    		//Loop through the json surrounding event objects
+
+			// Do additional work to enable location filter autocomplete field 
+			            
+            var dummy_map =    new google.maps.Map(document.getElementById('dummy_map_canvas'), mapOptions);
+            var dummy_marker = new google.maps.Marker({map: dummy_map});
+            
+	        var options = {
+	                types: ['(cities)']
+	            };
+	            
+	        var input = document.getElementById('location_filter');
+	        var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+	        autocomplete.bindTo('bounds', dummy_map);
+	        
+	        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+
+	        	var place = autocomplete.getPlace();
+
+	            if (place.geometry.viewport) {
+	                dummy_map.fitBounds(place.geometry.viewport);
+	            } else {
+	                dummy_map.setCenter(place.geometry.location);
+	            }
+	        		      
+            	var latitude_filter =           place.geometry.location.lat();
+            	var longitude_filter =          place.geometry.location.lng();
+            	var location_slug_filter =      '';
+            	var admin_area_level_1_filter = '';
+                var admin_area_level_2_filter = '';
+                var admin_area_level_3_filter = '';
+                var locality_filter =           '';
+            	
+                for (var i = 0; i < place.address_components.length; i++) {
+                    var addr = place.address_components[i];
+                    if (addr.types[0] == 'country')                     {location_slug_filter = addr.short_name;}
+                    if (addr.types[0] == 'administrative_area_level_1') {admin_area_level_1_filter = addr.short_name;}
+                    if (addr.types[0] == 'administrative_area_level_2') {admin_area_level_2_filter = addr.short_name;}
+                    if (addr.types[0] == 'administrative_area_level_3') {admin_area_level_3_filter = addr.short_name;}
+                    if (addr.types[0] == 'locality')                    {locality_filter = addr.short_name;}
+                }
+
+                var url_prefix =                                              document.getElementById('location_filter_url_prefix').value;
+                var location =                                                document.getElementById('location_filter').value;
+				var slug =                                                    location_slug_filter.toLowerCase();
+                var admin_1 =                                                 admin_area_level_1_filter.toLowerCase();
+                var admin_2 =                                                 admin_area_level_2_filter.toLowerCase();
+                var admin_3 =                                                 admin_area_level_3_filter.toLowerCase();
+                var locality =                                                locality_filter.toLowerCase();
+                var location_filter_url =                                     url_prefix + '/' + slug + '/?' + 'location_filter=' +
+                                                                              location +  '&' + 'location_slug_filter=' + slug;
+                
+                document.getElementById('latitude_filter').value =            latitude_filter;
+                document.getElementById('longitude_filter').value =           longitude_filter;
+                document.getElementById('location_slug_filter').value =       slug;
+                document.getElementById('admin_area_level_1_filter').value =  admin_1;
+                document.getElementById('admin_area_level_2_filter').value =  admin_2;
+                document.getElementById('admin_area_level_3_filter').value =  admin_3;
+                document.getElementById('locality_filter').value =            locality;
+                document.getElementById('location_filter_go').href =          location_filter_url;
+
+	        });
+
+	        google.maps.event.addDomListener(input, 'keydown', function(e) {
+	            if (e.keyCode == 13) {
+	                if (e.preventDefault) {
+	                    e.preventDefault();
+	                } else {
+	                    // Since the google event handler framework does not handle early IE versions, we have to do it by our self. :-( 
+	                    e.cancelBubble = true;
+	                    e.returnValue = false;
+	                }
+	            }
+	        });
+	        
+    		//Loop through the json surrounding event objects 
 	    	for (var i = 0, length = json.length; i < length; i++) {
 		        var data = json[i],
 		                   postlatlong = new google.maps.LatLng(data.Post_lat, data.Post_long);
 		    		    
-                //Adds surrounding markers from the json object and loop for surrounding events
+                //Adds surrounding markers from the json object and loop for surrounding events 
                 var custom_marker = new google.maps.Marker({
             	    position: postlatlong,
             	    map: map,
@@ -2032,9 +2115,9 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
                 });		    
 		
 		 	    // Creating a closure to retain the correct data, notice how I pass the current 
-            	// data in the loop into the closure (marker, data)
+            	// data in the loop into the closure (marker, data) 
 	    		(function(custom_marker, data) {
-		        	// Attaching a click event to the current marker
+		        	// Attaching a click event to the current marker 
 		        	google.maps.event.addListener(custom_marker, "click", function(e) {
 			        	infoWindow.setContent(data.Title_link);
 			    	    infoWindow.open(map, custom_marker);
@@ -2042,11 +2125,11 @@ function display_google_map_posts($json, $map_canvas, $center_map_lat, $center_m
 	    		})(custom_marker, data);       	
 		    } 
         }
-     
+
         function loadScript() {
-  	        var script = document.createElement("script");
+  	        var script =  document.createElement("script");
       	    script.type = "text/javascript";
-  		    script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
+  		    script.src =  "http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
       		document.body.appendChild(script);
 	    }
 	    window.onload = loadScript;
@@ -2071,7 +2154,7 @@ function get_google_map() {
      * Sets lat and long to centre map on from post if single post
      * or on users location if home page or feed. 
      * Grabs data from posts surrounding map center and formats in json.
-     * Then calls display_google_map_posts($json,[etc])
+     * Then calls display_google_map_posts_and_places_autocomplete($json,[etc])
      * 
      * Called from sidebar-right.php
      * 
@@ -2138,7 +2221,7 @@ function get_google_map() {
                 
                 # Define map canvas div id and show map
                 $map_canvas = 'post_google_map_canvas';
-    	        display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);
+    	        display_google_map_posts_and_places_autocomplete($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);
     	        	
             }
 	    }
@@ -2204,8 +2287,7 @@ function get_google_world_map() {
      * Authors: Katie Patrick & Jesse Browne
      * 			katie.patrick@greenpag.es
      * 			jb@greenpag.es
-     */
-    
+     */    
        
     global $post;
    
@@ -2239,7 +2321,7 @@ function get_google_world_map() {
         $json .= ']';                
         # Define map canvas div id
         $map_canvas = 'world_google_map_canvas';
-    	display_google_map_posts($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);        	
+    	display_google_map_posts_and_places_autocomplete($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);        	
     }
 }
 
@@ -3753,20 +3835,35 @@ function page_rank($c, $post) {
 }
 
 function get_location_filter() {
+    /**
+     * Returns pretty location string to display in 
+     * header tag line
+     * 
+     * Author: Jesse Browne
+     *         jb@greenpag.es
+     */
+    
     global $gp;
-    $user_city =                $gp->location['city'];
-    $location_filter =          ( !empty($_GET['location']) ) ? $_GET['location'] : $user_city;
+    $user_city =       $gp->location['city'];
+    $location_filter = ( !empty($_GET['location_filter']) ) ? $_GET['location_filter'] : $user_city;
     
     return $location_filter;
 }
 
 function get_location_filter_uri() {
-    global $gp;
-    // Set location filter data and construct location filter urls for nav bar
-    $location_filter =          get_location_filter();   
-    $location_country_slug =    ( !empty($_GET['location_slug']) ) ? $_GET['location_slug'] : $gp->uri->country;
-    $append_location =          ( !empty($_GET['location']) ) ? '?location=' . $location_filter : '';
-    $append_location_slug =     ( !empty($_GET['location']) ) ? '&location_slug=' . $location_country_slug : '';
+    /**
+     * Set location filter data and construct location filter uri's 
+     * for nav bar and links to posts from index pages / feeds
+     * 
+     * Author: Jesse Browne
+     *         jb@greenpag.es
+     */
+    
+    global $gp;    
+    $location_filter =          get_location_filter();
+    $location_country_slug =    ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : '';
+    $append_location =          ( !empty($_GET['location_filter']) ) ? '?location_filter=' . $location_filter : '';
+    $append_location_slug =     ( !empty($_GET['location_filter']) ) ? '&location_slug_filter=' . $location_country_slug : '';
     
     if ( !empty($append_location) && !empty($append_location_slug) ) {
         $location_filter_uri =  $append_location . $append_location_slug;

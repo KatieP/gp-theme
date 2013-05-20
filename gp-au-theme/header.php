@@ -112,7 +112,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 			if ( is_home() || is_front_page() ) {
                 echo '<meta property="og:type" content="blog"/>';
         	}
-		?>
+		    ?>
 
 		<link rel="shortcut icon" href="<?php echo $template_url; ?>/template/gpicon.ico" />
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
@@ -160,9 +160,10 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>/">greenpag.es</a>
                     <?php 
-                    $location_filter_uri = get_location_filter_uri();
-                    $location_filter_uri = ( !empty($location_filter_uri) ) ? $location_filter_uri : $gp->uri->country;
-                    $user_country =        $gp->location['country_iso2'];
+                    $location_filter_uri_prefix = ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $gp->uri->country;
+                    $location_filter_uri_suffix = get_location_filter_uri();
+                    $location_filter_uri =        $location_filter_uri_prefix . '/' . $location_filter_uri_suffix;
+                    $user_country =               $gp->location['country_iso2'];
                     ?>
 			        <nav id="header-nav">
 				        <ul>
@@ -258,35 +259,40 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 <?php
                 if (!is_page()) {
        	            # Display location tag line and location filter option
-                    $posttype_slug =      getPostTypeSlug($post_type);
-                    $location_filter =    get_location_filter(); 
+                    $posttype_slug =              getPostTypeSlug($post_type);
+                    $location_filter =            get_location_filter();
+                    $location_filter_url_prefix = $site_url . '/' . $posttype_slug;
 	                ?>
             		<script type="text/javascript">
                 		function show_location_field() {
-                    		<!-- document.getElementById("header_location_field").className = ""; Uncomment when google api error resolved -->
+                    		document.getElementById("header_location_field").className = "";
                     		document.getElementById("header_user_location").className = "hidden";
-                    		document.getElementById("header_location_list").className = "";
+                		}
+
+                		function hide_location_field() {
+                    		document.getElementById("header_location_field").className = "hidden";
+                    		document.getElementById("header_user_location").className = "";
                 		}
             		</script>
     				<div class="post-details" id="header-tagline">
 	            		Everything environmental happening around <span id="header_user_location" class=""><a href="#" onclick="show_location_field();"><?php echo $location_filter; ?></a>.</span>
-	            		<span id="header_location_list" class="hidden">
-	                		<select name="filterby_state" id="filterby_state">
-	                		    <option>Select Region</option>
-		                        <?php
-	                            $editions = Site::getEditions();
-	                            foreach ( $editions as $edition ) {
-	                                $select_location_slug =     strtolower( $edition['iso2'] );
-	                                $display_location =         $edition['name'];
-	                                $append_location = 		 	'location=' . $display_location;
-	                                $append_location_slug =  	'location_slug=' . $select_location_slug;
-	                                $location_filter_url =      $site_url . '/' . $posttype_slug . '/' . $select_location_slug . '/?' . 
-                                                                $append_location . '&' . $append_location_slug;
-                                    echo '<option value="'. $location_filter_url . '">' . $display_location . '</option>';
-                                }
-                                ?>
-	                		</select>
-	            		</span> 
+	            		<span id="header_location_field" class="hidden">
+	            		   <!-- Location filter data is set here, processed by display_google_map_posts_and_places_autocomplete() -->
+	            		   <form action="#" method="get">
+	            		    	<input name="location_filter" id="location_filter" type="text" />
+	            		    	<input name="latitude_filter" id="latitude_filter" type="hidden" value="" readonly="readonly" />
+								<input name="longitude_filter" id="longitude_filter" type="hidden" value="" readonly="readonly" />
+								<input name="location_slug_filter" id="location_slug_filter" type="hidden" value="" readonly="readonly" />
+								<input name="admin_area_level_1_filter" id="admin_area_level_1_filter" type="hidden" value="" readonly="readonly" />
+								<input name="admin_area_level_2_filter" id="admin_area_level_2_filter" type="hidden" value="" readonly="readonly" />
+								<input name="admin_area_level_3_filter" id="admin_area_level_3_filter" type="hidden" value="" readonly="readonly" />
+								<input name="locality_filter" id="locality_filter" type="hidden" value="" readonly="readonly" />
+								<input name="location_filter_url_prefix" id="location_filter_url_prefix" type="hidden" value="<?php echo $location_filter_url_prefix; ?>" readonly="readonly" />
+	            		    	<a id="location_filter_go" href="#"><input type="button" value="Go" /></a>
+	            		    	<input type="button" value="Cancel" onclick="hide_location_field();" />
+	            		   </form>
+	            		</span>
+	            		<div id="dummy_map_canvas"></div>
             		</div>
             	<?php
             	}
