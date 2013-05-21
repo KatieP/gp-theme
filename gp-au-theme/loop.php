@@ -514,85 +514,32 @@ function theme_index_feed_item() {
 function default_index() {
     global $wpdb, $post, $gp;
 
-    $querystring_country = strtoupper( get_query_var( 'country' ) );
-    $querystring_state = strtoupper( get_query_var( 'state' ) );
-    $querystring_city = get_query_var( 'city' );
-    $querystring_page = get_query_var( 'page' );
-
+    $user_lat =               $gp->location['latitude'];
+    $user_long =              $gp->location['longitude'];
+    $user_city =              $gp->location['city'];
+    $user_country =           $gp->location['country_iso2'];
+    
+	$location_city =          ( !empty($_GET['locality_filter']) ) ? $_GET['locality_filter'] : $user_city;
+	$location_latitude =      ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : $user_lat;
+    $location_longitude =     ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] : $user_long;
+    $location_country_slug =  ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $user_country;
+    $location_state_slug =    ( !empty($_GET['location_state_filter']) ) ? $_GET['location_state_filter'] : '';
+	
+	$querystring_country =    strtoupper( $location_country_slug );
+	$querystring_state =      ( !empty($location_state_slug) ) ? strtoupper( $location_state_slug ) : '';
+	$querystring_city =       $location_city ;
+	
     $geo_currentlocation = $gp->location;
-    $edition_states = $gp->states;
 
     $epochtime = strtotime('now');
 
-    $filterby_city = "";
-    $filterby_state = "";
-    $filterby_country = "";
+    $filterby_city =     "";
+    $filterby_state =    "";
+    $filterby_country =  "";
     
-    if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
-        if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
-            require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
-            $ns_loc_alt = $querystring_country . '\\Edition';
-            $edition_states = $ns_loc_alt::getStates();
-        }
-
-        $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
-
-        if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
-            // if the country we are search on isn't the country selected automatically
-            // for the user then we are going to do a little bit of extra work make sure
-            // the country exists first and then grab the results.
-            if ( isset($querystring_state) && !empty($querystring_state) ) {
-                $query = $wpdb->prepare(
-                    "SELECT COUNT(*) as count
-    	            FROM " . $wpdb->prefix . "debian_iso_3166_2
-    	            WHERE id = concat(%s, '-', %s);",
-                    $querystring_country,
-                    $querystring_state
-                );
-                
-                $result = $wpdb->get_row( $query, ARRAY_A );
-             
-                if ($result['count'] >= 1) {
-                    $filterby_state = $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state );
-                } else {
-                    // redirect or 404
-                }
-            } else {
-                $query = $wpdb->prepare(
-                    "SELECT COUNT(*) as count
-                    FROM " . $wpdb->prefix . "geonames_countryinfo
-	                WHERE iso_alpha2 = %s;",
-                    $querystring_country
-                );
-
-                $result = $wpdb->get_row( $query, ARRAY_A );
-             
-                if ($result['count'] <= 0) {
-                    // redirect or 404
-                }
-            }
-        } else {
-            // if the country has been predetermined and a state is specified then make
-            // sure the state is valid
-            foreach ( $edition_states as $value ) {
-                $filterby_state = "";
-                if ( $value['code'] == $querystring_state) {
-                    $filterby_state = $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state );
-                    break;
-                }
-            }
-        }
-
-        if ( isset($querystring_city) && !empty($querystring_city) ) {
-            $filterby_city = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_city );
-        }
-
-        $filterby_country = $wpdb->prepare( " AND m1.meta_value=%s ", $querystring_country );
-    }
-
-    var_dump($filterby_state);
-    var_dump($filterby_city);
-    var_dump($filterby_country);
+    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m1.meta_value=%s ", $querystring_country ) : '';
+    $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_city ) : '';
     
     $querytotal = $wpdb->prepare(
         "SELECT COUNT(*) AS count 
@@ -613,12 +560,6 @@ function default_index() {
         );
               
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
-
-	// if a city is given we are NOT going to check to see if it's a valid city
-	// but if no results are found then we will redirect
-	if ( isset( $querystring_city ) && !empty( $querystring_city ) && $totalposts['count'] <= 0 ) {
-        // redirect or 404
-    }
 
 	$ppp = 20;
 
@@ -669,9 +610,9 @@ function default_index() {
 	    
 	    if (  $wp_query->max_num_pages > 1 ) {
             $page_url = "/" . $posttype_slug . "/";
-            if ( isset( $querystring_country ) && !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
-            if ( isset( $querystring_state ) && !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
-            if ( isset( $querystring_city ) && !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
+            if ( !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
+            if ( !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
+            if ( !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
             
             if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
             if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
@@ -937,7 +878,7 @@ function events_index() {
 	
 	$querystring_country =    strtoupper( $location_country_slug );
 	$querystring_state =      ( !empty($location_state_slug) ) ? strtoupper( $location_state_slug ) : '';
-	$querystring_city =       $location_city ;
+	$querystring_city =       $location_city;
 	
 	$geo_currentlocation =    $gp->location;
 
@@ -1250,18 +1191,7 @@ function advertorial_index() {
 
 function projects_index() {
 	theme_create_post();
-	if ( have_posts() ) {	    
-	    
-		while ( have_posts() ) { 
-			the_post(); 
-			theme_index_feed_item();		
-	    }	    
-	    
-	    theme_indexpagination();	
-	} else {
-		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
-			<p>No there\'s nothing wrong. It just means there\'s no posts for this section yet!</p>';
-	}
+	default_index();
 }
 
 
