@@ -3793,7 +3793,7 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
 
 function distance_to_post($post, $location_latitude, $location_longitude) {
     /**
-	 *  Calulates distance between user location 
+	 *  Calulates distance between user location, or location filter 
 	 *  and post location using Pythagoras Theorem 
      *  
      *  Author: Katie Patrick
