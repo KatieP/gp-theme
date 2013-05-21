@@ -162,7 +162,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 		<header>
     		<div class="pos">
     		    <div class="template-left">
-                    <a id="header-logo" href="<?php echo $site_url . $location_filter_uri; ?>">greenpag.es</a>
+                    <a id="header-logo" href="<?php echo $site_url; ?>">greenpag.es</a>
 			        <nav id="header-nav">
 				        <ul>
 					        <?php $post_type = ( isset($post) ? get_post_type($post->ID) : "" ); ?>

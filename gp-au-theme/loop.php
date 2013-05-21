@@ -531,11 +531,11 @@ function default_index() {
 	
     $geo_currentlocation = $gp->location;
 
-    $epochtime = strtotime('now');
+    $epochtime =         strtotime('now');
     
-    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m1.meta_value=%s ", $querystring_country ) : '';
-    $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state ) : '';
-    $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_city ) : '';
+    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " m1.meta_value=%s ", $querystring_country ) : '';
+    $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " OR m2.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_city ) : '';
     
     $querytotal = $wpdb->prepare(
         "SELECT COUNT(*) AS count 
@@ -549,9 +549,11 @@ function default_index() {
             post_status='publish'
             AND m0.meta_value >= 1
             AND post_type=%s 
-            " . $filterby_country . "
-            " . $filterby_state . "
-            " . $filterby_city . ";",
+            AND (
+                " . $filterby_country . "
+                " . $filterby_state . "
+                " . $filterby_city . "
+            );",
             get_query_var('post_type')
         );
               
@@ -585,13 +587,13 @@ function default_index() {
             post_status='publish'
             AND m0.meta_value >= 1
             AND post_type=%s 
-            " . $filterby_country . "
-            " . $filterby_state . "
-            " . $filterby_city . "
-        ORDER BY post_date DESC
-        LIMIT %d;",
-        get_query_var('post_type'),
-        $ppp
+            AND (
+                " . $filterby_country . "
+                " . $filterby_state . "
+                " . $filterby_city . "
+            )
+        ORDER BY post_date DESC",
+        get_query_var('post_type')
     );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
@@ -599,9 +601,24 @@ function default_index() {
 
 	if ( $pageposts ) {
 	    
-		foreach ( $pageposts as $post ) { 
-			setup_postdata($post);
-            theme_index_feed_item();
+	    $sorted_posts = array();
+	    
+		foreach ( $pageposts as $post ) {
+		    setup_postdata($post);
+			$c = distance_to_post($post, $location_latitude, $location_longitude);
+			$popularity_score_thisuser = page_rank($c, $post);
+			$popularity_score_thisuser = $post->popularity_score_thisuser + $popularity_score_thisuser;
+            $sorted_posts[$popularity_score_thisuser] = $post; 
+	    }
+
+        # Sort posts by popularity score and get top 20
+	    krsort($sorted_posts);
+        $display_posts = array_slice($sorted_posts, 0, $ppp, true);
+	    
+        # Display home page feed 	
+	    foreach ( $display_posts as $post ) { 
+	        setup_postdata($post);		
+		    theme_index_feed_item();
 	    }
 	    
 	    if (  $wp_query->max_num_pages > 1 ) {

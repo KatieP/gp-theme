@@ -3786,7 +3786,7 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
                           '. $monthly_decription .'  
                       </div>';
     
-    return $correct_input;  
+    return $correct_input;
 }
 
 /** POPULARITY SCORE RELATED CALCULATIONS **/
@@ -3806,9 +3806,22 @@ function distance_to_post($post, $location_latitude, $location_longitude) {
 	$user_latitude =  (float) $location_latitude;
     $user_longitude = (float) $location_longitude;
     
-	$a = $post_latitude - $user_latitude;
-	$b = $post_longitude - $user_longitude;
-	$c = sqrt(pow($a,2) + pow($b,2));
+    #var_dump($post_latitude);  echo '<br />';
+    #var_dump($post_longitude); echo '<br />';
+    #var_dump($user_latitude);  echo '<br />';
+    #var_dump($user_longitude); echo '<br />';
+    
+    if ( ($post_latitude == $user_latitude) && ($post_longitude == $post_longitude) ) {
+        $c = (float) 0.1;
+        #echo 'if $c :'; var_dump($c);  echo '<br />';
+    } else {
+	    $a = $post_latitude - $user_latitude;
+	    $b = $post_longitude - $user_longitude;		    
+	    $c = sqrt(pow($a,2) + pow($b,2));
+	    #echo 'else $a :'; var_dump($a);  echo '<br />';
+	    #echo 'else $b :'; var_dump($b);  echo '<br />';
+	    #echo 'else $c :'; var_dump($c);  echo '<br />';
+	}
 	
 	return $c;
 }
@@ -3826,14 +3839,16 @@ function page_rank($c, $post) {
 	$popularity_score = (int) $post->popularity_score;
 	
 	if ($c > 2) {
-    	$location_as_unix = pow(($c*2000), 1.2);
+    	$location_as_unix = pow(($c*2000), 1.05);
     	$location_as_unix = (int) $location_as_unix;
     	$popularity_score_thisuser = $popularity_score - $location_as_unix;
 	} elseif ($c < 1) {
-		$popularity_score_thisuser = $popularity_score + pow(((1/$c)*3600), 1.2);
+		$popularity_score_thisuser = $popularity_score + pow(((1/$c)*3600), 1.05);
 		$popularity_score_thisuser = (int) $popularity_score_thisuser;	
-	}
+	} 
 
+	#var_dump($popularity_score_thisuser); echo '<br />';echo '____________________<br />';
+	
 	return $popularity_score_thisuser;
 }
 
