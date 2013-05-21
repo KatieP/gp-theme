@@ -532,10 +532,6 @@ function default_index() {
     $geo_currentlocation = $gp->location;
 
     $epochtime = strtotime('now');
-
-    $filterby_city =     "";
-    $filterby_state =    "";
-    $filterby_country =  "";
     
     $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m1.meta_value=%s ", $querystring_country ) : '';
     $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " AND m2.meta_value=%s ", $querystring_state ) : '';
@@ -706,9 +702,9 @@ function home_index() {
 	
 	$epochtime =              strtotime('now');
 	
-    $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
-    $filterby_state =         (!empty($querystring_state)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
-    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value=%s ", $querystring_city ) : '';
+    $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " m3.meta_value=%s ", $querystring_country ) : '';
+    $filterby_state =         (!empty($querystring_state)) ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " OR m6.meta_value=%s ", $querystring_city ) : '';
 	
 	$ppp = 20;
 	
@@ -741,9 +737,11 @@ function home_index() {
                 OR post_type='gp_projects' 
                 OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
             )
-            " . $filterby_country . "
-            " . $filterby_state . "
-            " . $filterby_city . "
+            AND (
+                " . $filterby_country . "
+                " . $filterby_state . "
+                " . $filterby_city . "
+            )
         ORDER BY post_date DESC",
         $epochtime,
         $epochtime
