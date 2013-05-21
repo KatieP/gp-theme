@@ -685,86 +685,30 @@ function attachment_single() {
 function home_index() {
 	global $wpdb, $post, $gp;
 
-	$querystring_country = strtoupper( get_query_var( 'country' ) );
-	$querystring_state = strtoupper( get_query_var( 'state' ) );
-	$querystring_city = get_query_var( 'city' );
-	$querystring_page = get_query_var( 'page' );
+    $user_lat =               $gp->location['latitude'];
+    $user_long =              $gp->location['longitude'];
+    $user_city =              $gp->location['city'];
+    $user_country =           $gp->location['country_iso2'];
+    
+	$location_city =          ( !empty($_GET['locality_filter']) ) ? $_GET['locality_filter'] : $user_city;
+	$location_latitude =      ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : $user_lat;
+    $location_longitude =     ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] : $user_long;
+    $location_country_slug =  ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $user_country;
+    $location_state_slug =    ( !empty($_GET['location_state_filter']) ) ? $_GET['location_state_filter'] : '';
 	
-	$geo_currentlocation = $gp->location;
-	$edition_states = $gp->states;
+	$querystring_country =    strtoupper( $location_country_slug );
+	$querystring_state =      ( !empty($location_state_slug) ) ? strtoupper( $location_state_slug ) : '';
+	$querystring_city =       $location_city ;
 	
-	$epochtime = strtotime('now');
+	$querystring_page =       get_query_var( 'page' );
 	
-	$filterby_city = "";
-	$filterby_state = "";
-	$filterby_country = "";
+	$geo_currentlocation =    $gp->location;
 	
-    if ( isset( $querystring_country ) && !empty( $querystring_country ) ) {
-
-        if ( !isset($geo_currentlocation['country_iso2']) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
-            require_once( GP_PLUGIN_DIR . '/editions/' . $querystring_country . '.php' );
-            $ns_loc_alt = $querystring_country . '\\Edition';
-            $edition_states = $ns_loc_alt::getStates();
-        }
-
-        $state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
-
-        if ( !isset( $geo_currentlocation['country_iso2'] ) || $geo_currentlocation['country_iso2'] != $querystring_country ) {
-            // if the country we are search on isn't the country selected automatically
-            // for the user then we are going to do a little bit of extra work make sure
-            // the country exists first and then grab the results.
-            if ( isset($querystring_state) && !empty($querystring_state) ) {
-                $query = $wpdb->prepare(
-                    "SELECT COUNT(*) as count
-    	            FROM " . $wpdb->prefix . "debian_iso_3166_2
-    	            WHERE id = concat(%s, '-', %s);",
-                    $querystring_country,
-                    $querystring_state
-                );
-        	
-                $result = $wpdb->get_row( $query, ARRAY_A );
-        	
-                if ($result['count'] >= 1) {
-                    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
-                } else {
-                    // redirect or 404
-                }
-            } else {
-                $query = $wpdb->prepare(
-                    "SELECT COUNT(*) as count
-                    FROM " . $wpdb->prefix . "geonames_countryinfo
-	                WHERE iso_alpha2 = %s;",
-                    $querystring_country
-	            );
-
-	            $result = $wpdb->get_row( $query, ARRAY_A );
-                 
-                if ($result['count'] <= 0) {
-                    // redirect or 404
-                }
-            }
-        } else {
-            // if the country has been predetermined and a state is specified then make
-            // sure the state is valid
-            foreach ( $edition_states as $value ) {
-                $filterby_state = "";
-                if ( $value['code'] == $querystring_state) {
-                    $filterby_state = $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state );
-                    break;
-                }
-            }
-        }
-
-        if ( isset($querystring_city) && !empty($querystring_city) ) {
-            $filterby_city = $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city );
-        }
-
-        $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country );
-	}
-
-    var_dump($filterby_state);
-    var_dump($filterby_city);
-    var_dump($filterby_country);	
+	$epochtime =              strtotime('now');
+	
+    $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
+    $filterby_state =         (!empty($querystring_state)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value=%s ", $querystring_city ) : '';
 	
 	$ppp = 20;
 	
@@ -793,8 +737,7 @@ function home_index() {
             AND m0.meta_value >= 1
             AND (
                 post_type='gp_news' 
-                OR post_type='gp_advertorial' 
-                OR ( post_type='gp_competitions' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+                OR post_type='gp_advertorial'
                 OR post_type='gp_projects' 
                 OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
             )
@@ -817,7 +760,7 @@ function home_index() {
 		# Assign popularity score for all posts in last two weeks and store in array for sorting
 		foreach ( $pageposts as $post ) { 
 		    setup_postdata($post);
-			$c = user_distance_to_post($post);
+			$c = distance_to_post($post, $location_latitude, $location_longitude);
 			$popularity_score_thisuser = page_rank($c, $post);
 			$post->popularity_score_thisuser = $popularity_score_thisuser;
             $sorted_posts[$popularity_score_thisuser] = $post;                       

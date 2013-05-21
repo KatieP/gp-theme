@@ -3791,7 +3791,7 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
 
 /** POPULARITY SCORE RELATED CALCULATIONS **/
 
-function user_distance_to_post($post) {
+function distance_to_post($post, $location_latitude, $location_longitude) {
     /**
 	 *  Calulates distance between user location 
 	 *  and post location using Pythagoras Theorem 
@@ -3803,8 +3803,8 @@ function user_distance_to_post($post) {
     global $post, $gp;  
 	$post_latitude =  (float) $post->post_latitude;
 	$post_longitude = (float) $post->post_longitude;
-	$user_latitude =  (float) $gp->location['latitude'];
-    $user_longitude = (float) $gp->location['longitude'];
+	$user_latitude =  (float) $location_latitude;
+    $user_longitude = (float) $location_longitude;
     
 	$a = $post_latitude - $user_latitude;
 	$b = $post_longitude - $user_longitude;

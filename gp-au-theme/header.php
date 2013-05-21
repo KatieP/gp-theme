@@ -155,13 +155,9 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 		</script>
 		<!-- End Facebook JavaScript SDK -->
 		
-		<?php 
-        #$location_filter_uri_prefix = ( !empty($_GET['location_slug_filter']) ) ? get_location_filter_uri_prefix() : $gp->uri->country;
-        #$location_filter_uri_prefix = get_location_filter_uri_prefix();
-        #$location_filter_uri_suffix = get_location_filter_uri();
-        #$location_filter_uri =        $location_filter_uri_prefix . $location_filter_uri_suffix;
-        $location_filter_uri =         get_location_filter_uri();
-        $user_country =                $gp->location['country_iso2'];
+		<?php
+        $location_filter_uri =  get_location_filter_uri();
+        $user_country =         $gp->location['country_iso2'];
         ?>
 		<header>
     		<div class="pos">
