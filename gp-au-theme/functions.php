@@ -2076,9 +2076,10 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
                 var admin_3 =              admin_area_level_3_filter.toLowerCase();
                 var raw_locality =         locality_filter.toLowerCase();
                 var locality =             raw_locality.replace(' ','-');
-                var location_filter_url =  url_prefix + '/' + slug + '/' + admin_1 + '/' + locality + '/?' + 
-                                           'location_filter=' + location + '&' + 'location_slug_filter=' + slug +
-                                           '&' + 'location_state_filter=' + admin_1 + '&' + 'locality_filter=' + locality;
+                var location_filter_url =  url_prefix + '/?' + 'location_filter=' + location + '&' + 
+                                           'latitude_filter=' + latitude_filter + '&' + 'longitude_filter=' + longitude_filter +
+                                           '&' + 'location_slug_filter=' + slug + '&' + 'location_state_filter=' + admin_1 + 
+                                           '&' + 'locality_filter=' + raw_locality;
                 
                 document.getElementById('latitude_filter').value =            latitude_filter;
                 document.getElementById('longitude_filter').value =           longitude_filter;
@@ -3887,18 +3888,23 @@ function get_location_filter_uri() {
     
     global $gp;    
     $location_filter =          get_location_filter();
+    $location_latitude =        ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : '';;
+    $location_longitude =       ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] : '';;
     $location_country_slug =    ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : '';
     $location_state_slug =      ( !empty($_GET['location_state_filter']) ) ? $_GET['location_state_filter'] : '';
     $locality_slug =            ( !empty($_GET['locality_filter']) ) ? $_GET['locality_filter'] : '';
     $append_location =          ( !empty($location_filter) ) ? '?location_filter=' . $location_filter : '';
+    $append_latitude =          ( !empty($location_latitude) ) ? '&latitude_filter=' . $location_latitude : '';
+    $append_longitude =         ( !empty($location_longitude) ) ? '&longitude_filter=' . $location_longitude : '';
     $append_location_slug =     ( !empty($location_country_slug) ) ? '&location_slug_filter=' . $location_country_slug : '';
     $append_state_slug =        ( !empty($location_state_slug) ) ? '&location_state_filter=' . $location_state_slug : '';
     $append_locality_slug =     ( !empty($locality_slug) ) ? '&locality_filter=' . $locality_slug : '';
     
-    if ( !empty($append_location) && !empty($append_location_slug) ) {
-        $location_filter_uri =  $append_location . $append_location_slug . $append_state_slug . $append_locality_slug;
+    if ( !empty($append_location) && !empty($append_latitude) && !empty($append_longitude) ) {
+        $location_filter_uri =  $append_location . $append_latitude . $append_longitude . 
+                                $append_location_slug . $append_state_slug . $append_locality_slug;
     } else {
-        $location_filter_uri = '';
+        $location_filter_uri =  '';
     }
     
     return $location_filter_uri;
