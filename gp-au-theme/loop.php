@@ -548,12 +548,7 @@ function default_index() {
         WHERE 
             post_status='publish'
             AND m0.meta_value >= 1
-            AND post_type=%s 
-            AND (
-                " . $filterby_country . "
-                " . $filterby_state . "
-                " . $filterby_city . "
-            );",
+            AND post_type=%s;",
             get_query_var('post_type')
         );
               
@@ -586,12 +581,7 @@ function default_index() {
         WHERE
             post_status='publish'
             AND m0.meta_value >= 1
-            AND post_type=%s 
-            AND (
-                " . $filterby_country . "
-                " . $filterby_state . "
-                " . $filterby_city . "
-            )
+            AND post_type=%s
         ORDER BY post_date DESC",
         get_query_var('post_type')
     );
@@ -754,11 +744,6 @@ function home_index() {
                 OR post_type='gp_projects' 
                 OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
             )
-            AND (
-                " . $filterby_country . "
-                " . $filterby_state . "
-                " . $filterby_city . "
-            )
         ORDER BY post_date DESC",
         $epochtime,
         $epochtime
@@ -815,8 +800,13 @@ function events_index() {
 	 * Get events feed based on either user location or
 	 * location filter set by user.
 	 * 
-	 * Show 20 events on events page with pagination 
-	 * if over 20 events found.
+	 * Show up to 20 events on events page with pagination 
+	 * if over 20 events found. 
+	 * 
+	 * Events grouped first by city, then country then global
+	 * hence multiple queries to db
+	 * 
+	 * Pagination currently broken
 	 */
     
     global $wpdb, $post, $gp;
@@ -828,6 +818,7 @@ function events_index() {
     $user_city =              $gp->location['city'];
     $user_country =           $gp->location['country_iso2'];
     
+    $location_filter =        get_location_filter();
 	$location_city =          ( !empty($_GET['locality_filter']) ) ? $_GET['locality_filter'] : $user_city;
 	$location_latitude =      ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : $user_lat;
     $location_longitude =     ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] : $user_long;
@@ -839,10 +830,6 @@ function events_index() {
 	$querystring_city =       $location_city;
 	
 	$geo_currentlocation =    $gp->location;
-
-	$filterby_city =     "";
-	$filterby_state =    "";
-	$filterby_country =  "";
 
 	$epochtime =         strtotime('now');
 
@@ -914,74 +901,163 @@ function events_index() {
             );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
+
+	$sorted_posts = array();
+	$num_posts = count($pageposts);
 	
-	theme_create_post();
+	theme_create_post(); 
+	
+	/* Show events that match location filter city */
+	if ($num_posts > 0) {
+	    if ($pageposts) {
+		    foreach ($pageposts as $post) {
+                theme_index_event_item();
+		    }		
+    	}
+	}
+	
+	/* Show events that match location filter country outside of location filter city */
+	if ($numposts < 20) {
 
-	if ($pageposts) {    
-	    
-		foreach ($pageposts as $post) {
-			setup_postdata($post);
-			
-			if ( !isset($post->gp_google_geo_locality) || empty($post->gp_google_geo_locality) ) {
-			    continue;
-			}
-
-			$displayday =             date('j', $post->gp_events_startdate);
-			$displaymonth =           date('M', $post->gp_events_startdate);
-			$displayyear =            date('y', $post->gp_events_startdate);
-			
-			$location_filter_uri =    get_location_filter_uri();
-	        $link =                   get_permalink($post->ID);
-	        $link_location_uri =      $link . $location_filter_uri;
-			
-			echo '<div class="event-archive-item">';
-
-			if (date('Y', $post->gp_events_startdate) == date('Y')) {
-				echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
-			} else {
-				echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
-			}
-
-			echo '<h1><a href="' . $link_location_uri . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
-            echo '<div>';
-			theme_indexdetails('author');
-			echo '    <div class="post-loc">
-			              <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' 
-			                                 . strtolower($post->gp_google_geo_administrative_area_level_1) . '/' 
-			                                 . $post->gp_google_geo_locality_slug . '/">' 
-			                  . $post->gp_google_geo_locality . '
-			              </a> | 
-			              <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' 
-			                                 . strtolower($post->gp_google_geo_administrative_area_level_1) . '/">' 
-			                  . $post->gp_google_geo_administrative_area_level_1 . '
-			              </a>
-			          </div>
-			          <div class="clear"></div>
-			      </div>';
-
-			echo '</div><div class="clear"></div>';
-					
-		}		
-		
-		if (  $wp_query->max_num_pages > 1 ) {
-            $page_url = "/events/";
-            if ( !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
-            if ( !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
-            if ( !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
-            
-            if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
-            if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
-            if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
-            
-            ?>
-			<nav id="post-nav">
-				<ul>
-					<li class="post-previous"><?php echo $previous; ?></li>
-					<li class="post-next"><?php echo $next; ?></li>
-				</ul>
-			</nav>
-		    <?php
+	    $pageposts = '';
+	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
+        $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_state ) : '';
+        $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m5.meta_value != %s ", $querystring_city ) : '';
+        $querystr = $wpdb->prepare(
+                "SELECT 
+                    " . $wpdb->prefix . "posts.*, 
+                    m0.meta_value AS _thumbnail_id, 
+                    m1.meta_value AS gp_events_enddate, 
+                    m2.meta_value AS gp_events_startdate, 
+                    m3.meta_value AS gp_google_geo_country, 
+                    m4.meta_value AS gp_google_geo_administrative_area_level_1, 
+                    m5.meta_value AS gp_google_geo_locality_slug,
+                    m6.meta_value AS gp_google_geo_locality  
+                FROM $wpdb->posts 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
+                WHERE 
+	                post_status='publish' 
+                    AND post_type='gp_events' 
+                    " . $filterby_city . "
+                    " . $filterby_country . "
+                    " . $filterby_state . "
+                    AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
+                ORDER BY gp_events_startdate ASC 
+                LIMIT %d 
+                OFFSET %d;",
+                $epochtime,
+                $ppp,
+                $offset
+         );
+        
+        $pageposts = $wpdb->get_results($querystr, OBJECT);
+        
+        $num_additional_posts = count($pageposts);
+        
+		if ($num_additional_posts > 0) {
+	        if ($pageposts) {
+                echo '<h3>Events in surrounding '. $querystring_country .'</h3>';
+		            foreach ($pageposts as $post) {
+                        theme_index_event_item();
+		            }			
+    	    }
 		}
+    	
+    	$num_posts_so_far = $num_posts + $num_additional_posts;
+
+    	/* Show events from around the world outside of location filter country */
+    	if ($num_posts_so_far < 20) {
+
+    	    $pageposts = '';
+    	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value != %s ", $querystring_country ) : '';
+            $filterby_state =    '';
+            $filterby_city =     '';
+
+                $querystr = $wpdb->prepare(
+                "SELECT 
+                    " . $wpdb->prefix . "posts.*, 
+                    m0.meta_value AS _thumbnail_id, 
+                    m1.meta_value AS gp_events_enddate, 
+                    m2.meta_value AS gp_events_startdate, 
+                    m3.meta_value AS gp_google_geo_country, 
+                    m4.meta_value AS gp_google_geo_administrative_area_level_1, 
+                    m5.meta_value AS gp_google_geo_locality_slug,
+                    m6.meta_value AS gp_google_geo_locality  
+                FROM $wpdb->posts 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
+                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
+                WHERE 
+	                post_status='publish' 
+                    AND post_type='gp_events' 
+                    " . $filterby_country . "
+                    " . $filterby_state . "
+                    " . $filterby_city . "
+                    AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
+                ORDER BY gp_events_startdate ASC 
+                LIMIT %d 
+                OFFSET %d;",
+                $epochtime,
+                $ppp,
+                $offset
+            );
+            
+            $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
+            
+            if ($i == 0) {
+                echo '<h3>There are currently no events listed for '. $location_filter .'.</h3>';
+            }
+            
+            $pageposts = $wpdb->get_results($querystr, OBJECT);
+    		if ($pageposts) {
+    		    echo '<h3>Events from around the globe</h3>';
+		        while ($i < 20) {
+    		        foreach ($pageposts as $post) {		    
+		                theme_index_event_item();
+		                $i++;
+    		        }
+		        }
+    	    }
+	    } 
+	}
+	
+	
+	if ($sorted_posts) {
+	    krsort($sorted_posts);
+	    foreach ($sorted_posts as $post) {
+	        #theme_index_event_item();
+	    }
+	}
+	
+	if (  $wp_query->max_num_pages > 1 ) {
+
+	    $page_url = "/events/";
+        if ( !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
+        if ( !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
+        if ( !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
+            
+        if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
+        if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+        if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+            
+        ?>
+		<nav id="post-nav">
+			<ul>
+				<li class="post-previous"><?php echo $previous; ?></li>
+				<li class="post-next"><?php echo $next; ?></li>
+			</ul>
+		</nav>
+		<?php
 	}
 }
 
