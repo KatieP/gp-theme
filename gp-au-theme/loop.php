@@ -1032,9 +1032,6 @@ function events_index() {
 	if (  $wp_query->max_num_pages > 1 ) {
 
 	    $page_url = "/events/";
-        if ( !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
-        if ( !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
-        if ( !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
             
         if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
         if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
