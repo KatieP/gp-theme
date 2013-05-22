@@ -914,6 +914,8 @@ function events_index() {
                 theme_index_event_item();
 		    }		
     	}
+	} else {
+		    echo '<h3>There are currently no events listed for '. $location_filter .'.</h3>';
 	}
 	
 	/* Show events that match location filter country outside of location filter city */
@@ -967,7 +969,7 @@ function events_index() {
                         theme_index_event_item();
 		            }			
     	    }
-		}
+		} 
     	
     	$num_posts_so_far = $num_posts + $num_additional_posts;
 
@@ -1014,10 +1016,6 @@ function events_index() {
             
             $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
             
-            if ($i == 0) {
-                echo '<h3>There are currently no events listed for '. $location_filter .'.</h3>';
-            }
-            
             $pageposts = $wpdb->get_results($querystr, OBJECT);
     		if ($pageposts) {
     		    echo '<h3>Events from around the globe</h3>';
@@ -1029,14 +1027,6 @@ function events_index() {
 		        }
     	    }
 	    } 
-	}
-	
-	
-	if ($sorted_posts) {
-	    krsort($sorted_posts);
-	    foreach ($sorted_posts as $post) {
-	        #theme_index_event_item();
-	    }
 	}
 	
 	if (  $wp_query->max_num_pages > 1 ) {
