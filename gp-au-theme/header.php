@@ -257,9 +257,9 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 <?php
                 if (!is_page()) {
        	            # Display location tag line and location filter option
-                    $posttype_slug =              getPostTypeSlug($post_type);
-                    $location_filter =            get_location_filter();
-                    $location_filter_url_prefix = $site_url . '/' . $posttype_slug;
+                    $posttype_slug =               getPostTypeSlug($post_type);
+                    $location_filter =             get_location_filter();
+                    $location_filter_url_prefix =  $site_url . '/' . $posttype_slug;
 	                ?>
             		<script type="text/javascript">
                 		function show_location_field() {

@@ -2169,43 +2169,43 @@ function get_google_map() {
     if (get_post_type() != "page") { 
         
         global $post, $gp, $wpdb;
-        $current_post_id = $post->ID;
-        $lat_key = 'gp_google_geo_latitude';
-        $long_key = 'gp_google_geo_longitude';
+        $current_post_id =  $post->ID;
+        $lat_key =          'gp_google_geo_latitude';
+        $long_key =         'gp_google_geo_longitude';
         
         if ( is_single() ) {
-            $center_map_lat =      get_post_meta($current_post_id, $lat_key, true);
-            $center_map_long =     get_post_meta($current_post_id, $long_key, true);
-            $current_post_json =   get_post_location_json_data(true);
+            $center_map_lat =     get_post_meta($current_post_id, $lat_key, true);
+            $center_map_long =    get_post_meta($current_post_id, $long_key, true);
+            $current_post_json =  get_post_location_json_data(true);
         } else {
             # Set user location lat and long here
-            $user_lat =            $gp->location['latitude'];
-            $user_long =           $gp->location['longitude'];
-            $center_map_lat =      ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
-            $center_map_long =     ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
+            $user_lat =           ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : $gp->location['latitude'];
+            $user_long =          ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] :$gp->location['longitude'];
+            $center_map_lat =     ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
+            $center_map_long =    ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
         }
         
         # set up data for surrounding posts query and google map if proper location data found
         if (!empty($center_map_lat) && !empty($center_map_long)) {
             
-            $lat_min =    $center_map_lat - 1;
-            $lat_max =    $center_map_lat + 1;
-            $long_min =   $center_map_long - 1;
-            $long_max =   $center_map_long + 1;
-            $post_limit = 20;
-            $pageposts =  get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
+            $lat_min =     $center_map_lat - 1;
+            $lat_max =     $center_map_lat + 1;
+            $long_min =    $center_map_long - 1;
+            $long_max =    $center_map_long + 1;
+            $post_limit =  20;
+            $pageposts =   get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
                         
             # Set zoom level for map depending on number of surrounding posts
-            $num_posts = count($pageposts);
+            $num_posts =   count($pageposts);
             
             # If number of posts is less that 20, expand location bounding box to 3 degrees of post
             if ($num_posts < 20) {
             	
-            	$lat_min =   $center_map_lat - 3;
-            	$lat_max =   $center_map_lat + 3;
-           		$long_min =  $center_map_long - 3;
-            	$long_max =  $center_map_long + 3;            	
-            	$pageposts = get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
+            	$lat_min =    $center_map_lat - 3;
+            	$lat_max =    $center_map_lat + 3;
+           		$long_min =   $center_map_long - 3;
+            	$long_max =   $center_map_long + 3;            	
+            	$pageposts =  get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
 			
             }
             

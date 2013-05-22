@@ -1031,11 +1031,12 @@ function events_index() {
 	
 	if (  $wp_query->max_num_pages > 1 ) {
 
-	    $page_url = "/events/";
-            
-        if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
-        if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
-        if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+	    $page_url =             "/events/";
+        $location_filter_uri =  get_location_filter_uri();
+	    
+        if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . $location_filter_uri . "\"><div class=\"arrow-previous\"></div>Events Coming Later</a>"; }
+        if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . $location_filter_uri . "\">Events Coming Soon<div class=\"arrow-next\"></div></a>"; }
+        if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . $location_filter_uri . "\">Events Coming Soon<div class=\"arrow-next\"></div></a>"; }
             
         ?>
 		<nav id="post-nav">
