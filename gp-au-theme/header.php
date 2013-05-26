@@ -210,8 +210,9 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    </div>
 					    <ul id="auth-tools">
 						    <li id="auth-yourfavourites" class="no-js">
-							    <a href="<?php echo $post_author_url; ?>#favourites" title="My Favourites">
-	    						    <span class="icon-favourites">My Favourites</span>
+							    <a href="<?php echo $post_author_url; ?>#tab:favourites" title="My Upvoted Posts">
+	    						    <span class="af-icon-chevron-up"></span>
+	    						    
 							    </a>
 							</li>
 					    	<li id="auth-yournotifications" class="no-js">
@@ -296,4 +297,4 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
             	}
             	?>
         	</header>
-        	
+        	        	

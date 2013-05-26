@@ -1018,6 +1018,10 @@ header a:hover {
     border-radius: 0.2em;
 }
 
+#auth-tools .af-icon-chevron-up {
+	font-size: 1.3em;
+}
+
 #auth-youraccount a {
     width: inherit;
     padding: 0 1em 0 1em;
