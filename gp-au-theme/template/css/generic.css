@@ -4090,10 +4090,15 @@ ul.categorieslistmain {
     width: 100%;
 }
 
-#content .icon-container .loop-title, #content .icon-container .loop-title a {
+#content .icon-container .loop-title, #content .icon-container .loop-title a,
+#content .icon-container h1 {
     text-align: center; 
     margin-top: 3em;
     color: #666;    
+}
+
+#content .icon-container #big-heading {
+    font-size: 2em;
 }
 
 #content .inner-icon-container {
