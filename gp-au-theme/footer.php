@@ -1,9 +1,9 @@
 		<?php 
-		if (is_home()) { $post_type = "gp_news"; }
+		if (is_home() || is_page()) { $post_type = "gp_news"; }
 		$post_type_map = array( "gp_news" => "news",
 		                        "gp_events" => "events", 
                                 "gp_advertorial" => "eco-friendly-products", 
-                                "gp_projects" => "projects");
+                                "gp_projects" => "projects" );
 		?>
 		<footer>
     		<div class="pos">
@@ -13,8 +13,9 @@
 					        <li><a href="<?php echo $site_url; ?>/about/partners/">Partners</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/badges/">Badges</a></li>
 					        <li><a href="<?php echo $site_url; ?>about/our-vision/">About</a></li>
-					        <li><a href="http://greenpages.myshopify/">Shop</a></li>
+					        <li><a href="http://greenpages.myshopify.com" target="_blank">Shop</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/terms-and-conditions/">Terms</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/green-pages-privacy-policy/">Privacy</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/rate-card/">Advertise</a></li>
 					        <li><a href="<?php echo $site_url; ?>/world-map/">World Map</a></li>
 				        </ul>	
@@ -25,7 +26,7 @@
 			            <ul id="footer-social">
 					        <li><a href="<?php echo 'http://www.facebook.com/'. show_facebook_by_location(); ?>" target="_blank"><i class="af-icon-facebook-sign"></i></a></li>
 					        <li><a href="https://twitter.com/GreenPagesAu" target="_blank"><i class="af-icon-twitter-sign"></i></a></li>
-					        <li><a href="/<?php echo $post_type_map[$post_type]; ?>/feed/" target="_blank"><i class="af-icon-rss"></i></a></li>
+					        <li><a href="<?php echo $site_url . '/' . $post_type_map[$post_type]; ?>/feed/" target="_blank"><i class="af-icon-rss"></i></a></li>
 				        </ul>			            
 			        </nav>
 			        <nav id="footer-contact">
