@@ -1354,49 +1354,8 @@ function get_events() {
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts">
 				<span class="title">
-					<a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="'. get_site_url() .'/wp-admin/post-new.php?post_type=gp_events">Post Your Event</a>
+					<a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="'. get_site_url() .'/welcome">Post Your Event</a>
 				</span>'; 
-		?>
-		<!-- THIS FILTER BY REGION FUNCTIONALITY SHOULD BE PROVIDED IN HEADER.PHP BY USER CLICKING ON THE 
-		     LOCATION STRING AT THE END OF THE TAGLINE TO REVEAL DROPDOWN MENU (OR TEXTFIELD WITH AUTOCOMPLETE):
-		     'Everything environmental happening around <location_string>.'
-		      
-		<div id="post-filter">
-		        <select name="filterby_state" id="filterby_state">
-		            <option value="/events/<?php #echo strtolower( $gp->location['country_iso2'] ); ?>/">All regions</option>
-		
-		<?php
-		/**
-		$optgroup = null;
-		foreach ($edition_states as $state) {
-		    if ( !isset( $state['parent'] ) ) {
-		        if ( $optgroup !=  $state['subset'] ) { 
-		            if ($optgroup !== null) { echo '</optgroup>'; } 
-		            echo '<optgroup label="' . ucwords( $state['subset_plural'] ) . '">';
-		            $optgroup = $state['subset']; 
-		        }
-  			    echo '<option value="/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $state['code']) . '/">' . $state['name'] . '</option>';
-		    }
-		}
-		if ($optgroup !== null) { echo '</optgroup>'; }
-		echo "<option disabled=\"disabled\"></option>";
-		echo "<option value=\"/events/\">Worldwide</option>";
-		echo "<optgroup label=\"Countries\">";
-		
-		$editions = Site::getEditions();
-		foreach ( $editions as $edition ) {
-		    echo "<option value=\"/events/" . strtolower( $edition['iso2'] ) . "/\">" . $edition['name'] . "</option>";
-		}
-		
-		echo "</optgroup>";
-		**/
-		?>
-		
-		        </select>
-		    <div class="clear"></div>
-		</div>
-		 -->
-		<?php
 		$i = 0;
 		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR
 		$event_str = '[';

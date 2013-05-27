@@ -32,13 +32,18 @@
 			        <nav id="footer-contact">
 				        <div id="footer-contact-click-box">
 					        <div class="click-contact-info" id="click-contact-address">
-					            Postal Address:<pre><?php echo get_option('gp_postaladdress'); ?></pre>
+					            <span>Postal Address:</span>
+					            <pre><?php echo '599 Fairchild Dr <br />Mountain View <br />CA <br />USA'; ?></pre>
 					        </div>
 					        <div class="click-contact-info" id="click-contact-phone">
-					            Phone:<pre>Promoting an event? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for free</a>.<br /><br /><?php echo get_option('gp_phone1'); ?></pre>
+					            <span>Phone:</span>
+					            <pre>Promoting an event? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for free</a>.
+					            <?php echo 'US: 650-283-8142 <br />AU: 02 8003 5915'; ?></pre>
 					        </div>
 					        <div class="click-contact-info" id="click-contact-email">
-					            Email Address:<pre>Promoting a product or company? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for $89</a>.<br /><br /><?php echo str_replace('@', ' [at] ', get_option('gp_email1')); ?></pre>
+					            <span>Email Address:</span>
+					            <pre>Promoting a product or company? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for $89</a>.
+					            <br />hello[at]greenpag.es</pre>
 					        </div>
 				        </div>
 				        <ul>

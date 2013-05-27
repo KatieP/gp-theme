@@ -1564,6 +1564,11 @@ footer {
     color: #01AED8;
 }
 
+#footer-contact-click-box span {
+	font-size: 1.2em;
+	line-height: 1.6em;
+}
+
 /** SITEMAP **/
 #footer-web, #footer-dir, #footer-about {
     margin-top: 2.2em;
