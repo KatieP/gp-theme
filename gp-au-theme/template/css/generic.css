@@ -3539,12 +3539,12 @@ ul.categorieslistmain {
 
 #content .post-month {
     font-size: 9px;
-    top: 6px;
+    top: 3px;
 }
 
 #content .post-day {
     font-size: 18px;
-    top: 26px;
+    top: 23px;
 }
 
 #content .post-day, #content .post-month {
@@ -3560,13 +3560,14 @@ ul.categorieslistmain {
 }
 
 #content .post-loc {
-    font-size: 11px;
+    font-size: 1em;
     float: right;
-    margin-top: 8px;
+    margin-top: 0.75em;
+    color: #666;
 }
 
 #content .post-loc a {
-    font-size: 11px;
+    font-size: 1em;
     color: #666;
     text-decoration: underline;
 }

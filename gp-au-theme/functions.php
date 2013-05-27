@@ -3887,47 +3887,39 @@ function get_location_filter_uri() {
 }
 
 function theme_index_event_item() {
-        global $post;
-        setup_postdata($post);
+    global $post;
+    setup_postdata($post);
 			
-			    if ( !isset($post->gp_google_geo_locality) || empty($post->gp_google_geo_locality) ) {
-			        continue;
-			    }
+	if ( !isset($post->gp_google_geo_locality) || empty($post->gp_google_geo_locality) ) {
+	    continue;
+	}
 			    
-			    $displayday =             date('j', $post->gp_events_startdate);
-			    $displaymonth =           date('M', $post->gp_events_startdate);
-			    $displayyear =            date('y', $post->gp_events_startdate);
+	$displayday =             date('j', $post->gp_events_startdate);
+	$displaymonth =           date('M', $post->gp_events_startdate);
+	$displayyear =            date('y', $post->gp_events_startdate);
+		
+	$location_filter_uri =    get_location_filter_uri();
+	$link =                   get_permalink($post->ID);
+	$link_location_uri =      $link . $location_filter_uri;
 			
-			    $location_filter_uri =    get_location_filter_uri();
-	            $link =                   get_permalink($post->ID);
-	            $link_location_uri =      $link . $location_filter_uri;
-			
-			    echo '<div class="event-archive-item">';
+	echo '<div class="event-archive-item">';
 
-		    	if (date('Y', $post->gp_events_startdate) == date('Y')) {
-	    			echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
-    			} else {
-				    echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
-			    }
+	if (date('Y', $post->gp_events_startdate) == date('Y')) {
+		echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-month">' . $displaymonth . '</span><span class="post-day">' . $displayday . '</span></a>';
+    } else {
+	    echo '<a href="' . $link_location_uri . '" class="post-events-calendar"><span class="post-day">' . $displayyear . '\'</span></a>';
+	}
 
-			    echo '<h1><a href="' . $link_location_uri . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
-                echo '<div>';
-		    	theme_indexdetails('author');
-			    echo '    <div class="post-loc">
-			                  <a href="/events/'   . strtolower($post->gp_google_geo_country) . '/' 
-			                	                   . strtolower($post->gp_google_geo_administrative_area_level_1) . '/' 
-			                    	               . $post->gp_google_geo_locality_slug . '/">' 
-			                	    . $post->gp_google_geo_locality . '
-			              	  </a> | 
-			            	  <a href="/events/' . strtolower($post->gp_google_geo_country) . '/' 
-			        	                         . strtolower($post->gp_google_geo_administrative_area_level_1) . '/">' 
-			    	              . $post->gp_google_geo_administrative_area_level_1 . '
-				              </a>
-				          </div>
-				          <div class="clear"></div>
-				      </div>';
-
-			    echo '</div><div class="clear"></div>';
+	echo '<h1><a href="' . $link_location_uri . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>';
+    echo '<div>';
+	theme_indexdetails('author');
+	echo '    <div class="post-loc">
+	               '. $post->gp_google_geo_locality .' | '. $post->gp_google_geo_administrative_area_level_1 . '
+		      </div>
+		      <div class="clear"></div>
+	      </div>
+	  </div><div class="clear">
+	</div>';
 }
 
 ?>

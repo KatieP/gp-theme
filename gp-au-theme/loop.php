@@ -975,7 +975,7 @@ function events_index() {
                         theme_index_event_item();
 		            }			
     	    }
-		} 
+		}
     	
     	$num_posts_so_far = $num_posts + $num_additional_posts;
 
