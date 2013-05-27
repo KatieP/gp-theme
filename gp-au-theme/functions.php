@@ -1889,15 +1889,16 @@ function get_post_location_json_data($current_post = false) {
     $template_url = get_bloginfo('template_url');
     
     # Set post data
-    $post_type = get_post_type();	
-    $post_id = $post->ID;
-    $post_title =  get_the_title($post->ID);
-    $post_link_url = get_permalink($post->ID);
-    $title_link = '<a href=\"'. $post_link_url . '\" title=\"'. $post_title .'\">'. $post_title .'</a>';
+    $post_type =            get_post_type();	
+    $post_id =              $post->ID;
+    $post_title =           get_the_title($post->ID);
+    $post_link_url =        get_permalink($post->ID);
+    $location_filter_uri =  get_location_filter_uri();
+    $title_link =           '<a href=\"'. $post_link_url . $location_filter_uri .'\" title=\"'. $post_title . '\">'. $post_title .'</a>';
     
     # Set location keys
-    $lat_post_key = 'gp_google_geo_latitude';
-    $long_post_key = 'gp_google_geo_longitude';
+    $lat_post_key =        'gp_google_geo_latitude';
+    $long_post_key =       'gp_google_geo_longitude';
     
 	# Assign icon for custom marker depending on post type
 	$post_icon = $template_url . '/template/icons/post-type-icons/';
