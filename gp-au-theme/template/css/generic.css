@@ -2421,7 +2421,7 @@ footer {
 }
 
 .post-details {
-    font-size: 1.1em;
+    font-size: 1em;
     color: #9da2a8;
     max-width: 50em;
     float: left;
@@ -2430,6 +2430,7 @@ footer {
 
 #content .post-details a, .post-details a {
     color: #134;
+    font-size: 1em;
 }
 
 #content .post-details a:hover, .post-details a:hover {
@@ -3562,8 +3563,8 @@ ul.categorieslistmain {
 #content .post-loc {
     font-size: 1em;
     float: right;
-    margin-top: 0.75em;
-    color: #666;
+    margin-top: 0.45em;
+    color: #9da2a8;
 }
 
 #content .post-loc a {
