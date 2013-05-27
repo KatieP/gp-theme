@@ -836,11 +836,11 @@ function events_index() {
 	
 	$geo_currentlocation =    $gp->location;
 
-	$epochtime =         strtotime('now');
+	$epochtime =              strtotime('now');
 
-    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
-    $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
-    $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city ) : '';
+    $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
+    $filterby_state =         (!empty($querystring_state)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city ) : '';
 	
     $querytotal = $wpdb->prepare(
                     "SELECT COUNT(*) AS count 
@@ -963,13 +963,14 @@ function events_index() {
                 $offset
          );
         
-        $pageposts = $wpdb->get_results($querystr, OBJECT);
-        
+        $pageposts = $wpdb->get_results($querystr, OBJECT);        
         $num_additional_posts = count($pageposts);
+        $country_map = get_country_map();
+	    $country_pretty_name = $country_map[$querystring_country];
         
 		if ($num_additional_posts > 0) {
 	        if ($pageposts) {
-                echo '<h3>Events in surrounding '. $querystring_country .'</h3>';
+                echo '<h3>Events in surrounding '. $country_pretty_name .'</h3>';
 		            foreach ($pageposts as $post) {
                         theme_index_event_item();
 		            }			
@@ -986,7 +987,7 @@ function events_index() {
             $filterby_state =    '';
             $filterby_city =     '';
 
-                $querystr = $wpdb->prepare(
+            $querystr = $wpdb->prepare(
                 "SELECT 
                     " . $wpdb->prefix . "posts.*, 
                     m0.meta_value AS _thumbnail_id, 

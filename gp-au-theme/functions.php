@@ -1350,11 +1350,12 @@ function get_events() {
 	
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	$numPosts = $wpdb->num_rows-1;
-					
+	$location_filter_uri =  get_location_filter_uri();				
+	
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts">
 				<span class="title">
-					<a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/">Upcoming Events</a> - <a href="'. get_site_url() .'/welcome">Post Your Event</a>
+					<a href="'. get_site_url() .'/events/' . $location_filter_uri . '">Upcoming Events</a>
 				</span>'; 
 		$i = 0;
 		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR
@@ -1374,7 +1375,7 @@ function get_events() {
 			$displayendmonth = date('M', $post->gp_events_enddate);
 			$str_endmonth = date('m', $post->gp_events_enddate);
 			
-			$event_link_url = get_permalink($post->ID);
+			$event_link_url = get_permalink($post->ID) . $location_filter_uri;
 			$post_id = $post->ID;
 			
 			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"'. $event_title .'\">'. $event_title .'</a>';
