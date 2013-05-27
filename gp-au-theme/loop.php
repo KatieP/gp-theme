@@ -433,11 +433,16 @@ function theme_index_feed_item() {
     </h1>
     <?php
 	
+	
 	/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
+	$location = get_post_meta($post->ID, 'gp_google_geo_location');
+	$where =   (!empty($location)) ? $location : '';
+	
 	echo '<span class="hp_miniauthor">
 			 By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> 
 			 in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
-          </span>';
+          </span>
+          <div class="post-details"> '. $location[0] .' </div>';
 			
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
