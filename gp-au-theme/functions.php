@@ -4012,11 +4012,13 @@ function set_post_to_pending_if_subscriber_not_approved ($post_id) {
 		remove_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');	    
 	    
 		if ( !get_user_role( array('administrator') ) ) { 
-	        if ( $post_author->subscriber_approved != true ) {
-                $update_post =                 array();
-                $update_post['ID'] =           $post_id;
-                $update_post['post_status'] =  'pending';
-                wp_update_post($update_post);
+		    if ( !get_user_role( array('contributor') ) ) { 
+	            if ( $post_author->subscriber_approved != true ) {
+                    $update_post =                 array();
+                    $update_post['ID'] =           $post_id;
+                    $update_post['post_status'] =  'pending';
+                    wp_update_post($update_post);
+		        }
 		    }
 		}
 		
