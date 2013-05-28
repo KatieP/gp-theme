@@ -3836,7 +3836,7 @@ function get_location_filter_uri_prefix() {
      * 
      * Author: Jesse Browne
      *         jb@greenpag.es
-     */
+     **/
     
     global $gp;
 
@@ -3887,12 +3887,12 @@ function get_location_filter_uri() {
 }
 
 function theme_index_event_item() {
+    /**
+     * Display event title, date and location in events feed
+     **/
+    
     global $post;
     setup_postdata($post);
-			
-	if ( !isset($post->gp_google_geo_locality) || empty($post->gp_google_geo_locality) ) {
-	    continue;
-	}
 			    
 	$displayday =             date('j', $post->gp_events_startdate);
 	$displaymonth =           date('M', $post->gp_events_startdate);
@@ -3918,15 +3918,13 @@ function theme_index_event_item() {
 		      </div>
 		      <div class="clear"></div>
 	      </div>
-	  </div><div class="clear">
-	</div>';
+	  </div>
+	  <div class="clear"></div>';
 }
-
-
 
 //** CUSTOM IMAGE LOGIN SCREEN **//
 
-add_filter('login_headertitle', create_function(false,"return 'http://greenpag.es';"));
+add_filter('login_headertitle', create_function(false, 'return "'. get_site_url() .'";'));
 
 add_action("login_head", "my_login_head");
 function my_login_head() {
