@@ -1916,7 +1916,6 @@ function get_post_location_json_data($current_post = false) {
 	    	$post_icon .= ($current_post == false) ? 'event-icon.png' : 'event-icon-large.png';
 	        break;
 	}
-	
     
 	# Get post location meta (post id, key, true/false)
     $lat_post = get_post_meta($post_id, $lat_post_key, true);
@@ -3993,12 +3992,12 @@ add_action('publish_gp_projects', 'member_permission_upgrade');
 
 function set_post_to_pending_if_subscriber_not_approved ($post_id) {	
     /** 
-     *  If ubscriber has published less than required amount of posts
+     *  If subscriber has published less than required amount of posts
      *  set post status to pending
      *  
      *  Author: Katie Patrick
      *  		katie.patrick@greenpag.es
-     */
+     **/
 
 	$post = get_post($post_id);
     $post_author = get_userdata($post->post_author);
@@ -4012,11 +4011,13 @@ function set_post_to_pending_if_subscriber_not_approved ($post_id) {
 		remove_action('publish_gp_advertorial', 'set_post_to_pending_if_subscriber_not_approved');
 		remove_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');	    
 	    
-	    if ( $post_author->subscriber_approved != true ) {
-			$update_post = array();
-			$update_post['ID'] = $post_id;
-            $update_post['post_status'] = 'pending';
-            wp_update_post($update_post);
+		if ( !get_user_role( array('administrator') ) ) { 
+	        if ( $post_author->subscriber_approved != true ) {
+                $update_post =                 array();
+                $update_post['ID'] =           $post_id;
+                $update_post['post_status'] =  'pending';
+                wp_update_post($update_post);
+		    }
 		}
 		
 		// re-hook this function
