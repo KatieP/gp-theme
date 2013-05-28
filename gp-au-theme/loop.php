@@ -816,7 +816,7 @@ function events_index() {
     
     global $wpdb, $post, $gp;
 	
-	$querystring_page = get_query_var( 'page' );
+	$querystring_page =       get_query_var( 'page' );
 	
     $user_lat =               $gp->location['latitude'];
     $user_long =              $gp->location['longitude'];
@@ -971,9 +971,9 @@ function events_index() {
 		if ($num_additional_posts > 0) {
 	        if ($pageposts) {
                 echo '<h3>Events in surrounding '. $country_pretty_name .'</h3>';
-		            foreach ($pageposts as $post) {
-                        theme_index_event_item();
-		            }			
+		        foreach ($pageposts as $post) {
+                    theme_index_event_item();
+		        }			
     	    }
 		}
     	
@@ -1020,15 +1020,18 @@ function events_index() {
                 $offset
             );
             
-            $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
-            
             $pageposts = $wpdb->get_results($querystr, OBJECT);
+            $final_num_posts = count($pageposts);
+            $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
+            $i = ($final_num_posts < $i) ? $final_num_posts : $i;
+            
     		if ($pageposts) {
     		    echo '<h3>Events from around the globe</h3>';
-		        while ($i < 20) {
-    		        foreach ($pageposts as $post) {		    
-		                theme_index_event_item();
-		                $i++;
+    		    foreach ($pageposts as $post) {		    
+		            theme_index_event_item();
+		            $i++;
+    		        if ($i == 20) {
+    		            break;
     		        }
 		        }
     	    }
