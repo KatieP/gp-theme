@@ -1021,13 +1021,14 @@ function events_index() {
             );
             
             $pageposts = $wpdb->get_results($querystr, OBJECT);
-            $final_num_posts = count($pageposts);
-            $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
-            $i = ($final_num_posts < $i) ? $final_num_posts : $i;
-            $global_posts = array_slice($pageposts, 0, $i, true);
+            $num_global_posts = count($pageposts);
             
-    		if ($global_posts) {
-    		    echo '<h3>Events from around the globe</h3>';
+    	    if ($num_global_posts > 0) {
+    		    $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
+                $i = ($final_num_posts < $i) ? $final_num_posts : $i;
+                $global_posts = array_slice($pageposts, 0, $i, true);
+    		    
+                echo '<h3>Events from around the globe</h3>';
     		    foreach ($global_posts as $post) {		    
 		            theme_index_event_item();
 		        }
