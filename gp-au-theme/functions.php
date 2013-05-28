@@ -3922,4 +3922,118 @@ function theme_index_event_item() {
 	</div>';
 }
 
+
+
+//** CUSTOM IMAGE LOGIN SCREEN **//
+
+add_filter('login_headertitle', create_function(false,"return 'http://greenpag.es';"));
+
+add_action("login_head", "my_login_head");
+function my_login_head() {
+	echo "
+	<style>
+	body.login #login h1 a {
+		background: url('".get_bloginfo('template_url')."/template/images/greenpages-logo.png') no-repeat scroll center top transparent;
+		height: 80px;
+		width: 360px;
+	}
+	</style>
+	";
+}
+
+//** MEMBER PERMISSIONS - MEMBERS CAN POST WITHOUT APPROVAL AFTER THEIR THIRD APPROVED POST **//
+
+function member_permission_upgrade ($post_id) {	
+    /** 
+     *  Checks number of approved posts a user has, then if is greater than 3,  
+     *  Adds user meta called 'subscriber_approved' 'true' when subscribed publishes their third post
+     *  Another function will check this user_meta value for true or false when setting posts to publish or pending
+     *  The first 3 posts a user makes will require approval from GP staff
+     *  
+     *  Author: Katie Patrick
+     *  		katie.patrick@greenpag.es
+     */
+    
+	global $wpdb;
+    $post = get_post($post_id);    
+    $post_author = get_userdata($post->post_author);
+    $post_author_ID = $post_author->ID;
+    
+	$post_count = (int) $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE post_author = '" . $post_author_ID . "' AND post_status = 'publish'");
+
+    
+	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+		remove_action('publish_gp_news', 'member_permission_upgrade');
+		remove_action('publish_gp_events', 'member_permission_upgrade');
+		remove_action('publish_gp_advertorial', 'member_permission_upgrade');
+		remove_action('publish_gp_projects', 'member_permission_upgrade');
+	    
+	    if ($post_count > 3) {
+		    // if user_post_count is greater than 3, change user meta
+				
+		    $meta_key =  'subscriber_approved';
+		    $meta_value = true;
+		
+		    add_user_meta( $post_author_ID, $meta_key, $meta_value, true );
+		    
+		}
+		
+		// re-hook this function
+		add_action('publish_gp_news', 'member_permission_upgrade');
+		add_action('publish_gp_events', 'member_permission_upgrade');
+		add_action('publish_gp_advertorial', 'member_permission_upgrade');
+		add_action('publish_gp_projects', 'member_permission_upgrade');
+		
+	}
+}
+add_action('publish_gp_news', 'member_permission_upgrade');
+add_action('publish_gp_events', 'member_permission_upgradep');
+add_action('publish_gp_advertorial', 'member_permission_upgrade');
+add_action('publish_gp_projects', 'member_permission_upgrade');
+
+function set_post_to_pending_if_subscriber_not_approved ($post_id) {	
+    /** 
+     *  If ubscriber has published less than required amount of posts
+     *  set post status to pending
+     *  
+     *  Author: Katie Patrick
+     *  		katie.patrick@greenpag.es
+     */
+
+	$post = get_post($post_id);
+    $post_author = get_userdata($post->post_author);
+    
+	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+		remove_action('publish_gp_news', 'set_post_to_pending_if_subscriber_not_approved');
+		remove_action('publish_gp_events', 'set_post_to_pending_if_subscriber_not_approved');
+		remove_action('publish_gp_advertorial', 'set_post_to_pending_if_subscriber_not_approved');
+		remove_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');	    
+	    
+	    if ($post_author->subscriber_approved != true) {
+			$update_post = array();
+			$update_post['ID'] = $post_id;
+            $update_post['post_status'] = 'pending';
+            wp_update_post($update_post);
+		}
+		
+		// re-hook this function
+		add_action('publish_gp_news', 'set_post_to_pending_if_subscriber_not_approved');
+		add_action('publish_gp_events', 'set_post_to_pending_if_subscriber_not_approved');
+		add_action('publish_gp_advertorial', 'set_post_to_pending_if_subscriber_not_approved');
+		add_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');
+		
+	}
+}
+add_action('publish_gp_news', 'set_post_to_pending_if_subscriber_not_approved');
+add_action('publish_gp_events', 'set_post_to_pending_if_subscriber_not_approved');
+add_action('publish_gp_advertorial', 'set_post_to_pending_if_subscriber_not_approved');
+add_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');
+
+
 ?>
