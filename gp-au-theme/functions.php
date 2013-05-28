@@ -4014,8 +4014,7 @@ function set_post_to_pending_if_subscriber_not_approved ($post_id) {
 		remove_action('publish_gp_advertorial', 'set_post_to_pending_if_subscriber_not_approved');
 		remove_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');	    
 	    
-	    if ( $post_author->subscriber_approved != true && ( !get_user_role( array('contributor'), $post->post_author) 
-	                                                        || !get_user_role( array('administrator'), $post->post_author)) ) {
+	    if ( $post_author->subscriber_approved != true ) {
 			$update_post = array();
 			$update_post['ID'] = $post_id;
             $update_post['post_status'] = 'pending';

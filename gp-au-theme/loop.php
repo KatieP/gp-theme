@@ -873,7 +873,7 @@ function events_index() {
 	$offset = ($on_page-1) * $ppp;
 	
     $querystr = $wpdb->prepare(
-                "SELECT 
+                "SELECT DISTINCT
                     " . $wpdb->prefix . "posts.*, 
                     m0.meta_value AS _thumbnail_id, 
                     m1.meta_value AS gp_events_enddate, 
@@ -931,7 +931,7 @@ function events_index() {
         $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_state ) : '';
         $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m5.meta_value != %s ", $querystring_city ) : '';
         $querystr = $wpdb->prepare(
-                "SELECT 
+                "SELECT DISTINCT
                     " . $wpdb->prefix . "posts.*, 
                     m0.meta_value AS _thumbnail_id, 
                     m1.meta_value AS gp_events_enddate, 
@@ -988,7 +988,7 @@ function events_index() {
             $filterby_city =     '';
 
             $querystr = $wpdb->prepare(
-                "SELECT 
+                "SELECT DISTINCT
                     " . $wpdb->prefix . "posts.*, 
                     m0.meta_value AS _thumbnail_id, 
                     m1.meta_value AS gp_events_enddate, 
@@ -1024,15 +1024,12 @@ function events_index() {
             $final_num_posts = count($pageposts);
             $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
             $i = ($final_num_posts < $i) ? $final_num_posts : $i;
+            $global_posts = array_slice($pageposts, 0, $i, true);
             
-    		if ($pageposts) {
+    		if ($global_posts) {
     		    echo '<h3>Events from around the globe</h3>';
-    		    foreach ($pageposts as $post) {		    
+    		    foreach ($global_posts as $post) {		    
 		            theme_index_event_item();
-		            $i++;
-    		        if ($i == 20) {
-    		            break;
-    		        }
 		        }
     	    }
 	    } 
