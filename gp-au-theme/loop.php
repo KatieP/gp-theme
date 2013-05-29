@@ -1632,8 +1632,9 @@ function theme_author_employer($profile_author) {
 
 function theme_authorlocation($profile_author) {
     /** Member location **/
-	echo '<div class="author-location">Location: ' . $profile_author->location . '</div>';
+	echo '<div class="author-location">' . $profile_author->gp_google_geo_location . '</div>';
 }
+
 
 function theme_authoremail($profile_author) {
     /** Display member email on profile - not in use **/
@@ -1735,7 +1736,7 @@ function theme_authorwww($profile_author) {
 		$profile_author_id = $profile_author->ID;
 		$profile_author_url = $profile_author->user_url;
 		$click_track_tag = '\'/outbound/profile-website/' . $profile_author_id .'/\'';
-		echo '<div class="author-www">Website: <a href="' . $profile_author->user_url . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);">' . $profile_author->user_url . '</a></div>';
+		echo '<div class="author-www"> <a href="' . $profile_author->user_url . '" target="_new" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);">' . $profile_author->user_url . '</a></div>';
 	}
 }
 
@@ -2292,6 +2293,7 @@ function theme_contributortabs($profile_author) {
 	}
 }
 
+
 /** Administrators Profile **/
 function administrator_index() { 
 	# Administrator profiles should never be shown - it's a security issue - never show your login id!!!
@@ -2311,7 +2313,7 @@ function editor_index($profile_author) {
 			theme_authorskype($profile_author);
 			#theme_authorrss($profile_author);
 		echo '<div class="clear"></div></div>';
-		#theme_authorlocation($profile_author);
+		theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
 		theme_authorwww($profile_author);
 		theme_authorviews($profile_author);
@@ -2337,7 +2339,7 @@ function subscriber_index($profile_author) {
 			theme_authorlinkedin($profile_author);
 			theme_authorskype($profile_author);
 		echo '<div class="clear"></div></div>';
-		#theme_authorlocation($profile_author);
+		theme_authorlocation($profile_author);
 		theme_authorposition($profile_author);
 		theme_author_employer($profile_author);
 		theme_authorwww($profile_author);
@@ -2368,6 +2370,7 @@ function contributor_index($profile_author) {
 			theme_authorskype($profile_author);
 			#theme_authorrss($profile_author);
 		echo '<div class="clear"></div></div>';
+		theme_authorlocation($profile_author);
 		theme_authorwww($profile_author);
 		theme_authorviews($profile_author);
 		#theme_authorjoined($profile_author);
