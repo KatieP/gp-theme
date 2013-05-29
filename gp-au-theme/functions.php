@@ -2126,7 +2126,9 @@ function get_google_map() {
      * 			jb@greenpag.es
      */
     
-    if (get_post_type() != "page") { 
+    $post_type = get_post_type();
+    
+    if ($post_type != "page" && $post_type != false) { 
         
         global $post, $gp, $wpdb;
         $current_post_id =  $post->ID;
