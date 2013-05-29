@@ -2036,8 +2036,8 @@ function theme_subscribertabs($profile_author) {
 			<nav class=\"profile-tabs\"><ul>
 				<li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
-				<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
-				<li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
+				<!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
+				
 				<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	            <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 			</ul></nav>
@@ -2047,8 +2047,7 @@ function theme_subscribertabs($profile_author) {
 				{$directory_page_url}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
@@ -2056,8 +2055,7 @@ function theme_subscribertabs($profile_author) {
 				<!--<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>//-->
 				<li><a href=\"{$post_author_url}#tab:favourites;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
@@ -2075,8 +2073,8 @@ function theme_subscribertabs($profile_author) {
 			<nav class=\"profile-tabs\"><ul>
 				<li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">Posts</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites\" class=\"profile-tab-active\">Favourites</a></li>
-				<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
-				<li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
+				<!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
+				
 			</ul></nav>
 			<div class=\"clear\"></div>
 			<nav class=\"profile-tab-posts\"><ul>
@@ -2084,8 +2082,7 @@ function theme_subscribertabs($profile_author) {
 				{$directory_page_url_redirect}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
@@ -2093,8 +2090,7 @@ function theme_subscribertabs($profile_author) {
 				<!--<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>//-->
 				<li><a href=\"{$post_author_url}#tab:favourites;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
@@ -2126,8 +2122,7 @@ function theme_editortabs($profile_author) {
 	            <ul>
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
-	                <li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
-	                <li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
+	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 	            </ul>
@@ -2138,8 +2133,7 @@ function theme_editortabs($profile_author) {
 				{$directory_page_url}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
@@ -2147,8 +2141,7 @@ function theme_editortabs($profile_author) {
 				<!--<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>//-->
 				<li><a href=\"{$post_author_url}#tab:favourites;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
@@ -2167,8 +2160,8 @@ function theme_editortabs($profile_author) {
 	            <ul>
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
-	                <li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
-	                <li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
+	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
+	                
 	            </ul>
 	        </nav>
 	        <div class=\"clear\"></div>
@@ -2177,8 +2170,7 @@ function theme_editortabs($profile_author) {
 				{$directory_page_url_redirect}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
@@ -2187,7 +2179,7 @@ function theme_editortabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:favourites;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
+				
 				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
@@ -2219,8 +2211,7 @@ function theme_contributortabs($profile_author) {
 	            <ul>
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
-	                <li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
-	                <li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
+	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->                
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 	            </ul>
@@ -2231,8 +2222,7 @@ function theme_contributortabs($profile_author) {
 				{$directory_page_url}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
@@ -2240,8 +2230,7 @@ function theme_contributortabs($profile_author) {
 				<!--<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>//-->
 				<li><a href=\"{$post_author_url}#tab:favourites;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
@@ -2260,8 +2249,8 @@ function theme_contributortabs($profile_author) {
 	            <ul>
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
-	                <li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>
-	                <li><a href=\"{$post_author_url}#tab:following\">Following</a></li>
+	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
+	                
 	            </ul>
 	        </nav>
 	        <div class=\"clear\"></div>
@@ -2270,8 +2259,7 @@ function theme_contributortabs($profile_author) {
 				{$directory_page_url_redirect}
 				<li><a href=\"{$post_author_url}#tab:posts;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:posts;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:posts;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:posts;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:posts;post:projects;\">Projects</a></li>
 			</ul></nav>
 			 <nav class=\"profile-tab-favourites\"><ul>
@@ -2279,8 +2267,7 @@ function theme_contributortabs($profile_author) {
 				<!--<li><a href=\"{$post_author_url}#tab:favourites;post:directory;\">Directory</a></li>//-->
 				<li><a href=\"{$post_author_url}#tab:favourites;post:news;\">News</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites;post:events;\">Events</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>
-				<li><a href=\"{$post_author_url}#tab:favourites;post:competitions;\">Competitions</a></li>
+				<li><a href=\"{$post_author_url}#tab:favourites;post:eco-friendly-products;\">Products</a></li>				
 				<li><a href=\"{$post_author_url}#tab:favourites;post:projects;\">Projects</a></li>
 			</ul></nav>
 	        <div class=\"clear\"></div>
