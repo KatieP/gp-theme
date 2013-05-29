@@ -16,7 +16,7 @@
 					        <li><a href="http://greenpages.myshopify.com" target="_blank">Shop</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/terms-and-conditions/">Terms</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/green-pages-privacy-policy/">Privacy</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/rate-card/">Advertise</a></li>
+					        <li><a href="<?php echo $site_url; ?>/advertisers/">Advertisers</a></li>
 					        <li><a href="<?php echo $site_url; ?>/world-map/">World Map</a></li>
 				        </ul>	
 			        </nav>
