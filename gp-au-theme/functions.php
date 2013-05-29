@@ -2629,9 +2629,9 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 				$likecount = abbr_number( $likecount );
 				
 				if ( is_user_logged_in() ) {
-					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
+					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="af-icon-chevron-up' . $likedclass . '"></span><span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span><span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span><span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span></a></div>';
 				} else {
-					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" ><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
+					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" ><span class="af-icon-chevron-up"></span><span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
 				}
 					
 		    	echo '
