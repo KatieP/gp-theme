@@ -363,11 +363,10 @@ function theme_like() {
 		} else {
 			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
 			          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
-			             class="simplemodal-login">
+			             title ="Login to upvote" >
 			              <span class="af-icon-chevron-up"></span>
 			              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
 			              <span class="upvote-login" style="display:none;">Login...</span>
-			              title="Upvote this post and save to favourites"
 			          </a>
 			      </div>';
 		}
