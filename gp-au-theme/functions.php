@@ -1798,55 +1798,55 @@ function set_post_location_data_as_decimal($post_id) {
     
     global $wpdb;
     $post = get_post($post_id);
-    $post_author = get_userdata($post->post_author);
-    $post_author_id = $post_author->ID;
-    
-    $location_meta_key = 	'gp_google_geo_location';
-    $lat_meta_key = 		'gp_google_geo_latitude';
-    $long_meta_key = 		'gp_google_geo_longitude';
-    $country_meta_key = 	'gp_google_geo_country';
-    $admin_lvl_one_key = 	'gp_google_geo_administrative_area_level_1';
-    $admin_lvl_two_key = 	'gp_google_geo_administrative_area_level_2';
-    $admin_lvl_three_key = 	'gp_google_geo_administrative_area_level_3';
-    $locality_key = 		'gp_google_geo_locality';
-    $locality_slug_key = 	'gp_google_geo_locality_slug';
-
-    $post_location = get_post_meta($post_id, $location_meta_key, true);
-
-    if (empty($post_location)) {
-        $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
-        $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
-        $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
-        $author_country =          get_user_meta($post_author_id, $country_meta_key, true);
-        $author_admin_lvl_one =    get_user_meta($post_author_id, $admin_lvl_one_key, true);
-        $author_admin_lvl_two =    get_user_meta($post_author_id, $admin_lvl_two_key, true);
-        $author_admin_lvl_three =  get_user_meta($post_author_id, $admin_lvl_three_key, true);
-        $author_locality =         get_user_meta($post_author_id, $locality_key, true);
-        $author_location_slug =    get_user_meta($post_author_id, $locality_slug_key, true);
-        
-        add_post_meta($post_id, $location_meta_key, $author_location, true);
-        add_post_meta($post_id, $lat_meta_key, $author_lat, true); 
-        add_post_meta($post_id, $long_meta_key, $author_long, true); 
-        add_post_meta($post_id, $country_meta_key, $author_country, true);
-        add_post_meta($post_id, $admin_lvl_one_key, $author_admin_lvl_one, true);
-        add_post_meta($post_id, $admin_lvl_two_key, $author_admin_lvl_two, true);
-        add_post_meta($post_id, $admin_lvl_three_key, $author_admin_lvl_three, true);
-        add_post_meta($post_id, $locality_key, $author_locality, true);
-        add_post_meta($post_id, $locality_slug_key, $author_location_slug, true);
-    }
-    
-    $post_lat  = (float) get_post_meta($post_id, $lat_meta_key, true);
-    $post_long = (float) get_post_meta($post_id, $long_meta_key, true);
     
     // Avoid an infinite loop by the following
 	if ( ! wp_is_post_revision( $post_id ) ){
 	
 		// unhook this function so it doesn't loop infinitely
 		remove_action('publish_gp_news', 'set_post_location_data_as_decimal');
-		remove_action('publish_gp_events', 'set_post_location_data_as_decimal');
 		remove_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
 		remove_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 	    
+		$post_author = get_userdata($post->post_author);
+        $post_author_id = $post_author->ID;
+    
+        $location_meta_key = 	'gp_google_geo_location';
+        $lat_meta_key = 		'gp_google_geo_latitude';
+        $long_meta_key = 		'gp_google_geo_longitude';
+        $country_meta_key = 	'gp_google_geo_country';
+        $admin_lvl_one_key = 	'gp_google_geo_administrative_area_level_1';
+        $admin_lvl_two_key = 	'gp_google_geo_administrative_area_level_2';
+        $admin_lvl_three_key = 	'gp_google_geo_administrative_area_level_3';
+        $locality_key = 		'gp_google_geo_locality';
+        $locality_slug_key = 	'gp_google_geo_locality_slug';
+
+        $post_location = get_post_meta($post_id, $location_meta_key, true);
+
+        if (empty($post_location)) {
+            $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
+            $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
+            $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
+            $author_country =          get_user_meta($post_author_id, $country_meta_key, true);
+            $author_admin_lvl_one =    get_user_meta($post_author_id, $admin_lvl_one_key, true);
+            $author_admin_lvl_two =    get_user_meta($post_author_id, $admin_lvl_two_key, true);
+            $author_admin_lvl_three =  get_user_meta($post_author_id, $admin_lvl_three_key, true);
+            $author_locality =         get_user_meta($post_author_id, $locality_key, true);
+            $author_location_slug =    get_user_meta($post_author_id, $locality_slug_key, true);
+        
+            add_post_meta($post_id, $location_meta_key, $author_location, true);
+            add_post_meta($post_id, $lat_meta_key, $author_lat, true); 
+            add_post_meta($post_id, $long_meta_key, $author_long, true); 
+            add_post_meta($post_id, $country_meta_key, $author_country, true);
+            add_post_meta($post_id, $admin_lvl_one_key, $author_admin_lvl_one, true);
+            add_post_meta($post_id, $admin_lvl_two_key, $author_admin_lvl_two, true);
+            add_post_meta($post_id, $admin_lvl_three_key, $author_admin_lvl_three, true);
+            add_post_meta($post_id, $locality_key, $author_locality, true);
+            add_post_meta($post_id, $locality_slug_key, $author_location_slug, true);
+        }
+    
+        $post_lat  = (float) get_post_meta($post_id, $lat_meta_key, true);
+        $post_long = (float) get_post_meta($post_id, $long_meta_key, true);
+		
 		// update the post, which calls publish_gp_news again
 		$table = 'wp_posts';
 		$data = array(
@@ -1865,13 +1865,11 @@ function set_post_location_data_as_decimal($post_id) {
 		
 		// re-hook this function
 		add_action('publish_gp_news', 'set_post_location_data_as_decimal');
-		add_action('publish_gp_events', 'set_post_location_data_as_decimal');
 		add_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
 		add_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 	}
 }
 add_action('publish_gp_news', 'set_post_location_data_as_decimal');
-add_action('publish_gp_events', 'set_post_location_data_as_decimal');
 add_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
 add_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 
@@ -3685,12 +3683,9 @@ function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) 
      *  		jb@greenpag.es
      */
     
-    global $current_user;
-    $current_data = (isset($current_user->$input_id)) ? $current_user->$input_id : '';
-    
     $correct_input = '<div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" '. $type .' 
-                                 value="'. $current_data .'" '. $read_only .' class="medium" tabindex="5">
+                                 '. $read_only .' class="medium" tabindex="5">
                       </div>';    
 
     return $correct_input;
@@ -4036,5 +4031,67 @@ add_action('publish_gp_news', 'set_post_to_pending_if_subscriber_not_approved');
 add_action('publish_gp_events', 'set_post_to_pending_if_subscriber_not_approved');
 add_action('publish_gp_advertorial', 'set_post_to_pending_if_subscriber_not_approved');
 add_action('publish_gp_projects', 'set_post_to_pending_if_subscriber_not_approved');
+
+function set_event_dates_lat_and_long($entry, $form) {
+    /**
+     * Converts event date data from gravity form into timestamp
+     * so that event can be sorted by start date in event_index()
+     * Also sets post lat and long as decimal for events in post table
+     * Triggered on gravity form submission
+     * 
+     * Author: Jesse Browne
+     *         jb@greenpag.es
+     **/
+    
+    global $wpdb;
+    $post = get_post($entry["post_id"]);
+    $post_id = $post->ID;
+    
+   	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+
+	    remove_action("gform_post_submission", "set_event_dates_lat_and_long", 10, 2);
+	    
+        $start_key    = 'gp_events_startdate';
+        $end_key      = 'gp_events_enddate';
+        $start_date   = get_post_meta($post_id, $start_key, true);
+        $end_date     = get_post_meta($post_id, $end_key, true);
+        
+        if ( !empty($start_date) && !empty($end_date) ) {
+
+            $start_ts = strtotime ($start_date);
+            $end_ts   = strtotime ($end_date);
+            update_post_meta($post_id, $start_key, $start_ts);
+            update_post_meta($post_id, $end_key, $end_ts);
+        
+            $lat_meta_key = 		'gp_google_geo_latitude';
+            $long_meta_key = 		'gp_google_geo_longitude';
+
+            $post_lat  = (float) get_post_meta($post_id, $lat_meta_key, true);
+            $post_long = (float) get_post_meta($post_id, $long_meta_key, true);		
+		
+    		// update the post, with lat and long as decimal
+		    $table = 'wp_posts';
+		    $data = array(
+		            	'post_latitude' => $post_lat,
+		                'post_longitude' => $post_long
+		            );
+		    $where = array(
+		                 'ID' => $post_id
+		             );
+		    $format = array(
+			    	      '%s',
+		                  '%s'
+					  );
+   
+            $wpdb->update($table, $data, $where, $format);            
+            
+        }
+        
+        // re-hook this function
+        add_action("gform_post_submission", "set_event_dates_lat_and_long", 10, 2);
+	}
+}
+add_action("gform_post_submission", "set_event_dates_lat_and_long", 10, 2);
 
 ?>

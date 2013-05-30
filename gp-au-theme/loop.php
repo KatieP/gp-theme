@@ -658,6 +658,7 @@ function default_single() {
 		the_post();
 		echo '<article>';
 			theme_create_post();
+			var_dump($post);
 			theme_update_delete_post();
 			theme_singletitle();
 			theme_singlesocialbar();
@@ -840,7 +841,7 @@ function events_index() {
 
     $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
     $filterby_state =         (!empty($querystring_state)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
-    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " AND m5.meta_value=%s ", $querystring_city ) : '';
+    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value=%s ", $querystring_city ) : '';
 	
     $querytotal = $wpdb->prepare(
                     "SELECT COUNT(*) AS count 
@@ -928,8 +929,9 @@ function events_index() {
 
 	    $pageposts = '';
 	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
-        $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_state ) : '';
-        $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m5.meta_value != %s ", $querystring_city ) : '';
+        $filterby_state =    '';
+        $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value != %s ", $querystring_city ) : '';
+        
         $querystr = $wpdb->prepare(
                 "SELECT DISTINCT
                     " . $wpdb->prefix . "posts.*, 
@@ -1012,9 +1014,7 @@ function events_index() {
                     " . $filterby_state . "
                     " . $filterby_city . "
                     AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
-                ORDER BY gp_events_startdate ASC 
-                LIMIT %d 
-                OFFSET %d;",
+                ORDER BY gp_events_startdate ASC;",
                 $epochtime,
                 $ppp,
                 $offset
