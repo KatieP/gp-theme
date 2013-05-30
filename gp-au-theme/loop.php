@@ -2334,10 +2334,12 @@ function subscriber_index($profile_author) {
 		#theme_authorjoined($profile_author);
 		#theme_authorseen($profile_author);
 	echo '</div><div class="clear"></div>';
+	echo '<div class="small-p-wrapper">';
 	theme_authorbio($profile_author);
 	theme_authorschange($profile_author);
 	theme_authorsprojects($profile_author);
-	theme_authorsstuff($profile_author);	
+	theme_authorsstuff($profile_author);
+	echo '</div>';
 	echo '<div class="clear"></div>';
 	theme_subscribertabs($profile_author); 
 	echo '<div class="clear"></div>';
