@@ -154,7 +154,7 @@ function theme_singledetails() {
 	$post_author_url = get_author_posts_url($posts[0]->post_author);
 	
 	echo '<div class="post-details">
-	          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '18', '', $post_author->display_name ) . '</a>
+	          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '35', '', $post_author->display_name ) . '</a>
 	          Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
 	      </div>';
 	theme_like();
@@ -171,7 +171,7 @@ function theme_singlecontributorstagline() {
 
 	if ( !empty($post_author_tagline) ) {
 		echo '<div class="post-authorsdisclaimer">
-		          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '50', '', $post_author->display_name ) . '</a>
+		          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '35', '', $post_author->display_name ) . '</a>
 		          <div class="post-authorsdisclaimer-details">
 		              Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 1) . ' ago
 		          </div>
@@ -287,7 +287,7 @@ function theme_singlecomments() {
 		#comments_template( '', true );
 		?>
 		<div id="facebook-comments">
-			<h3 id="reply-title">Leave a Reply</h3>
+			<h3 id="reply-title"></h3>
 			<fb:comments href="<?php the_permalink(); ?>" num_posts="10" width="567px"></fb:comments>
 		</div>
 		<?php
@@ -352,11 +352,12 @@ function theme_like() {
 	if ( is_single() ) {
 		if (is_user_logged_in()) {
 			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-                      <a href="#/">
+                      <a href="#/" title="Upvote this post and save to favourites">
                           <span class="af-icon-chevron-up' . $likedclass . '"></span>
                           <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
                           <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
                           <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span>
+                          
                       </a>
                   </div>';
 		} else {
@@ -366,6 +367,7 @@ function theme_like() {
 			              <span class="af-icon-chevron-up"></span>
 			              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
 			              <span class="upvote-login" style="display:none;">Login...</span>
+			              title="Upvote this post and save to favourites"
 			          </a>
 			      </div>';
 		}
@@ -462,7 +464,7 @@ function theme_index_feed_item() {
 			
 	if (is_user_logged_in()) {
 		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-                  <a href="#/" title="Upvote">
+                  <a href="#/" title="Upvote this post and save to favourites">
                       <span class="af-icon-chevron-up' . $likedclass . '"></span>
                       <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
                       <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
