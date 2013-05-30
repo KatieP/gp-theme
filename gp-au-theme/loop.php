@@ -641,6 +641,7 @@ function default_index() {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
 			  <p>No there\'s nothing wrong. It just means there\'s no posts for this section yet!</p>';
 	}
+	echo '<div id="push"></div>';
 }
 
 function default_page() {
@@ -652,6 +653,7 @@ function default_page() {
 			theme_singlepagination();
 		echo '</article>';
 	}
+	echo '<div id="push"></div>';
 }
 
 function default_single() {
@@ -677,6 +679,7 @@ function default_single() {
 			theme_singlecomments();
 		echo '</article>';
 	}
+	echo '<div id="push"></div>';
 }
 
 function attachment_single() {
@@ -790,6 +793,7 @@ function home_index() {
 			<li class="post-previous"><a href="/news/page/2/"><div class="arrow-previous"></div>More Posts</a></li>
 		</ul>
 	</nav>
+	<div id="push"></div>
 	<?php	 
 }
 
@@ -1055,6 +1059,7 @@ function events_index() {
 		</nav>
 		<?php
 	}
+	echo '<div id="push"></div>';
 }
 
 function jobs_index() {

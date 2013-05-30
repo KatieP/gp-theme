@@ -2,6 +2,11 @@
 
 * {
     font-family: Helvetica, Arial, Sans-Serif;
+    margin: 0;
+}
+
+html, body {
+    height: 100%;	
 }
 
 body, pre {
@@ -87,12 +92,18 @@ ul, ol {margin:0;padding:0;}
     padding: 0 5em 0 10em;
 }
 
+body .pos {
+    min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -5em;	
+}
+
 /** CONTENT AREA **/
 #content {
     letter-spacing: 0;
     line-height: 1.5em;
     font-size: 1.2em;
-    min-height: 45em;
 }
 
 #content h1, #content h1 a {
@@ -1440,19 +1451,17 @@ header a:hover {
     width: 100%;
 }
 
-/** CONTENT **/
-#content {
-    
-}
-
 /** FOOTER **/
 
 /** MAIN NAVIGATION & CONTACT NAVIGATION **/
 
+footer, #push {
+    height: 5em;	
+}
+
 footer {
     width:100%;
     float:right;
-    height: 5em;
     background-color: #505050;	
 }
 
