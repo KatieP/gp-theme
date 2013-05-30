@@ -658,7 +658,6 @@ function default_single() {
 		the_post();
 		echo '<article>';
 			theme_create_post();
-			var_dump($post);
 			theme_update_delete_post();
 			theme_singletitle();
 			theme_singlesocialbar();
