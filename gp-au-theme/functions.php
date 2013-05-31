@@ -3517,9 +3517,15 @@ function gp_select_createpost() {
 /** SHOW UPDATE-DELETE BUTTON TO SIGNED IN AUTHORS TO EDIT THEIR PUBLISHED POSTS **/
 function theme_update_delete_post() {
     /**
-     *  Direct to appropriate update post form
-     *  based on post type
+     * Allow users to edit and delete their own posts.
+     * Work is done by passing the post id
+     * to an appropriate gravity form embedded in a page to edit
+     * or by passing the post id to /delete-post-handler/.
+     * 
+     * Author: Jesse Browne
+     *         jb@greenpag.es
      */
+    
     global $post, $current_user;
     
     # Check if this is users own post and show update button if appropriate
@@ -3536,36 +3542,64 @@ function theme_update_delete_post() {
 		case 'gp_advertorial':
 			$update_delete_post_page = '/forms/update-product-post';
 			break;
-		case 'gp_competitions':
-			$update_delete_post_page = '/forms/update-competition';
-			break;
 		case 'gp_events';
 		    $update_delete_post_page = '/forms/update-event/';
 			break;
 	}
 	
-	# Route to appropriate form
-	theme_update_delete_this_post($update_delete_post_page);
-}
-
-function theme_update_delete_this_post($update_delete_post_page) {
-    /**
-     * Allow users to edit their own posts by passing the post id
-     * to a gravity form embedded in a page. 
-     */
-    
-    global $post, $current_user;
-
-    # Construct link to appropriate form passing post id via gform_post_id
-    $gform_prefix = '?gform_post_id=';
-    $post_id = $post->ID;
+	# Construct link to appropriate form passing post id via gform_post_id
+    $gform_prefix =      '?gform_post_id=';
+    $post_id =           $post->ID;
     $update_post_link =  $update_delete_post_page . $gform_prefix . $post_id;
-	$button = '<div class="new-action">
-	               <span class="right">
-	                   <a href="'. $update_post_link .'" class="new-post-action">Edit this post</a>
-	               </span>
-	           </div>';
-	echo $button;  
+    $site_url = get_site_url();
+    
+    ?>
+    <script type="text/javascript">
+		<!--		
+		function delete_post_dialog() {
+			site_url =     '<?php echo $site_url; ?>';
+			action_url =   site_url + '/delete-post-handler';
+			post_id =      '<?php echo $post_id; ?>';
+			confirm_str =  '<p>Are you sure you want to delete this post?</p>';
+			confirm_str += '<p>This action cannot be undone.</p>';
+			confirm_str += '<form action="' + action_url + '" method="post">';
+			confirm_str += '    <span>';
+			confirm_str += '        <input type="hidden" name="delete_this_post" id="delete_this_post" value="' + post_id + '">';
+			confirm_str += '    </span>';
+			confirm_str += '    <span>';
+			confirm_str += '        <input onclick="cancel_delete_post();" type="button" value="Cancel" onclick="cancel_delete_post();">';
+			confirm_str += '    </span>';
+			confirm_str += '    <span>';
+			confirm_str += '        <input onclick="delete_the_post();" type="submit" value="Delete" onclick="delete_the_post();">';
+			confirm_str += '    </span>';
+			confirm_str += '</form>';
+				
+			$(function() {
+				$( '#delete-post-dialog' ).dialog({ modal: true }).html(confirm_str).delay(20000).hide(function() { $( '#delete-post-dialog' ).dialog('close') }); 
+			});
+		}
+
+		function cancel_delete_post() {
+			$(function() {
+				$( '#delete-post-dialog' ).dialog('close');
+			});	
+		}
+
+		//-->
+	</script>
+	<div id="delete-post-dialog" title="Delete this post"></div>
+	<div class="new-action">
+	    <span class="right">
+	        <a href="#" onclick="delete_post_dialog();" class="new-post-action">Delete this post</a>
+	    </span>
+	</div>
+	<div class="clear"></div>  
+    <div class="new-action">
+	    <span class="right">
+	        <a href="<?php echo $update_post_link; ?>" class="new-post-action">Edit this post</a>
+	    </span>
+	</div>
+	<?php
 }
 
 function theme_single_tags() {
