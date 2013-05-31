@@ -302,16 +302,26 @@ function theme_indexdetails($format='full') {
 	global $post;
 	$post_author = get_userdata($post->post_author);
 	$post_author_url = get_author_posts_url($post->post_author);
+    
+	$site_posttypes = Site::getPostTypes();
+    foreach ( $site_posttypes as $site_posttype ) {
+	    if ( $site_posttype['id'] == get_post_type() ) {
+	        $post_type_title = $site_posttype['title'];
+	        $post_type_url = $site_posttype['slug'];
+	    }   
+	}
+	
+	$in = ( is_home() ) ? 'in <a href="/' . $post_type_url . '">' . $post_type_title . '</a>' : '';
 	
 	if ($format == 'full') {
 		echo '<div class="post-details">
-		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
+		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . $in .' ' . time_ago(get_the_time('U'), 0) . ' ago 
 		      </div>';
 	}
 	
 	if ($format == 'author') {
 		echo '<div class="post-details">
-		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
+		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . $in .' ' . time_ago(get_the_time('U'), 0) . ' ago 
 		      </div>';
 	}
 }
@@ -418,15 +428,7 @@ function theme_index_feed_item() {
     		  </span>';
 	}
 	
-	echo '<div class="profile-postbox">';			 		
-	
-    $site_posttypes = Site::getPostTypes();
-    foreach ( $site_posttypes as $site_posttype ) {
-	    if ( $site_posttype['id'] == get_post_type() ) {
-	        $post_title = $site_posttype['title'];
-	        $post_url = $site_posttype['slug'];
-	    }   
-	}
+	echo '<div class="profile-postbox">';
 
 	?>
     <h1 class="profile-title">
@@ -439,11 +441,9 @@ function theme_index_feed_item() {
 	$location = get_post_meta($post->ID, 'gp_google_geo_location');
 	$where =   (!empty($location)) ? $location : '';
 	
-	echo '<span class="hp_miniauthor">
-			 By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> 
-			 in <a href="/' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
-          </span>
-          <div class="post-details"> '. $location[0] .' </div>';
+	theme_indexdetails('author');
+
+    echo '<div class="post-details"> '. $location[0] .' </div>';
 			
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';

@@ -1306,12 +1306,9 @@ function relevant_posts() {
 	}
 }
 
-/* SHOWS THE NEXT 3 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
-function get_events() {			
+/* SHOWS THE NEXT 3 UP COMING  EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
+function get_events_calendar_and_upcoming_events() {			
 	global $wpdb, $post, $gp;
-	
-	$edition_states = $gp->states;
-	$state_subset = ( isset( $edition_states[0]['subset_plural'] ) ? ucwords( $edition_states[0]['subset_plural'] ) : "States" );
 	
 	$epochtime = strtotime('now');
 
