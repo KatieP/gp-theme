@@ -19,6 +19,10 @@
 // Hide wordpress toolbar from front end
 add_filter( 'show_admin_bar', '__return_false' );
 
+/* Thumbnail support and custom image size for posts */
+add_theme_support( 'post-thumbnails' );
+add_image_size( 'gp_custom', 567, 425 );
+
 //Bug fix for Profile Editor Pro Plugin
 function addCustomFields(){
     $wppbFetchArray = get_option('wppb_custom_fields');

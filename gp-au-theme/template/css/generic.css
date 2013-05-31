@@ -180,6 +180,8 @@ body .pos {
 #content p, #content ul, #content ol, #content img {
     margin-top: 1.6em;
     max-width: 100%;
+    width: auto !important;
+    height: auto !important;
 }
 
 #content p img {

@@ -670,6 +670,7 @@ function default_single() {
 				theme_singledetails();
 			}
 			theme_single_event_details();
+			the_post_thumbnail('gp_custom');
 			the_content();
 			theme_singlepagination();
 			theme_single_tags();
