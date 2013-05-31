@@ -3495,7 +3495,7 @@ function gp_select_createpost() {
     global $current_user;
     
     # Set link to create news post for Content Partners
-    $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"". get_site_url() ."/forms/create-news-post/\">News (Free)</a></li>" : "";
+    $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"". get_site_url() ."/forms/create-news-post/\">News</a></li>" : "";
     
     # Set links to forms for monthly advertisers and non monthly advertisers
     $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
@@ -3506,9 +3506,9 @@ function gp_select_createpost() {
 		<a href=\"". get_site_url() ."/wp-admin\" class=\"profile-action\">Create post<span class=\"bullet5\"></span></a>
 		<ul class=\"profile-action-items\">
 		    ". $post_my_news_link ."
-            <li><a href=\"". get_site_url() ."/forms/create-event-post/\">Event (Free)</a></li>
+            <li><a href=\"". get_site_url() ."/forms/create-event-post/\">Event</a></li>
             <li>". $post_my_product_link ."</li>
-            <li><a href=\"". get_site_url() ."/forms/create-project-post/\">Project (Free)</a></li>
+            <li><a href=\"". get_site_url() ."/forms/create-project-post/\">Project</a></li>
 		</ul>
 	</div>
 	";
