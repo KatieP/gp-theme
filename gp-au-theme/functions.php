@@ -3463,12 +3463,21 @@ function theme_profile_analytics($profile_pid) {
 /* BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES */
 
 function theme_profilecreate_post(){
-	if ( !is_user_logged_in() ) { ?>
-		<div class="profile-join-dialogue">
-			<a href="<?php echo get_site_url(); ?>/welcome/" class="simplemodal-register profile-action-join">Join & create your profile now!</a>
-			<br />
-			<a href="<?php echo get_site_url(); ?>/get-involved/become-a-member/" class="profile-action-why">Why join? Find out more about us.</a>
-		</div> <?php 
+	if ( !is_user_logged_in() ) { 
+	    $site_url = get_site_url(); ?>
+	    <div class="wide-button-wrapper">
+            <div class="icon-container-row">
+    		    <div id="post-product-button-bar">
+	    		    <a href="<?php echo $site_url; ?>/welcome/">
+		    	        <span id="product-button">Join greenpag.es!</span>
+		    	    </a>
+		    	    <a  href="<?php echo $site_url; ?>/welcome/">
+    		    		<div id="inner-padding" >Use greenpag.es to get involved with or promote environmental issues in your local area</div>
+    				</a>
+    		    </div>    		    
+    		</div>
+    		<div class="clear"></div>
+        </div> <?php 
 	}
 }	
 

@@ -3447,8 +3447,24 @@ ul.categorieslistmain {
     margin-left: 0.3em;
 }
 
-.icon-container .icon-container-row #post-product-button-bar #product-button {
-    background-color: #FC468C;	
+.icon-container .icon-container-row #post-product-button-bar #product-button,
+.icon-container-row #post-product-button-bar #product-button {
+    background-color: #FC468C;
+}
+
+#content .wide-button-wrapper .icon-container-row #post-product-button-bar #product-button {
+    width: 15em;
+    margin-bottom: 0.5em;
+}
+
+#content .wide-button-wrapper .icon-container-row #post-product-button-bar {
+    width:50%;
+    margin: 5% 20% 0 30%;
+}
+
+#content .wide-button-wrapper .icon-container-row #post-product-button-bar #inner-padding {
+    padding: 0 2%;
+    text-align: center;
 }
 
 /** BUTTON HOVER EFFECTS **/
