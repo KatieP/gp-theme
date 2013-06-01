@@ -1729,6 +1729,46 @@ function email_after_post_approved($post_ID) {
 }
 add_action('pending_to_publish', 'email_after_post_approved');
 
+function force_comments_open($post_id) {
+    /**
+     * 
+     **/
+
+    global $wpdb;
+    $post = get_post($post_id);
+    $post_score = strtotime($post->post_date_gmt);
+    
+	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+		remove_action('publish_gp_news', 'force_comments_open');
+		remove_action('publish_gp_events', 'force_comments_open');
+		remove_action('publish_gp_advertorial', 'force_comments_open');
+		remove_action('publish_gp_projects', 'force_comments_open');
+    
+		// update the post, which calls publish_gp_news again
+		$comment_status =  'open';
+		$table =           'wp_posts';
+		
+		$data =            array( 'comment_status' => $comment_status );
+		$where =           array( 'ID' => $post_id );
+		$format =          array( '%s' );
+
+        $wpdb->update($table, $data, $where, $format);
+		
+		// re-hook this function
+		add_action('publish_gp_news', 'force_comments_open');
+		add_action('publish_gp_events', 'force_comments_open');
+		add_action('publish_gp_advertorial', 'force_comments_open');
+		add_action('publish_gp_projects', 'force_comments_open');
+	}
+}
+add_action('publish_gp_news', 'force_comments_open');
+add_action('publish_gp_events', 'force_comments_open');
+add_action('publish_gp_advertorial', 'force_comments_open');
+add_action('publish_gp_projects', 'force_comments_open');
+
 function create_popularity_timestamp ($post_id) {	
     /** 
      *  Sets date published in unix time as popularity score.
@@ -4099,23 +4139,23 @@ function set_event_dates_lat_and_long($entry, $form) {
             update_post_meta($post_id, $start_key, $start_ts);
             update_post_meta($post_id, $end_key, $end_ts);
         
-            $lat_meta_key = 		'gp_google_geo_latitude';
-            $long_meta_key = 		'gp_google_geo_longitude';
+            $lat_meta_key =    'gp_google_geo_latitude';
+            $long_meta_key =   'gp_google_geo_longitude';
 
-            $post_lat  = (float) get_post_meta($post_id, $lat_meta_key, true);
-            $post_long = (float) get_post_meta($post_id, $long_meta_key, true);		
-		
+            $post_lat  =       (float) get_post_meta($post_id, $lat_meta_key, true);
+            $post_long =       (float) get_post_meta($post_id, $long_meta_key, true);
+            
     		// update the post, with lat and long as decimal
 		    $table = 'wp_posts';
 		    $data = array(
-		            	'post_latitude' => $post_lat,
+		            	'post_latitude'  => $post_lat,
 		                'post_longitude' => $post_long
 		            );
 		    $where = array(
 		                 'ID' => $post_id
 		             );
 		    $format = array(
-			    	      '%s',
+		                  '%s',
 		                  '%s'
 					  );
    
