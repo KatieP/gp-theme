@@ -22,7 +22,7 @@ $ASKAPACHE_S_C = array(
   'You don\'t have permission to access THEREQUESTURI on this '.
   'server.'),
 '404' => array(
-  'Not Found', 
+  'This page is not found', 
   'We couldn\'t find <acronym title="THEREQUESTURI">that uri'.
   '</acronym> on our server, though it\'s most certainly not '.
   'your fault.'),
@@ -134,9 +134,10 @@ $ASKAPACHE_S_C = array(
   'Not Extended', 
   'A mandatory extension policy in the request is not accepted by the '.
   'server for this resource.')
-);
- 
- 
+); ?>
+
+
+<?php
 
 // prints out the html for the error, taking the status code as input
 function aa_print_html ($AA_C){
@@ -177,10 +178,38 @@ ob_start();
 @header("HTTP/1.1 $AA_STATUS_CODE $AA_REASON_PHRASE",1);
 @header("Status: $AA_STATUS_CODE $AA_REASON_PHRASE",1);
 
+$site_url = get_site_url();
+
 if(!aa_print_html($AA_STATUS_CODE)){
-    ?>
-    <h1><?php _e("$AA_STATUS_CODE $AA_REASON_PHRASE"); ?></h1>
+    get_header(); ?>
+    <div class="pos">	
+        <div id="col2" class="set3col">
+		    <div id="content">
+		    	<br /><br /><br />
+                <h1><?php _e("$AA_STATUS_CODE $AA_REASON_PHRASE"); 
+                echo '
+                </h1>
+                <p>The page you are looking for must have been removed.</p>
+                <p>But alas! All is not lost!</p>
+                <p>Go to the <a href="'. $site_url .'" >homepage</a> </p>
+                <p>Or read this heart warming article about <a href="'. $site_url .'/news/hero-wombats-dig-to-rescue-other-wombats-trapped-by-floodwaters/">hero wombats who dig to rescue other wombats </a> during a flood!</p>
+                <img src = "'. $site_url .'/wp-content/uploads/2011/04/Picture-491.png">
+                
+                <br />
+                <br />
+                <br />
+                ';
+                ?>
+     		</div>
+	    </div>
+    </div>
+    <?php get_footer(); ?>
+ 
     <?php if(function_exists('aa_google_404')) aa_google_404(); ?>
-<?php } 
+<?php }
+
+
+ 
 exit; exit();
+
 ?>
