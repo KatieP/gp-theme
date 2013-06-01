@@ -857,6 +857,7 @@ function events_index() {
                         LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
                         LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
                         LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
+                        LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
                     WHERE 
                         post_status='publish' 
                         AND post_type='gp_events' 
@@ -877,41 +878,8 @@ function events_index() {
 
 	if ($on_page == 0) { $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
-	
-    $querystr = $wpdb->prepare(
-                "SELECT DISTINCT
-                    " . $wpdb->prefix . "posts.*, 
-                    m0.meta_value AS _thumbnail_id, 
-                    m1.meta_value AS gp_events_enddate, 
-                    m2.meta_value AS gp_events_startdate, 
-                    m3.meta_value AS gp_google_geo_country, 
-                    m4.meta_value AS gp_google_geo_administrative_area_level_1, 
-                    m5.meta_value AS gp_google_geo_locality_slug,
-                    m6.meta_value AS gp_google_geo_locality  
-                FROM $wpdb->posts 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
-                WHERE 
-	                post_status='publish' 
-                    AND post_type='gp_events' 
-                    " . $filterby_country . "
-                    " . $filterby_state . "
-                    " . $filterby_city . "
-                    AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
-                ORDER BY gp_events_startdate ASC 
-                LIMIT %d 
-                OFFSET %d;",
-                $epochtime,
-                $ppp,
-                $offset
-            );
 
-	$pageposts = $wpdb->get_results($querystr, OBJECT);
+	$pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);
 
 	$sorted_posts = array();
 	$num_posts = count($pageposts);
@@ -937,40 +905,7 @@ function events_index() {
         $filterby_state =    '';
         $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value != %s ", $querystring_city ) : '';
         
-        $querystr = $wpdb->prepare(
-                "SELECT DISTINCT
-                    " . $wpdb->prefix . "posts.*, 
-                    m0.meta_value AS _thumbnail_id, 
-                    m1.meta_value AS gp_events_enddate, 
-                    m2.meta_value AS gp_events_startdate, 
-                    m3.meta_value AS gp_google_geo_country, 
-                    m4.meta_value AS gp_google_geo_administrative_area_level_1, 
-                    m5.meta_value AS gp_google_geo_locality_slug,
-                    m6.meta_value AS gp_google_geo_locality  
-                FROM $wpdb->posts 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
-                WHERE 
-	                post_status='publish' 
-                    AND post_type='gp_events' 
-                    " . $filterby_city . "
-                    " . $filterby_country . "
-                    " . $filterby_state . "
-                    AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
-                ORDER BY gp_events_startdate ASC 
-                LIMIT %d 
-                OFFSET %d;",
-                $epochtime,
-                $ppp,
-                $offset
-         );
-        
-        $pageposts = $wpdb->get_results($querystr, OBJECT);        
+        $pageposts = $pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);        
         $num_additional_posts = count($pageposts);
         $country_map = get_country_map();
 	    $country_pretty_name = $country_map[$querystring_country];
@@ -993,39 +928,8 @@ function events_index() {
     	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value != %s ", $querystring_country ) : '';
             $filterby_state =    '';
             $filterby_city =     '';
-
-            $querystr = $wpdb->prepare(
-                "SELECT DISTINCT
-                    " . $wpdb->prefix . "posts.*, 
-                    m0.meta_value AS _thumbnail_id, 
-                    m1.meta_value AS gp_events_enddate, 
-                    m2.meta_value AS gp_events_startdate, 
-                    m3.meta_value AS gp_google_geo_country, 
-                    m4.meta_value AS gp_google_geo_administrative_area_level_1, 
-                    m5.meta_value AS gp_google_geo_locality_slug,
-                    m6.meta_value AS gp_google_geo_locality  
-                FROM $wpdb->posts 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 on m0.post_id=" . $wpdb->prefix . "posts.ID and m0.meta_key='_thumbnail_id' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='gp_events_enddate' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 on m2.post_id=" . $wpdb->prefix . "posts.ID and m2.meta_key='gp_events_startdate' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 on m3.post_id=" . $wpdb->prefix . "posts.ID and m3.meta_key='gp_google_geo_country' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 on m4.post_id=" . $wpdb->prefix . "posts.ID and m4.meta_key='gp_google_geo_administrative_area_level_1' 
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 on m5.post_id=" . $wpdb->prefix . "posts.ID and m5.meta_key='gp_google_geo_locality_slug'
-                    LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 on m6.post_id=" . $wpdb->prefix . "posts.ID and m6.meta_key='gp_google_geo_locality'
-                WHERE 
-	                post_status='publish' 
-                    AND post_type='gp_events' 
-                    " . $filterby_country . "
-                    " . $filterby_state . "
-                    " . $filterby_city . "
-                    AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d 
-                ORDER BY gp_events_startdate ASC;",
-                $epochtime,
-                $ppp,
-                $offset
-            );
             
-            $pageposts = $wpdb->get_results($querystr, OBJECT);
+            $pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);
             $num_global_posts = count($pageposts);
             
     	    if ($num_global_posts > 0) {

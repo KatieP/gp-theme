@@ -1310,19 +1310,20 @@ function relevant_posts() {
 	}
 }
 
-/* SHOWS THE NEXT 3 UP COMING  EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
-function get_calendar_and_upcoming_events() {
-	global $wpdb, $post, $gp;
-	
-	$epochtime = strtotime('now');
-
-	$user_country =           $gp->location['country_iso2'];
-	$location_country_slug =  ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $user_country;
-	$querystring_country =    strtoupper( $location_country_slug );
-	
-	$filterby_country =       '';
-	$filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
-	
+function get_events($filterby_country = '', $filterby_state = '', $filterby_city = '', $max_results = '', $offset_num = '') {
+	/**
+	 * Returns set of events from database.
+	 * Called by events_index() and get_calendar_and_upcoming_events()
+	 * 
+	 * Author: Jesse Browne
+	 *         jb@greenpag.es
+	 **/
+    
+    global $wpdb, $gp;    
+	$epochtime =  strtotime('now'); 
+    $limit_by =   (!empty($max_results)) ? 'LIMIT %d' : '';
+    $offset =     (!empty($offset_num)) ? 'OFFSET %d' : '';
+    
 	/* SQL QUERY FOR COMING EVENTS */
 	$querystr = $wpdb->prepare(
 	        "SELECT DISTINCT
@@ -1345,13 +1346,41 @@ function get_calendar_and_upcoming_events() {
             WHERE
 	            post_status='publish'
                 AND post_type='gp_events'
-                " . $filterby_country . "
+                    " . $filterby_country . "
+                    " . $filterby_state . "
+                    " . $filterby_city . "
 	            AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d
-            ORDER BY gp_events_startdate ASC;",
-            $epochtime
+            ORDER BY gp_events_startdate ASC ".
+	        $limit_by .
+	        $max_results . 
+	        $offset .";",
+            $epochtime,
+            $max_results,
+            $offset_num
 	);
 	
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
+
+	return $pageposts;
+}
+
+/* SHOWS THE NEXT 3 UP COMING EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
+function get_calendar_and_upcoming_events() {
+    
+	global $wpdb, $post, $gp;
+	
+	$user_country =           $gp->location['country_iso2'];
+	$location_country_slug =  ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $user_country;
+	$querystring_country =    strtoupper( $location_country_slug );
+	$filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
+    
+	$pageposts = get_events($filterby_country);
+    $num_posts = count($pageposts);
+    
+    if ($num_posts == 0) {
+        $pageposts = get_events();
+    }
+    
 	$numPosts = $wpdb->num_rows-1;
 	$location_filter_uri =  get_location_filter_uri();				
 	
@@ -1410,10 +1439,6 @@ function get_calendar_and_upcoming_events() {
 				echo '</div><div class="clear"></div></div>';
 				$i++;
 			}
-			
-			#unset($event_title, $displayday, $displaymonth, $str_month, $displayyear, $displayendday, 
-            #      $displayendmonth, $str_endmonth, $event_link_url, $post_id, $displaytitle, $event_date_string, 
-            #      $imageArray, $imageURL, $post);
 		}
 		
 		$event_str .= ']';
