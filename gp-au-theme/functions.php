@@ -1311,15 +1311,17 @@ function relevant_posts() {
 }
 
 /* SHOWS THE NEXT 3 UP COMING  EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
-function get_calendar_and_upcoming_events() {			
+function get_calendar_and_upcoming_events() {
 	global $wpdb, $post, $gp;
 	
 	$epochtime = strtotime('now');
 
-	$filterby_country = "";
-	if ( isset( $gp->location['country_iso2'] ) && !empty( $gp->location['country_iso2'] ) ) {
-	    $filterby_country = $wpdb->prepare( " AND m3.meta_value=%s ", $gp->location['country_iso2'] );
-	}
+	$user_country =           $gp->location['country_iso2'];
+	$location_country_slug =  ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $user_country;
+	$querystring_country =    strtoupper( $location_country_slug );
+	
+	$filterby_country =       '';
+	$filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
 	
 	/* SQL QUERY FOR COMING EVENTS */
 	$querystr = $wpdb->prepare(
