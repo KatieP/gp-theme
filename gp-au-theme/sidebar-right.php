@@ -8,7 +8,7 @@
 				
 				<?php
                 if ( is_home() || is_front_page() || ($post_type == 'gp_events') ) {
-                    get_events_calendar_and_upcoming_events(); 
+                    get_calendar_and_upcoming_events(); 
                 } 
 				?>
 

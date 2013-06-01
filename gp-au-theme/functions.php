@@ -1311,7 +1311,7 @@ function relevant_posts() {
 }
 
 /* SHOWS THE NEXT 3 UP COMING  EVENTS UNDER THE EVENT CALENDAR IN SIDEBAR-RIGHT */ 
-function get_events_calendar_and_upcoming_events() {			
+function get_calendar_and_upcoming_events() {			
 	global $wpdb, $post, $gp;
 	
 	$epochtime = strtotime('now');
@@ -1323,7 +1323,7 @@ function get_events_calendar_and_upcoming_events() {
 	
 	/* SQL QUERY FOR COMING EVENTS */
 	$querystr = $wpdb->prepare(
-	        "SELECT
+	        "SELECT DISTINCT
                 " . $wpdb->prefix . "posts.*,
 	            m0.meta_value AS _thumbnail_id,
 	            m1.meta_value AS gp_events_enddate,
