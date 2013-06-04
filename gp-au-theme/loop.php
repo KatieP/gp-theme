@@ -536,10 +536,6 @@ function default_index() {
 	$querystring_city =       $location_city ;
 	$querystring_page =       get_query_var( 'paged' );
 	
-	echo '$querystring_page: ';
-	var_dump($querystring_page);
-	echo '<br />';
-	
     $geo_currentlocation = $gp->location;
 
     $epochtime =         strtotime('now');
@@ -571,28 +567,8 @@ function default_index() {
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
 	$on_page = intval($querystring_page);
 	
-	echo '$wp_query->found_posts: ';
-	var_dump($wp_query->found_posts);
-	echo '<br />';
-	
-	echo '$wp_query->max_num_pages: ';
-	var_dump($wp_query->max_num_pages);
-	echo '<br />';
-	
-	echo '$on_page: ';
-	var_dump($on_page);
-	echo '<br />';
-	
 	if ($on_page == 0) { $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
-	
-	echo '$on_page: ';
-	var_dump($on_page);
-	echo '<br />';
-	
-	echo '$offset: ';
-	var_dump($offset);
-	echo '<br />';
 
     /** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
     $querystr = $wpdb->prepare(
@@ -632,18 +608,9 @@ function default_index() {
             $sorted_posts[$popularity_score_thisuser] = $post; 
 	    }
 
-        # Sort posts by popularity score and get top 20
+        # Sort posts by popularity score and get appropriate 20
 	    krsort($sorted_posts);
-
-	    echo '$ppp: ';
-	    var_dump($ppp);
-	    echo '<br />';
-	    
 	    $ppp = $ppp + $offset;
-
-	    echo '$ppp: ';
-	    var_dump($ppp);
-	    echo '<br />';
 	    
         $display_posts = array_slice($sorted_posts, $offset, $ppp, true);
 	    
