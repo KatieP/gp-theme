@@ -518,7 +518,7 @@ function theme_index_feed_item() {
 /*** TEMPLATE RENDERING ***/
 
 function default_index() {
-    global $wpdb, $post, $gp;
+    global $wpdb, $wp_query, $post, $gp;
 
     $user_lat =               $gp->location['latitude'];
     $user_long =              $gp->location['longitude'];
@@ -534,6 +534,11 @@ function default_index() {
 	$querystring_country =    strtoupper( $location_country_slug );
 	$querystring_state =      ( !empty($location_state_slug) ) ? strtoupper( $location_state_slug ) : '';
 	$querystring_city =       $location_city ;
+	$querystring_page =       get_query_var( 'paged' );
+	
+	echo '$querystring_page: ';
+	var_dump($querystring_page);
+	echo '<br />';
 	
     $geo_currentlocation = $gp->location;
 
@@ -564,10 +569,30 @@ function default_index() {
 
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
-	$on_page = intval($querystring_page);	
+	$on_page = intval($querystring_page);
+	
+	echo '$wp_query->found_posts: ';
+	var_dump($wp_query->found_posts);
+	echo '<br />';
+	
+	echo '$wp_query->max_num_pages: ';
+	var_dump($wp_query->max_num_pages);
+	echo '<br />';
+	
+	echo '$on_page: ';
+	var_dump($on_page);
+	echo '<br />';
 	
 	if ($on_page == 0) { $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
+	
+	echo '$on_page: ';
+	var_dump($on_page);
+	echo '<br />';
+	
+	echo '$offset: ';
+	var_dump($offset);
+	echo '<br />';
 
     /** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
     $querystr = $wpdb->prepare(
@@ -609,7 +634,18 @@ function default_index() {
 
         # Sort posts by popularity score and get top 20
 	    krsort($sorted_posts);
-        $display_posts = array_slice($sorted_posts, 0, $ppp, true);
+
+	    echo '$ppp: ';
+	    var_dump($ppp);
+	    echo '<br />';
+	    
+	    $ppp = $ppp + $offset;
+
+	    echo '$ppp: ';
+	    var_dump($ppp);
+	    echo '<br />';
+	    
+        $display_posts = array_slice($sorted_posts, $offset, $ppp, true);
 	    
         # Display home page feed 	
 	    foreach ( $display_posts as $post ) { 
@@ -619,13 +655,10 @@ function default_index() {
 	    
 	    if (  $wp_query->max_num_pages > 1 ) {
             $page_url = "/" . $posttype_slug . "/";
-            if ( !empty( $querystring_country ) ) { $page_url .= strtolower($querystring_country) . '/'; }
-            if ( !empty( $querystring_state ) ) { $page_url .= strtolower($querystring_state) . '/'; }
-            if ( !empty( $querystring_city ) ) { $page_url .= $querystring_city . '/'; }
             
-            if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>Later in Time</a>"; }
-            if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
-            if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Sooner in Time<div class=\"arrow-next\"></div></a>"; }
+            if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>More Posts</a>"; }
+            if ( $on_page != 1 ) { $next = "<a href=\"" . $page_url . "page/" . ($on_page - 1) . "\">Recent Posts<div class=\"arrow-next\"></div></a>"; }
+            if ( ( $on_page - 1 ) == 1 ) { $next = "<a href=\"" . $page_url . "\">Recent Posts<div class=\"arrow-next\"></div></a>"; }
             
             ?>
 			<nav id="post-nav">
@@ -640,7 +673,7 @@ function default_index() {
 		echo '<h1 class="loop-title">We couldn\'t find what you were look for!</h1>
 			  <p>No there\'s nothing wrong. It just means there\'s no posts for this section yet!</p>';
 	}
-	echo '<div id="push"></div>';
+	?><div id="push"></div><?php
 }
 
 function default_page() {
