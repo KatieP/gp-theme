@@ -894,11 +894,11 @@ function events_index() {
 		    }		
     	}
 	} else {
-		    echo '<h3>There are currently no events listed for '. $location_filter .'.</h3>';
+	    echo '<h3>There are currently no events listed for '. $location_filter .'.</h3>';
 	}
 	
 	/* Show events that match location filter country outside of location filter city */
-	if ($numposts < 20) {
+	if ($num_posts < 20) {
 
 	    $pageposts = '';
 	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
@@ -920,7 +920,7 @@ function events_index() {
 		}
     	
     	$num_posts_so_far = $num_posts + $num_additional_posts;
-
+    	
     	/* Show events from around the world outside of location filter country */
     	if ($num_posts_so_far < 20) {
 
@@ -934,6 +934,7 @@ function events_index() {
             
     	    if ($num_global_posts > 0) {
     		    $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
+    		    $i = ($num_posts_so_far == 0) ? 20 : $i;
                 $i = ($final_num_posts < $i) ? $final_num_posts : $i;
                 $global_posts = array_slice($pageposts, 0, $i, true);
     		    

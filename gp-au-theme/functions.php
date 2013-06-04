@@ -2234,14 +2234,26 @@ function get_google_map() {
            		$long_min =   $center_map_long - 3;
             	$long_max =   $center_map_long + 3;            	
             	$pageposts =  get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
-			
+			    
             }
             
             $num_posts = count($pageposts);
             $zoom = ($num_posts > 5) ? 11 : 7;
             
+            if ($num_posts < 5) {
+            	
+            	$lat_min =    -90;
+            	$lat_max =    90;
+           		$long_min =   -180;
+            	$long_max =   180;            	
+            	$pageposts =  get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_limit);
+			    $zoom =       1;
+            }
+            
+            $num_posts = count($pageposts);
+            
             # Construct location data in JSON for google map display
-            if ($pageposts) {
+            if ($num_posts > 0) {
                 
                 $json = '[';
                 foreach ($pageposts as $post) {                    
@@ -2275,30 +2287,30 @@ function get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_l
 	/** SQL TO GET 20 MOST RECENT POSTS AROUND MAP CENTER **/
     $querystr = $wpdb->prepare(
         		    "SELECT DISTINCT
-            		" . $wpdb->prefix . "posts.*,
-            		 m0.meta_value AS _thumbnail_id,
-            m1.meta_value AS gp_enddate,
-            m2.meta_value AS gp_startdate
-        FROM $wpdb->posts
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_events_enddate' 
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_events_startdate'
-       WHERE
-            post_status='publish'
-            AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
-            AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
-            AND m0.meta_value >= 1
-            AND (
-                post_type='gp_news' 
-                OR post_type='gp_advertorial' 
-                OR post_type='gp_projects' 
-                OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
-            )
-        ORDER BY post_date DESC
-        LIMIT %d;",
-        $epochtime,
-        $post_limit
-    );
+            			" . $wpdb->prefix . "posts.*,
+            		 	m0.meta_value AS _thumbnail_id,
+                     	m1.meta_value AS gp_enddate,
+            			m2.meta_value AS gp_startdate
+        			FROM $wpdb->posts
+            			LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
+            			LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_events_enddate' 
+            			LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_events_startdate'
+       				WHERE
+            			post_status='publish'
+            			AND ( ( post_latitude > " . $lat_min . " ) AND ( post_latitude < " . $lat_max . " ) )
+            			AND ( ( post_longitude > " . $long_min . " ) AND ( post_longitude < " . $long_max . " ) )
+            			AND m0.meta_value >= 1
+            			AND (
+                				post_type='gp_news' 
+                				OR post_type='gp_advertorial' 
+                				OR post_type='gp_projects' 
+                				OR ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+            				)
+        			ORDER BY post_date DESC
+        			LIMIT %d;",
+                    $epochtime,
+                    $post_limit
+                );
            
     $pageposts = $wpdb->get_results($querystr, OBJECT);
 
