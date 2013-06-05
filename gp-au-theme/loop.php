@@ -905,7 +905,7 @@ function events_index() {
         $filterby_state =    '';
         $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value != %s ", $querystring_city ) : '';
         
-        $pageposts = $pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);        
+        $pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);        
         $num_additional_posts = count($pageposts);
         $country_map = get_country_map();
 	    $country_pretty_name = $country_map[$querystring_country];
