@@ -4169,11 +4169,12 @@ function set_event_dates_lat_and_long($entry, $form) {
     global $wpdb;
     $post = get_post($entry["post_id"]);
     $post_id = $post->ID;
-    
-   	// Avoid an infinite loop by the following
-	if ( ! wp_is_post_revision( $post_id ) ){
 
-	    remove_action("gform_post_submission", "set_event_dates_lat_and_long", 10, 2);
+	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+        remove_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);
 	    
         $start_key    = 'gp_events_startdate';
         $end_key      = 'gp_events_enddate';
@@ -4194,27 +4195,17 @@ function set_event_dates_lat_and_long($entry, $form) {
             $post_long =       (float) get_post_meta($post_id, $long_meta_key, true);
             
     		// update the post, with lat and long as decimal
-		    $table = 'wp_posts';
-		    $data = array(
-		            	'post_latitude'  => $post_lat,
-		                'post_longitude' => $post_long
-		            );
-		    $where = array(
-		                 'ID' => $post_id
-		             );
-		    $format = array(
-		                  '%s',
-		                  '%s'
-					  );
+		    $table =           'wp_posts';
+		    $data =            array( 'post_latitude' => $post_lat, 'post_longitude' => $post_long );
+		    $where =           array( 'ID' => $post_id );
+		    $format =          array( '%s', '%s' );
    
             $wpdb->update($table, $data, $where, $format);            
-            
         }
-        
-        // re-hook this function
-        add_action("gform_post_submission", "set_event_dates_lat_and_long", 10, 2);
+
+        add_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);    
 	}
 }
-add_action("gform_post_submission", "set_event_dates_lat_and_long", 10, 2);
+add_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);
 
 ?>
