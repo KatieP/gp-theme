@@ -3710,15 +3710,17 @@ function add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
      *	Uses Gravity Form filter to assign appropriate id values to specific location 
      *  input fields of Gravity Forms. Location input fields are identified by a 
      *  css class name assigned to the field's wrapper during form creation.
+     *  
      *  This enables Google Places autocomplete to work and forms to capture 
      *  location data i.e. lat, long etc for posts and member registration.
+     *  
      *  Also captures and stores members tags /key words of interest in their profile. 
      *  http://www.gravityhelp.com/documentation/page/Gform_field_input
      *  
      *  Author: Jesse Browne
      *  		jb@greenpag.es 
      *
-     */
+     **/
     
     $field_css_class =  $field['cssClass'];
     $input_name_id =    $field['id'];
@@ -3806,9 +3808,12 @@ function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) 
      *  		jb@greenpag.es
      */
     
+    global $current_user;
+    $current_data = (isset($current_user->$input_id)) ? $current_user->$input_id : '';
+    
     $correct_input = '<div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" '. $type .' 
-                                 '. $read_only .' class="medium" tabindex="5">
+                                 value="'. $current_data .'" '. $read_only .' class="medium" tabindex="5">
                       </div>';    
 
     return $correct_input;
@@ -3821,7 +3826,7 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
      *  
      *  Author: Jesse Browne
      *  		jb@greenpag.es
-     */
+     **/
     
     global $current_user;
     $notification_setting = $current_user->notification_setting;
