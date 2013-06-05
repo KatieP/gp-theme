@@ -822,7 +822,7 @@ function events_index() {
     
     global $wpdb, $post, $gp;
 	
-	$querystring_page =       get_query_var( 'page' );
+	$querystring_page =       get_query_var( 'paged' );
 	
     $user_lat =               $gp->location['latitude'];
     $user_long =              $gp->location['longitude'];
@@ -936,6 +936,7 @@ function events_index() {
     		    $i = (!empty($num_posts_so_far)) ? 20 - $num_posts_so_far : 0;
     		    $i = ($num_posts_so_far == 0) ? 20 : $i;
                 $i = ($final_num_posts < $i) ? $final_num_posts : $i;
+                
                 $global_posts = array_slice($pageposts, 0, $i, true);
     		    
                 echo '<h3>Events from around the globe</h3>';
@@ -964,7 +965,7 @@ function events_index() {
 		</nav>
 		<?php
 	}
-	echo '<div id="push"></div>';
+	?><div id="push"></div><?php 
 }
 
 function jobs_index() {
