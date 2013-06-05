@@ -929,7 +929,7 @@ function events_index() {
             $filterby_state =    '';
             $filterby_city =     '';
             
-            $pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);
+            $pageposts =        get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);
             $num_global_posts = count($pageposts);
             
     	    if ($num_global_posts > 0) {
