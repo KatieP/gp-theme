@@ -3219,11 +3219,38 @@ ul.categorieslistmain {
     text-align: left;
     padding: 0.7em;
     vertical-align: top;
+    text-align:center;
 }
 
 #content .author_analytics {
     margin-bottom: 1em;
     width: 100%;
+}
+
+#content .advertiser_option_box {
+   color: #01aed8;;
+   font-size: 2.5em;
+   text-align:center;
+   padding-top: 1.3em;
+   padding-bottom: 1.3em;
+   padding-left: 0.45em;
+   padding-right: 0.45em;
+}
+
+#content span.grey-text {
+   color: #666;
+}
+
+#content .author_analytics a:hover {
+   text-decoration: none;
+}
+
+#content .author_analytics td:hover {
+   background-color:#b3d4fc;
+}
+
+#content #ad-info {
+	width: 65%;
 }
 
 #content .author_analytics .author_analytics_activist, #content .author_analytics .author_analytics_cost, 
