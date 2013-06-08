@@ -425,7 +425,7 @@ function theme_index_feed_item() {
 				
 	$random_images = array(
 	
-			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random117.jpg',
+			
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random116.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random115.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random114.jpg',
@@ -469,7 +469,7 @@ function theme_index_feed_item() {
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random73.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random72.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random71.jpg',
-			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random70.jpg'
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random70.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random69.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random68.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random67.jpg',
