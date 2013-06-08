@@ -411,6 +411,7 @@ function theme_index_feed_item() {
 	$link =                   get_permalink($post->ID);
 	$link_location_uri =      $link . $location_filter_uri;
 	$likedclass =             '';
+	$site_url = get_site_url();
 	
 	/** DISPLAY FEATURED IMAGE IF SET **/           
     if ( has_post_thumbnail() ) {
@@ -420,13 +421,75 @@ function theme_index_feed_item() {
 		          <img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"/>
 		      </a>';
     }
-    else {	/** DISPLAY LOGO/PROFILE PICTURE INSTEAD **/
+    else {	/** DISPLAY RANDOM IMAGE IF NO IMAGE IN HTML**/
+				
+	$random_images = array(
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random23.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random22.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random21.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random20.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random19.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random18.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random17.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random16.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random15.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random14.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random13.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random12.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random11.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random10.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random9.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random8.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random7.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random6.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random5.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random4.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random3.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random2.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/04/random1.jpg'
+		);
+
+	
+	/** REAL CODE
+	
+		$random_images = array(
+							$site_url .'/wp-content/uploads/2013/04/random23.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random22.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random21.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random20.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random19.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random18.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random17.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random16.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random15.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random14.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random13.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random12.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random11.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random10.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random9.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random8.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random7.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random6.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random5.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random4.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random3.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random2.jpg',
+							$site_url .'/wp-content/uploads/2013/04/random1.jpg'
+						);
+						**/
+
+		$rand_keys = array_rand($random_images, 2);
+		$image_url_img = $random_images[$rand_keys[0]];
+	
 		echo '<span class="profile_minithumb">
-		          <a href="' . $post_author_url . '">' . 
-    		          get_avatar( $post_author->ID, '110', '', $post_author->display_name ) . '
+		          <a href="' . $post_author_url . '"> 
+    		          <img src="'. $image_url_img  . '"  alt="green"/>
     		      </a>
     		  </span>';
 	}
+
+	
 	
 	echo '<div class="profile-postbox">';
 
@@ -554,7 +617,6 @@ function default_index() {
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_locality'
         WHERE 
             post_status='publish'
-            AND m0.meta_value >= 1
             AND post_type=%s;",
             get_query_var('post_type')
         );
@@ -587,7 +649,6 @@ function default_index() {
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_locality'
         WHERE
             post_status='publish'
-            AND m0.meta_value >= 1
             AND post_type=%s
         ORDER BY post_date DESC",
         get_query_var('post_type')
