@@ -457,7 +457,6 @@ function theme_index_feed_item() {
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random85.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random84.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random83.jpg',
-			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random82.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random81.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random80.jpg',
 			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random79.jpg',
