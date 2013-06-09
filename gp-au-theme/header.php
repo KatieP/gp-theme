@@ -137,7 +137,12 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
          * as styles, scripts, and meta tags.
          */
         wp_head();
-		?>	
+		?>
+		<!-- Remove unnecessary call to jquery css, ugly solution I know! -->
+		<script type="text/javascript">
+		    rogue_element = document.getElementById("jquery-ui-css");
+		    rogue_element.parentNode.removeChild(rogue_element);
+		</script>	
 	</head>
 
 	<body>
