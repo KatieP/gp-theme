@@ -741,8 +741,10 @@ function default_index() {
         WHERE
             post_status='publish'
             AND post_type=%s
-        ORDER BY post_date DESC",
-        get_query_var('post_type')
+        ORDER BY post_date DESC
+        LIMIT %d",
+        get_query_var('post_type'),
+        400
     );
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
