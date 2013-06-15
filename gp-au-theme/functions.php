@@ -2549,6 +2549,347 @@ function show_facebook_by_location() {
     }
 }	
 
+function theme_indexdetails($format='full') {
+    /**
+     * By line including author name, posted in and posted ago
+     **/
+    
+    global $post;
+	$post_author = get_userdata($post->post_author);
+	$post_author_url = get_author_posts_url($post->post_author);
+    
+	$site_posttypes = Site::getPostTypes();
+    foreach ( $site_posttypes as $site_posttype ) {
+	    if ( $site_posttype['id'] == get_post_type() ) {
+	        $post_type_title = $site_posttype['title'];
+	        $post_type_url = $site_posttype['slug'];
+	    }   
+	}
+	
+	$in = ( is_home() ) ? 'in <a href="/' . $post_type_url . '">' . $post_type_title . '</a>' : '';
+	
+	if ($format == 'full') {
+		echo '<div class="post-details">
+		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . $in .' ' . time_ago(get_the_time('U'), 0) . ' ago 
+		      </div>';
+	}
+	
+	if ($format == 'author') {
+		echo '<div class="post-details">
+		          By <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . $in .' ' . time_ago(get_the_time('U'), 0) . ' ago 
+		      </div>';
+	}
+}
+
+function theme_indexsocialbar() {
+	theme_singlesocialbar();
+}
+
+function theme_indexpagination() {
+	global $wp_query;
+	
+	if (  $wp_query->max_num_pages > 1 ) { ?>
+		<nav id="post-nav">
+			<ul>
+				<li class="post-previous"><?php next_posts_link('<div class="arrow-previous"></div>More Posts', $wp_query->max_num_pages); ?></li>
+				<li class="post-next"><?php previous_posts_link('Recent Posts<div class="arrow-next"></div>', $wp_query->max_num_pages); ?></li>
+			</ul>
+		</nav>
+	<?php
+	}
+}
+
+function theme_like() {
+    /**
+     * Shows upvote icon and count
+     * Dependant on some js functions in gp-theme/js/gp.js
+     **/
+    
+    global $post, $current_user, $current_site;
+	
+	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
+		$likedclass = ' favorited';
+	}
+	
+	$likecount = get_post_meta($post->ID, 'likecount', true);
+	if ($likecount > 0) {
+		$showlikecount = '';
+	} else {
+		$likecount = 0;
+		$showlikecount = ' style="display:none;"';
+	}
+	
+	if ( is_single() ) {
+		if (is_user_logged_in()) {
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+                      <a href="#/" title="Upvote this post and save to favourites">
+                          <span class="af-icon-chevron-up' . $likedclass . '"></span>
+                          <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+                          <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
+                          <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span> 
+                      </a>
+                  </div>';
+		} else {
+			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+			          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+			             title ="Login to upvote" >
+			              <span class="af-icon-chevron-up"></span>
+			              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+			              <span class="upvote-login" style="display:none;">Login...</span>
+			          </a>
+			      </div>';
+		}
+	}
+
+	if ( comments_open($post->ID) ) {
+		echo '<div class="comment-profile">
+                  <a href="#comments">
+                      <span class="comment-mini"></span>
+                      <span class="comment-mini-number dsq-postid">
+                          <fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count>
+                      </span>
+                  </a>
+              </div>';
+	}	
+}
+
+function theme_index_feed_item() {
+    /**
+     * Shows title of post as link for dislay in index pages,
+     * If featured image present then thumbnail displayed
+     * Otherwise thumbnail of user profile picture shown instead 
+     */
+	
+    global $post, $current_user, $current_site;
+    
+	$post_author =            get_userdata($post->post_author);
+	$post_author_url =        get_author_posts_url($post_author);
+    $location_filter_uri =    get_location_filter_uri();
+	$link =                   get_permalink($post->ID);
+	$link_location_uri =      $link . $location_filter_uri;
+	$likedclass =             '';
+	$site_url = get_site_url();
+	
+	/** DISPLAY FEATURED IMAGE IF SET **/           
+    if ( has_post_thumbnail() ) {
+		$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
+		$imageURL = $imageArray[0];
+		echo '<a href="' . $link_location_uri . '" class="profile_minithumb">
+		          <img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '"/>
+		      </a>';
+    } else {	/** DISPLAY RANDOM IMAGE IF NO IMAGE IN HTML**/
+				
+	    $random_images = array(
+		
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random116.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random115.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random114.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random113.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random112.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random111.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random110.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random109.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random108.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random107.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random106.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random105.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random104.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random103.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random102.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random99.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random98.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random97.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random96.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random95.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random94.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random92.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random91.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random90.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random89.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random88.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random87.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random86.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random85.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random84.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random83.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random81.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random80.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random79.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random78.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random77.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random76.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random75.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random74.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random73.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random72.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random71.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random70.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random69.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random68.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random67.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random66.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random65.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random64.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random63.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random62.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random61.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random60.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random59.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random58.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random57.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random56.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random55.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random54.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random53.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random52.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random51.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random50.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random49.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random48.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random47.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random46.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random45.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random44.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random43.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random41.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random40.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random39.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random38.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random37.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random36.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random35.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random34.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random33.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random31.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random30.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random29.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random28.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random27.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random26.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random25.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random23.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random22.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random21.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random20.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random19.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random18.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random17.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random16.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random15.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random14.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random13.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random12.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random11.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random10.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random9.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random8.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random7.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random6.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random5.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random4.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random3.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random2.jpg',
+			'http://www.thegreenpages.com.au/wp-content/uploads/2013/06/random1.jpg'
+			
+		);
+
+		$rand_keys = array_rand($random_images, 2);
+		$image_url_img = $random_images[$rand_keys[0]];
+	
+		echo '<span class="profile_minithumb">
+		          <a href="' . $post_author_url . '"> 
+    		          <img src="'. $image_url_img  . '"  alt="green"/>
+    		      </a>
+    		  </span>';
+	}
+	
+	echo '<div class="profile-postbox">';
+
+	?>
+    <h1 class="profile-title">
+        <a href="<?php echo $link_location_uri; ?>"  title="<?php esc_attr(the_title()); ?>" rel="bookmark"><?php the_title(); ?></a>
+    </h1>
+    <?php
+	
+	
+	/** DISPLAY POST AUTHOR, CATEGORY AND TIME POSTED DETAILS **/
+	$location = get_post_meta($post->ID, 'gp_google_geo_location');
+	$where =   (!empty($location)) ? $location : '';
+	
+	theme_indexdetails('author');
+
+    echo '<div class="post-details"> '. $location[0] .' </div>';
+			
+	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
+		$likedclass = ' favorited';
+	}
+			
+	echo '<a href="#/" class="topic-select">Topics<span class="topic-select-down"></span></a>';
+
+	$likecount = get_post_meta($post->ID, 'likecount', true);
+	if ($likecount > 0) {
+		$showlikecount = '';
+	} else {
+		$likecount = 0;
+		$showlikecount = ' style="display:none;"';
+	}
+      
+	$likecount = abbr_number($likecount);
+			
+	if (is_user_logged_in()) {
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+                  <a href="#/" title="Upvote this post and save to favourites">
+                      <span class="af-icon-chevron-up' . $likedclass . '"></span>
+                      <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+                      <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
+                      <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span>
+                  </a>
+              </div>';
+	} else {
+        echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+		          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+		             title ="Login to upvote">
+		              <span class="af-icon-chevron-up"></span>
+		              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+		              <span class="upvote-login" style="display:none;">Login...</span>
+		          </a>
+		      </div>';
+	}
+
+	if ( comments_open($post->ID) ) {
+		echo '<div class="comment-profile">
+		          <a href="' . $link . '#comments">
+		              <span class="comment-mini"></span>
+		              <span class="comment-mini-number dsq-postid">
+		                  <fb:comments-count href="' . $link . '"></fb:comments-count>
+		              </span>
+		          </a>
+		      </div>';
+	}	
+	
+	echo '</div>
+		  <div class="topic-container">
+              <div class="topic-content">
+                  <div class="topic-bookmark">
+                      <a href="#/" class="topic-bookmark">
+                          <span class="topic-bookmark-false"></span>
+                          <span class="topic-bookmark-box">test topic</span>
+                      </a>
+                      <div class="topic-bookmark-options">
+                          <a href="#/">Subscribe
+                              <span class="topic-subscribe-count">0</span>
+                              <span class="topic-subscribe-count-plus-one">+1</span>
+                              <span class="topic-subscribe-count-minus-one">-1</span>
+                          </a>
+						  <a href="#/">RSS</a>
+                      </div>
+                  </div>
+                  <div class="clear"></div>
+              </div>
+		  </div>';
+	echo '<div class="clear"></div>';
+}
+
 /* SHOW MEMBERS POSTS */
 function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 	// note: Favourites are viewable by everyone!
@@ -2577,49 +2918,32 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 		}
 		$post_type_filter = substr($post_type_filter, 0, -4);
 	}
-	
 		
-	#if ((is_user_logged_in()) && ($current_user->ID == $profile_author->ID) || get_user_role( array($rolecontributor, 'administrator') ) ) { # CHECK IF USER IS LOGGED IN AND VIEWING THEIR OWN PROFILE PAGE
-		
-		$total = "SELECT COUNT(*) as count 
-				FROM $wpdb->posts " . 
-					$wpdb->prefix . "posts, 
-					$wpdb->postmeta " . 
-					$wpdb->prefix . "postmeta 
-				WHERE " . $wpdb->prefix . "posts.ID = " . 
-					$wpdb->prefix . "postmeta.post_id and " . 
-					$wpdb->prefix . "posts.post_status = 'publish' and 
+		$total = "SELECT DISTINCT COUNT(*) as count 
+				FROM $wpdb->posts 
+				WHERE 
+		            post_status = 'publish' and 
 					(" . $post_type_filter . ")	and " . 
-					$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
-					$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
-					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";
+					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";			
 					
 		$totalposts = $wpdb->get_results($total, OBJECT);
-		#$ppp = intval(get_query_var('posts_per_page'));
 		$ppp = 10;
 		$wp_query->found_posts = $totalposts[0]->count;
-		$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
-		#$on_page = intval(get_query_var('paged'));	
+		$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
 		$on_page = $post_page;
 
 		if($on_page == 0){ $on_page = 1; }		
 		$offset = ($on_page-1) * $ppp;
 		
-		$querystr = "SELECT " . $wpdb->prefix . "posts.* 
-					FROM $wpdb->posts " . 
-						$wpdb->prefix . "posts, 
-						$wpdb->postmeta " . 
-						$wpdb->prefix . "postmeta 
-					WHERE " . $wpdb->prefix . "posts.ID = " . 
-						$wpdb->prefix . "postmeta.post_id and " . 
-						$wpdb->prefix . "posts.post_status = 'publish' and 
-						(" . $post_type_filter . ") and " . 
-						$wpdb->prefix . "postmeta.meta_key = '_thumbnail_id' and " . 
-						$wpdb->prefix . "postmeta.meta_value >= 1 and " . 
-						$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+		$querystr = "SELECT DISTINCT " . $wpdb->prefix . "posts.* 
+					FROM $wpdb->posts
+				    WHERE 
+		            	post_status = 'publish' and 
+						(" . $post_type_filter . ")	and " . 
+					    $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
 					ORDER BY " . $wpdb->prefix . "posts.post_date DESC 
 					LIMIT " . $ppp . " 
-					OFFSET " . $offset;
+					OFFSET " . $offset .";";				
 						
 		$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
@@ -2645,84 +2969,8 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 			foreach ($pageposts as $post) {
 			
 				setup_postdata($post);
-				$link = get_permalink($post->ID);
+				theme_index_feed_item();
 				
-				switch (get_post_type()) {
-				    case 'gp_news':
-				        $post_title = 'News';
-				        $post_url = '/news';
-				        break;
-				    case 'gp_projects':
-				    	$post_title = 'Projects';
-				    	$post_url = '/projects';
-				        break;
-					case 'gp_advertorial':
-						$post_title = 'Products';
-						$post_url = '/news-stuff';
-				        break;
-					case 'gp_competitions':
-						$post_title = 'Competitions';
-						$post_url = '/competitions';
-				        break;
-				    case 'gp_events':
-				    	$post_title = 'Events';
-				    	$post_url = '/events';
-				        break;
-				    case 'gp_people':
-				    	$post_title = 'People';
-				    	$post_url = '/people';
-				        break;
-				}
-
-				if ( has_post_thumbnail() ) {
-					$imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-					$imageURL = $imageArray[0];
-					echo '<a href="' . $link . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-				}
-
-				echo '
-				<div class="profile-postbox">
-			    	<h1><a href="' . $link . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
-			    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
-					
-				if ( comments_open() ) {
-					echo '<div class="comment-profile"><a href="' . $link . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . $link . '"></fb:comments-count></span></a></div>';
-				}
-				
-				global $current_user, $current_site;
-				
-				$likedclass = '';
-				if ( get_user_meta( $current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true ) ) {
-					$likedclass = ' favorited';
-				}
-				
-				$likecount = get_post_meta( $post->ID, 'likecount', true );
-				if ($likecount > 0) {
-					$showlikecount = '';
-				} else {
-					$likecount = 0;
-					$showlikecount = ' style="display:none;"';
-				}
-				
-				$likecount = abbr_number( $likecount );
-				
-				if ( is_user_logged_in() ) {
-					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="af-icon-chevron-up' . $likedclass . '"></span><span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span><span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span><span class="af-icon-chevron-up-number-minus-one" style="display:none;" title="Upvote this post and save to favourites">-1</span></a></div>';
-				} else {
-					echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" title="Upvote this post and save to favourites"><span class="af-icon-chevron-up"></span><span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
-				}
-					
-		    	echo '
-		    		</div>
-		    		<div class="topic-container">
-		    			<div class="topic-content">
-		    				<a href="#/" class="topic-bookmark">test topic</a>
-		    			</div>
-		    		</div>
-		    		<div class="clear"></div>
-		    	';
-			    unset($post_title, $post_url, $link, $imageArray, $imageURL, $current_user, $current_site, $likedclass, $likecount, 
-                      $showlikecount, $post);
 			}
 			
 			if ( $wp_query->max_num_pages > 1 ) {
