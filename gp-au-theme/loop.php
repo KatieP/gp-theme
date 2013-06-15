@@ -533,8 +533,6 @@ function home_index() {
         $epochtime
     );
     
-    var_dump($querystr);
-    
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
 	/** NEW LIST VIEW OF 20 POSTS WITH HIGHEST POPULARITY SCORE **/
