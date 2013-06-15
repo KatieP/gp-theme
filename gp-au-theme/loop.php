@@ -514,7 +514,6 @@ function home_index() {
     $querystr = $wpdb->prepare(
         "SELECT DISTINCT
             " . $wpdb->prefix . "posts.*,
-            m0.meta_value AS _thumbnail_id,
             m1.meta_value AS gp_enddate,
             m2.meta_value AS gp_startdate,
             m3.meta_value AS gp_google_geo_country,
@@ -522,7 +521,6 @@ function home_index() {
             m5.meta_value AS gp_google_geo_locality_slug,
             m6.meta_value AS gp_google_geo_locality
         FROM $wpdb->posts
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
@@ -532,7 +530,6 @@ function home_index() {
         WHERE
             popularity_score > DATE_SUB(CURDATE(), INTERVAL 2 WEEK) 
         	AND post_status='publish'
-            AND m0.meta_value >= 1
             AND (
                 post_type='gp_news' 
                 OR post_type='gp_advertorial'
