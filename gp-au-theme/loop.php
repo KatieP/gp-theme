@@ -515,18 +515,10 @@ function home_index() {
         "SELECT DISTINCT
             " . $wpdb->prefix . "posts.*,
             m1.meta_value AS gp_enddate,
-            m2.meta_value AS gp_startdate,
-            m3.meta_value AS gp_google_geo_country,
-            m4.meta_value AS gp_google_geo_administrative_area_level_1,
-            m5.meta_value AS gp_google_geo_locality_slug,
-            m6.meta_value AS gp_google_geo_locality
+            m2.meta_value AS gp_startdate
         FROM $wpdb->posts
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND (m1.meta_key='gp_events_enddate' OR m1.meta_key='gp_competitions_enddate') 
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND (m2.meta_key='gp_events_startdate' OR m2.meta_key='gp_competitions_startdate') 
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_country'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_administrative_area_level_1'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m5 ON m5.post_id=" . $wpdb->prefix . "posts.ID AND m5.meta_key='gp_google_geo_locality_slug'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m6 ON m6.post_id=" . $wpdb->prefix . "posts.ID AND m6.meta_key='gp_google_geo_locality'
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_events_enddate' 
+            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_events_startdate'
         WHERE
             popularity_score > DATE_SUB(CURDATE(), INTERVAL 2 WEEK) 
         	AND post_status='publish'
@@ -540,6 +532,8 @@ function home_index() {
         $epochtime,
         $epochtime
     );
+    
+    var_dump($querystr);
     
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
