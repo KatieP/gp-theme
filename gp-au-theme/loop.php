@@ -520,7 +520,7 @@ function home_index() {
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_events_enddate' 
             LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_events_startdate'
         WHERE
-            popularity_score > DATE_SUB(CURDATE(), INTERVAL 2 WEEK) 
+            post_date > DATE_SUB(CURDATE(), INTERVAL 2 WEEK) 
         	AND post_status='publish'
             AND (
                 post_type='gp_news' 
