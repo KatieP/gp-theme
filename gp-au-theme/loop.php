@@ -341,8 +341,8 @@ function default_index() {
             post_status='publish'
             AND post_type=%s;",
             get_query_var('post_type')
-        );
-              
+        );   
+        
 	$totalposts = $wpdb->get_results($querytotal, OBJECT);
 
 	$ppp = 20;
@@ -357,18 +357,8 @@ function default_index() {
     /** SQL QUERIES SHOW LIST VIEW OF 20 MOST RECENT POSTS **/
     $querystr = $wpdb->prepare(
         "SELECT DISTINCT
-            " . $wpdb->prefix . "posts.*,
-            m0.meta_value AS _thumbnail_id,
-            m1.meta_value AS gp_google_geo_country,
-            m2.meta_value AS gp_google_geo_administrative_area_level_1,
-            m3.meta_value AS gp_google_geo_locality_slug,
-            m4.meta_value AS gp_google_geo_locality
+            " . $wpdb->prefix . "posts.*
         FROM $wpdb->posts
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_google_geo_country'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_google_geo_administrative_area_level_1'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_locality_slug'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_locality'
         WHERE
             post_status='publish'
             AND post_type=%s
@@ -377,7 +367,7 @@ function default_index() {
         get_query_var('post_type'),
         400
     );
-
+    
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	$posttype_slug = getPostTypeSlug( get_query_var('post_type') );
 
