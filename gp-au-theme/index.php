@@ -5,13 +5,6 @@
 
 			<div id="col2" class="set3col">
 				<div id="content">
-
-					<!-- <nav class="breadcrumbs">
-						<span>You are here:</span>&nbsp;
-						<a href="">Bread</a>&nbsp;>&nbsp;
-						<a href="">crumb</a>&nbsp;>&nbsp;
-						<a href="">trail</a>
-					</nav> //-->
 					
 					<?php
                         /* Run the loop to output the posts.
