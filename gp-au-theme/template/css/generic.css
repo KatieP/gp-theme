@@ -3539,6 +3539,7 @@ ul.categorieslistmain {
     display: block;
     width: 12.5em;
     float: right;
+    margin-left: 1em;
 }
 
 #content .contentpartnerslist a:hover, #content .memberslist a:hover {
