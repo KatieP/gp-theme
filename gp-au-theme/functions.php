@@ -2809,7 +2809,7 @@ function theme_index_feed_item() {
 		$image_url_img = $random_images[$rand_keys[0]];
 	
 		echo '<span class="profile_minithumb">
-		          <a href="' . $post_author_url . '"> 
+		          <a href="' . $link_location_uri . '"> 
     		          <img src="'. $image_url_img  . '"  alt="green"/>
     		      </a>
     		  </span>';
