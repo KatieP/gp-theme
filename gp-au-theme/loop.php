@@ -446,8 +446,15 @@ function default_single() {
 			}
 			theme_single_event_details();
 			the_post_thumbnail('gp_custom');
-			the_content();
-			theme_singlepagination();
+			
+			// Prepare post body content, fix broken image links from greenpeace
+			$content = get_the_content();
+			$content = apply_filters('the_content', $content);
+            $content = str_replace(']]>', ']]&gt;', $content);
+            $content = str_replace('feedproxy.google.com', 'www.greenpeace.org', $content);
+			echo $content;
+			
+            theme_singlepagination();
 			theme_single_tags();
 			theme_single_contributor_donate_join_bar();
 			theme_single_product_button();
