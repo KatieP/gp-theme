@@ -457,7 +457,7 @@ function default_single() {
           <img src="http://theconversation.com/assets/logos/theconversation_vertical_100px-ab58f56b4507a90ced4077004eb0692e.png" alt="The Conversation"><br />
         </a>
       </div>', '', $content);
-
+            var_dump($post->post_content);
 			echo $content;
 			
             theme_singlepagination();

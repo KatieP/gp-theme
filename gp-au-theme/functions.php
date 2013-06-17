@@ -23,37 +23,6 @@ add_filter( 'show_admin_bar', '__return_false' );
 add_theme_support( 'post-thumbnails' );
 add_image_size( 'gp_custom', 567, 425 );
 
-//Bug fix for Profile Editor Pro Plugin
-function addCustomFields(){
-    $wppbFetchArray = get_option('wppb_custom_fields');
-
-
-      $id            = ''; //needs to be unique. Try to use something that is not in the list
-      $item_metaName = ''; //this will be the name that you want to save it as in the DB. It should be the string you already have
-      $item_title    = ''; //the title of the field
-      $item_desc     = ''; //description
-      $item_type     = ''; //the type: input, checkbox, radio, select, countrySelect, timeZone, datepicker, textarea, upload, avatar
-      $item_options  = ''; //item options in case of ckeckbox, radio, select etc
-
-
-    $max_id = 0;
-    $max_sort = 0;
-    
-    foreach( $wppbFetchArray as $value ){
-        if ( $value['item_sort'] > $max_sort)
-            $max_sort = $value['item_sort'];
-        if ( $value['id'] > $max_id)
-            $max_id = $value['id'];
-    }
-    
-    $max_sort++;
-    $max_id++;
-    $tempArray = array(id => $max_id, item_metaName => $item_metaName, item_title => $item_title, item_desc => $item_desc, item_type => $item_type, item_options => $item_options, item_sort => $max_sort, item_required => $item_required, item_LastMetaName => $item_LastMetaName);
-    array_push($wppbFetchArray, $tempArray);
-    update_option( 'wppb_custom_fields', $wppbFetchArray );
-
-}
-
 global $wp_role;
 
 $sitemaptypes = array(
@@ -83,6 +52,25 @@ function gp_add_admin_header() {
 Remove action from plugin - wp-email-login.
 Javascript generates errors if element isn't found. Element is also different for plugin - simple modal-login.
 */
+
+function redirect_to_users_own_profile_page() {
+	/**
+	 * Redirects logged in user to their own profile page
+	 * Handy for redirecting from other plugins that can't access user variables 
+ 	 * 
+	 * Author: Jesse Browne
+	 *         jb@greenpag.es
+	 **/
+
+    if ( is_user_logged_in() ) {
+        
+        global $current_user;
+        $post_author_url = ( isset($current_user) ? get_author_posts_url($current_user->ID) : "" );
+        wp_redirect($post_author_url);
+    
+    }    
+}
+
 remove_action( 'login_form', 'username_or_email_login' );
 
 function new_username_or_email_login() { ?>
@@ -4322,6 +4310,42 @@ function my_login_head() {
 	</style>
 	";
 }
+
+function fix_broken_images ($post_id) {	
+    /** 
+     *  Remove The Conversation attribution image
+     *  
+     *  Author: Jesse Browne
+     *  		jb@greenpag.es
+     **/
+
+	$post = get_post($post_id);
+    $post_author = get_userdata($post->post_author);
+    
+	// Avoid an infinite loop by the following
+	if ( ! wp_is_post_revision( $post_id ) ){
+	
+		// unhook this function so it doesn't loop infinitely
+		remove_action('publish_gp_news', 'fix_broken_images'); 
+	    
+		$content = $post->post_content;
+		$content = str_replace('feedproxy.google.com', 'www.greenpeace.org', $content);
+		$content = str_replace('<div id="the_conversation_attribution" style="float:right;">
+        <a href="http://theconversation.com/"><br />
+          <img src="http://theconversation.com/assets/logos/theconversation_vertical_100px-ab58f56b4507a90ced4077004eb0692e.png" alt="The Conversation"><br />
+        </a>
+      </div>', '', $content);
+		
+		$update_post =                  array();
+        $update_post['ID'] =            $post_id;
+        $update_post['post_content'] =  $content;
+        wp_update_post($update_post);
+		
+		// re-hook this function
+		add_action('publish_gp_news', 'fix_broken_images');
+	}
+}
+add_action('publish_gp_news', 'fix_broken_images');
 
 //** MEMBER PERMISSIONS - MEMBERS CAN POST WITHOUT APPROVAL AFTER THEIR THIRD APPROVED POST **//
 
