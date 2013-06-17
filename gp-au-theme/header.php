@@ -242,7 +242,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 									    <a href="<?php echo $site_url; ?>/forms/profile-picture-editor/" title="Profile Picture">Profile Picture</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-email-editor/" title="Email">Email</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-notifications/" title="Notifications">Notifications</a>
-									    <a href="<?php echo wp_logout_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" title="Logout">Logout</a>
+									    <a href="<?php echo wp_logout_url( $site_url ); ?>" title="Logout">Logout</a>
 								    </li>
 							    </ul>
 						    </li>
