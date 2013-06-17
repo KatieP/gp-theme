@@ -452,6 +452,12 @@ function default_single() {
 			$content = apply_filters('the_content', $content);
             $content = str_replace(']]>', ']]&gt;', $content);
             $content = str_replace('feedproxy.google.com', 'www.greenpeace.org', $content);
+            $content = str_replace('<div id="the_conversation_attribution" style="float:right;">
+        <a href="http://theconversation.com/"><br />
+          <img src="http://theconversation.com/assets/logos/theconversation_vertical_100px-ab58f56b4507a90ced4077004eb0692e.png" alt="The Conversation"><br />
+        </a>
+      </div>', '', $content);
+
 			echo $content;
 			
             theme_singlepagination();
