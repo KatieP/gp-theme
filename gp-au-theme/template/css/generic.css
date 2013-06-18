@@ -1730,6 +1730,7 @@ footer {
 /** EVENT CALENDAR **/
 #eventCalendar {
     width: 100%;
+    min-width: 15em;
     margin-top: 2.5em;
 }
 
@@ -4221,7 +4222,8 @@ ul.categorieslistmain {
 /* Google maps that go under each post */
 
 #post_google_map_canvas {
-    width: 100%; 
+    width: 100%;
+    min-width: 15em;
     height:25em;
     margin-top: 0.4em;
 }
