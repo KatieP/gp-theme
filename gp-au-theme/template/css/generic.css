@@ -3475,6 +3475,23 @@ ul.categorieslistmain {
     margin-left: 0.3em;
 }
 
+/** About Page **/
+#content .images-left img {
+    float: left;
+    margin: 0 2em 0 0;
+}
+
+#content .images-left h2 {
+    margin: 0 0 1em 0;
+    line-height: 1.5;
+    margin-top: 2.1em
+}
+
+#content .images-left img.space-underneath  {
+    margin-bottom: 5em;
+}
+
+/** Welcome Page Containers **/
 .icon-container .icon-container-row #post-product-button-bar #product-button,
 .icon-container-row #post-product-button-bar #product-button {
     background-color: #FC468C;
@@ -4176,7 +4193,7 @@ ul.categorieslistmain {
     color: #666;    
 }
 
-#content .icon-container #big-heading {
+#content .big-heading {
     font-size: 2em;
 }
 
