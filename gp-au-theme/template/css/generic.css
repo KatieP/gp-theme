@@ -59,6 +59,7 @@ a:hover {
 
 img {
     text-indent: -9999px;
+    
 }
 
 article, aside, dialog, figure, footer, header, 
@@ -182,6 +183,7 @@ body .pos {
     max-width: 100%;
     width: auto;
     height: auto;
+    display: block;
 }
 
 #content p img {
