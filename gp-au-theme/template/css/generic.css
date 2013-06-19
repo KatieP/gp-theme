@@ -976,6 +976,20 @@ header a:hover {
     background-color: #f57c33;
 }
 
+/* search results - removes weird padding left */
+#content .gsc-thumbnail-inside, #content .gsc-url-top  {
+    padding-left: 0;
+    padding-right: 8px;
+}
+
+#content .gsc-control-cse {
+    padding: 0;
+}
+
+#content #resInfo-0 {
+    padding-left: 0;
+}
+
 
 /** USER ACCOUNT NAVIGATION **/
 
