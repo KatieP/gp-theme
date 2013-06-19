@@ -458,8 +458,7 @@ function default_single() {
         </a>
       </div>', '', $content);
             
-			echo $content;
-			
+			echo $content;		
             theme_singlepagination();
 			theme_single_tags();
 			theme_single_contributor_donate_join_bar();

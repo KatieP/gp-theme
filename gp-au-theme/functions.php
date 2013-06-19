@@ -3941,8 +3941,19 @@ function theme_update_delete_post() {
 function theme_single_tags() {
     ?>
     <div class="post-tags">
-        <?php
-        the_tags('Tags: ', ' ');
+        <?php 
+        #$location_filter_uri =    get_location_filter_uri();
+        global $post;
+        $post_type = ( isset($post) ? get_post_type($post->ID) : '' );
+        $site_url = get_site_url();
+        $posttags = get_the_tags();
+        if ($posttags) {
+            echo 'Tags: ';
+            foreach($posttags as $tag) {
+                $tag_link = $site_url .'/tag/'. $tag->slug .'/?post_type='. $post_type;
+                echo '<a href="'. $tag_link .'" rel="tag">'. $tag->name .'</a> '; 
+            }
+        }
         ?>
     </div>
     <?php
@@ -4497,4 +4508,17 @@ function set_event_dates_lat_and_long($entry, $form) {
 }
 add_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);
 
+function get_post_type_map() {
+    /**
+     * Useful for creating pretty post type names or
+     * when building urls dynamically
+     **/
+    
+    $post_type_map = array( "gp_news"     => "news", 
+    						"gp_events"   => "events", 
+                            "gp_products" => "products", 
+                            "gp_projects" => "projects" );
+    
+    return $post_type_map;
+}
 ?>

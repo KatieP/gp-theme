@@ -2,18 +2,25 @@
 	<div class="pos">
 		<div id="col2" class="set3col">
 			<div id="content">					
-			    <?php $tag = single_tag_title("", false); ?>
-                <p><strong>Topic: <?php echo $tag; ?></strong></p>
+			    <?php 
+			    $tag =             single_tag_title("", false); 
+			    $post_type_map =   get_post_type_map();
+			    $post_type =       ( !empty($_GET['post_type']) ) ? $_GET['post_type'] : 'gp_news';
+			    $post_type_name =  ucfirst($post_type_map[$post_type]);
+			    ?>
+                <p><strong>Recent posts tagged with #<?php echo $tag; ?> in <?php echo $post_type_name; ?></strong></p>
 				
 				<?php
 				/** Display posts with relevant tag **/
-				$tag_args =   array ( 'posts_per_page' => 20,
-				                      'post_type' => 'gp_news',
+				$args =       array ( 'posts_per_page' => 20,
+				                      'post_type' => $post_type,
 				                      'tag' => $tag );
-				$pageposts =  get_posts( $tag_args );
+				$pageposts =  get_posts( $args );
 				
-				foreach ($pageposts as $post) {
-				    theme_index_feed_item();
+				if ($pageposts) {
+				    foreach ($pageposts as $post) {
+				        theme_index_feed_item();
+				    }
 				}
 				?>		
 			</div>
