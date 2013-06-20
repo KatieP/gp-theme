@@ -445,7 +445,6 @@ function default_single() {
 				theme_singledetails();
 			}
 			theme_single_event_details();
-			
 			if ( !isset($post->syndication_feed) ) {
 			    the_post_thumbnail('gp_custom');
 			}

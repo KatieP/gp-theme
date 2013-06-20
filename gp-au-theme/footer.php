@@ -12,7 +12,7 @@
 				        <ul>
 					        <li><a href="<?php echo $site_url; ?>/about/partners/">Content Partners</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/badges/">Badges</a></li>
-					        <li><a href="<?php echo $site_url; ?>/about/">About</a></li>
+					        <li><a href="<?php echo $site_url; ?>/about/about-us/">About</a></li>
 					        <li><a href="http://greenpages.myshopify.com" target="_blank">Shop</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/terms-and-conditions/">Terms</a></li>
 					        <li><a href="<?php echo $site_url; ?>/about/green-pages-privacy-policy/">Privacy</a></li>
