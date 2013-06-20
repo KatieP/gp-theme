@@ -2820,7 +2820,7 @@ function theme_index_feed_item() {
 
     echo '<div class="post-details"> '. $location[0] .' </div>';
 			
-	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
+	if ( get_user_meta($current_user->ID, 'likepost_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
 	}
 			
@@ -3058,18 +3058,19 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 	$total = "SELECT COUNT(*) as count
 				FROM " . $wpdb->prefix . "posts 
-				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
-				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' 
+				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_', '')=" . $wpdb->prefix . "posts.ID 
+				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID 
 				WHERE post_status='publish' 
 					AND (" . $post_type_filter . ")
 					AND m0.meta_value > 0 
 					AND m0.user_id = $profile_author->ID 
 					AND m0.meta_key LIKE 'likepost%' 
 					AND m1.meta_value >= 1;";
-					
+				
 	$totalposts = $wpdb->get_results($total, OBJECT);
+	
 	#$ppp = intval(get_query_var('posts_per_page'));
-	$ppp = 10;
+	$ppp = 20;
 	$wp_query->found_posts = $totalposts[0]->count;
 	$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);		
 	#$on_page = intval(get_query_var('paged'));	
@@ -3078,11 +3079,11 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 	if($on_page == 0){ $on_page = 1; }		
 	$offset = ($on_page-1) * $ppp;
 
-	$querystr = "SELECT " . $wpdb->prefix . "posts.*
+	$querystr = "SELECT DISTINCT " . $wpdb->prefix . "posts.*
 					, m1.meta_value as _thumbnail_id 
 				FROM " . $wpdb->prefix . "posts 
-				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_" . $current_site->id . "_', '')=" . $wpdb->prefix . "posts.ID 
-				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID and m1.meta_key='_thumbnail_id' 
+				LEFT JOIN " . $wpdb->prefix . "usermeta as m0 on REPLACE(m0.meta_key, 'likepost_', '')=" . $wpdb->prefix . "posts.ID 
+				LEFT JOIN " . $wpdb->prefix . "postmeta as m1 on m1.post_id=" . $wpdb->prefix . "posts.ID
 				WHERE post_status='publish'
 					AND (" . $post_type_filter . ")   
 					AND m0.meta_value > 0 
@@ -3093,103 +3094,36 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 				LIMIT " . $ppp . " 
 				OFFSET " . $offset;
 					
-	$pageposts = $wpdb->get_results($querystr, OBJECT);	
-			
-		if ( $post_type_key ) {
-			foreach ($edition_posttypes as $newposttype) {
-			    if ( $newposttype['enabled'] === true ) {
-    				if ($newposttype['id'] == $post_type_key) {
-    					if ($newposttype['plural'] === true) {
-    						$post_type_name = " " . $newposttype['name'] . "s";
-    					} else {
-    						$post_type_name = " " . $newposttype['name'];
-    					}
-    				}
-			    }
-			}
-		}
-		
-		if ($post_type_name) {
-			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span> Favourite{$post_type_name}</div>";
-		} else {
-			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span> Favourites</div>";
-		}
-		
+	    $pageposts = $wpdb->get_results($querystr, OBJECT);
+
+        if ( $post_type_key ) {
+            foreach ($edition_posttypes as $newposttype) {
+                if ( $newposttype['enabled'] === true ) {
+                    if ($newposttype['id'] == $post_type_key) {
+                        if ($newposttype['plural'] === true) {
+                            $post_type_name = " " . $newposttype['name'] . "s";
+                        } else {
+                            $post_type_name = " " . $newposttype['name'];
+                        }
+                    }
+                }
+            }
+        }
+                
+        if ($post_type_name) {
+            echo "<div class=\"total-posts\">Favourite{$post_type_name}</div>";
+        } else {
+            echo "<div class=\"total-posts\">Favourites</div>";
+        }	    
+	    
+		$previous_post_title = '';
 		foreach ($pageposts as $post) {
 		
 			setup_postdata($post);
-			$link = get_permalink($post->ID);
-			
-			switch (get_post_type()) {
-			    case 'gp_news':
-			        $post_title = 'News';
-			        $post_url = '/news';
-			        break;
-			    case 'gp_projects':
-			    	$post_title = 'Projects';
-			    	$post_url = '/projects';
-			        break;
-				case 'gp_advertorial':
-					$post_title = 'Products';
-					$post_url = '/products';
-			        break;
-				case 'gp_competitions':
-					$post_title = 'Competitions';
-					$post_url = '/competitions';
-			        break;
-			    case 'gp_events':
-			    	$post_title = 'Events';
-			    	$post_url = '/events';
-			        break;
-			    case 'gp_people':
-			    	$post_title = 'People';
-			    	$post_url = '/people';
-			        break;
+			if ($post->post_title != $previous_post_title) {
+			    theme_index_feed_item();
+			    $previous_post_title = $post->post_title;
 			}
-
-			if ( has_post_thumbnail() ) {
-                                $imageArray = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'homepage-thumbnail' );
-                                $imageURL = $imageArray[0];
-                                echo '<a href="' . $link . '" class="profile_minithumb"><img src="' . $imageURL  . '" alt="' . get_the_title( get_post_thumbnail_id($post->ID) ) . '" /></a>';
-                        }
-
-			echo '
-			<div class="profile-postbox">
-		    	<h1><a href="' . $link . '" title="' . esc_attr(get_the_title($post->ID)) . '" rel="bookmark">' . get_the_title($post->ID) . '</a></h1>
-		    	<div class="post-details">Posted in <a href="' . $post_url . '">' . $post_title . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago</div>';
-		    	the_excerpt();
-				
-			if ( comments_open() ) {
-				echo '<div class="comment-profile"><a href="' . $link . '#comments"><span class="comment-mini"></span><span class="comment-mini-number dsq-postid"><fb:comments-count href="' . $link . '"></fb:comments-count></span></a></div>';
-			}
-			
-			$likedclass = '';
-			if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
-				$likedclass = ' favorited';
-			}
-			
-			$likecount = get_post_meta($post->ID, 'likecount', true);
-			if ($likecount > 0) {
-				$showlikecount = '';
-			} else {
-				$likecount = 0;
-				$showlikecount = ' style="display:none;"';
-			}
-			
-			$likecount = abbr_number($likecount);
-			
-			if (is_user_logged_in()) {
-				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="#/"><span class="star-mini' . $likedclass . '"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-mini-number-plus-one" style="display:none;">+1</span><span class="star-mini-number-minus-one" style="display:none;">-1</span></a></div>';
-			} else {
-				echo '<div id="post-' . $post->ID . '" class="favourite-profile"><a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" class="simplemodal-login"><span class="star-mini"></span><span class="star-mini-number"' . $showlikecount . '>' . $likecount . '</span><span class="star-login" style="display:none;">Login...</a></a></div>';
-			}
-				
-	    	echo '</div><div class="topic-container"><div class="topic-content"><a href="#/" class="topic-bookmark">test topic</a></div></div>';
-			echo '<div class="clear"></div>';
-		
-		    unset($post_title, $post_url, $link, $imageArray, $imageURL, $current_user, $current_site, $likedclass, $likecount, 
-                      $showlikecount, $post);
-			
 		}
 		
 		if ( $wp_query->max_num_pages > 1 ) {
