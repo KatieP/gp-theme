@@ -445,7 +445,10 @@ function default_single() {
 				theme_singledetails();
 			}
 			theme_single_event_details();
-			the_post_thumbnail('gp_custom');
+			
+			if ( !isset($post->syndication_feed) ) {
+			    the_post_thumbnail('gp_custom');
+			}
 			
 			// Prepare post body content, fix broken image links from greenpeace
 			$content = get_the_content();

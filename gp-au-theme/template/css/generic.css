@@ -2966,7 +2966,8 @@ ul.categorieslistmain {
 #content .hp_miniauthor img, #content .post-details img {
     height: 3em;
     width: 3em;
-    margin: 0 0.5em 0.2em 0;
+    margin: 0 0.5em 2.2em 0;
+    display: inline;
     vertical-align: middle;
     padding: 0.2em;
     border: 0.1em solid #e7e7e7;
