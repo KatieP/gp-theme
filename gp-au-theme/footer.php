@@ -38,7 +38,7 @@
 					        <div class="click-contact-info" id="click-contact-phone">
 					            <span>Phone:</span>
 					            <pre>Promoting an event? <br /><a href="<?php echo $site_url; ?>/welcome/">Post it on Green Pages for free</a>.
-					            <?php echo 'US: 650-283-8142 <br />AU: 02 8003 5915'; ?></pre>
+					            <br />US: 650-283-8142 <br />AU: 02 8003 5915</pre>
 					        </div>
 					        <div class="click-contact-info" id="click-contact-email">
 					            <span>Email Address:</span>
