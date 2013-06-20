@@ -4,8 +4,6 @@
  Template Name: like
 */
 
-global $current_site;
-
 if ( is_user_logged_in() ) {
     global $current_user;
     $post_userid = $current_user->ID;
@@ -38,19 +36,14 @@ if ( !isset($post_userid) ) {
     return false;
 }
 
-if ( !isset($current_site->id) ) {
-    echo '0';
-    return false;
-}
-
 if ( $post_action == 'add' ) {
-    update_usermeta($post_userid, $post_what . '_' . $current_site->id . '_' . $post_id, $epochtime);
+    update_usermeta($post_userid, $post_what . '_' . $post_id, $epochtime);
     $likecount = get_post_meta($post_id, 'likecount', true);
     update_post_meta($post_id, 'likecount', $likecount+1);
 }
 
 if ( $post_action == 'remove' ) {
-    delete_user_meta($post_userid, $post_what . '_' . $current_site->id . '_' . $post_id);
+    delete_user_meta($post_userid, $post_what . '_' . $post_id);
     $likecount = get_post_meta($post_id, 'likecount', true);
     update_post_meta($post_id, 'likecount', $likecount-1);
 }
