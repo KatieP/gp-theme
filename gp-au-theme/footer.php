@@ -1,9 +1,9 @@
 		<?php 
 		if (is_home() || is_page()) { $post_type = "gp_news"; }
-		$post_type_map = array( "gp_news" => "news",
-		                        "gp_events" => "events", 
+		$post_type_map = array( "gp_news" =>        "news",
+		                        "gp_events" =>      "events", 
                                 "gp_advertorial" => "eco-friendly-products", 
-                                "gp_projects" => "projects" );
+                                "gp_projects" =>    "projects" );
 		?>
 		<footer>
     		<div class="pos">
@@ -64,7 +64,7 @@
         wp_footer();
         ?>
         <!-- JS for social media sharebar: Twitter, Google+ and Stumbleupon -->
-        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js" async ></script>
         <script type="text/javascript">
 			(function() {
 				var po = document.createElement('script'); 
