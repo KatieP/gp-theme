@@ -129,7 +129,13 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
          * works on Gravity forms and select location function in header
          */
 
-        ( is_page() ) ? add_action('wp_head', 'gp_js_postGeoLoc_meta') : '';
+        if ( is_page() ) { 
+            if ( strpos($_SERVER['REQUEST_URI'], '/world-map/' ) === 0 ) {
+                ;
+            } else {
+                add_action('wp_head', 'gp_js_postGeoLoc_meta');
+            }
+        }
         
         /* Always have wp_head() just before the closing </head>
          * tag of your theme, or you will break many plugins, which

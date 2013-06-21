@@ -1929,7 +1929,6 @@ add_action('publish_gp_news', 'set_post_location_data_as_decimal');
 add_action('publish_gp_advertorial', 'set_post_location_data_as_decimal');
 add_action('publish_gp_projects', 'set_post_location_data_as_decimal');
 
-/** CONSTRUCT POST LOCATION OBJECT DATA IN JSON **/
 function get_post_location_json_data($current_post = false) {
     /**
      * Returns a single JSON structured string holding post data:
@@ -1975,6 +1974,8 @@ function get_post_location_json_data($current_post = false) {
     $lat_post = get_post_meta($post_id, $lat_post_key, true);
     $long_post = get_post_meta($post_id, $long_post_key, true);
 
+    if ( empty($lat_post) || empty($long_post) ) { return ''; }
+    
 	# Construct json data and return for google map marker display
 	$json = '{ 
 	             Title: "'. $post_title .'",
@@ -2004,7 +2005,7 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
      * Additional work to set location filtering data i.e. lat/long, country,
      * city name, state etc also done here
      * 
-     * Called by get_google_map() 
+     * Called by get_google_map() & get_google_world_map()
      * 
      * @todo Map display and location filtering / autocomplete should 
      *       probably be decoupled in the future
@@ -2153,7 +2154,7 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
 
    </script>
    
-   <div onload="initialize()"></div>
+   <div onload="initialize();"></div>
    <div id="<?php echo $map_canvas; ?>"></div>   
    
    <?php 
@@ -2306,7 +2307,7 @@ function get_surrounding_posts($lat_min, $lat_max, $long_min, $long_max, $post_l
 
 }
 
-/** WORLD MAP OF ALL POSTS - LINK ON FOOTER**/
+/** WORLD MAP OF ALL POSTS - LINK ON FOOTER **/
 
 function get_google_world_map() {
     /**
@@ -2320,12 +2321,10 @@ function get_google_world_map() {
      * 			jb@greenpag.es
      */    
        
-    global $post;
+    global $wpdb, $post;
    
     $center_map_lat = '0.0';
     $center_map_long = '20.0';
-            
-    global $wpdb;
     $zoom = 2;
     $ppp = 100;
             
@@ -2336,7 +2335,13 @@ function get_google_world_map() {
             		" . $wpdb->prefix . "posts.*
         		    FROM $wpdb->posts
         		    WHERE
-            		    post_status='publish'           		
+            		    post_status='publish'
+            		    AND (
+							post_type =  'gp_news'
+							OR post_type =  'gp_events'
+                            OR post_type =  'gp_advertorial'
+                            OR post_type =  'gp_projects'
+						)           		
         		    ORDER BY post_date DESC
         			LIMIT " . $ppp
             	);
@@ -2347,9 +2352,9 @@ function get_google_world_map() {
     if ($pageposts) {            
         $json = '[';	                
         foreach ($pageposts as $post) {                    
-            $json .= get_post_location_json_data(true);	
+            $json .= get_post_location_json_data();	
         }
-        $json .= ']';                
+        $json .= ']'; 
         # Define map canvas div id
         $map_canvas = 'world_google_map_canvas';
     	display_google_map_posts_and_places_autocomplete($json, $map_canvas, $center_map_lat, $center_map_long, $zoom);        	
