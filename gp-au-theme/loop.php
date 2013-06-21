@@ -434,7 +434,6 @@ function default_single() {
 	if ( have_posts() ) {
 	    global $post; 
 		the_post();
-		var_dump($post->ID);
 		echo '<article>';
 			theme_create_post();
 			theme_update_delete_post();
