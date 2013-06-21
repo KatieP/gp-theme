@@ -1971,18 +1971,18 @@ function get_post_location_json_data($current_post = false) {
 	}
     
 	# Get post location meta (post id, key, true/false)
-    $lat_post = get_post_meta($post_id, $lat_post_key, true);
-    $long_post = get_post_meta($post_id, $long_post_key, true);
+    $lat_post =  ( !empty( $post->post_latitude ) )  ? $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
+    $long_post = ( !empty( $post->post_longitude ) ) ? $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
 
     if ( empty($lat_post) || empty($long_post) ) { return ''; }
     
 	# Construct json data and return for google map marker display
 	$json = '{ 
-	             Title: "'. $post_title .'",
+	             Title: "'.      $post_title .'",
 	             Title_link: "'. $title_link .'",
-	             Post_lat: "'. $lat_post .'", 
-	             Post_long: "'. $long_post .'", 
-	             Post_icon: "'. $post_icon .'" 
+	             Post_lat: "'.   $lat_post   .'", 
+	             Post_long: "'.  $long_post  .'", 
+	             Post_icon: "'.  $post_icon  .'" 
              },';
 	
 	return $json;

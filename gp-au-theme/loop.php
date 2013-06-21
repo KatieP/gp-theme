@@ -331,12 +331,7 @@ function default_index() {
     
     $querytotal = $wpdb->prepare(
         "SELECT COUNT(*) AS count 
-        FROM $wpdb->posts 
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m0 ON m0.post_id=" . $wpdb->prefix . "posts.ID AND m0.meta_key='_thumbnail_id'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_google_geo_country'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_google_geo_administrative_area_level_1'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m3 ON m3.post_id=" . $wpdb->prefix . "posts.ID AND m3.meta_key='gp_google_geo_locality_slug'
-            LEFT JOIN " . $wpdb->prefix . "postmeta AS m4 ON m4.post_id=" . $wpdb->prefix . "posts.ID AND m4.meta_key='gp_google_geo_locality'
+        FROM $wpdb->posts
         WHERE 
             post_status='publish'
             AND post_type=%s;",
@@ -374,13 +369,23 @@ function default_index() {
 	if ( $pageposts ) {
 	    
 	    $sorted_posts = array();
+	    $previous_post_title = '';
 	    
+	    # Assign popularity score for posts with location data and store in array for sorting
 		foreach ( $pageposts as $post ) {
 		    setup_postdata($post);
-			$c = distance_to_post($post, $location_latitude, $location_longitude);
-			$popularity_score_thisuser = page_rank($c, $post);
-			$popularity_score_thisuser = $post->popularity_score_thisuser + $popularity_score_thisuser;
-            $sorted_posts[$popularity_score_thisuser] = $post; 
+		    if ($post->post_title != $previous_post_title) {
+		        if ($post->post_type == 'gp_news') {
+		            $lat_post =  ( !empty( $post->post_latitude ) )  ? $post->post_latitude  : $post->gp_google_geo_latitude;
+                    $long_post = ( !empty( $post->post_longitude ) ) ? $post->post_longitude : $post->gp_google_geo_longitude;
+		            if ( empty($lat_post) || empty($long_post) ) { continue; }
+		        }
+			    $c = distance_to_post($post, $location_latitude, $location_longitude);
+			    $popularity_score_thisuser = page_rank($c, $post);
+			    $popularity_score_thisuser = $post->popularity_score + $popularity_score_thisuser;
+                $sorted_posts[$popularity_score_thisuser] = $post;
+                $previous_post_title = $post->post_title;
+		    } 
 	    }
 
         # Sort posts by popularity score and get appropriate 20
@@ -483,7 +488,7 @@ function attachment_single() {
 	}
 }
 
-/** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS - EXCLUDING EVENTS **/
+/** HOMEPAGE LIST VIEW OF 20 MOST RECENT POSTS **/
 function home_index() {
 	global $wpdb, $post, $gp;
 
@@ -544,14 +549,23 @@ function home_index() {
 	    # Display create new post button
 		theme_create_post();
 		$sorted_posts = array();
-		
-		# Assign popularity score for all posts in last two weeks and store in array for sorting
+	    $previous_post_title = '';
+	    	
+		# Assign popularity score for all posts in last two weeks with location data and store in array for sorting
 		foreach ( $pageposts as $post ) { 
 		    setup_postdata($post);
-			$c = distance_to_post($post, $location_latitude, $location_longitude);
-			$popularity_score_thisuser = page_rank($c, $post);
-			$post->popularity_score_thisuser = $popularity_score_thisuser;
-            $sorted_posts[$popularity_score_thisuser] = $post;                       
+		    if ($post->post_title != $previous_post_title) {
+			    if ($post->post_type == 'gp_news') {
+		            $lat_post =  ( !empty( $post->post_latitude ) )  ? $post->post_latitude  : $post->gp_google_geo_latitude;
+                    $long_post = ( !empty( $post->post_longitude ) ) ? $post->post_longitude : $post->gp_google_geo_longitude;
+		            if ( empty($lat_post) || empty($long_post) ) { continue; }
+		        }
+			    $c = distance_to_post($post, $location_latitude, $location_longitude);
+			    $popularity_score_thisuser = page_rank($c, $post);
+			    $popularity_score_thisuser = $post->popularity_score + $popularity_score_thisuser;
+                $sorted_posts[$popularity_score_thisuser] = $post;
+                $previous_post_title = $post->post_title;
+		    }                           
 		}
 
 		# Sort posts by popularity score and get top 20
