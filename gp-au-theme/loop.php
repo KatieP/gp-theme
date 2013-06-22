@@ -376,8 +376,10 @@ function default_index() {
 		    setup_postdata($post);
 		    if ($post->post_title != $previous_post_title) {
 		        if ($post->post_type == 'gp_news') {
-		            $lat_post =  ( !empty( $post->post_latitude ) )  ? $post->post_latitude  : $post->gp_google_geo_latitude;
-                    $long_post = ( !empty( $post->post_longitude ) ) ? $post->post_longitude : $post->gp_google_geo_longitude;
+                    $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
+                                     $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
+                    $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
+                                     $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
 		            if ( empty($lat_post) || empty($long_post) ) { continue; }
 		        }
 			    $c = distance_to_post($post, $location_latitude, $location_longitude);
@@ -556,8 +558,10 @@ function home_index() {
 		    setup_postdata($post);
 		    if ($post->post_title != $previous_post_title) {
 			    if ($post->post_type == 'gp_news') {
-		            $lat_post =  ( !empty( $post->post_latitude ) )  ? $post->post_latitude  : $post->gp_google_geo_latitude;
-                    $long_post = ( !empty( $post->post_longitude ) ) ? $post->post_longitude : $post->gp_google_geo_longitude;
+                    $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
+                                     $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
+                    $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
+                                     $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
 		            if ( empty($lat_post) || empty($long_post) ) { continue; }
 		        }
 			    $c = distance_to_post($post, $location_latitude, $location_longitude);

@@ -267,7 +267,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                 	<!-- Google CSE Search Box Ends -->
             	</div>			
                 <?php
-                if (!is_page()) {
+                if ( ( !is_page() || ( strpos($_SERVER['REQUEST_URI'], '/world-map/' ) === 0 ) ) ) {
        	            # Display location tag line and location filter option
                     $posttype_slug =               getPostTypeSlug($post_type);
                     $location_filter =             get_location_filter();

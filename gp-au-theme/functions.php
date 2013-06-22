@@ -1971,8 +1971,10 @@ function get_post_location_json_data($current_post = false) {
 	}
     
 	# Get post location meta (post id, key, true/false)
-    $lat_post =  ( !empty( $post->post_latitude ) )  ? $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
-    $long_post = ( !empty( $post->post_longitude ) ) ? $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
+    $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
+                     $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
+    $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
+                     $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
 
     if ( empty($lat_post) || empty($long_post) ) { return ''; }
     
@@ -1980,8 +1982,8 @@ function get_post_location_json_data($current_post = false) {
 	$json = '{ 
 	             Title: "'.      $post_title .'",
 	             Title_link: "'. $title_link .'",
-	             Post_lat: "'.   $lat_post   .'", 
-	             Post_long: "'.  $long_post  .'", 
+	             Post_lat: '.   $lat_post   .', 
+	             Post_long: '.  $long_post  .', 
 	             Post_icon: "'.  $post_icon  .'" 
              },';
 	
@@ -2034,18 +2036,17 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
                 styles: styles,          
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-        
+            
             //Adds map to map_canvas div in DOM so it is visible 
             var map = new google.maps.Map(document.getElementById('<?php echo $map_canvas; ?>'),
                       mapOptions);
+
+			// Do additional work to enable location filter autocomplete field 
+            var dummy_map =    new google.maps.Map(document.getElementById('dummy_map_canvas'), mapOptions);
+            var dummy_marker = new google.maps.Marker({map: dummy_map});
             
             // Creating a global infoWindow object that will be reused by all markers 
 		    var infoWindow = new google.maps.InfoWindow();
-
-			// Do additional work to enable location filter autocomplete field 
-			            
-            var dummy_map =    new google.maps.Map(document.getElementById('dummy_map_canvas'), mapOptions);
-            var dummy_marker = new google.maps.Marker({map: dummy_map});
             
 	        var options = {
 	                types: ['(cities)']
@@ -2159,7 +2160,7 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
    <div id="<?php echo $map_canvas; ?>"></div>   
    
    <?php 
-   if (!is_page()) {
+   if ( !is_page() ) {
    ?>
    <div class="right">
        <a href="<?php echo $site_url; ?>/world-map/">See World Map</a>
@@ -2199,7 +2200,7 @@ function get_google_map() {
             # Set user location lat and long here
             $user_lat =           ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : $gp->location['latitude'];
             $user_long =          ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] :$gp->location['longitude'];
-            $center_map_lat =     ( !empty($user_lat) ) ? $user_lat : '-33.9060263' ;
+            $center_map_lat =     ( !empty($user_lat) )  ? $user_lat  : '-33.9060263' ;
             $center_map_long =    ( !empty($user_long) ) ? $user_long : '151.26363019999997' ;
         }
         
@@ -2327,25 +2328,31 @@ function get_google_world_map() {
     $center_map_lat = '0.0';
     $center_map_long = '20.0';
     $zoom = 2;
-    $ppp = 100;
-            
-    /** SQL TO GET 100 MOST RECENT POSTS **/
+    $post_limit = 100;
+    $epochtime = strtotime('now');
 
+	/** SQL TO GET 20 MOST RECENT POSTS AROUND MAP CENTER **/
     $querystr = $wpdb->prepare(
-         		    "SELECT DISTINCT
-            		" . $wpdb->prefix . "posts.*
-        		    FROM $wpdb->posts
-        		    WHERE
-            		    post_status='publish'
-            		    AND (
-							post_type =  'gp_news'
-							OR post_type =  'gp_events'
-                            OR post_type =  'gp_advertorial'
-                            OR post_type =  'gp_projects'
-						)           		
-        		    ORDER BY post_date DESC
-        			LIMIT " . $ppp
-            	);
+        		    "SELECT DISTINCT
+            			" . $wpdb->prefix . "posts.*,
+            			m1.meta_value AS gp_enddate,
+            			m2.meta_value AS gp_startdate
+        			FROM $wpdb->posts
+        			    LEFT JOIN " . $wpdb->prefix . "postmeta AS m1 ON m1.post_id=" . $wpdb->prefix . "posts.ID AND m1.meta_key='gp_events_enddate' 
+            			LEFT JOIN " . $wpdb->prefix . "postmeta AS m2 ON m2.post_id=" . $wpdb->prefix . "posts.ID AND m2.meta_key='gp_events_startdate'
+       				WHERE
+       				    post_status='publish'
+            			AND (
+            			    ( post_type='gp_events' AND CAST(CAST(m1.meta_value AS UNSIGNED) AS SIGNED) >= %d ) 
+                			OR post_type='gp_projects' 
+                			OR post_type='gp_advertorial' 
+                			OR post_type='gp_news' 
+            			)
+        			ORDER BY post_date DESC
+        			LIMIT %d;",
+                    $epochtime,
+                    $post_limit
+                );
            
     $pageposts = $wpdb->get_results($querystr, OBJECT);
             
