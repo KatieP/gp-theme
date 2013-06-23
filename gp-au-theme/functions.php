@@ -1856,7 +1856,7 @@ function set_post_location_data_as_decimal($post_id) {
     $post = get_post($post_id);
     
     // Avoid an infinite loop by the following
-	if ( ! wp_is_post_revision( $post_id ) ){
+	if ( !wp_is_post_revision( $post_id ) ){
 	
 		// unhook this function so it doesn't loop infinitely
 		remove_action('publish_gp_news', 'set_post_location_data_as_decimal');
@@ -1889,15 +1889,33 @@ function set_post_location_data_as_decimal($post_id) {
             $author_locality =         get_user_meta($post_author_id, $locality_key, true);
             $author_location_slug =    get_user_meta($post_author_id, $locality_slug_key, true);
         
-            add_post_meta($post_id, $location_meta_key, $author_location, true);
-            add_post_meta($post_id, $lat_meta_key, $author_lat, true); 
-            add_post_meta($post_id, $long_meta_key, $author_long, true); 
-            add_post_meta($post_id, $country_meta_key, $author_country, true);
-            add_post_meta($post_id, $admin_lvl_one_key, $author_admin_lvl_one, true);
-            add_post_meta($post_id, $admin_lvl_two_key, $author_admin_lvl_two, true);
-            add_post_meta($post_id, $admin_lvl_three_key, $author_admin_lvl_three, true);
-            add_post_meta($post_id, $locality_key, $author_locality, true);
-            add_post_meta($post_id, $locality_slug_key, $author_location_slug, true);
+            if ( !update_post_meta($post_id, $location_meta_key, $author_location) ) { 
+                add_post_meta($post_id, $location_meta_key, $author_location, true); 
+            }
+            if ( !update_post_meta($post_id, $lat_meta_key, $author_lat) ) { 
+                add_post_meta($post_id, $lat_meta_key, $author_lat, true); 
+            } 
+            if ( !update_post_meta($post_id, $long_meta_key, $author_long) ) { 
+                add_post_meta($post_id, $long_meta_key, $author_long, true); 
+            } 
+            if ( !update_post_meta($post_id, $country_meta_key, $author_country) ) { 
+                add_post_meta($post_id, $country_meta_key, $author_country, true); 
+            }
+            if ( !update_post_meta($post_id, $admin_lvl_one_key, $author_admin_lvl_one) ) { 
+                add_post_meta($post_id, $admin_lvl_one_key, $author_admin_lvl_one, true); 
+            }
+            if ( !update_post_meta($post_id, $admin_lvl_two_key, $author_admin_lvl_two) ) { 
+                add_post_meta($post_id, $admin_lvl_two_key, $author_admin_lvl_two, true); 
+            }
+            if ( !update_post_meta($post_id, $admin_lvl_three_key, $author_admin_lvl_three) ) { 
+                add_post_meta($post_id, $admin_lvl_three_key, $author_admin_lvl_three, true); 
+            }
+            if ( !update_post_meta($post_id, $locality_key, $author_locality) ) { 
+                add_post_meta($post_id, $locality_key, $author_locality, true); 
+            }
+            if ( !update_post_meta($post_id, $locality_slug_key, $author_location_slug) ) { 
+                add_post_meta($post_id, $locality_slug_key, $author_location_slug, true); 
+            }
         }
     
         $post_lat  = (float) get_post_meta($post_id, $lat_meta_key, true);
