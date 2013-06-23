@@ -3812,7 +3812,7 @@ function theme_update_delete_post() {
     global $post, $current_user;
     
     # Check if this is users own post or admin and show update button if appropriate
-	if ( ( ( is_user_logged_in() ) && ( ( $current_user->ID == $post->post_author ) || ( get_user_role( array('administrator') ) ) ) ) ) {} else {return;}
+	if ( is_user_logged_in()  && ( $current_user->ID == $post->post_author ) ) {} else {return;}
 
 	# Set url components for post types
 	switch (get_post_type()) {
@@ -4414,7 +4414,7 @@ function set_event_dates_lat_and_long($entry, $form) {
      **/
     
     global $wpdb;
-    $post = get_post($entry["post_id"]);
+    $post    = get_post($entry["post_id"]);
     $post_id = $post->ID;
 
 	// Avoid an infinite loop by the following
@@ -4448,6 +4448,7 @@ function set_event_dates_lat_and_long($entry, $form) {
 		    $format =          array( '%s', '%s' );
    
             $wpdb->update($table, $data, $where, $format);            
+        
         }
 
         add_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);    
