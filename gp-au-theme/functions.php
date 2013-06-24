@@ -1852,7 +1852,7 @@ function set_post_location_data_as_decimal($post_id) {
      * 	       jb@greenpag.es
      **/
     
-    global $wpdb;
+    global $wpdb, $post;
     $post = get_post($post_id);
     
     // Avoid an infinite loop by the following
@@ -1877,8 +1877,8 @@ function set_post_location_data_as_decimal($post_id) {
         $locality_slug_key = 	'gp_google_geo_locality_slug';
 
         $post_location = get_post_meta($post_id, $location_meta_key, true);
-
-        if (empty($post_location)) {
+        
+        if ( isset($post->syndication_feed) ) {
             $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
             $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
             $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
