@@ -1876,9 +1876,10 @@ function set_post_location_data_as_decimal($post_id) {
         $locality_key = 		'gp_google_geo_locality';
         $locality_slug_key = 	'gp_google_geo_locality_slug';
 
-        $post_location = get_post_meta($post_id, $location_meta_key, true);
+        $post_location =     get_post_meta($post_id, $location_meta_key, true);
+        $post_syndication =  get_post_meta($post_id, 'syndication_feed', true);
         
-        if ( isset($post->syndication_feed) ) {
+        if ( !empty($post_syndication) ) {
             $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
             $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
             $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
