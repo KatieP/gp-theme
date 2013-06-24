@@ -1877,9 +1877,8 @@ function set_post_location_data_as_decimal($post_id) {
         $locality_slug_key = 	'gp_google_geo_locality_slug';
 
         $post_location =     get_post_meta($post_id, $location_meta_key, true);
-        $post_syndication =  get_post_meta($post_id, 'syndication_feed', true);
         
-        if ( !empty($post_syndication) ) {
+        if ( empty($post_location) ) {
             $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
             $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
             $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
@@ -4452,23 +4451,22 @@ function set_event_dates_lat_and_long($entry, $form) {
             $start_ts = strtotime ($start_date);
             $end_ts   = strtotime ($end_date);
             update_post_meta($post_id, $start_key, $start_ts);
-            update_post_meta($post_id, $end_key, $end_ts);
-        
-            $lat_meta_key =    'gp_google_geo_latitude';
-            $long_meta_key =   'gp_google_geo_longitude';
-
-            $post_lat  =       (float) get_post_meta($post_id, $lat_meta_key, true);
-            $post_long =       (float) get_post_meta($post_id, $long_meta_key, true);
-            
-    		// update the post, with lat and long as decimal
-		    $table =           'wp_posts';
-		    $data =            array( 'post_latitude' => $post_lat, 'post_longitude' => $post_long );
-		    $where =           array( 'ID' => $post_id );
-		    $format =          array( '%s', '%s' );
-   
-            $wpdb->update($table, $data, $where, $format);            
+            update_post_meta($post_id, $end_key, $end_ts);     
         
         }
+        
+        $lat_meta_key =    'gp_google_geo_latitude';
+        $long_meta_key =   'gp_google_geo_longitude';          
+        $post_lat  =       (float) get_post_meta($post_id, $lat_meta_key, true);
+        $post_long =       (float) get_post_meta($post_id, $long_meta_key, true);
+            
+    	// update the post, with lat and long as decimal
+		$table =           'wp_posts';
+		$data =            array( 'post_latitude' => $post_lat, 'post_longitude' => $post_long );
+		$where =           array( 'ID' => $post_id );
+		$format =          array( '%s', '%s' );
+   
+        $wpdb->update($table, $data, $where, $format);     
 
         add_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);    
 	}
