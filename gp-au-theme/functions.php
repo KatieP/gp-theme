@@ -1873,12 +1873,8 @@ function set_post_location_data_as_decimal($post_id) {
         $admin_lvl_three_key = 	'gp_google_geo_administrative_area_level_3';
         $locality_key = 		'gp_google_geo_locality';
         $locality_slug_key = 	'gp_google_geo_locality_slug';
-
-        sleep(2);
         
-        $post_location =        get_post_meta($post_id, $location_meta_key, true);
-        
-        if ( empty($post_location) ) {
+        if ( empty($post->post_latitude) || empty($post->post_longitude) ) {
             $author_location =         get_user_meta($post_author_id, $location_meta_key, true);
             $author_lat =              get_user_meta($post_author_id, $lat_meta_key, true);
             $author_long =             get_user_meta($post_author_id, $long_meta_key, true);
