@@ -4405,12 +4405,13 @@ function set_event_dates_lat_and_long($entry, $form) {
      *         jb@greenpag.es
      **/
     
-    global $wpdb;
+    global $wpdb, $post;
     $post    = get_post($entry["post_id"]);
+    setup_postdata( $post ); 
     $post_id = $post->ID;
 
 	// Avoid an infinite loop by the following
-	if ( ! wp_is_post_revision( $post_id ) ){
+	if ( !wp_is_post_revision( $post_id ) ){
 	
 		// unhook this function so it doesn't loop infinitely
         remove_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);
@@ -4428,11 +4429,42 @@ function set_event_dates_lat_and_long($entry, $form) {
             update_post_meta($post_id, $end_key, $end_ts);     
         
         }
+
+        $location_meta_key = 	'gp_google_geo_location';
+        $lat_meta_key = 		'gp_google_geo_latitude';
+        $long_meta_key = 		'gp_google_geo_longitude';
+        $country_meta_key = 	'gp_google_geo_country';
+        $admin_lvl_one_key = 	'gp_google_geo_administrative_area_level_1';
+        $admin_lvl_two_key = 	'gp_google_geo_administrative_area_level_2';
+        $admin_lvl_three_key = 	'gp_google_geo_administrative_area_level_3';
+        $locality_key = 		'gp_google_geo_locality';
+        $locality_slug_key = 	'gp_google_geo_locality_slug';
+
+        if ($post->post_type == 'gp_news') {
         
-        $lat_meta_key =    'gp_google_geo_latitude';
-        $long_meta_key =   'gp_google_geo_longitude';          
-        $post_lat  =       (float) get_post_meta($post_id, $lat_meta_key, true);
-        $post_long =       (float) get_post_meta($post_id, $long_meta_key, true);
+            $original_location =       $entry["8"];
+            $original_lat =            $entry["9"];
+            $original_long =           $entry["10"];
+            $original_country =        $entry["11"];
+            $original_admin_1 =        $entry["12"];
+            $original_admin_2 =        $entry["13"];
+            $original_admin_3 =        $entry["14"];
+            $original_locality =       $entry["15"];
+            $original_locality_slug =  $entry["16"];
+        
+            update_post_meta($post_id, $location_meta_key, $original_location); 
+            update_post_meta($post_id, $lat_meta_key, $original_lat);
+            update_post_meta($post_id, $long_meta_key, $original_long);
+            update_post_meta($post_id, $country_meta_key, $original_country); 
+            update_post_meta($post_id, $admin_lvl_one_key, $original_admin_1); 
+            update_post_meta($post_id, $admin_lvl_two_key, $original_admin_2); 
+            update_post_meta($post_id, $admin_lvl_three_key, $original_admin_3); 
+            update_post_meta($post_id, $locality_key, $original_locality);
+            update_post_meta($post_id, $locality_slug_key, $original_locality_slug);            
+        }
+            
+        $post_lat  =            (float) get_post_meta($post_id, $lat_meta_key, true);
+        $post_long =            (float) get_post_meta($post_id, $long_meta_key, true);
             
     	// update the post, with lat and long as decimal
 		$table =           'wp_posts';
