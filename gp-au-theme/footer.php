@@ -62,7 +62,19 @@
          * generally use this hook to reference JavaScript files.
          */
         wp_footer();
+        
+        if ( ( is_page() && ( strpos($_SERVER['REQUEST_URI'], '/world-map/' ) === 0 ) ) || ( !is_page() ) ) { 
+            ?>
+            <!-- Call Google maps api -->
+        	<script type="text/javascript" 
+            	    src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&amp;sensor=false&amp;callback=initialize" async >
+        	</script>
+            <?php 
+        } else {
+            ;
+        }
         ?>
+
         <!-- JS for social media sharebar: Twitter, Google+ and Stumbleupon -->
         <script type="text/javascript" src="http://platform.twitter.com/widgets.js" async ></script>
         <script type="text/javascript">

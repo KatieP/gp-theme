@@ -2138,14 +2138,6 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
 		    } 
         }
 
-        function loadScript() {
-  	        var script =   document.createElement("script");
-      	    script.type =  "text/javascript";
-  		    script.src =   "http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
-      		document.body.appendChild(script);
-	    }
-	    window.onload = loadScript;
-
    </script>
    
    <div onload="initialize();"></div>
