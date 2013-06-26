@@ -1375,7 +1375,7 @@ function get_calendar_and_upcoming_events() {
 	if ($pageposts && $numPosts != -1) {
 		echo '<div id="relevant-posts">
 				<span class="title">
-					<a href="'. get_site_url() .'/events/' . $location_filter_uri . '">Upcoming Events</a>
+					Upcoming Events
 				</span>'; 
 		$i = 0;
 		# Format event data and store in a string for use with jquery datepicker EVENT CALENDAR
@@ -1418,7 +1418,7 @@ function get_calendar_and_upcoming_events() {
 				?>
 				<a href="<?php echo $event_link_url; ?>" title="<?php echo $event_title; ?>" rel="bookmark" class="title"><?php echo $event_title; ?></a>
 				<?php 
-				echo '<div class="post-details"><a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/' . $post->gp_google_geo_locality_slug . '/">' . $post->gp_google_geo_locality . '</a>, <a href="'. get_site_url() .'/events/' . strtolower( $gp->location['country_iso2'] ) . '/' . strtolower( $post->gp_google_geo_administrative_area_level_1 ) . '/">' . $post->gp_google_geo_administrative_area_level_1 . '</a><br />';
+				echo '<div class="post-details">' . $post->gp_google_geo_locality . ', ' . $post->gp_google_geo_administrative_area_level_1 . '<br />';
 				if ($displayday == $displayendday) {
 					echo $displayday . ' ' . $displaymonth;
 				} else {
@@ -1433,14 +1433,14 @@ function get_calendar_and_upcoming_events() {
 		echo '</div>';
 	}
 	
-	/** RUN JAVASCRIPT THAT DISPLAYS EVENT CALENDAR AND HIGHLIGHTS DATES WITH EVENTS
+	/** 
+	 *  RUN JAVASCRIPT THAT DISPLAYS EVENT CALENDAR AND HIGHLIGHTS DATES WITH EVENTS
 	 *  USING JQUERY DATEPICKER
 	 *  CLICKING ON A HIGHLIGHTED DATE WILL DISPLAY LINKS TO EVENT PAGES IN JQUERY DIALOG BOX
 	 **/
 	
 	if ( isset($event_str) ) {
 	echo '<script type="text/javascript">
-			<!--//--><![CDATA[//><!--
 				var events = '. $event_str .';
 				console.log(events);
 				$("#eventCalendar").datepicker({
@@ -1513,7 +1513,6 @@ function get_calendar_and_upcoming_events() {
                         $("#event-dialog").dialog({ position: [x,y] });
                     }
                 });
-				//--><!]]>
 			</script>';
 	}
 }
@@ -2143,7 +2142,6 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
   	        var script =   document.createElement("script");
       	    script.type =  "text/javascript";
   		    script.src =   "http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&sensor=false&callback=initialize";
-  		    script.async = "true"; 
       		document.body.appendChild(script);
 	    }
 	    window.onload = loadScript;
@@ -3867,7 +3865,7 @@ function theme_update_delete_post() {
 	<div id="delete-post-dialog" title="Delete this post"></div>
 	<div class="new-action">
 	    <span class="right">
-	        <a href="#" onclick="delete_post_dialog();" class="new-post-action">Delete this post</a>
+	        <a href="javascript:void(0);" onclick="delete_post_dialog(); return false;" class="new-post-action">Delete this post</a>
 	    </span>
 	</div>
 	<div class="clear"></div>  
@@ -4009,7 +4007,8 @@ function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) 
      */
     
     global $current_user;
-    $current_data = (isset($current_user->$input_id)) ? $current_user->$input_id : '';
+    
+        $current_data = (isset($current_user->$input_id)) ? $current_user->$input_id : '';
     
     $correct_input = '<div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" '. $type .' 
@@ -4029,29 +4028,29 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
      **/
     
     global $current_user;
-    $notification_setting = $current_user->notification_setting;
-    $daily = 'daily_email';
-    $weekly = 'weekly_email';
-    $monthly = 'monthly_email';
-    $daily_decription = '<strong>Daily: \'The Green Laser\'</strong> Get notified each day of news, events and projects happening near you';
-    $weekly_decription = '<strong>Weekly: \'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
-    $monthly_decription = '<strong>Monthly: \'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
+    $notification_setting =  $current_user->notification_setting;
+    $daily =                 'daily_email';
+    $weekly =                'weekly_email';
+    $monthly =               'monthly_email';
+    $daily_decription =      '<strong>Daily: \'The Green Laser\'</strong> Get notified each day of news, events and projects happening near you';
+    $weekly_decription =     '<strong>Weekly: \'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
+    $monthly_decription =    '<strong>Monthly: \'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
     
     switch ($notification_setting) {
         case 'daily_email':
-            $check_daily_email = ' checked="checked"';
-            $check_weekly_email = '';
-            $check_monthly_email = '';
+            $check_daily_email =    ' checked="checked"';
+            $check_weekly_email =   '';
+            $check_monthly_email =  '';
             break;
         case 'weekly_email':
-            $check_weekly_email = ' checked="checked"';
-            $check_daily_email = '';
-            $check_monthly_email = '';
+            $check_weekly_email =   ' checked="checked"';
+            $check_daily_email =    '';
+            $check_monthly_email =  '';
             break;
         case 'monthly_email':
-            $check_monthly_email = ' checked="checked"';
-            $check_daily_email = '';
-            $check_weekly_email = ''; 
+            $check_monthly_email =  ' checked="checked"';
+            $check_daily_email =    '';
+            $check_weekly_email =   ''; 
             break;
     }
        
@@ -4164,12 +4163,12 @@ function get_location_filter_uri_prefix() {
     
     global $gp;
 
-    $location_country_slug =    ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : '';
+    $location_country_slug =    ( !empty($_GET['location_slug_filter']) )  ? $_GET['location_slug_filter'] : '';
     $location_state_slug =      ( !empty($_GET['location_state_filter']) ) ? '/' .$_GET['location_state_filter'] : '';
-    $locality_slug =            ( !empty($_GET['locality_filter']) ) ? '/' .$_GET['locality_filter'] : '';
+    $locality_slug =            ( !empty($_GET['locality_filter']) )       ? '/' .$_GET['locality_filter'] : '';
 
     if ( !empty($location_country_slug) && !empty($location_state_slug) ) {
-        $location_filter_uri_prefix =  $location_country_slug . $location_state_slug. $locality_slug;
+        $location_filter_uri_prefix =  $location_country_slug . $location_state_slug . $locality_slug;
     } else {
         $location_filter_uri_prefix = '';
     }
@@ -4495,8 +4494,7 @@ add_action("gform_after_submission", "set_event_dates_lat_and_long", 10, 2);
 
 function get_post_type_map() {
     /**
-     * Useful for creating pretty post type names or
-     * when building urls dynamically
+     * Useful for creating pretty post type names
      **/
     
     $post_type_map = array( "gp_news"     => "news", 
