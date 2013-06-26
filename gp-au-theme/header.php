@@ -285,7 +285,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	            		Everything environmental happening around <span id="header_user_location" class=""><a href="javascript:void(0);" onclick="show_location_field(); return false;"><?php echo $location_filter; ?></a>.</span>
 	            		<span id="header_location_field" class="hidden">
 	            		   <!-- Location filter data is set here, processed by display_google_map_posts_and_places_autocomplete() -->
-	            		   <form action="#" method="get">
+	            		   <?php $action = ( is_home() ) ? $site_url . '/news/' : '#'; ?>
+	            		   <form action="<?php echo $action; ?>" method="get">
 	            		    	<input name="location_filter" id="location_filter" type="text" />
 	            		    	<input name="latitude_filter" id="latitude_filter" type="hidden" value="" readonly="readonly" />
 								<input name="longitude_filter" id="longitude_filter" type="hidden" value="" readonly="readonly" />
