@@ -295,7 +295,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 								<input name="admin_area_level_3_filter" id="admin_area_level_3_filter" type="hidden" value="" readonly="readonly" />
 								<input name="locality_filter" id="locality_filter" type="hidden" value="" readonly="readonly" />
 								<input name="location_filter_url_prefix" id="location_filter_url_prefix" type="hidden" value="<?php echo $location_filter_url_prefix; ?>" readonly="readonly" />
-	            		    	<a id="location_filter_go" href="javascript:void(0);"><input type="button" value="Go" /></a>
+	            		    	<a id="location_filter_go" href="javascript:void(0);"><input type="submit" value="Go" /></a>
 	            		    	<input type="button" value="Cancel" onclick="hide_location_field(); return false;" />
 	            		   </form>
 	            		</span>
