@@ -1975,8 +1975,8 @@ function get_post_location_json_data($current_post = false) {
 	$json = '{ 
 	             Title: "'.      $post_title .'",
 	             Title_link: "'. $title_link .'",
-	             Post_lat: '.   $lat_post   .', 
-	             Post_long: '.  $long_post  .', 
+	             Post_lat: "'.   $lat_post   .'", 
+	             Post_long: "'.  $long_post  .'", 
 	             Post_icon: "'.  $post_icon  .'" 
              },';
 	
