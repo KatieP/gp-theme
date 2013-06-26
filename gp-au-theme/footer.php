@@ -67,7 +67,7 @@
             ?>
             <!-- Call Google maps api -->
         	<script type="text/javascript" 
-            	    src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&amp;sensor=false&amp;callback=initialize" async >
+            	    src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyC1Lcch07tMW7iauorGtTY3BPe-csJhvCg&amp;sensor=false&amp;callback=initialize" async>
         	</script>
             <?php 
         } else {
@@ -76,8 +76,8 @@
         ?>
 
         <!-- JS for social media sharebar: Twitter, Google+ and Stumbleupon -->
-        <script type="text/javascript" src="http://platform.twitter.com/widgets.js" async ></script>
-        <script type="text/javascript">
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js" async></script>
+        <script type="text/javascript" async>
 			(function() {
 				var po = document.createElement('script'); 
 				po.type = 'text/javascript'; 

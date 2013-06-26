@@ -3,12 +3,11 @@
 <?php
 global $gp;
 $site_url = get_site_url();
+$template_url = get_bloginfo('template_url');
 
 if ( is_user_logged_in() ) {
 	global $current_user;
 }
-
-$template_url = get_bloginfo('template_url');
 
 $schematype = ' itemscope itemtype="http://schema.org/';
 if ( is_single() ) {
@@ -37,7 +36,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width">
                 
-		<script type="text/javascript">
+		<script type="text/javascript" async>
 			window.google_analytics_uacct = "UA-2619469-9";
 		</script>
 		
@@ -145,7 +144,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
         wp_head();
 		?>
 		<!-- Remove unnecessary call to jquery css, ugly solution I know! -->
-		<script type="text/javascript">
+		<script type="text/javascript" async >
 		    rogue_element = document.getElementById("jquery-ui-css");
 		    rogue_element.parentNode.removeChild(rogue_element);
 		</script>	
@@ -154,7 +153,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 	<body>
 		<!-- Facebook JavaScript SDK -->
 		<div id="fb-root"></div>
-		<script>
+		<script async >
 			window.fbAsyncInit = function() {
 				FB.init({appId: '305009166210437', status: true, cookie: true, xfbml: true});
 			};
@@ -222,15 +221,13 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    <ul id="auth-tools">
 						    <li id="auth-yourfavourites" class="no-js">
 							    <a href="<?php echo $post_author_url; ?>#tab:favourites" title="My Upvoted Posts">
-	    						    <span class="af-icon-chevron-up"></span>
-	    						    
+	    						    <span class="af-icon-chevron-up"></span>		    
 							    </a>
 							</li>
 					    	<li id="auth-yournotifications" class="no-js">
 							    <a href="#/" class="auth-yournotifications-start" title="My Notifications">
 								    <span class="icon-notifications">My Notifications</span>
-							    </a>
-							    
+							    </a>						    
 							    <ul id="auth-dash-notifications" class="auth-dash">
 								    <li class="auth-dash-title">You have no notifications yet.</li>
 							    </ul>
@@ -273,7 +270,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                     $location_filter =             get_location_filter();
                     $location_filter_url_prefix =  $site_url . '/' . $posttype_slug;
 	                ?>
-            		<script type="text/javascript">
+            		<script type="text/javascript" async >
                 		function show_location_field() {
                     		document.getElementById("header_location_field").className = "";
                     		document.getElementById("header_user_location").className = "hidden";
@@ -298,8 +295,8 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 								<input name="admin_area_level_3_filter" id="admin_area_level_3_filter" type="hidden" value="" readonly="readonly" />
 								<input name="locality_filter" id="locality_filter" type="hidden" value="" readonly="readonly" />
 								<input name="location_filter_url_prefix" id="location_filter_url_prefix" type="hidden" value="<?php echo $location_filter_url_prefix; ?>" readonly="readonly" />
-	            		    	<a id="location_filter_go" href="#"><input type="button" value="Go" /></a>
-	            		    	<input type="button" value="Cancel" onclick="hide_location_field();" />
+	            		    	<a id="location_filter_go" href="javascript:void(0);"><input type="button" value="Go" /></a>
+	            		    	<input type="button" value="Cancel" onclick="hide_location_field(); return false;" />
 	            		   </form>
 	            		</span>
 	            		<div id="dummy_map_canvas"></div>

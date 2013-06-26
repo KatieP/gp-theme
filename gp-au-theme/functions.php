@@ -74,7 +74,7 @@ function redirect_to_users_own_profile_page() {
 remove_action( 'login_form', 'username_or_email_login' );
 
 function new_username_or_email_login() { ?>
-	<script type="text/javascript">
+	<script type="text/javascript" async>
 		var regtitle = document.getElementById('loginform');
 		
 		if (regtitle != undefined) {
@@ -141,7 +141,7 @@ function add_jquery_data() {
 	global $current_user, $post;
 	if ( parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/profile.php" || parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/user-edit.php" ) {
 		if ( parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) == "/wp-admin/profile.php" ) { ?>
-			<script type="text/javascript">
+			<script type="text/javascript" async>
 			$(document).ready(function(){
 				$("#message.updated > p:first").html('<strong>Profile updated</strong>. <a href="<?php echo get_author_posts_url($current_user->ID) ?>">View your public profile now.</a>'); // profile options
 				$("form#your-profile > h3:first").before('<div class="view-profile"><a href="<?php echo get_author_posts_url($current_user->ID) ?>">< View your public profile</a></div>');
@@ -180,7 +180,7 @@ function add_jquery_data() {
 			</style>
 		<?php }
 		if( !current_user_can('edit_others_posts') ) { // we want admins and editors to still see it ?>
-	<script type="text/javascript">
+	<script type="text/javascript" async>
 		$(document).ready(function(){
 			$("form#your-profile > h3:first").hide(); // profile options
 			$("form#your-profile > table:first").hide(); // profile options
@@ -188,7 +188,7 @@ function add_jquery_data() {
 		});
 	</script>
 		<?php } ?>
-	<script type="text/javascript">
+	<script type="text/javascript" async>
 		var info;
 		$(document).ready(function(){
 			var descriptionOptions = {
@@ -254,7 +254,7 @@ function add_jquery_data() {
 	</script>
 	<?php } 
 	if (get_post_type() == 'gp_events' || get_post_type() == 'gp_competitions') { ?>
-	<script type="text/javascript">
+	<script type="text/javascript" async>
 		jQuery(document).ready(function($) {
 			$(".tfdate").datepicker({
 			    dateFormat: 'D, M d, yy',
@@ -302,7 +302,7 @@ function add_jquery_data() {
 	if ((get_post_type() == 'gp_advertorial' || get_post_type() == 'gp_competitions') && (get_post_status( $post->ID ) == 'auto-draft' || get_post_status( $post->ID ) == 'draft')) {
 		if ( get_user_role( array('subscriber', 'contributor') ) ) {
 	?>
-	<script type="text/javascript">
+	<script type="text/javascript" async>
 		$(document).ready(function(){
 			var label = $('#publish').text(); 
 			$('#publish').text('');
@@ -324,7 +324,7 @@ function gp_after_scripts() {
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		
-		<script type="text/javascript">
+		<script type="text/javascript" async>
 			/*$(document).ready(function() {
 				$('#auth-youraccount').renderDash("#auth-dash-account");
 				$('#auth-yourfavourites').renderDash("#auth-dash-favourites");
@@ -1440,7 +1440,7 @@ function get_calendar_and_upcoming_events() {
 	 **/
 	
 	if ( isset($event_str) ) {
-	echo '<script type="text/javascript">
+	echo '<script type="text/javascript" async>
 				var events = '. $event_str .';
 				console.log(events);
 				$("#eventCalendar").datepicker({
@@ -2011,7 +2011,7 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
      **/
 
     ?>
-    <script type="text/javascript">
+    <script type="text/javascript" async>
         //Event Objects to make surrounding markers 
         var json = <?php echo $json; ?>;
       
@@ -2140,7 +2140,7 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
 
    </script>
    
-   <div onload="initialize();"></div>
+   <div onload="initialize(); return false;"></div>
    <div id="<?php echo $map_canvas; ?>"></div>   
    
    <?php 
@@ -3821,7 +3821,7 @@ function theme_update_delete_post() {
     $site_url = get_site_url();
     
     ?>
-    <script type="text/javascript">
+    <script type="text/javascript" async>
 		<!--		
 		function delete_post_dialog() {
 			site_url =     '<?php echo $site_url; ?>';
