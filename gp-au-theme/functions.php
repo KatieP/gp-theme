@@ -1994,7 +1994,7 @@ function display_google_map_posts_and_places_autocomplete($json, $map_canvas, $c
      * Constructs google map and places custom marker on each post location,
      * Each marker shows a lightbox with a link to post on click
      * 
-     * Also calls google maps api places library, this enables text input autocomplete
+     * Google maps api places library called from footer.php, this enables text input autocomplete
      * for the location filter in the header tagline.
      * 
      * Additional work to set location filtering data i.e. lat/long, country,
@@ -2941,7 +2941,7 @@ function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
 					ORDER BY " . $wpdb->prefix . "posts.post_date DESC 
 					LIMIT " . $ppp . " 
 					OFFSET " . $offset .";";				
-						
+
 		$pageposts = $wpdb->get_results($querystr, OBJECT);
 		
 		if ( $post_type_key ) {

@@ -54,7 +54,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
         // Add the blog description for the home/front page.
         $site_description = get_bloginfo( 'description', 'display' );
         if ( $site_description && ( is_home() || is_front_page() ) ) {
-                echo " | $site_description";
+                echo " | ". $site_description;
         }
 
         // Add a page number if necessary:
@@ -169,7 +169,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
         $location_filter_uri =  get_location_filter_uri();
         $user_country =         $gp->location['country_iso2'];
         ?>
-		<header>
+		<header id="header">
     		<div class="pos">
     		    <div class="template-left">
                     <a id="header-logo" href="<?php echo $site_url; ?>">greenpag.es</a>
