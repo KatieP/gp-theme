@@ -4322,6 +4322,11 @@ form#setupform br {display: none;}
 
 form#setupform p.submit {display:block;height:44px;}
 
+#content .chargify-frame {
+	width: 710px;
+	height: 2300px;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
