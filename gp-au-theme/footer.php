@@ -5,7 +5,7 @@
                                 "gp_advertorial" => "eco-friendly-products", 
                                 "gp_projects" =>    "projects" );
 		?>
-		<footer id="header">
+		<footer id="footer">
     		<div class="pos">
     		    <div class="template-left">
 			        <nav id="footer-nav"> 
