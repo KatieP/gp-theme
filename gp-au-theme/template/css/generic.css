@@ -3476,8 +3476,14 @@ ul.categorieslistmain {
     background-color: #F97231;
 }
 
-#post-donate-join-bar #volunteer {
+#post-donate-join-bar #volunteer, 
+#my-advertise #volunteer input[type="button"] {
     background-color: #fc468c;
+    margin-right: 0;
+}
+
+#my-advertise #grey input[type="button"] {
+    background-color: #bbb;
     margin-right: 0;
 }
 
