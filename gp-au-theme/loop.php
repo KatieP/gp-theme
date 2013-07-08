@@ -1745,7 +1745,7 @@ function theme_subscribertabs($profile_author) {
 				<li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 				<!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
-				
+				<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>
 				<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	            <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 			</ul></nav>
@@ -1831,6 +1831,7 @@ function theme_editortabs($profile_author) {
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
+	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 	            </ul>
@@ -1920,8 +1921,10 @@ function theme_contributortabs($profile_author) {
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->                
+	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
+	                
 	            </ul>
 	        </nav>
 	        <div class=\"clear\"></div>
