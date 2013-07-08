@@ -21,7 +21,7 @@ if (!isset($post_pid)) {
 	return false;
 }
 
-$post_tab_types = array('posts', 'favourites', 'analytics', 'advertise', 'following', 'topics');
+$post_tab_types = array('posts', 'favourites', 'analytics', 'advertise', 'following', 'topics', 'billing');
 
 if ( !in_array(strtolower($post_tab), $post_tab_types) ) {
 	$post_tab = "posts";
@@ -57,6 +57,10 @@ if ($post_tab == "analytics") {
 
 if ($post_tab == "advertise") {
 	theme_profile_advertise($post_pid);
+}
+
+if ($post_tab == "billing") {
+	theme_profile_billing($post_pid);
 }
 
 ?>

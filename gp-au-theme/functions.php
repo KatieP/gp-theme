@@ -3128,6 +3128,101 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 		}
 }
 
+
+
+/* SHOW MEMBERS BILLING OPTIONS ---------------------------------------------------------------------------------*/
+
+// $12 / week CPC plan 		ID: 3313295   	Handle: 12-week-plan
+// $39 / week CPC plan 		ID: 27029   	Handle: 39-week-plan
+// $99 / week CPC plan 		ID: 27028   	Handle: 99-week-plan
+// $249 / week plan 		ID: 3313296   	Handle: 249-week-plan
+// $499 / week plan 		ID: 3313297   	Handle: 499-week-plan
+// Click $1.90 component 	ID: 3207
+
+// Directory Page $39 Monthly Fee ID: 27023   Handle: directory-page-39-monthly-fee
+
+
+function theme_profile_billing($profile_pid) {
+	
+	global $wpdb, $post, $current_user;
+
+	$profile_author = get_user_by('slug', $profile_pid);
+	$profile_author_id = $profile_author->ID;
+    $site_url = get_site_url();
+    $plan = get_user_meta(ID, productid);
+	
+	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
+	
+	 $template_url = get_bloginfo('template_url');
+	 
+	//Map of productid to names of plans for $plan
+
+	$plan_type_map = array("3313295"=>"12 week plan",
+							"27029"=>"39 week plan",
+							"27028"=>"99 week plan",
+							"3313296"=>"249 week plan",
+							"3313297"=>"499 week plan",
+							"27023"=>"Directory page 39 month plan");
+
+                            
+                           // $plan = $plan_type_map[$type]; 
+
+
+	?>
+	
+		<h3>You are on the <?php echo $plan; ?> plan</h3>
+		 
+		<h3>Upgrade</h3> 
+			<select>
+  				<option value="3313297">$499/week plan</option>
+  				<option value="3313296">$249/week plan</option>
+  				<option value="27028">$99/week plan</option>
+  				<option value="27029">$39/week plan</option>
+  				<option value="3313295">$12/week plan</option>
+			</select>
+		
+		<h3>Downgrade</h3> 
+		
+		<select>
+  				<option value="3313297">$499/week plan</option>
+  				<option value="3313296">$249/week plan</option>
+  				<option value="27028">$99/week plan</option>
+  				<option value="27029">$39/week plan</option>
+  				<option value="3313295">$12/week plan</option>
+  				<option value="pause">Pause Advertising</option>
+			</select>
+		
+		
+		<h3>Change card details</h3> 
+		
+		<h3>Billing History</h3>
+		
+		<table class="author_analytics">
+			<tr>
+				<td>Week</td>
+				<td>Date</td>
+				<td>Amount <br />Billed</td>
+				<td>Clicks</td>
+				<td>CPC Price</td>
+				<td>Plan</td>
+			</tr>
+			<tr>
+				<td><?php ?></td>
+				<td><?php ?></td>
+				<td><?php ?></td>
+				<td><?php ?></td>
+				<td><?php ?></td>
+				<td><?php ?></td>
+			</tr>
+		</table>
+		
+		<h3>Get invoice</h3>
+		 
+	
+	<?php
+	
+}
+
 /* SHOW MEMBERS ADVERTISING OPTIONS */
 function theme_profile_advertise($profile_pid) {
 	global $current_user;
