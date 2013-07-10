@@ -3266,7 +3266,7 @@ function theme_profile_billing($profile_pid) {
      *          jb@greenpag.es
      **/
 	
-	global $wpdb, $post, $current_user;
+	global $current_user;
 
 	if ( ( $current_user->reg_advertiser == '1' ) || ( get_user_role( array('administrator') ) ) ) {} else { return; }
 	

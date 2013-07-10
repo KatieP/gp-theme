@@ -4046,6 +4046,10 @@ ul.categorieslistmain {
     position: relative;
 }
 
+#content .profile-container input[type="submit"] {
+	margin: 0 0 2em 0;
+}
+
 #content .profile-action {
 	font-size: 0.6em;
     border: 0.1em solid #a2e7f8;
