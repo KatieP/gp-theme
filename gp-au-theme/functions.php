@@ -3298,22 +3298,15 @@ function theme_profile_billing($profile_pid) {
 		    <?php upgrade_dropdown($product_id); ?>
 		    <input type="submit" value="Upgrade to new ad plan">
 		</form>
+		<div class="clear"></div>
 		
 		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
 		    <?php downgrade_dropdown($product_id); ?>
 		    <input type="submit" value="Downgrade to new ad plan">
 		</form>
-		
-		<!--
-		<div>
-			<span>
-				<form action="https://green-pages.chargify.com/subscriptions/<?php #echo $productid; ?>" method="PUT">
-					<input type="submit" value="Save new ad plan">					
-				</form>	
-			</span>
-		</div>
 		<div class="clear"></div>
 		
+		<!-- 
 		 
 		<h3>Billing History</h3>
 		
