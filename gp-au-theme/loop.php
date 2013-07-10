@@ -1740,12 +1740,19 @@ function theme_subscribertabs($profile_author) {
 	
 	# User is logged in and IS viewing their own profile
 	if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
-		echo "
+        
+	    if ( ($profile_author->reg_advertiser == '1') || get_user_role( array('administrator') ) ) {
+	        $billing_tab = "<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>";
+	    } else {
+	        $billing_tab = '';
+	    }
+	    
+	    echo "
 			<nav class=\"profile-tabs\"><ul>
 				<li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 				<li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 				<!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
-				<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>
+				". $billing_tab ."
 				<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	            <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 			</ul></nav>
@@ -1824,14 +1831,22 @@ function theme_editortabs($profile_author) {
 	}
 	unset($current_user, $post_author_url, $template_path, $directory_page_url_redirect);
 	# User is logged in and IS viewing their own profile
+	
 	if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
-		echo "
+
+		if ( ($profile_author->reg_advertiser == '1') || get_user_role( array('administrator') ) ) {
+	        $billing_tab = "<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>";
+	    } else {
+	        $billing_tab = '';
+	    }
+	    
+	    echo "
 	        <nav class=\"profile-tabs\">
 	            <ul>
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->
-	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>
+	                ". $billing_tab ."
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
 	            </ul>
@@ -1915,16 +1930,22 @@ function theme_contributortabs($profile_author) {
 	
 	# User is logged in and IS viewing their own profile
 	if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
-		echo "
+		
+		if ( ($profile_author->reg_advertiser == '1') || get_user_role( array('administrator') ) ) {
+	        $billing_tab = "<li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>";
+	    } else {
+	        $billing_tab = '';
+	    }
+	    
+	    echo "
 	        <nav class=\"profile-tabs\">
 	            <ul>
 	                <li><a href=\"{$post_author_url}#tab:posts\" class=\"profile-tab-active\">My Posts</a></li>
 	                <li><a href=\"{$post_author_url}#tab:favourites\">Favourites</a></li>
 	                <!--<li><a href=\"{$post_author_url}#tab:topics\">Topics</a></li>-->                
-	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:billing\">Billing</a></li>
+	               ". $billing_tab ."
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:advertise\">Advertise</a></li>
 	                <li class=\"profile-tab-man\"><a href=\"{$post_author_url}#tab:analytics\">Analytics</a></li>
-	                
 	            </ul>
 	        </nav>
 	        <div class=\"clear\"></div>

@@ -3247,7 +3247,6 @@ function downgrade_dropdown($productid) {
 		  	break;	
 	}
 }
-
 		
 function theme_profile_billing($profile_pid) {
 	
@@ -3259,8 +3258,6 @@ function theme_profile_billing($profile_pid) {
     $user_ID = $current_user->ID;
     $productid = get_user_meta($user_ID, 'productid', true);
     $subscriberid = get_user_meta($user_ID, 'subscriberid', true);
-    
-    //$plan = get_user_meta($post_author_id, $location_meta_key, true);
     
 	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
