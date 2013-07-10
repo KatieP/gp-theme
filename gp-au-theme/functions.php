@@ -3139,18 +3139,18 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 // Directory Page $39 Monthly Fee ID: 27023   Handle: directory-page-39-monthly-fee
 		
-function upgrade_dropdown($productid) {
+function upgrade_dropdown($product_id) {
     /**
      * Show appropriate list of advertising plans for user to upgrade to
      * Called by theme_profile_billing()
      * 
      **/
     	
-    if ($productid != '3313297') {
+    if ($product_id != '3313297') {
         ?><h3>Upgrade</h3><?php
     }
     
-    switch ($productid) {
+    switch ($product_id) {
 		case '3313297':
 			return;
 			break;
@@ -3193,18 +3193,18 @@ function upgrade_dropdown($productid) {
 }
 
 
-function downgrade_dropdown($productid) {
+function downgrade_dropdown($product_id) {
     /**
      * Show appropriate list of advertising plans for user to downgrade to
      * Called by theme_profile_billing()
      * 
      **/
     
-    if ($productid != '3313297') {
+    if ($product_id != '3313297') {
         ?><h3>Downgrade</h3><?php
     }	
 
-    switch ($productid) {
+    switch ($product_id) {
 		case 'paused':
 			return;
 			break;
@@ -3270,13 +3270,13 @@ function theme_profile_billing($profile_pid) {
 
 	if ( ( $current_user->reg_advertiser == '1' ) || ( get_user_role( array('administrator') ) ) ) {} else { return; }
 	
-	$profile_author = get_user_by('slug', $profile_pid);
-	$profile_author_id = $profile_author->ID;
-    $site_url = get_site_url();
-    $user_ID = $current_user->ID;
-    $productid = get_user_meta($profile_author_id, 'productid', true);
-    $subscriberid = get_user_meta($profile_author_id, 'subscriberid', true);
-    $chargify_self_service_page_url = $profile_author->chargify_self_service_page_url;
+	$profile_author =                  get_user_by('slug', $profile_pid);
+	$profile_author_id =               $profile_author->ID;
+    $site_url =                        get_site_url();
+    $user_ID =                         $current_user->ID;
+    $product_id =                      $profile_author->product_id;
+    $subscriber_id =                   $profile_author->subscription_id;
+    $chargify_self_service_page_url =  $profile_author->chargify_self_service_page_url;
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
@@ -3288,19 +3288,19 @@ function theme_profile_billing($profile_pid) {
 							"3313297"  => "$499 / week plan",
 							"27023"    => "Directory page $39 / month plan" );
                         
-    $plan = $plan_type_map[$productid];
+    $plan = $plan_type_map[$product_id];
 
-    if ( !empty($productid) && !empty($plan) ) {
+    if ( !empty($product_id) && !empty($plan) ) {
 	    ?>
 		<h3>You are on the <?php echo $plan; ?></h3>
 
 		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
-		    <?php upgrade_dropdown($productid); ?>
+		    <?php upgrade_dropdown($product_id); ?>
 		    <input type="submit" value="Upgrade to new ad plan">
 		</form>
 		
 		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
-		    <?php downgrade_dropdown($productid); ?>
+		    <?php downgrade_dropdown($product_id); ?>
 		    <input type="submit" value="Downgrade to new ad plan">
 		</form>
 		
