@@ -3196,7 +3196,6 @@ function downgrade_dropdown($productid) {
 		case 'paused':
 			return;
 			break;
-		
 		case '3313297':	//$499/wk
 			echo '<select name="downgrade">
 			 		<option value="3313296">$249/week plan</option>
@@ -3206,7 +3205,6 @@ function downgrade_dropdown($productid) {
 			 		<option value="pause">Pause Advertising</option>
 		  		</select>';			
 		  	break;	
-
 		case '3313296': //$249/wk
 			echo '<select name="downgrade">
 			 		<option value="27028">$99/week plan</option>
@@ -3214,8 +3212,7 @@ function downgrade_dropdown($productid) {
 			 		<option value="3313295">$12/week plan</option>
 			 		<option value="pause">Pause Advertising</option>
 		  		</select>';			
-		  	break;	
-		  	
+		  	break;
 		 case '27028': //$99/wk
 			echo '<select name="downgrade">
 			 		<option value="27029">$39/week plan</option>
@@ -3223,20 +3220,17 @@ function downgrade_dropdown($productid) {
 			 		<option value="pause">Pause Advertising</option>
 		  		</select>';			
 		  	break;	
-
 		case '27029': //$39/wk
 			echo '<select name="downgrade">
 			 		<option value="3313295">$12/week plan</option>
 			 		<option value="pause">Pause Advertising</option>
 		  		</select>';			
 		  	break;		
-
 		case '3313295': //$12/wk
 			echo '<select name="downgrade">
 			 		<option value="pause">Pause Advertising</option>
 		  		</select>';			
-		  	break;	
-			
+		  	break;			
 		case '27023': //Directory $39 / month
 			echo '<select name="downgrade">
 					<option value="3313295">$12/week plan</option>
@@ -3279,21 +3273,17 @@ function theme_profile_billing($profile_pid) {
 		<?php upgrade_dropdown($productid); ?>
 		<?php downgrade_dropdown($productid); ?>
 		
+		<!--
 		<div>
 			<span>
-				<form action="https://green-pages.chargify.com/subscriptions/<?php echo $productid; ?>" method="PUT">
+				<form action="https://green-pages.chargify.com/subscriptions/<?php #echo $productid; ?>" method="PUT">
 					<input type="submit" value="Save new ad plan">					
 				</form>	
 			</span>
 		</div>
 		<div class="clear"></div>
 		
-		<!-- 
-		<form action="https://green-pages.chargify.com/update_payment/<?php #echo $subscriberid;?>" method="PUT">
-			<input type="submit" value="Update Credit Card">
-		</form>	 
-		-->
-		
+		 
 		<h3>Billing History</h3>
 		
 		<table class="author_analytics">
@@ -3316,7 +3306,7 @@ function theme_profile_billing($profile_pid) {
 		</table>
 		
 		<h3>Get invoice</h3>
-		 
+		--> 
 	    <?php
     } 
     
