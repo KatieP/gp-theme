@@ -3128,8 +3128,6 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 		}
 }
 
-
-
 /* SHOW MEMBERS BILLING OPTIONS ---------------------------------------------------------------------------------*/
 
 // $12 / week CPC plan 		ID: 3313295   	Handle: 12-week-plan
@@ -3140,7 +3138,6 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 // Click $1.90 component 	ID: 3207
 
 // Directory Page $39 Monthly Fee ID: 27023   Handle: directory-page-39-monthly-fee
-
 		
 function upgrade_dropdown($productid) {
 	
@@ -3252,32 +3249,29 @@ function theme_profile_billing($profile_pid) {
 	
 	global $wpdb, $post, $current_user;
 
+	if ( ( $current_user->reg_advertiser == '1' ) || ( get_user_role( array('administrator') ) ) ) {} else { return; }
+	
 	$profile_author = get_user_by('slug', $profile_pid);
 	$profile_author_id = $profile_author->ID;
     $site_url = get_site_url();
     $user_ID = $current_user->ID;
-    $productid = get_user_meta($user_ID, 'productid', true);
-    $subscriberid = get_user_meta($user_ID, 'subscriberid', true);
+    $productid = get_user_meta($profile_author_id, 'productid', true);
+    $subscriberid = get_user_meta($profile_author_id, 'subscriberid', true);
     
-	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
+    if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
-	 $template_url = get_bloginfo('template_url');
-	 
-	//Map of productid to names of plans for $plan
+    //Map of productid to names of plans for $plan
+    $plan_type_map = array( "3313295"  => "$12 / week plan",
+							"27029"    => "$39 / week plan",
+							"27028"    => "$99 / week plan",
+							"3313296"  => "$249 / week plan",
+							"3313297"  => "$499 / week plan",
+							"27023"    => "Directory page $39 / month plan" );
+                        
+    $plan = $plan_type_map[$productid];
 
-	$plan_type_map = array("3313295"  => "$12 / week plan",
-							"27029"   => "$39 / week plan",
-							"27028"   => "$99 / week plan",
-							"3313296" => "$249 / week plan",
-							"3313297" => "$499 / week plan",
-							"27023"   => "Directory page $39 / month plan");
-
-                            
-    $plan = $plan_type_map[$productid]; 
-
-
-	?>
-	
+    if ( !empty($productid) && !empty($plan) ) {
+	    ?>
 		<h3>You are on the <?php echo $plan; ?></h3>
 		 
 		<h3>Upgrade</h3> 
@@ -3286,20 +3280,18 @@ function theme_profile_billing($profile_pid) {
 		<h3>Downgrade</h3> 
 		<?php downgrade_dropdown($productid); ?>
 		
-			<div>
-				<span>
-					<form action="https://green-pages.chargify.com/subscriptions/<?php echo $productid;?>" method="PUT">
-					<input type="submit" value="Save new ad plan">
-								
-					</form>	
-				</span>
-			</div>
-			<div class="clear"></div>
+		<div>
+			<span>
+				<form action="https://green-pages.chargify.com/subscriptions/<?php echo $productid;?>" method="PUT">
+					<input type="submit" value="Save new ad plan">					
+				</form>	
+			</span>
+		</div>
+		<div class="clear"></div>
 		
-			<form action="https://green-pages.chargify.com/update_payment/<?php echo $subscriberid;?>" method="PUT">
-					<input type="submit" value="Update Credit Card">
-								
-					</form>	 
+		<form action="https://green-pages.chargify.com/update_payment/<?php echo $subscriberid;?>" method="PUT">
+			<input type="submit" value="Update Credit Card">
+		</form>	 
 		
 		<h3>Billing History</h3>
 		
@@ -3313,19 +3305,21 @@ function theme_profile_billing($profile_pid) {
 				<td>Plan</td>
 			</tr>
 			<tr>
-				<td><?php ?></td>
-				<td><?php ?></td>
-				<td><?php ?></td>
-				<td><?php ?></td>
-				<td><?php ?></td>
-				<td><?php ?></td>
+				<td><?php ; ?></td>
+				<td><?php ; ?></td>
+				<td><?php ; ?></td>
+				<td><?php ; ?></td>
+				<td><?php ; ?></td>
+				<td><?php ; ?></td>
 			</tr>
 		</table>
 		
 		<h3>Get invoice</h3>
 		 
 	<?php
-	
+    } else {
+        ?><h3>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></h3><?php 
+    }
 }
 
 /* SHOW MEMBERS ADVERTISING OPTIONS */
