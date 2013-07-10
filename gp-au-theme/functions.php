@@ -3141,24 +3141,25 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 		
 function upgrade_dropdown($productid) {
 	
-	switch ($productid) {
+    if ($productid != '3313297') {
+        ?><h3>Upgrade</h3><?php
+    }
+    
+    switch ($productid) {
 		case '3313297':
 			return;
 			break;
-		
 		case '3313296':	//$249/wk
 			echo '<select name="upgrade">
 			 		<option value="3313297">$499/week plan</option>
 		  		</select>';			
 		  	break;	
-
 		case '27028': //$99/wk
 			echo '<select name="upgrade">
 			 		<option value="3313297">$499/week plan</option>
 		  	 		<option value="3313296">$249/week plan</option>
 		  		</select>';			
 		  	break;	
-
 		case '27029': //$39/wk
 			echo '<select name="upgrade">
 			 		<option value="3313297">$499/week plan</option>
@@ -3166,7 +3167,6 @@ function upgrade_dropdown($productid) {
 		     		<option value="27028">$99/week plan</option>
 		  		</select>';			
 		  	break;		
-
 		case '3313295': //$12/wk
 			echo '<select name="upgrade">
 			 		<option value="3313297">$499/week plan</option>
@@ -3174,8 +3174,7 @@ function upgrade_dropdown($productid) {
 		     		<option value="27028">$99/week plan</option>
 			 		<option value="27029">$39/week plan</option>
 		  		</select>';			
-		  	break;	
-			
+		  	break;
 		case '27023': //Directory $39 / month
 			echo '<select name="upgrade">
 			 		<option value="3313297">$499/week plan</option>
@@ -3190,7 +3189,9 @@ function upgrade_dropdown($productid) {
 
 
 function downgrade_dropdown($productid) {
-	
+    if ($productid != '3313297') {
+        ?><h3>Downgrade</h3><?php
+    }	
 	switch ($productid) {
 		case 'paused':
 			return;
@@ -3257,6 +3258,7 @@ function theme_profile_billing($profile_pid) {
     $user_ID = $current_user->ID;
     $productid = get_user_meta($profile_author_id, 'productid', true);
     $subscriberid = get_user_meta($profile_author_id, 'subscriberid', true);
+    $chargify_self_service_page_url = $profile_author->chargify_self_service_page_url;
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
@@ -3274,24 +3276,23 @@ function theme_profile_billing($profile_pid) {
 	    ?>
 		<h3>You are on the <?php echo $plan; ?></h3>
 		 
-		<h3>Upgrade</h3> 
 		<?php upgrade_dropdown($productid); ?>
-		
-		<h3>Downgrade</h3> 
 		<?php downgrade_dropdown($productid); ?>
 		
 		<div>
 			<span>
-				<form action="https://green-pages.chargify.com/subscriptions/<?php echo $productid;?>" method="PUT">
+				<form action="https://green-pages.chargify.com/subscriptions/<?php echo $productid; ?>" method="PUT">
 					<input type="submit" value="Save new ad plan">					
 				</form>	
 			</span>
 		</div>
 		<div class="clear"></div>
 		
-		<form action="https://green-pages.chargify.com/update_payment/<?php echo $subscriberid;?>" method="PUT">
+		<!-- 
+		<form action="https://green-pages.chargify.com/update_payment/<?php #echo $subscriberid;?>" method="PUT">
 			<input type="submit" value="Update Credit Card">
 		</form>	 
+		-->
 		
 		<h3>Billing History</h3>
 		
@@ -3316,7 +3317,11 @@ function theme_profile_billing($profile_pid) {
 		
 		<h3>Get invoice</h3>
 		 
-	<?php
+	    <?php
+    } 
+    
+    if (!empty($chargify_self_service_page_url)) {
+        ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
     } else {
         ?>
         <h3>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></h3>
@@ -3367,12 +3372,6 @@ function theme_profile_directory($profile_pid) {
 	$profile_author = get_user_by('slug', $profile_pid);
 	$profile_author_id = $profile_author->ID;
 	$directory_page_url = $profile_author->directory_page_url;
-    $chargify_self_service_page_url = $profile_author->chargify_self_service_page_url;
-    $chargify_self_service_page_link = '';
-    
-    if (!empty($chargify_self_service_page_url)) {
-        $chargify_self_service_page_link = "<a href=\"" . $chargify_self_service_page_url . "\" target=\"_blank\"><h3>Update my credit card payment details here</h3></a>";
-    }
 	
 	echo "
 	<div id=\"my-directory\">
@@ -3381,7 +3380,6 @@ function theme_profile_directory($profile_pid) {
 		<a href=\"/forms/update-my-directory-page/\">
 		    <h3>Update my Directory Page details here</h3>
 		</a>
-		" . $chargify_self_service_page_link . "
 	</div>
 	";
 }
