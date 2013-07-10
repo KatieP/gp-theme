@@ -3140,7 +3140,12 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 // Directory Page $39 Monthly Fee ID: 27023   Handle: directory-page-39-monthly-fee
 		
 function upgrade_dropdown($productid) {
-	
+    /**
+     * Show appropriate list of advertising plans for user to upgrade to
+     * Called by theme_profile_billing()
+     * 
+     **/
+    	
     if ($productid != '3313297') {
         ?><h3>Upgrade</h3><?php
     }
@@ -3189,10 +3194,17 @@ function upgrade_dropdown($productid) {
 
 
 function downgrade_dropdown($productid) {
+    /**
+     * Show appropriate list of advertising plans for user to downgrade to
+     * Called by theme_profile_billing()
+     * 
+     **/
+    
     if ($productid != '3313297') {
         ?><h3>Downgrade</h3><?php
     }	
-	switch ($productid) {
+
+    switch ($productid) {
 		case 'paused':
 			return;
 			break;
@@ -3241,6 +3253,18 @@ function downgrade_dropdown($productid) {
 }
 		
 function theme_profile_billing($profile_pid) {
+    /**
+     * Billing panel on profile page
+     * 
+     * Allows user to upgrade or downgrade cost per click advertising plans
+     * and update credit card details
+     * 
+     * Shows some advertiser history
+     * 
+     * Authors: Katie Patrick & Jesse Browne
+     *          kp@greenpag.es
+     *          jb@greenpag.es
+     **/
 	
 	global $wpdb, $post, $current_user;
 
