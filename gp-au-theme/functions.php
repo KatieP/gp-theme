@@ -3128,6 +3128,46 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 		}
 }
 
+/* CHARGIFY API COMMUNICATION ---------------------------------------------------------------------------------*/
+
+		$chargify_key = '3FAaEvUO_ksasbblajon';
+		$chargify_auth = $chargify_key .':x';
+		$chargify_auth_url = 'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
+		echo PHP_EOL;
+
+        $chargify_url = 'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
+        echo '$chargify_url: '. $chargify_url;
+        echo PHP_EOL;
+
+
+        echo 'Sending data to chargify ...';   
+        echo PHP_EOL;
+
+        // Chargify api key: 3FAaEvUO_ksasbblajon
+        // http://docs.chargify.com/api-authentication
+
+        $ch = curl_init($chargify_auth_url);
+
+        $array = array();
+        array_push($array, 'Content-Type: application/json;', 'Accept: application/json;', 'charset=utf-8;');
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $array);
+        curl_setopt($ch, CURLOPT_URL, $chargify_url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        #curl_setopt($ch, CURLOPT_POSTFIELDS, $usage);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
+
+        $result = curl_exec($ch);
+        echo $result;   
+        echo PHP_EOL;
+
+        curl_close($ch);    
+
+
+
 /* SHOW MEMBERS BILLING OPTIONS ---------------------------------------------------------------------------------*/
 
 // $12 / week CPC plan 		ID: 3313295   	Handle: 12-week-plan
