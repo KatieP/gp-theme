@@ -3294,13 +3294,13 @@ function theme_profile_billing($profile_pid) {
 	    ?>
 		<h3>You are on the <?php echo $plan; ?></h3>
 
-		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
+		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
 		    <?php upgrade_dropdown($product_id); ?>
 		    <input type="submit" value="Upgrade to new ad plan">
 		</form>
 		<div class="clear"></div>
 		
-		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
+		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
 		    <?php downgrade_dropdown($product_id); ?>
 		    <input type="submit" value="Downgrade to new ad plan">
 		</form>
