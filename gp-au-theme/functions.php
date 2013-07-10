@@ -3293,9 +3293,16 @@ function theme_profile_billing($profile_pid) {
     if ( !empty($productid) && !empty($plan) ) {
 	    ?>
 		<h3>You are on the <?php echo $plan; ?></h3>
-		 
-		<?php upgrade_dropdown($productid); ?>
-		<?php downgrade_dropdown($productid); ?>
+
+		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
+		    <?php upgrade_dropdown($productid); ?>
+		    <input type="submit" value="Upgrade to new ad plan">
+		</form>
+		
+		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/">
+		    <?php downgrade_dropdown($productid); ?>
+		    <input type="submit" value="Downgrade to new ad plan">
+		</form>
 		
 		<!--
 		<div>
