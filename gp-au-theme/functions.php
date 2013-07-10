@@ -3318,7 +3318,11 @@ function theme_profile_billing($profile_pid) {
 		 
 	<?php
     } else {
-        ?><h3>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></h3><?php 
+        ?>
+        <h3>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></h3>
+        <p>Doesn't sound right?</p>
+        <p>Send us an email at hello[at]greenpag.es and we'll get to the bottom of it.</p>
+        <?php 
     }
 }
 
