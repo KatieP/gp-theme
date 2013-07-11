@@ -3298,19 +3298,17 @@ function create_update_payment_url($profile_author) {
      *  This creates the SHA1 token at the end of the url for the update_payment, requires first 10 digits 
      *  $token = sha1 ("update_payment--3364787--OG6AQ4YsCTh2lRfEP6p3");
      *
-     *  Author: Katie Patrick kp@greenpag.es
+     *  Author: Katie Patrick 
+     *          kp@greenpag.es
      **/
 	
-	$site_key = 'OG6AQ4YsCTh2lRfEP6p3'; // Site Shared Key:
-	$subscription_id = $profile_author->subscription_id;
-	
-	$sha_input = 'update_payment--'. $subscription_id .'--'. $site_key;
+	$site_key =            'OG6AQ4YsCTh2lRfEP6p3'; // Site Shared Key:
+	$subscription_id =     $profile_author->subscription_id;
+	$sha_input =           'update_payment--'. $subscription_id .'--'. $site_key;
+	$token =               sha1($sha_input);
+	$token_10 =            substr($token, 0, 10);  // returns first 10 digits of sha
 
-	$token = sha1 ($sha_input);
-
-	$token_10 = substr($token, 0, 10);  // returns first 10 digits of sha
-
-	$update_payment_url = 'https://green-pages.chargify.com/update_payment/' . $subscription_id.'/'. $token_10;
+	$update_payment_url =  'https://green-pages.chargify.com/update_payment/' . $subscription_id.'/'. $token_10;
 
 	return $update_payment_url;
 }
@@ -3340,7 +3338,7 @@ function theme_profile_billing($profile_pid) {
     $user_ID =                         $current_user->ID;
     $product_id =                      $profile_author->product_id;
     $subscriber_id =                   $profile_author->subscription_id;
-    $chargify_self_service_page_url =  create_update_payment_url($profile_author);
+    $chargify_self_service_page_url =  ( !empty($subscriber_id) ) ? create_update_payment_url($profile_author) : '';
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
