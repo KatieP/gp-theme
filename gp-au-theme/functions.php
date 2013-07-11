@@ -3130,6 +3130,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 /* CHARGIFY API COMMUNICATION ---------------------------------------------------------------------------------*/
 
+function chargify_api() {
 		$chargify_key = '3FAaEvUO_ksasbblajon';
 		$chargify_auth = $chargify_key .':x';
 		$chargify_auth_url = 'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
@@ -3166,7 +3167,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
         curl_close($ch);    
 
-
+}
 
 /* SHOW MEMBERS BILLING OPTIONS ---------------------------------------------------------------------------------*/
 
@@ -3291,7 +3292,30 @@ function downgrade_dropdown($product_id) {
 		  	break;	
 	}
 }
-		
+
+function create_update_payment_url($profile_author) {
+    /**
+     *  This creates the SHA1 token at the end of the url for the update_payment, requires first 10 digits 
+     *  $token = sha1 ("update_payment--3364787--OG6AQ4YsCTh2lRfEP6p3");
+     *
+     *  Author: Katie Patrick kp@greenpag.es
+     **/
+	
+	$site_key = 'OG6AQ4YsCTh2lRfEP6p3'; // Site Shared Key:
+	$subscription_id = $profile_author->subscription_id;
+	
+	$sha_input = 'update_payment--'. $subscription_id .'--'. $site_key;
+
+	$token = sha1 ($sha_input);
+
+	$token_10 = substr($token, 0, 10);  // returns first 10 digits of sha
+
+	$update_payment_url = 'https://green-pages.chargify.com/update_payment/' . $subscription_id.'/'. $token_10;
+
+	return $update_payment_url;
+}
+
+
 function theme_profile_billing($profile_pid) {
     /**
      * Billing panel on profile page
@@ -3316,7 +3340,7 @@ function theme_profile_billing($profile_pid) {
     $user_ID =                         $current_user->ID;
     $product_id =                      $profile_author->product_id;
     $subscriber_id =                   $profile_author->subscription_id;
-    $chargify_self_service_page_url =  $profile_author->chargify_self_service_page_url;
+    $chargify_self_service_page_url =  create_update_payment_url($profile_author);
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
@@ -3336,13 +3360,13 @@ function theme_profile_billing($profile_pid) {
 
 		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
 		    <?php upgrade_dropdown($product_id); ?>
-		    <input type="submit" value="Upgrade to new ad plan">
+		    <input type="submit" value="Save plan">
 		</form>
 		<div class="clear"></div>
 		
 		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
 		    <?php downgrade_dropdown($product_id); ?>
-		    <input type="submit" value="Downgrade to new ad plan">
+		    <input type="submit" value="Save plan">
 		</form>
 		<div class="clear"></div>
 		
@@ -3373,6 +3397,8 @@ function theme_profile_billing($profile_pid) {
 		--> 
 	    <?php
     } 
+    
+    
     
     if (!empty($chargify_self_service_page_url)) {
         ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
