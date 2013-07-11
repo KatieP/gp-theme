@@ -179,10 +179,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					        <li><a href="<?php echo $site_url; ?>/news/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_news' && !is_home() ){echo ' class="active"';} ?>>News</a></li>
 					        <li><a href="<?php echo $site_url; ?>/events/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_events' ) {echo ' class="active"';} ?>>Events</a></li>
 					        <li><a href="<?php echo $site_url; ?>/eco-friendly-products/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_advertorial' ) {echo ' class="active"';} ?>>Products</a></li>
-					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>
-	                        <?php 
-	                        // Display Directory link only if user in Australia
-	                        if ( $user_country == 'AU' ) { ?> <li><a href="http://directory.thegreenpages.com.au/">Directory</a></li><?php ;} ?>					    
+					        <li><a href="<?php echo $site_url; ?>/projects/<?php echo $location_filter_uri; ?>"<?php if ( $post_type == 'gp_projects' ) {echo ' class="active"';} ?>>Projects</a></li>				    
 				        </ul>
 			        </nav>
 			    </div>
