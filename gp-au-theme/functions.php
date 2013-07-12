@@ -3188,37 +3188,37 @@ function upgrade_dropdown($product_id) {
 			break;
 		case '3313296':	//$249/wk
 			echo '<select name="upgrade">
-			 		<option value="3313297">$499/week plan</option>
+			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27028': //$99/wk
 			echo '<select name="upgrade">
-			 		<option value="3313297">$499/week plan</option>
-		  	 		<option value="3313296">$249/week plan</option>
+			 		<option value="3313297">  &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
+		  	 		<option value="3313296">  &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27029': //$39/wk
 			echo '<select name="upgrade">
-			 		<option value="3313297">$499/week plan</option>
-		  	 		<option value="3313296">$249/week plan</option>
-		     		<option value="27028">$99/week plan</option>
+			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
+		  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp  </option>
+		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;		
 		case '3313295': //$12/wk
 			echo '<select name="upgrade">
-			 		<option value="3313297">$499/week plan</option>
-		  	 		<option value="3313296">$249/week plan</option>
-		     		<option value="27028">$99/week plan</option>
-			 		<option value="27029">$39/week plan</option>
+			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
+		  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
+		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;
 		case '27023': //Directory $39 / month
 			echo '<select name="upgrade">
-			 		<option value="3313297">$499/week plan</option>
-		  	 		<option value="3313296">$249/week plan</option>
-		     		<option value="27028">$99/week plan</option>
-			 		<option value="27029">$39/week plan</option>
-			 		<option value="3313295">$12/week plan</option>
+			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
+		  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
+		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 	}
@@ -3242,43 +3242,43 @@ function downgrade_dropdown($product_id) {
 			break;
 		case '3313297':	//$499/wk
 			echo '<select name="downgrade">
-			 		<option value="3313296">$249/week plan</option>
-		     		<option value="27028">$99/week plan</option>
-			 		<option value="27029">$39/week plan</option>
-			 		<option value="3313295">$12/week plan</option>
-			 		<option value="pause">Pause Advertising</option>
+			 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
+		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '3313296': //$249/wk
 			echo '<select name="downgrade">
-			 		<option value="27028">$99/week plan</option>
-			 		<option value="27029">$39/week plan</option>
-			 		<option value="3313295">$12/week plan</option>
-			 		<option value="pause">Pause Advertising</option>
+			 		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;
 		 case '27028': //$99/wk
 			echo '<select name="downgrade">
-			 		<option value="27029">$39/week plan</option>
-			 		<option value="3313295">$12/week plan</option>
-			 		<option value="pause">Pause Advertising</option>
+			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27029': //$39/wk
 			echo '<select name="downgrade">
-			 		<option value="3313295">$12/week plan</option>
-			 		<option value="pause">Pause Advertising</option>
+			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;		
 		case '3313295': //$12/wk
 			echo '<select name="downgrade">
-			 		<option value="pause">Pause Advertising</option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;			
 		case '27023': //Directory $39 / month
 			echo '<select name="downgrade">
-					<option value="3313295">$12/week plan</option>
-			 		<option value="pause">Pause Advertising</option>
+					<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 	}
@@ -3402,38 +3402,66 @@ function theme_profile_billing($profile_pid) {
 
 /* SHOW MEMBERS ADVERTISING OPTIONS */
 function theme_profile_advertise($profile_pid) {
+
 	global $current_user;
-
+	$site_url = get_site_url();
 	$profile_author = get_user_by('slug', $profile_pid);
-	
-	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 
-	# Set form urls for creating ad posts for regular monthly subscription advertisers and non regular advertisers
-	$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
-    $template_url = get_bloginfo('template_url');
+	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
+		
+	# if user IS and advertiser
+	if ($profile_author->reg_advertiser == true) {
+		
+		$product_id = $profile_author->product_id;
+	
+		$product_name = get_product_name($product_id);
+		
+		switch ($profile_author->budget_status) {
+    		case 'active': //Active client with budget remaining
+    			?><h3>You are on the <?php echo $product_name; ?></h3><?php
+        		
+        		echo '<p>You still have some budget left this week</p>
+				<p>Want more clicks? There\'s no limit on how many posts you can make, so go for it! <br />
+				Create another post now.</p>
+				<a href="'. $site_url .'/forms/create-product-post/"><input type="button" value="Create Product Post"></a>';
+        		break;
+        		
+    		case 'used_up': //Active client with budget used up for the week
+    			?><h3>You are on the <?php echo $product_name; ?></h3><?php
+        		
+        		echo '<p>Wow, you\'re posts are so popular that your weekly budget is already used up!<br /> 
+        		This means that your product posts will not show again until your next billing cycle commences.</p>
+        		
+        		<p>Want more clicks? Upgrade your weekly budget now.</p>';
+			
+				echo '<form action="'. $site_url .'/chargify-upgrade-downgrade-handler/" method="post">
+		    	'. upgrade_dropdown($product_id) . '
+		    	<input type="submit" value="Save plan">
+				</form>
+				<div class="clear"></div>';
+        		break;
+        		
+    		case 'cancelled': //Previous active client who has cancelled
+    			?><h3>You were on the <?php echo $product_name; ?></h3>
+    			<p>Reactivate your account now</p><?php
+        		break;
+		}	
+	
+	} else { 
+		# if user IS NOT an adverters and never has been
+		# Set form urls for creating ad posts for regular monthly subscription advertisers and non regular advertisers
+		$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+    	$template_url = get_bloginfo('template_url');
     
-	echo "
-	<div id=\"my-advertise\">
-		<div id=\"advertorial\">
-			<span><a href=\"". $post_my_product_form ."\" target=\"_blank\"><input type=\"button\" value=\"Post a Product $89\" /></a></span>
-			<div class=\"clear\"></div>			
-			<span><a href=\"" . $template_url . "/about/rate-card/#product\" target=\"_blank\">Learn more</a></span>
-		</div>
-		<div class=\"clear\"></div>
-		<div id=\"listing\">
-			<span><a href=\"" . get_permalink(472) . "\" target=\"_blank\"><input type=\"button\" value=\"Directory Page $39/m\" /></a></span>
-			<div class=\"clear\"></div>
-			<span><a href=\"" . $template_url . "/about/rate-card/#directory\" target=\"_blank\">Learn more</a></span>
-		</div>
-		<div class=\"clear\"></div>
-		<div id=\"email\">
-			<span><a href=\"mailto:jesse.browne@thegreenpages.com.au?Subject=Exclusive%20Email%20Inquiry\" ><input type=\"button\" value=\"Exclusive Email $3500\" /></a></span>
-			<div class=\"clear\"></div>
-			<span><a href=\"" . $template_url . "/about/rate-card/#email\" target=\"_blank\">Learn more</a></span>
-		</div>
-		<div class=\"clear\"></div>
-	</div>
-	";
+		echo "<div id=\"email\">
+				<span><a href=\"" . $site_url . "/advertisers\" ><input type=\"button\" value=\"Post Your First Product Editorial!\" /></a></span>
+				<div class=\"clear\"></div>
+				<br />
+				<span><a href=\"" . $site_url . "/advertisers\" target=\"_blank\">Learn more</a></span>
+			  </div>
+			  <div class=\"clear\"></div>
+		";
+	}
 }
 
 /* SHOW MEMBERS DIRECTORY OPTIONS */
