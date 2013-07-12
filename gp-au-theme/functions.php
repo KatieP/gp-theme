@@ -3170,15 +3170,6 @@ function chargify_api() {
 }
 
 /* SHOW MEMBERS BILLING OPTIONS ---------------------------------------------------------------------------------*/
-
-// $12 / week CPC plan 		ID: 3313295   	Handle: 12-week-plan
-// $39 / week CPC plan 		ID: 27029   	Handle: 39-week-plan
-// $99 / week CPC plan 		ID: 27028   	Handle: 99-week-plan
-// $249 / week plan 		ID: 3313296   	Handle: 249-week-plan
-// $499 / week plan 		ID: 3313297   	Handle: 499-week-plan
-// Click $1.90 component 	ID: 3207
-
-// Directory Page $39 Monthly Fee ID: 27023   Handle: directory-page-39-monthly-fee
 		
 function upgrade_dropdown($product_id) {
     /**
