@@ -3350,7 +3350,7 @@ function theme_profile_billing($profile_pid) {
 							"3313297"  => "$499 / week plan",
 							"27023"    => "Directory page $39 / month plan" );
                         
-    $plan = $plan_type_map[$product_id];
+    $plan = get_product_name($product_id);
 
     if ( !empty($product_id) && !empty($plan) ) {
 	    ?>
@@ -4769,5 +4769,21 @@ function get_post_type_map() {
                             "gp_projects" => "projects" );
     
     return $post_type_map;
+}
+
+function get_product_name($product_id) {
+    
+    //Map of productid to names of plans for $plan
+    $plan_type_map = array( "3313295"  => "$12 / week plan",
+							"27029"    => "$39 / week plan",
+							"27028"    => "$99 / week plan",
+							"3313296"  => "$249 / week plan",
+							"3313297"  => "$499 / week plan",
+							"27023"    => "Directory page $39 / month plan" );
+                        
+    $product_name = $plan_type_map[$product_id];
+    
+    return $product_name;
+    
 }
 ?>
