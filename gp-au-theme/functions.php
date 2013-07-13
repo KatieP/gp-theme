@@ -3400,6 +3400,83 @@ function theme_profile_billing($profile_pid) {
     }
 }
 
+/* ADVERTISER POST HISTORY LIST */
+#shows title, url, post-date and pause/active button so advertisers can manage posts
+
+function list_posts_advertiser($profile_pid) {
+	
+	global $current_user, $wpdb, $post;
+	$site_url = get_site_url();
+	$profile_author = get_user_by('slug', $profile_pid);
+	
+	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
+	
+	$querystr = "SELECT DISTINCT " . $wpdb->prefix . "posts.*
+             FROM $wpdb->posts
+             WHERE 
+                post_status = 'publish' and 
+                post_type = 'gp_advertorial' and 
+                ".$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+            ORDER BY " . $wpdb->prefix . "posts.post_date DESC 
+            ";              
+
+	$pageposts = $wpdb->get_results($querystr, OBJECT);
+	
+	
+	
+	echo '<table class = "advertiser_table">';
+	
+	foreach ($pageposts as $post) {
+
+    	setup_postdata($post);
+    	if ($post->post_title != $previous_post_title) {
+    	
+    		$post_id = $post->ID;
+    		$post_status = get_post_status($post_id);
+        	
+			echo '<tr>
+						<td class="advertiser_table">';
+        					$link = get_permalink($post->ID);               
+        					echo '<a href="'. $link .'">'. $post->post_title .'</a>
+        				</td>
+        				
+        				<td class="author_analytics_date">';
+        				#	Active/Paused 'post_hidden', 'post_shown'
+        				
+        				if ($post_status == 'publish') {
+        					echo 'Hide_Post';
+        					#$post = array();
+        					#$post = $post_id;
+        					#$post['post_status'] = 'post_hidden'; //Hides post
+        					#wp_update_post($post);
+        					
+        					
+        					} elseif ($post_status == 'post_hidden') {
+        					
+        						echo 'Show_Post';
+        						#$post = array();
+        						#$post = $post_id;
+        						#$post['post_status'] = 'publish'; //Shows post
+        						#wp_update_post($post);
+        				}
+        					
+        				echo '</td>
+        				
+        	 	  <tr>';
+        	
+
+        	# End your code here
+    	}
+	}       
+
+	echo '</table>';
+	
+		
+	echo '<br /><br /><br /><br />'; 
+}
+
+
+
 /* SHOW MEMBERS ADVERTISING OPTIONS */
 function theme_profile_advertise($profile_pid) {
 
@@ -3423,7 +3500,12 @@ function theme_profile_advertise($profile_pid) {
         		echo '<p>You still have some budget left this week</p>
 				<p>Want more clicks? There\'s no limit on how many posts you can make, so go for it! <br />
 				Create another post now.</p>
-				<a href="'. $site_url .'/forms/create-product-post/"><input type="button" value="Create Product Post"></a>';
+				<a href="'. $site_url .'/forms/create-product-post/"><input type="button" value="Create Another Product Post"></a>
+				<div class="clear"></div><br /><br />';
+				
+				echo '<h3>My Product Posts</h3>';
+				
+				list_posts_advertiser($profile_pid);
         		break;
         		
     		case 'used_up': //Active client with budget used up for the week
@@ -3439,11 +3521,18 @@ function theme_profile_advertise($profile_pid) {
 		    	<input type="submit" value="Save plan">
 				</form>
 				<div class="clear"></div>';
+				
+				echo '<h3>My Product Posts</h3>';
+				
+				list_posts_advertiser($profile_pid);
         		break;
         		
     		case 'cancelled': //Previous active client who has cancelled
     			?><h3>You were on the <?php echo $product_name; ?></h3>
-    			<p>Reactivate your account now</p><?php
+    			<p>Reactivate your account now</p><br /><?php
+    			
+    			echo '<h3>My Product Posts</h3>';
+    			
         		break;
 		}	
 	
@@ -3453,13 +3542,17 @@ function theme_profile_advertise($profile_pid) {
 		$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
     	$template_url = get_bloginfo('template_url');
     
-		echo "<div id=\"email\">
+    
+		echo "
+		<div id=\"my-advertise\">
+			<div id=\"email\">
 				<span><a href=\"" . $site_url . "/advertisers\" ><input type=\"button\" value=\"Post Your First Product Editorial!\" /></a></span>
 				<div class=\"clear\"></div>
 				<br />
 				<span><a href=\"" . $site_url . "/advertisers\" target=\"_blank\">Learn more</a></span>
-			  </div>
-			  <div class=\"clear\"></div>
+			</div>
+		</div>
+		<div class=\"clear\"></div>
 		";
 	}
 }
@@ -4805,4 +4898,22 @@ function get_product_name($product_id) {
     return $product_name;
     
 }
+
+/* FUNCTION TO REGISTER CUSTOM POST STATUS FOR ADVERTISERS TO TURN OFF/TURN ON POSTS */
+
+#function my_custom_post_status(){
+#	register_post_status( 'unread', array(
+#		'label'                     => _x( 'post_hidden'),
+#		'public'                    => true,
+#		'exclude_from_search'       => false,
+#		'show_in_admin_all_list'    => true,
+#		'show_in_admin_status_list' => true,
+#		'label_count'               => _n_noop( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>' ),
+#	) );
+#}
+#add_action( 'init', 'my_custom_post_status' );
+
+
+
+
 ?>

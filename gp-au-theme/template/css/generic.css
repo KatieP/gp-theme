@@ -3229,6 +3229,25 @@ ul.categorieslistmain {
     font-size: 4em;
 }
 
+
+/** ADVERTISER TABLES ON PROFILE PAGES  **/
+#content .advertiser_table tr td {
+    border-style: solid;
+    border-width: 0.1em;
+    border-color: #01aed8;
+    text-align: left;
+    padding: 0.7em;
+    vertical-align: top;
+    text-align: left;
+}
+
+#content .advertiser_table {
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+
+
 /** AUTHOR ANALYTICS TABLES ON PROFILE PAGES  **/
 #content .author_analytics tr td {
     border-style: solid;
