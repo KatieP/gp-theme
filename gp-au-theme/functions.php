@@ -4114,7 +4114,7 @@ function theme_create_post() {
 			$message = 'Post a project';
 			break;
 		case 'gp_advertorial':
-			$link =    ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+			$link =    ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/advertisers/';
 		    $message = 'Post a product ad';
 			break;
 		case 'gp_events':
@@ -4151,8 +4151,8 @@ function gp_select_createpost() {
     $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"". get_site_url() ."/forms/create-news-post/\">News</a></li>" : "";
     
     # Set links to forms for monthly advertisers and non monthly advertisers
-    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
-    $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". get_site_url() . $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($89)</a>"; 
+    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/advertisers/';
+    $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". get_site_url() . $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($1.90 / click)</a>"; 
     
 	echo "
 	<div class=\"profile-action-container no-js\">
