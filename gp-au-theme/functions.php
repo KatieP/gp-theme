@@ -3440,6 +3440,7 @@ function list_posts_advertiser($profile_pid) {
         					echo '<a href="'. $link .'">'. $post->post_title .'</a>
         				</td>
         				
+        				<!--
         				<td class="author_analytics_date">';
         				#	Active/Paused 'post_hidden', 'post_shown'
         				
@@ -3461,6 +3462,7 @@ function list_posts_advertiser($profile_pid) {
         				}
         					
         				echo '</td>
+        				-->
         				
         	 	  <tr>';
         	
