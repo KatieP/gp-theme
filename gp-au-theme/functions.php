@@ -3130,7 +3130,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 /* CHARGIFY API COMMUNICATION ---------------------------------------------------------------------------------*/
 
-function chargify_api() {
+function chargify_api($subscription_id,  $component_id) {
 		$chargify_key = '3FAaEvUO_ksasbblajon';
 		$chargify_auth = $chargify_key .':x';
 		$chargify_auth_url = 'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
@@ -3150,6 +3150,7 @@ function chargify_api() {
         $ch = curl_init($chargify_auth_url);
 
         $array = array();
+ 
         array_push($array, 'Content-Type: application/json;', 'Accept: application/json;', 'charset=utf-8;');
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $array);
@@ -3162,7 +3163,7 @@ function chargify_api() {
         curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
 
         $result = curl_exec($ch);
-        echo $result;   
+        echo $result;
         echo PHP_EOL;
 
         curl_close($ch);    
@@ -3328,8 +3329,9 @@ function theme_profile_billing($profile_pid) {
     $site_url =                        get_site_url();
     $user_ID =                         $current_user->ID;
     $product_id =                      $profile_author->product_id;
-    $subscriber_id =                   $profile_author->subscription_id;
-    $chargify_self_service_page_url =  ( !empty($subscriber_id) ) ? create_update_payment_url($profile_author) : '';
+    $subscription_id =                   $profile_author->subscription_id;
+    $chargify_self_service_page_url =  ( !empty($subscription_id) ) ? create_update_payment_url($profile_author) : '';
+    $component_id = 					get_user_meta($profile_author_id, 'component_id', true);
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
@@ -3345,7 +3347,7 @@ function theme_profile_billing($profile_pid) {
 
     if ( !empty($product_id) && !empty($plan) ) {
 	    ?>
-		<h3>You are on the <?php echo $plan; ?></h3>
+		<h3><p>You are on the <?php echo $plan; ?><p></p></h3>
 
 		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
 		    <?php upgrade_dropdown($product_id); ?>
@@ -3359,33 +3361,55 @@ function theme_profile_billing($profile_pid) {
 		</form>
 		<div class="clear"></div>
 		
-		<!-- 
+		<?php 
+		
+		
+		
+		if (!empty($component_id)) {
+		
+			chargify_api($subscription_id,  $component_id);
+		
+		 	?>
+		
+			<!-- 
 		 
-		<h3>Billing History</h3>
+			<h3>Billing History</h3>
 		
-		<table class="author_analytics">
-			<tr>
-				<td>Week</td>
-				<td>Date</td>
-				<td>Amount<br />Billed</td>
-				<td>Clicks</td>
-				<td>CPC<br />Price</td>
-				<td>Plan</td>
-			</tr>
-			<tr>
-				<td><?php ; ?></td>
-				<td><?php ; ?></td>
-				<td><?php ; ?></td>
-				<td><?php ; ?></td>
-				<td><?php ; ?></td>
-				<td><?php ; ?></td>
-			</tr>
-		</table>
+			<table class="author_analytics">
+				<tr>
+					<td>Week</td>
+					<td>Billing Date</td>
+					<td>Amount<br />Billed</td>
+					<td>Clicks</td>
+					<td>CPC<br />Price</td>
+					<td>Plan</td>
+				</tr>
+				<tr>
+					<td><?php ; ?></td>
+					<td><?php ; ?></td>
+					<td><?php ; ?></td>
+					<td><?php ; ?></td>
+					<td><?php ; ?></td>
+					<td><?php ; ?></td>
+				</tr>
+			</table>
 		
-		<h3>Get invoice</h3>
-		--> 
+			<h3>Get invoice</h3>
+			--> 
 	    <?php
-    } 
+	    
+	    echo $component_id;
+	    var_dump($component_id);
+
+
+		} elseif ( $product_id == '27023') {
+		
+				echo '<h3><p>Why don\'t you change your subscription to a cost per click plan? 
+						You\'ll be able to create unlimited product posts only pay for the clicks you receive. 
+				      	Simply choose a plan from the \'upgrade\' menu above.</p><h3>';
+		}
+		
+	} 
     
     
     
@@ -3393,7 +3417,7 @@ function theme_profile_billing($profile_pid) {
         ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
     } else {
         ?>
-        <h3>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></h3>
+        <h3><p>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></p></h3>
         <p>Doesn't sound right?</p>
         <p>Send us an email at hello[at]greenpag.es and we'll get to the bottom of it.</p>
         <?php 
