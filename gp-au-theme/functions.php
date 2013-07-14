@@ -3367,7 +3367,7 @@ function theme_profile_billing($profile_pid) {
 		
 		if (!empty($component_id)) {
 		
-			chargify_api($subscription_id,  $component_id);
+			#chargify_api($subscription_id,  $component_id);
 		
 		 	?>
 		
