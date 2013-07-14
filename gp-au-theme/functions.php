@@ -3329,9 +3329,9 @@ function theme_profile_billing($profile_pid) {
     $site_url =                        get_site_url();
     $user_ID =                         $current_user->ID;
     $product_id =                      $profile_author->product_id;
-    $subscription_id =                   $profile_author->subscription_id;
+    $subscription_id =                 $profile_author->subscription_id;
     $chargify_self_service_page_url =  ( !empty($subscription_id) ) ? create_update_payment_url($profile_author) : '';
-    $component_id = 					get_user_meta($profile_author_id, 'component_id', true);
+    $component_id = 				   get_component_id($product_id);
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
