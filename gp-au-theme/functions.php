@@ -3137,11 +3137,11 @@ function chargify_api($subscription_id,  $component_id) {
 		echo PHP_EOL;
 
         $chargify_url = 'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
-        echo '$chargify_url: '. $chargify_url;
+        #echo '$chargify_url: '. $chargify_url;
         echo PHP_EOL;
 
 
-        echo 'Sending data to chargify ...';   
+        #echo 'Sending data to chargify ...';   
         echo PHP_EOL;
 
         // Chargify api key: 3FAaEvUO_ksasbblajon
@@ -3163,7 +3163,7 @@ function chargify_api($subscription_id,  $component_id) {
         curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
 
         $result = curl_exec($ch);
-        echo $result;
+        #echo $result;
         echo PHP_EOL;
 
         curl_close($ch);    
@@ -3404,9 +3404,9 @@ function theme_profile_billing($profile_pid) {
 
 		} elseif ( $product_id == '27023') {
 		
-				echo '<h3><p>Why don\'t you change your subscription to a cost per click plan? 
-						You\'ll be able to create unlimited product posts only pay for the clicks you receive. 
-				      	Simply choose a plan from the \'upgrade\' menu above.</p><h3>';
+			echo '<h3><p>Why don\'t you change your subscription to a cost per click plan? 
+		    	  You\'ll be able to create unlimited product posts only pay for the clicks you receive. 
+				  Simply choose a plan from the \'upgrade\' menu above.</p><h3>';
 		}
 		
 	} 
