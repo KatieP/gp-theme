@@ -4925,6 +4925,25 @@ function get_product_name($product_id) {
     
 }
 
+function get_component_id($product_id) {
+    /**
+	 * Return component id mapped to product id
+	 * for Chargify metered billing components
+	 **/
+    
+    $component_map = array( '3313295'  => '3207',
+							'27029'    => '3207',
+							'27028'    => '3207',
+							'3313296'  => '20016',
+							'3313297'  => '20017',
+							'27023'    => '' );
+                        
+    $component_id = $component_map[$product_id];
+    
+    return $component_id;
+    
+}
+
 /* FUNCTION TO REGISTER CUSTOM POST STATUS FOR ADVERTISERS TO TURN OFF/TURN ON POSTS */
 
 #function my_custom_post_status(){
