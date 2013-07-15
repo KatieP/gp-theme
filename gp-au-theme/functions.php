@@ -3524,7 +3524,7 @@ function theme_profile_advertise($profile_pid) {
         		      </form>
         			  <div class="clear"></div>';
 				
-				echo '<h3>My Product Posts</h3>'
+				echo '<h3>My Product Posts</h3>';
 				list_posts_advertiser($profile_pid);
         		break;
         		
