@@ -3181,11 +3181,15 @@ function upgrade_plan($product_id, $budget_status) {
     	
     if ($product_id != '3313297') {} else { return; }
     $site_url = get_site_url();
-    
-    ?><h3>Upgrade</h3>
-    <form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post"><?php
 
+    if ( $budget_status != 'cancelled' ) {
+        ?><h3>Upgrade</h3><?php 
+    } else {
+        ?><h3>Reactivate</h3><?php   
+    }
     
+    ?><form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post"><?php
+
     switch ($product_id) {
 		case '3313296':	//$249/wk
 			echo '<select name="upgrade">
