@@ -3251,7 +3251,7 @@ function downgrade_plan($product_id, $budget_status) {
 		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '3313296': //$249/wk
@@ -3259,20 +3259,20 @@ function downgrade_plan($product_id, $budget_status) {
 			 		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;
 		 case '27028': //$99/wk
 			echo '<select name="downgrade">
 			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27029': //$39/wk
 			echo '<select name="downgrade">
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;		
 		case '3313295': //$12/wk
@@ -3283,7 +3283,7 @@ function downgrade_plan($product_id, $budget_status) {
 		case '27023': //Directory $39 / month
 			echo '<select name="downgrade">
 					<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="pause"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 	}
@@ -3355,10 +3355,7 @@ function theme_profile_billing($profile_pid) {
 		if (!empty($component_id)) {
 		
 			#chargify_api($subscription_id,  $component_id);
-		
-		 	?>
-		
-			<!-- 
+		 	?><!-- 
 		 
 			<h3>Billing History</h3>
 		
@@ -3382,16 +3379,17 @@ function theme_profile_billing($profile_pid) {
 			</table>
 		
 			<h3>Get invoice</h3>
-			--> 
-    	    <?php
+			--><?php
 
 		} elseif ( $product_id == '27023') {
 		
-			?><h3><p>Why don't you change your subscription to a cost per click plan? 
-		    	  You'll be able to create unlimited product posts only pay for the clicks you receive. 
-				  Simply choose a plan from the 'upgrade' menu above.</p><h3><?php 
-		}
-		
+			?><h3>
+			    <p>Why don't you change your subscription to a cost per click plan? 
+		    	You'll be able to create unlimited product posts only pay for the clicks you receive. 
+				Simply choose a plan from the 'upgrade' menu above.</p>
+		    <h3><?php
+		     
+		}		
 	}
     
     if (!empty($chargify_self_service_page_url)) {
@@ -3417,17 +3415,16 @@ function list_posts_advertiser($profile_pid) {
 	if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
 	
 	$querystr = "SELECT DISTINCT " . $wpdb->prefix . "posts.*
-             FROM $wpdb->posts
-             WHERE 
-                post_status = 'publish' and 
-                post_type = 'gp_advertorial' and 
-                ".$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
-            ORDER BY " . $wpdb->prefix . "posts.post_date DESC 
-            ";              
+                 FROM $wpdb->posts
+                 WHERE 
+                    post_status = 'publish' and 
+                    post_type = 'gp_advertorial' and 
+                    ".$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
+                 ORDER BY " . $wpdb->prefix . "posts.post_date DESC";              
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
-	echo '<table class = "advertiser_table">';
+	echo '<table class="advertiser_table">';
 	
 	foreach ($pageposts as $post) {
 
