@@ -3384,8 +3384,6 @@ function theme_profile_billing($profile_pid) {
 			<h3>Get invoice</h3>
 			--> 
     	    <?php
-	    
-	        echo $component_id;
 
 		} elseif ( $product_id == '27023') {
 		
