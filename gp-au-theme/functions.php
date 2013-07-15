@@ -3172,21 +3172,21 @@ function chargify_api($subscription_id,  $component_id) {
 
 /* SHOW MEMBERS BILLING OPTIONS ---------------------------------------------------------------------------------*/
 		
-function upgrade_dropdown($product_id) {
+function upgrade_plan($product_id, $budget_status) {
     /**
      * Show appropriate list of advertising plans for user to upgrade to
      * Called by theme_profile_billing()
      * 
      **/
     	
-    if ($product_id != '3313297') {
-        ?><h3>Upgrade</h3><?php
-    }
+    if ($product_id != '3313297') {} else { return; }
+    $site_url = get_site_url();
+    
+    ?><h3>Upgrade</h3>
+    <form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post"><?php
+
     
     switch ($product_id) {
-		case '3313297':
-			return;
-			break;
 		case '3313296':	//$249/wk
 			echo '<select name="upgrade">
 			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
@@ -3223,24 +3223,28 @@ function upgrade_dropdown($product_id) {
 		  		</select>';			
 		  	break;	
 	}
+	
+	?><input type="submit" value="Save plan">
+	</form>
+	<div class="clear"></div><?php 
 }
 
 
-function downgrade_dropdown($product_id) {
+function downgrade_plan($product_id, $budget_status) {
     /**
      * Show appropriate list of advertising plans for user to downgrade to
      * Called by theme_profile_billing()
      * 
      **/
-    
-    if ($product_id != '3313297') {
-        ?><h3>Downgrade</h3><?php
-    }	
 
+    if ($budget_status == 'cancelled') { return; }	
+    $site_url = get_site_url();
+    
+    ?><h3>Downgrade</h3>
+    <form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
+    <?php
+    
     switch ($product_id) {
-		case 'paused':
-			return;
-			break;
 		case '3313297':	//$499/wk
 			echo '<select name="downgrade">
 			 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
@@ -3273,16 +3277,19 @@ function downgrade_dropdown($product_id) {
 		  	break;		
 		case '3313295': //$12/wk
 			echo '<select name="downgrade">
-			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;			
 		case '27023': //Directory $39 / month
 			echo '<select name="downgrade">
 					<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="pause"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="pause"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 	}
+	?><input type="submit" value="Save plan">
+	</form>
+	<div class="clear"></div><?php 
 }
 
 function create_update_payment_url($profile_author) {
@@ -3330,41 +3337,21 @@ function theme_profile_billing($profile_pid) {
     $user_ID =                         $current_user->ID;
     $product_id =                      $profile_author->product_id;
     $subscription_id =                 $profile_author->subscription_id;
+    $budget_status =                   $profile_author->budget_status;
     $chargify_self_service_page_url =  ( !empty($subscription_id) ) ? create_update_payment_url($profile_author) : '';
     $component_id = 				   get_component_id($product_id);
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
-	
-    //Map of productid to names of plans for $plan
-    $plan_type_map = array( "3313295"  => "$12 / week plan",
-							"27029"    => "$39 / week plan",
-							"27028"    => "$99 / week plan",
-							"3313296"  => "$249 / week plan",
-							"3313297"  => "$499 / week plan",
-							"27023"    => "Directory page $39 / month plan" );
                         
     $plan = get_product_name($product_id);
 
     if ( !empty($product_id) && !empty($plan) ) {
-	    ?>
-		<h3><p>You are on the <?php echo $plan; ?><p></p></h3>
-
-		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
-		    <?php upgrade_dropdown($product_id); ?>
-		    <input type="submit" value="Save plan">
-		</form>
-		<div class="clear"></div>
-		
-		<form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post">
-		    <?php downgrade_dropdown($product_id); ?>
-		    <input type="submit" value="Save plan">
-		</form>
-		<div class="clear"></div>
-		
-		<?php 
-		
-		
-		
+	    
+        ?><h3><p>You are on the <?php echo $plan; ?><p></p></h3><?php
+		 
+        upgrade_plan($product_id, $budget_status);
+        downgrade_plan($product_id, $budget_status);
+	
 		if (!empty($component_id)) {
 		
 			#chargify_api($subscription_id,  $component_id);
@@ -3396,22 +3383,18 @@ function theme_profile_billing($profile_pid) {
 		
 			<h3>Get invoice</h3>
 			--> 
-	    <?php
+    	    <?php
 	    
-	    echo $component_id;
-	    var_dump($component_id);
-
+	        echo $component_id;
 
 		} elseif ( $product_id == '27023') {
 		
-			echo '<h3><p>Why don\'t you change your subscription to a cost per click plan? 
-		    	  You\'ll be able to create unlimited product posts only pay for the clicks you receive. 
-				  Simply choose a plan from the \'upgrade\' menu above.</p><h3>';
+			?><h3><p>Why don't you change your subscription to a cost per click plan? 
+		    	  You'll be able to create unlimited product posts only pay for the clicks you receive. 
+				  Simply choose a plan from the 'upgrade' menu above.</p><h3><?php 
 		}
 		
-	} 
-    
-    
+	}
     
     if (!empty($chargify_self_service_page_url)) {
         ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
@@ -3445,8 +3428,6 @@ function list_posts_advertiser($profile_pid) {
             ";              
 
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
-	
-	
 	
 	echo '<table class = "advertiser_table">';
 	
@@ -3489,15 +3470,10 @@ function list_posts_advertiser($profile_pid) {
         				-->
         				
         	 	  <tr>';
-        	
-
-        	# End your code here
     	}
 	}       
 
-	echo '</table>';
-	
-		
+	echo '</table>';	
 	echo '<br /><br /><br /><br />'; 
 }
 
@@ -3543,22 +3519,19 @@ function theme_profile_advertise($profile_pid) {
         		<p>Want more clicks? Upgrade your weekly budget now.</p>';
 			
 				echo '<form action="'. $site_url .'/chargify-upgrade-downgrade-handler/" method="post">
-		    	'. upgrade_dropdown($product_id) . '
-		    	<input type="submit" value="Save plan">
-				</form>
-				<div class="clear"></div>';
+        		         '. upgrade_dropdown($product_id) . '
+        		    	 <input type="submit" value="Save plan">
+        		      </form>
+        			  <div class="clear"></div>';
 				
-				echo '<h3>My Product Posts</h3>';
-				
+				echo '<h3>My Product Posts</h3>'
 				list_posts_advertiser($profile_pid);
         		break;
         		
     		case 'cancelled': //Previous active client who has cancelled
     			?><h3>You were on the <?php echo $product_name; ?></h3>
     			<p>Reactivate your account now</p><br /><?php
-    			
     			echo '<h3>My Product Posts</h3>';
-    			
         		break;
 		}	
 	
