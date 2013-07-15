@@ -3347,8 +3347,11 @@ function theme_profile_billing($profile_pid) {
 
     if ( !empty($product_id) && !empty($plan) ) {
 	    
-        ?><h3><p>You are on the <?php echo $plan; ?><p></p></h3><?php
-		 
+        if ( $budget_status != 'cancelled' ) {
+            ?><h3>You are on the <?php echo $plan; ?></h3><?php
+        } else {
+            ?><h3>You were on the <?php echo $plan; ?>, however your subscription is currently cancelled.</h3><?php   
+        }
         upgrade_plan($product_id, $budget_status);
         downgrade_plan($product_id, $budget_status);
 	
