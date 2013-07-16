@@ -4068,6 +4068,15 @@ ul.categorieslistmain {
 	margin: 0 0 2em 0;
 }
 
+#content .profile-container input[type="submit"] {
+	background-color: #cccccc;
+}
+
+#content .profile-container input[type="submit"]:hover {
+	background-color: #6eb83f;
+}
+
+
 #content .profile-action {
 	font-size: 0.6em;
     border: 0.1em solid #a2e7f8;
