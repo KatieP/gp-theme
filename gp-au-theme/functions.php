@@ -3220,7 +3220,7 @@ function upgrade_plan($product_id, $budget_status) {
     		  		</select>';			
     		  	break;
     	}
-		?><input type="submit" value="Save plan">
+		?><input type="submit" value="Confirm Reactivation">
     	</form>
     	<div class="clear"></div><?php 
 		return;	        
@@ -3264,7 +3264,7 @@ function upgrade_plan($product_id, $budget_status) {
 		  	break;	
 	}
 	
-	?><input type="submit" value="Save plan">
+	?><input type="submit" value="Confirm Upgrade">
 	</form>
 	<div class="clear"></div><?php 
 }
@@ -3291,7 +3291,7 @@ function downgrade_plan($product_id, $budget_status) {
 		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '3313296': //$249/wk
@@ -3299,20 +3299,20 @@ function downgrade_plan($product_id, $budget_status) {
 			 		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;
 		 case '27028': //$99/wk
 			echo '<select name="downgrade">
 			 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27029': //$39/wk
 			echo '<select name="downgrade">
 			 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
-			 		<option value="cancel"> &nbsp&nbsp&nbsp Pause Advertising &nbsp&nbsp&nbsp </option>
+			 		<option value="cancel"> &nbsp&nbsp&nbsp Cancel Advertising &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;		
 		case '3313295': //$12/wk
@@ -3327,7 +3327,7 @@ function downgrade_plan($product_id, $budget_status) {
 		  		</select>';			
 		  	break;	
 	}
-	?><input type="submit" value="Save plan">
+	?><input type="submit" value="Confirm Downgrade">
 	</form>
 	<div class="clear"></div><?php 
 }
