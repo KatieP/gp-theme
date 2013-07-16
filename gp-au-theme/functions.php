@@ -3412,8 +3412,8 @@ function theme_profile_billing($profile_pid) {
     				<tr>
     					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
     					<td><?php echo $clicks; ?></td>
-    					<td><?php echo echo '$'. $pretty_cpc; ?></td>
-    					<td><?php echo echo '$'. $pretty_billable; ?></td>
+    					<td><?php echo '$'. $pretty_cpc; ?></td>
+    					<td><?php echo '$'. $pretty_billable; ?></td>
     				</tr>
                 <?php } 
                 $total_billed = number_format($total_billed, 2); ?>
