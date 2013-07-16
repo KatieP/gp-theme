@@ -3132,12 +3132,14 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 function chargify_api($subscription_id,  $component_id) {
 
-    $chargify_key = '3FAaEvUO_ksasbblajon';
-	$chargify_auth = $chargify_key .':x';
-	$chargify_auth_url = 'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
+    $chargify_key =       '3FAaEvUO_ksasbblajon';
+	$chargify_auth =      $chargify_key .':x';
+	$chargify_auth_url =  'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
+    $chargify_url =       'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
 
-    $chargify_url = 'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
-
+    echo $chargify_auth_url . '<br />';
+    echo $chargify_url . '<br />';
+    
     // Chargify api key: 3FAaEvUO_ksasbblajon
     // http://docs.chargify.com/api-authentication
 
@@ -3157,7 +3159,8 @@ function chargify_api($subscription_id,  $component_id) {
     curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
 
     $result = curl_exec($ch);
-
+    var_dump($result);
+    
     curl_close($ch);
     return $result;    
 
