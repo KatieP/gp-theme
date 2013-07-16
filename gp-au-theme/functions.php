@@ -3131,42 +3131,35 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 /* CHARGIFY API COMMUNICATION ---------------------------------------------------------------------------------*/
 
 function chargify_api($subscription_id,  $component_id) {
-		$chargify_key = '3FAaEvUO_ksasbblajon';
-		$chargify_auth = $chargify_key .':x';
-		$chargify_auth_url = 'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
-		echo PHP_EOL;
 
-        $chargify_url = 'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
-        #echo '$chargify_url: '. $chargify_url;
-        echo PHP_EOL;
+    $chargify_key = '3FAaEvUO_ksasbblajon';
+	$chargify_auth = $chargify_key .':x';
+	$chargify_auth_url = 'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
 
+    $chargify_url = 'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
 
-        #echo 'Sending data to chargify ...';   
-        echo PHP_EOL;
+    // Chargify api key: 3FAaEvUO_ksasbblajon
+    // http://docs.chargify.com/api-authentication
 
-        // Chargify api key: 3FAaEvUO_ksasbblajon
-        // http://docs.chargify.com/api-authentication
+    $ch = curl_init($chargify_auth_url);
 
-        $ch = curl_init($chargify_auth_url);
-
-        $array = array();
+    $array = array();
  
-        array_push($array, 'Content-Type: application/json;', 'Accept: application/json;', 'charset=utf-8;');
+    array_push($array, 'Content-Type: application/json;', 'Accept: application/json;', 'charset=utf-8;');
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $array);
-        curl_setopt($ch, CURLOPT_URL, $chargify_url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        #curl_setopt($ch, CURLOPT_POSTFIELDS, $usage);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
-        curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $array);
+    curl_setopt($ch, CURLOPT_URL, $chargify_url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+    #curl_setopt($ch, CURLOPT_POSTFIELDS, $usage);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
 
-        $result = curl_exec($ch);
-        #echo $result;
-        echo PHP_EOL;
+    $result = curl_exec($ch);
 
-        curl_close($ch);    
+    curl_close($ch);
+    return $result;    
 
 }
 
@@ -3397,8 +3390,9 @@ function theme_profile_billing($profile_pid) {
 	
 		if (!empty($component_id)) {
 		
-			#chargify_api($subscription_id,  $component_id);
-		 	?><!-- 
+			$history = chargify_api($subscription_id,  $component_id);
+			var_dump($history);
+		 	?>
 		 
 			<h3>Billing History</h3>
 		
@@ -3421,8 +3415,8 @@ function theme_profile_billing($profile_pid) {
 				</tr>
 			</table>
 		
-			<h3>Get invoice</h3>
-			--><?php
+			<!-- <h3>Get invoice</h3> -->
+			<?php
 
 		} elseif ( $product_id == '27023') {
 		
@@ -3432,7 +3426,7 @@ function theme_profile_billing($profile_pid) {
 				Simply choose a plan from the 'upgrade' menu above.</p>
 		    <h3><?php
 		     
-		}		
+		}
 	}
     
     if (!empty($chargify_self_service_page_url)) {
