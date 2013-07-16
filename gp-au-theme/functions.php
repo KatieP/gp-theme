@@ -3136,9 +3136,6 @@ function chargify_api($subscription_id,  $component_id) {
 	$chargify_auth =      $chargify_key .':x';
 	$chargify_auth_url =  'https://'. $chargify_auth .'green-pages.chargify.com/subscriptions/';
     $chargify_url =       'https://green-pages.chargify.com/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json';
-
-    echo $chargify_auth_url . '<br />';
-    echo $chargify_url . '<br />';
     
     // Chargify api key: 3FAaEvUO_ksasbblajon
     // http://docs.chargify.com/api-authentication
