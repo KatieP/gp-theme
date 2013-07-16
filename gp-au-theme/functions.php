@@ -3404,9 +3404,9 @@ function theme_profile_billing($profile_pid) {
 				</tr>
 				<?php foreach ($history as $usage) {?>
     				<tr>
-    					<td><?php var_dump($usage); #$usage->created_at; ?></td>
-    					<td><?php echo $usage->quantity; ?></td>
-    					<td><?php get_product_name($product_id); ?></td>
+    					<td><?php echo $usage->usage->created_at; ?></td>
+    					<td><?php echo $usage->usage->quantity; ?></td>
+    					<td><?php echo get_product_name($product_id); ?></td>
     				</tr>
                 <?php } ?>
 			</table>
