@@ -3183,34 +3183,36 @@ function upgrade_plan($product_id, $budget_status) {
     $site_url = get_site_url();
 
     if ( $budget_status != 'cancelled' ) {
-        ?><h3>Upgrade</h3><?php 
+        ?><h3>Upgrade</h3><?php
+        $name = 'upgrade'; 
     } else {
-        ?><h3>Reactivate</h3><?php   
+        ?><h3>Reactivate</h3><?php
+        $name = 'reactivate';   
     }
     
     ?><form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post"><?php
 
     switch ($product_id) {
 		case '3313296':	//$249/wk
-			echo '<select name="upgrade">
+			echo '<select name="'. $name .'">
 			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27028': //$99/wk
-			echo '<select name="upgrade">
+			echo '<select name="'. $name .'">
 			 		<option value="3313297">  &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
 		  	 		<option value="3313296">  &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;	
 		case '27029': //$39/wk
-			echo '<select name="upgrade">
+			echo '<select name="'. $name .'">
 			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
 		  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp  </option>
 		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
 		  		</select>';			
 		  	break;		
 		case '3313295': //$12/wk
-			echo '<select name="upgrade">
+			echo '<select name="'. $name .'">
 			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
 		  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
 		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
@@ -3218,7 +3220,7 @@ function upgrade_plan($product_id, $budget_status) {
 		  		</select>';			
 		  	break;
 		case '27023': //Directory $39 / month
-			echo '<select name="upgrade">
+			echo '<select name="'. $name .'">
 			 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
 		  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
 		     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
