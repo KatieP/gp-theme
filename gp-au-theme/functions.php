@@ -3407,7 +3407,7 @@ function theme_profile_billing($profile_pid) {
 				    $cpc =              (float) get_cost_per_click($product_id); 
 				    $billable =         ( (int) $clicks ) * $cpc;
 				    $pretty_cpc =       number_format($cpc, 2);
-				    $pretty_billable =  number_format($cpc, 2);   
+				    $pretty_billable =  number_format($billable, 2);   
 				    $total_billed +=    $billable; ?>
     				<tr>
     					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
