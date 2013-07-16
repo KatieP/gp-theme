@@ -3404,9 +3404,9 @@ function theme_profile_billing($profile_pid) {
 				</tr>
 				<?php foreach ($history as $usage) {
 				    $clicks =         $usage->usage->quantity; 
-				    $cpc =            (float) get_cost_per_click($product_id); ?>
+				    $cpc =            (float) get_cost_per_click($product_id); 
 				    $billable =       ( (int) $clicks ) * $cpc;
-				    $total_billed +=  $billable;
+				    $total_billed +=  $billable; ?>
     				<tr>
     					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
     					<td><?php echo $clicks; ?></td>
