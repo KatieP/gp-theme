@@ -3398,21 +3398,17 @@ function theme_profile_billing($profile_pid) {
 		
 			<table class="author_analytics">
 				<tr>
-					<td>Week</td>
 					<td>Billing Date</td>
-					<td>Amount<br />Billed</td>
 					<td>Clicks</td>
-					<td>CPC<br />Price</td>
 					<td>Plan</td>
 				</tr>
-				<tr>
-					<td><?php ; ?></td>
-					<td><?php ; ?></td>
-					<td><?php ; ?></td>
-					<td><?php ; ?></td>
-					<td><?php ; ?></td>
-					<td><?php ; ?></td>
-				</tr>
+				<?php foreach ($history as $usage) {?>
+    				<tr>
+    					<td><?php echo $usage->created_at; ?></td>
+    					<td><?php echo $usage->quantity; ?></td>
+    					<td><?php get_product_name($product_id); ?></td>
+    				</tr>
+                <?php } ?>
 			</table>
 		
 			<!-- <h3>Get invoice</h3> -->
