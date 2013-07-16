@@ -3192,6 +3192,20 @@ function upgrade_plan($product_id, $budget_status) {
     
     ?><form action="<?php echo $site_url; ?>/chargify-upgrade-downgrade-handler/" method="post"><?php
 
+    if ( $name == 'reactivate' ) {
+		echo '<select name="'. $name .'">
+		 		<option value="3313297"> &nbsp&nbsp&nbsp $499/week plan &nbsp&nbsp&nbsp </option>
+	  	 		<option value="3313296"> &nbsp&nbsp&nbsp $249/week plan &nbsp&nbsp&nbsp </option>
+	     		<option value="27028"> &nbsp&nbsp&nbsp $99/week plan &nbsp&nbsp&nbsp </option>
+		 		<option value="27029"> &nbsp&nbsp&nbsp $39/week plan &nbsp&nbsp&nbsp </option>
+		 		<option value="3313295"> &nbsp&nbsp&nbsp $12/week plan &nbsp&nbsp&nbsp </option>
+	  		  </select>';
+		?><input type="submit" value="Save plan">
+    	</form>
+    	<div class="clear"></div><?php 
+		return;	        
+    }
+    
     switch ($product_id) {
 		case '3313296':	//$249/wk
 			echo '<select name="'. $name .'">
