@@ -3394,17 +3394,17 @@ function theme_profile_billing($profile_pid) {
 			var_dump($history);
 		 	?>
 		 
-			<h3>Billing History</h3>
+			<h3>Current Subscription History </h3>
 		
 			<table class="author_analytics">
 				<tr>
-					<td>Billing Date</td>
+					<td>Activity Date</td>
 					<td>Clicks</td>
 					<td>Plan</td>
 				</tr>
 				<?php foreach ($history as $usage) {?>
     				<tr>
-    					<td><?php echo $usage->usage->created_at; ?></td>
+    					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
     					<td><?php echo $usage->usage->quantity; ?></td>
     					<td><?php echo get_product_name($product_id); ?></td>
     				</tr>
