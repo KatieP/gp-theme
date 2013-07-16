@@ -3403,22 +3403,24 @@ function theme_profile_billing($profile_pid) {
 					<td>Billing Amount</td>
 				</tr>
 				<?php foreach ($history as $usage) {
-				    $clicks =         $usage->usage->quantity; 
-				    $cpc =            (float) get_cost_per_click($product_id); 
-				    $billable =       ( (int) $clicks ) * $cpc;
-				    $total_billed +=  $billable; ?>
+				    $clicks =           $usage->usage->quantity; 
+				    $cpc =              (float) get_cost_per_click($product_id); 
+				    $billable =         ( (int) $clicks ) * $cpc;
+				    $pretty_cpc =       number_format($cpc, 2);
+				    $pretty_billable =  number_format($cpc, 2);   
+				    $total_billed +=    $billable; ?>
     				<tr>
     					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
     					<td><?php echo $clicks; ?></td>
-    					<td><?php echo $cpc; ?></td>
-    					<td><?php echo $billable; ?></td>
+    					<td><?php echo echo '$'. $pretty_cpc; ?></td>
+    					<td><?php echo echo '$'. $pretty_billable; ?></td>
     				</tr>
                 <?php } 
                 $total_billed = number_format($total_billed, 2); ?>
                 <tr>
     				<td></td>
     				<td></td>
-    				<td></td>
+    				<td>Total billed:</td>
     				<td><?php echo '$'.$total_billed; ?></td>
     			</tr>
 			</table>
