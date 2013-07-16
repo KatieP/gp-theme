@@ -3155,7 +3155,8 @@ function get_billing_history($subscription_id,  $component_id) {
     curl_setopt($ch, CURLOPT_VERBOSE, true);
     curl_setopt($ch, CURLOPT_USERPWD, $chargify_auth);
 
-    $result = curl_exec($ch);
+    $json_result = curl_exec($ch);
+    $result = json_decode($json_result);
     
     curl_close($ch);
     return $result;    
