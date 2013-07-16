@@ -3130,7 +3130,7 @@ function theme_profile_favourites($profile_pid, $post_page, $post_tab, $post_typ
 
 /* CHARGIFY API COMMUNICATION ---------------------------------------------------------------------------------*/
 
-function chargify_api($subscription_id,  $component_id) {
+function get_billing_history($subscription_id,  $component_id) {
 
     $chargify_key =       '3FAaEvUO_ksasbblajon';
 	$chargify_auth =      $chargify_key .':x';
@@ -3390,7 +3390,7 @@ function theme_profile_billing($profile_pid) {
 	
 		if (!empty($component_id)) {
 		
-			$history = chargify_api($subscription_id,  $component_id);
+			$history = get_billing_history($subscription_id,  $component_id);
 			var_dump($history);
 		 	?>
 		 
