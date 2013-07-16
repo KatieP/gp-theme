@@ -3391,7 +3391,6 @@ function theme_profile_billing($profile_pid) {
 		if (!empty($component_id)) {
 		
 			$history = get_billing_history($subscription_id,  $component_id);
-			var_dump($history);
 		 	?>
 		 
 			<h3>Current Subscription History </h3>
@@ -3400,15 +3399,28 @@ function theme_profile_billing($profile_pid) {
 				<tr>
 					<td>Activity Date</td>
 					<td>Clicks</td>
-					<td>Plan</td>
+					<td>Cost Per Click</td>
+					<td>Billing Amount</td>
 				</tr>
-				<?php foreach ($history as $usage) {?>
+				<?php foreach ($history as $usage) {
+				    $clicks =         $usage->usage->quantity; 
+				    $cpc =            (float) get_cost_per_click($product_id); ?>
+				    $billable =       ( (int) $clicks ) * $cpc;
+				    $total_billed +=  $billable;
     				<tr>
     					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
-    					<td><?php echo $usage->usage->quantity; ?></td>
-    					<td><?php echo get_product_name($product_id); ?></td>
+    					<td><?php echo $clicks; ?></td>
+    					<td><?php echo $cpc; ?></td>
+    					<td><?php echo $billable; ?></td>
     				</tr>
-                <?php } ?>
+                <?php } 
+                $total_billed = number_format($total_billed, 2); ?>
+                <tr>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td><?php echo '$'.$total_billed; ?></td>
+    			</tr>
 			</table>
 		
 			<!-- <h3>Get invoice</h3> -->
@@ -4940,9 +4952,34 @@ function get_component_id($product_id) {
 							'27023'    => '' );
                         
     $component_id = $component_map[$product_id];
-    
+
     return $component_id;
-    
+}
+
+function get_cost_per_click($product_id) {
+    switch ($product_id)   {
+        case '3313295':
+            // $12 per week plan
+            $cpc = 1.9;
+            break;
+        case '27029':
+            // $39 per week plan
+            $cpc = 1.9;
+            break;
+        case '27028':
+            // $99 per week plan
+            $cpc = 1.9;
+            break; 
+        case '3313296':
+            // $249 per week plan
+            $cpc = 1.8;
+            break; 
+        case '3313297':
+            // $499 per week plan
+            $cpc = 1.7;
+            break;                                                
+    }
+    return $cpc;   
 }
 
 /* FUNCTION TO REGISTER CUSTOM POST STATUS FOR ADVERTISERS TO TURN OFF/TURN ON POSTS */
@@ -4958,8 +4995,5 @@ function get_component_id($product_id) {
 #	) );
 #}
 #add_action( 'init', 'my_custom_post_status' );
-
-
-
 
 ?>
