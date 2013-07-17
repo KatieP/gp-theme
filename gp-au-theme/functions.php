@@ -3371,6 +3371,7 @@ function theme_profile_billing($profile_pid) {
     $product_id =                      $profile_author->product_id;
     $subscription_id =                 $profile_author->subscription_id;
     $budget_status =                   $profile_author->budget_status;
+    $advertiser_signup_time =          $profile_author->adv_signup_time;
     $chargify_self_service_page_url =  ( !empty($subscription_id) ) ? create_update_payment_url($profile_author) : '';
     $component_id = 				   get_component_id($product_id);
     
@@ -3386,7 +3387,6 @@ function theme_profile_billing($profile_pid) {
             ?><h3>You were on the <?php echo $plan; ?>, however your subscription is currently cancelled.</h3><?php   
         }
         upgrade_plan($product_id, $budget_status);
-        downgrade_plan($product_id, $budget_status);
 	
 		if (!empty($component_id)) {
 		
@@ -3403,6 +3403,7 @@ function theme_profile_billing($profile_pid) {
 					<td>Billing Amount</td>
 				</tr>
 				<?php foreach ($history as $usage) {
+				    $date =             substr( $usage->usage->created_at, 0, 10 );
 				    $clicks =           $usage->usage->quantity; 
 				    $cpc =              (float) get_cost_per_click($product_id); 
 				    $billable =         ( (int) $clicks ) * $cpc;
@@ -3424,8 +3425,6 @@ function theme_profile_billing($profile_pid) {
     				<td><?php echo '$'.$total_billed; ?></td>
     			</tr>
 			</table>
-		
-			<!-- <h3>Get invoice</h3> -->
 			<?php
 
 		} elseif ( $product_id == '27023') {
@@ -3437,6 +3436,8 @@ function theme_profile_billing($profile_pid) {
 		    <h3><?php
 		     
 		}
+		
+		downgrade_plan($product_id, $budget_status);
 	}
     
     if (!empty($chargify_self_service_page_url)) {
