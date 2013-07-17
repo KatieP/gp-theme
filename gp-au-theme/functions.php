@@ -3400,66 +3400,70 @@ function theme_profile_billing($profile_pid) {
 	
 		if (!empty($component_id)) {
 		
-			$history = get_billing_history($subscription_id,  $component_id); ?>
-		 
-			<h3>Current Subscription History </h3>
-		
-			<table class="author_analytics">
-				<tr>
-					<td>Activity Date</td>
-					<td>Clicks</td>
-					<td>Cost Per Click</td>
-					<td>Billing Amount</td>
-				</tr>
-				<?php $prev_date = ''; 
-				foreach ($history as $usage) {
-				    $date =             substr( $usage->usage->created_at, 0, 10 );
-				    $clicks =           $usage->usage->quantity; 
-				    $cpc =              (float) get_cost_per_click($product_id); 
-				    $billable =         ( (int) $clicks ) * $cpc;
-				    $pretty_cpc =       number_format($cpc, 2);
-				    $pretty_billable =  number_format($billable, 2);   
-				    $total_billed +=    $billable; 
+			$history = get_billing_history($subscription_id,  $component_id); 
+			
+			?><h3>Current Subscription History</h3><?php 
+			
+			$i = 0; 
+			foreach ($history as $usage) {
+			    $date =             substr( $usage->usage->created_at, 0, 10 );
+			    $clicks =           $usage->usage->quantity; 
+			    $cpc =              (float) get_cost_per_click($product_id); 
+			    $billable =         ( (int) $clicks ) * $cpc;
+			    $pretty_cpc =       number_format($cpc, 2);
+			    $pretty_billable =  number_format($billable, 2);   
+			    $total_billed +=    $billable; 
     				
+			    if ( $i == 1 ) { ?>
 				    
-    				if ($date == $prev_date) { 
-    				    $sum_clicks +=          $clicks;
-    				    $sum_billable =         ( (int) $sum_clicks ) * $cpc;
-    				    $sum_pretty_billable =  number_format($sum_billable, 2);
-    				} else { 
-                        if ( !empty($sum_clicks) ) { ?>
-            				<tr>
-            					<td><?php echo $prev_date; ?></td>
-            					<td><?php echo $sum_clicks; ?></td>
-            					<td><?php echo '$'. $pretty_cpc; ?></td>
-            					<td><?php echo '$'. $sum_pretty_billable; ?></td>
-            				</tr><?php
-        				    $sum_clicks =           '';
-        				    $sum_billable =         '';
-        				    $sum_pretty_billable =  '';
-        				    echo '!empty($sum_clicks)'; 
-                        } elseif ( !empty($prev_date ) ) { ?>
-            				<tr>
-            					<td><?php echo $date; ?></td>
-            					<td><?php echo $clicks; ?></td>
-            					<td><?php echo '$'. $pretty_cpc; ?></td>
-            					<td><?php echo '$'. $pretty_billable; ?></td>
-            				</tr><?php
-            				echo '!empty($prev_date )';
-                        }
+				    <table class="author_analytics">
+				        <tr>
+					        <td>Activity Date</td>
+					        <td>Clicks</td>
+					        <td>Cost Per Click</td>
+					        <td>Billing Amount</td>
+				        </tr> <?php 
+			    }
+			        
+    			if ($date == $prev_date) { 
+    			    $sum_clicks +=          $clicks;
+    			    $sum_billable =         ( (int) $sum_clicks ) * $cpc;
+    			    $sum_pretty_billable =  number_format($sum_billable, 2);
+    			} else { 
+                    if ( !empty($sum_clicks) ) { ?>
+            			<tr>
+            				<td><?php echo $prev_date; ?></td>
+            				<td><?php echo $sum_clicks; ?></td>
+            				<td><?php echo '$'. $pretty_cpc; ?></td>
+            				<td><?php echo '$'. $sum_pretty_billable; ?></td>
+            			</tr><?php
+        			    $sum_clicks =           '';
+        			    $sum_billable =         '';
+        			    $sum_pretty_billable =  '';
+        			    echo '!empty($sum_clicks)'; 
+                    } elseif ( !empty( $prev_date ) ) { ?>
+            			<tr>
+            				<td><?php echo $date; ?></td>
+            				<td><?php echo $clicks; ?></td>
+            				<td><?php echo '$'. $pretty_cpc; ?></td>
+            				<td><?php echo '$'. $pretty_billable; ?></td>
+            			</tr><?php
+            			echo '!empty($prev_date )';
                     }
+                }
                     
-                    $prev_date = $date;
-				}
-                $total_billed = number_format($total_billed, 2); ?>
+                $prev_date = $date;
+                $i++;
+		    }
+			if ($i >= 1) { ?></table><?php } 	
+            $total_billed = number_format($total_billed, 2); ?>
+            <table class="author_analytics">
                 <tr>
-    				<td></td>
-    				<td></td>
-    				<td>Total billed:</td>
-    				<td><?php echo '$'.$total_billed; ?></td>
-    			</tr>
-			</table>
-			<?php
+        	        <td><strong>Total billed:</strong></td>
+        			<td><?php echo '$'.$total_billed; ?></td>
+        		</tr>
+    		</table>
+    		<?php
 
 		} elseif ( $product_id == '27023') {
 		
