@@ -3414,7 +3414,7 @@ function theme_profile_billing($profile_pid) {
 			    $pretty_billable =  number_format($billable, 2);   
 			    $total_billed +=    $billable; 
     				
-			    if ( $i == 1 ) { ?>
+			    if ( $i == 2 ) { ?>
 				    
 				    <table class="author_analytics">
 				        <tr>
@@ -3455,7 +3455,9 @@ function theme_profile_billing($profile_pid) {
                 $prev_date = $date;
                 $i++;
 		    }
-			if ($i >= 1) { ?></table><?php } 	
+			
+		    if ($i >= 2) { ?></table><?php }
+			 	
             $total_billed = number_format($total_billed, 2); ?>
             <table class="author_analytics">
                 <tr>
