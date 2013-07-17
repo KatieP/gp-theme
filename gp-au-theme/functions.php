@@ -3400,8 +3400,7 @@ function theme_profile_billing($profile_pid) {
 	
 		if (!empty($component_id)) {
 		
-			$history = get_billing_history($subscription_id,  $component_id);
-		 	?>
+			$history = get_billing_history($subscription_id,  $component_id); ?>
 		 
 			<h3>Current Subscription History </h3>
 		
@@ -3412,21 +3411,44 @@ function theme_profile_billing($profile_pid) {
 					<td>Cost Per Click</td>
 					<td>Billing Amount</td>
 				</tr>
-				<?php foreach ($history as $usage) {
+				<?php $prev_date = ''; 
+				foreach ($history as $usage) {
 				    $date =             substr( $usage->usage->created_at, 0, 10 );
 				    $clicks =           $usage->usage->quantity; 
 				    $cpc =              (float) get_cost_per_click($product_id); 
 				    $billable =         ( (int) $clicks ) * $cpc;
 				    $pretty_cpc =       number_format($cpc, 2);
 				    $pretty_billable =  number_format($billable, 2);   
-				    $total_billed +=    $billable; ?>
-    				<tr>
-    					<td><?php echo substr( $usage->usage->created_at, 0, 10 ); ?></td>
-    					<td><?php echo $clicks; ?></td>
-    					<td><?php echo '$'. $pretty_cpc; ?></td>
-    					<td><?php echo '$'. $pretty_billable; ?></td>
-    				</tr>
-                <?php } 
+				    $total_billed +=    $billable; 
+    				
+				    
+    				if ($date == $prev_date) { 
+    				    $sum_clicks +=          $usage->usage->quantity;
+    				    $sum_billable =         ( (int) $sum_clicks ) * $cpc;
+    				    $sum_pretty_billable =  number_format($sum_billable, 2);
+    				} else { 
+                        if ( !empty($sum_clicks) ) { ?>
+            				<tr>
+            					<td><?php echo $prev_date; ?></td>
+            					<td><?php echo $sum_clicks; ?></td>
+            					<td><?php echo '$'. $pretty_cpc; ?></td>
+            					<td><?php echo '$'. $sum_pretty_billable; ?></td>
+            				</tr><?php
+        				    $sum_clicks =           '';
+        				    $sum_billable =         '';
+        				    $sum_pretty_billable =  '';     
+                        } else {?>
+            				<tr>
+            					<td><?php echo $date; ?></td>
+            					<td><?php echo $clicks; ?></td>
+            					<td><?php echo '$'. $pretty_cpc; ?></td>
+            					<td><?php echo '$'. $pretty_billable; ?></td>
+            				</tr><?php
+                        }
+                    }
+                    
+                    $prev_date = $date;
+				}
                 $total_billed = number_format($total_billed, 2); ?>
                 <tr>
     				<td></td>
