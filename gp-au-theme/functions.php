@@ -3437,7 +3437,7 @@ function theme_profile_billing($profile_pid) {
         				    $sum_clicks =           '';
         				    $sum_billable =         '';
         				    $sum_pretty_billable =  '';     
-                        } else {?>
+                        } elseif ( !empty($prev_date ) ) { ?>
             				<tr>
             					<td><?php echo $date; ?></td>
             					<td><?php echo $clicks; ?></td>
