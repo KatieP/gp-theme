@@ -3376,7 +3376,17 @@ function theme_profile_billing($profile_pid) {
     $component_id = 				   get_component_id($product_id);
     
     if ( ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) ) || get_user_role( array('administrator') ) ) {} else {return;}
-                        
+
+    if (!empty($chargify_self_service_page_url)) {
+        ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
+    } else {
+        ?>
+        <h3><p>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></p></h3>
+        <p>Doesn't sound right?</p>
+        <p>Send us an email at hello[at]greenpag.es and we'll get to the bottom of it.</p>
+        <?php 
+    }    
+    
     $plan = get_product_name($product_id);
 
     if ( !empty($product_id) && !empty($plan) ) {
@@ -3433,22 +3443,10 @@ function theme_profile_billing($profile_pid) {
 			    <p>Why don't you change your subscription to a cost per click plan? 
 		    	You'll be able to create unlimited product posts only pay for the clicks you receive. 
 				Simply choose a plan from the 'upgrade' menu above.</p>
-		    <h3><?php
-		     
-		}
-		
+		    <h3><?php    
+		}	
 		downgrade_plan($product_id, $budget_status);
 	}
-    
-    if (!empty($chargify_self_service_page_url)) {
-        ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
-    } else {
-        ?>
-        <h3><p>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></p></h3>
-        <p>Doesn't sound right?</p>
-        <p>Send us an email at hello[at]greenpag.es and we'll get to the bottom of it.</p>
-        <?php 
-    }
 }
 
 /* ADVERTISER POST HISTORY LIST */
