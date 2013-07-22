@@ -409,7 +409,6 @@ function gp_rewrite_rules( $wp_rewrite ) {
 add_filter('generate_rewrite_rules','gp_rewrite_rules');
 
 /* SWITCH TEMPLATES */
-
 function twocolumn_template() {
 	if ( get_query_var( 'author_edit' ) ) {
 		$template = TEMPLATEPATH . '/singlecolumn.php';
@@ -421,11 +420,9 @@ function twocolumn_template() {
 }
 add_action('template_redirect', 'twocolumn_template'); #new-edit
 
-
 /* CHECK USER ROLES */
 function get_user_role($roles_to_check = array('subscriber'), $user_id = 0) {
-	global $wp_roles;
-	global $current_user;
+	global $wp_roles, $current_user;
 	$role = False;
 	
 	if ( !is_array( $roles_to_check ) && !is_object($roles_to_check) ) {
@@ -1224,8 +1221,6 @@ function get_competitiondate($start, $end, $format = 2) {
 	
 	return '<div class="competition-enddate">'.$displaydate.'</div>';
 }
-
-
 
 function relevant_posts() {
 	/*
@@ -3542,8 +3537,7 @@ function list_posts_advertiser($profile_pid) {
     	}
 	}       
 
-	echo '</table>';	
-	echo '<br /><br /><br /><br />'; 
+	echo '</table>';
 }
 
 
@@ -3706,13 +3700,13 @@ function theme_profile_analytics($profile_pid) {
 	$pageposts = $wpdb->get_results($querystr, OBJECT);
 	
 	# Profile meta variables for getting specific analytics data
-	$old_crm_id = $profile_author->old_crm_id;
-	$directory_page_url = $profile_author->directory_page_url;
-	$facebook = $profile_author->facebook;
-	$linkedin = $profile_author->linkedin;
-	$twitter = $profile_author->twitter;
-	$skype = $profile_author->skype;
-	$url = $profile_author->user_url;
+	$old_crm_id =          $profile_author->old_crm_id;
+	$directory_page_url =  $profile_author->directory_page_url;
+	$facebook =            $profile_author->facebook;
+	$linkedin =            $profile_author->linkedin;
+	$twitter =             $profile_author->twitter;
+	$skype =               $profile_author->skype;
+	$url =                 $profile_author->user_url;
 	
 	if (!$pageposts && !empty($old_crm_id) ) {
 		?>
@@ -3735,9 +3729,7 @@ function theme_profile_analytics($profile_pid) {
 	# TABLE HEADINGS FOR POST ANALYTICS
 	?>
 	<div id="my-analytics">
-	
-		<h2>Post Analytics</h2>		
-		
+		<h2>Post Analytics</h2>			
 		<table class="author_analytics">
 			<tr>
 				<td class="author_analytics_title">Title</td>		
@@ -3766,18 +3758,17 @@ function theme_profile_analytics($profile_pid) {
 			$post_type_map = getPostTypeSlug($type);
 				
 			$post_url_end = '/' . $post_type_map . '/' . $post_url_ext . '/';
-			#echo $post_url_end . '<br />$post_url_end<br />';
-				
-			
+			#echo $post_url_end . '<br />$post_url_end<br />';				
+
 			$post_date = get_the_time('Y-m-d'); 				//Post Date
 			#echo $post_date . ' ';
 			$today_date = date('Y-m-d'); 						//Todays Date
 			#echo $today_date . ' ';
-				
+
   			$analytics->setDateRange($post_date, $today_date); 	//Set date in GA $analytics->setMonth(date('$post_date'), date('$new_date'));
 				
   			#print_r($analytics->getVisitors()); 				//get array of visitors by day
-  	
+
   			$pageViewURL = ($analytics->getPageviewsURL($post_url_end));	//Page views for specific URL
   			#echo $pageViewURL . ' $pageViewURL';
   			#var_dump ($pageViewURL);
