@@ -3611,6 +3611,13 @@ function theme_profile_advertise($profile_pid) {
 				<span><a href=\"" . $site_url . "/advertisers\" ><input type=\"button\" value=\"Create Your First Product Promotion!\" /></a></span>
 				<div class=\"clear\"></div>
 				<br />
+				
+				<p> Greenpages offers an extremely effective kind of online advertising: You get to create your own editorials!</p>
+				<p>You create the editorial post, then we send it out to the Greenpages members. You only pay for the clicks you receive in 
+				cost-per-click model. No click, no payment! You can upgrade, downgrade or pause your advertiser plan at any time.</p>
+
+				
+				
 				<span><a href=\"" . $site_url . "/advertisers\" target=\"_blank\">Learn more</a></span>
 			</div>
 		</div>
