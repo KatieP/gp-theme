@@ -3285,8 +3285,21 @@ ul.categorieslistmain {
    background-color:#b3d4fc;
 }
 
-#content #ad-info {
+#content #ad-info, #content #ad-info-preamble {
 	width: 65%;
+	font-size: 1.4em;
+	line-height: 1.5em;
+	color: grey;
+}
+
+#content #ad-info #my-advertise #advertorial input[type="button"] {
+    margin-bottom: 3em;	
+}
+
+#content #ad-table {
+	margin-top: 5em;
+	margin-bottom: 5em;
+	width: 0%;
 }
 
 #content .author_analytics .author_analytics_activist, #content .author_analytics .author_analytics_cost, 
@@ -3309,9 +3322,7 @@ ul.categorieslistmain {
     line-height: 2.6em;
     width: 18em;
     border-radius: 0.4em;
-    margin-left: 7.0em;
     margin-bottom: 1em;
-    
 }
 
 #my-advertise a {
