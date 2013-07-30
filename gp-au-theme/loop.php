@@ -453,20 +453,8 @@ function default_single() {
 			}
 			theme_single_event_details();
 			if ( !isset($post->syndication_feed) ) {
-			    
-			    $custom = get_post_custom($post->ID);
-				$product_call = $custom["gp_advertorial_call_to_action"][0];
-	 			$product_url = $custom["gp_advertorial_product_url"][0];
-	 			$post_author = get_userdata($post->post_author);
-	 			$post_id = $post->ID;
-	 			$post_author_id = $post_author->ID;
-			    $click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
-			    ?>
-			    <a href="<?php echo $product_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);"'; ?>"><?php
-			    the_post_thumbnail('gp_custom');
-			    ?></a><?
+			    get_post_image($post);
 			}
-			
 			// Prepare post body content, fix broken image links from greenpeace
 			$content = get_the_content();
 			$content = apply_filters('the_content', $content);
@@ -2114,5 +2102,25 @@ function contributor_index($profile_author) {
 	theme_contributortabs($profile_author); 
 	echo '<div class="clear"></div>';
 } 
+
+function get_post_image($post) {
+
+    $post_id = $post->ID;
+    $custom = get_post_custom($post_id);
+    $post_author = get_userdata($post->post_author);
+	$post_author_id = $post_author->ID;
+
+    if (get_post_type() == 'gp_advertorial') {
+        
+	 	$product_url = $custom["gp_advertorial_product_url"][0];
+		$click_track_tag = '\'/outbound/product-button/' . $post_id . '/' . $post_author_id . '/' . $product_url .'/\'';
+
+		?><a href="<?php echo $product_url . '" target="_blank" onClick="_gaq.push([\'_trackPageview\', ' . $click_track_tag . ']);'; ?>"><?php
+		    the_post_thumbnail('gp_custom');
+		?></a><?
+    } else {
+        the_post_thumbnail('gp_custom');     
+    }
+}
 
 ?>
