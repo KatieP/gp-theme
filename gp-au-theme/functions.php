@@ -3608,7 +3608,7 @@ function theme_profile_advertise($profile_pid) {
 		echo "
 		<div id=\"my-advertise\">
 			<div id=\"email\">
-				<span><a href=\"" . $site_url . "/advertisers\" ><input type=\"button\" value=\"Post Your First Product Editorial!\" /></a></span>
+				<span><a href=\"" . $site_url . "/advertisers\" ><input type=\"button\" value=\"Create Your First Product Promotion!\" /></a></span>
 				<div class=\"clear\"></div>
 				<br />
 				<span><a href=\"" . $site_url . "/advertisers\" target=\"_blank\">Learn more</a></span>
