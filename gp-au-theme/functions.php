@@ -4476,9 +4476,15 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
     $daily =                 'daily_email';
     $weekly =                'weekly_email';
     $monthly =               'monthly_email';
-    $daily_decription =      '<strong>Daily: \'The Green Laser\'</strong> Get notified each day of news, events and projects happening near you';
-    $weekly_decription =     '<strong>Weekly: \'The Green Razor\'</strong> The best of your environmental movement in a weekly email';
-    $monthly_decription =    '<strong>Monthly: \'The Green Phaser\'</strong> The best of the Green Pages Community of the month';
+    $daily_decription =      '<span class="slightly-larger-font">
+                                  <strong>Daily: \'The Green Laser\'</strong> Get notified each day of news, events and projects happening near you
+                              </span>';
+    $weekly_decription =     '<span class="slightly-larger-font">
+                                  <strong>Weekly: \'The Green Razor\'</strong> The best of your environmental movement in a weekly email
+                              </span>';
+    $monthly_decription =    '<span class="slightly-larger-font">
+                                  <strong>Monthly: \'The Green Phaser\'</strong> The best of the Green Pages Community of the month
+                              </span>';
     
     switch ($notification_setting) {
         case 'daily_email':
@@ -4487,14 +4493,14 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
             $check_monthly_email =  '';
             break;
         case 'weekly_email':
-            $check_weekly_email =   ' checked="checked"';
             $check_daily_email =    '';
+            $check_weekly_email =   ' checked="checked"';
             $check_monthly_email =  '';
             break;
         case 'monthly_email':
-            $check_monthly_email =  ' checked="checked"';
             $check_daily_email =    '';
             $check_weekly_email =   ''; 
+            $check_monthly_email =  ' checked="checked"';
             break;
     }
        

@@ -171,8 +171,6 @@ body .pos {
     line-height: 1.6em;
 }
 
-
-
 #content a:hover {
     text-decoration: underline;
 }
@@ -253,6 +251,10 @@ body .pos {
     color: #666;
     font-size: 0.9em;
     min-width: 16em;
+}
+
+#content .slightly-larger-font {
+	font-size: 1.2em;
 }
 
 /** SYSTEM MESSAGES **/
