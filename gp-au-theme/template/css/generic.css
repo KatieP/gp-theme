@@ -1129,7 +1129,7 @@ header a:hover {
     top: 4.8em;
     right: 5em;
     width: 25%;
-    height: 19em;
+    min-height: 19em;
     background-color: #f2f2f2;
     border: 0.8em solid #d5e8c2;
     -moz-border-radius-bottomleft: 0.2em;
@@ -1207,7 +1207,7 @@ header a:hover {
 }
 
 #auth-tools .auth-dash li {
-    margin: 0 0.6em 0 0.6em;
+    margin: 0;
 }
 
 #auth-tools .auth-dash li a {
@@ -1238,6 +1238,7 @@ header a:hover {
     font-size: 1.4em;
     display: block;
     overflow: hidden;
+    margin-left: 0.6em;
 }
 
 #auth-tools .auth-dash .auth-dash-link {
