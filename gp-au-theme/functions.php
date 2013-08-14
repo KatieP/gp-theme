@@ -1464,7 +1464,7 @@ function get_calendar_and_upcoming_events() {
 	        			while (i < events.length && !event[j]) {
        						date = events[i].Date;
        						
-	            			if (selectedDate.valueOf() === date.valueOf()) {
+	            			if (selectedDate.toDateString() === date.toDateString()) {
        			    			event[j] = events[i];
        			    			j++;
        						}
