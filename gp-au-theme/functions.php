@@ -1395,8 +1395,9 @@ function get_calendar_and_upcoming_events() {
 			
 			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"'. $event_title .'\">'. $event_title .'</a>';
 			
-			$event_date_string = 'new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'")';
-			$event_str .= '{ Title: "'. $displaytitle .'", Date: new Date("'. $str_month .'/'. $displayday .'/'. $displayyear .'") },';
+			$event_date_string = 'new Date('. $post->gp_events_startdate .'000)';
+			
+			$event_str .= '{ Title: "'. $displaytitle .'", Date: '. $event_date_string .' },';
 			
 			/** DISPLAY NEXT 3 EVENTS BELOW CALENDAR  **/
 			if ($i < 3) {
@@ -1419,7 +1420,9 @@ function get_calendar_and_upcoming_events() {
 				} else {
 					echo $displayday . ' ' . $displaymonth . ' - ' . $displayendday . ' ' . $displayendmonth;
 				}
-				echo '</div><div class="clear"></div></div>';
+				echo '    </div>
+				      <div class="clear"></div>
+				      </div>';
 				$i++;
 			}
 		}
@@ -1435,14 +1438,14 @@ function get_calendar_and_upcoming_events() {
 	 **/
 	
 	if ( isset($event_str) ) {
-	echo '<script type="text/javascript" async>
+	echo '<script type="text/javascript">
 				var events = '. $event_str .';
 				console.log(events);
 				$("#eventCalendar").datepicker({
     				beforeShowDay: function(date) {
     					var result = [true, \'\', null];
     					var matching = $.grep(events, function(event) {
-       						return event.Date.valueOf() === date.valueOf();
+       						return event.Date.toDateString() === date.toDateString();
    						});
        
    						if (matching.length) {
