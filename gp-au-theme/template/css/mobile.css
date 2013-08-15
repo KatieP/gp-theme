@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+/* Smaller base size for small screens */
+
+@media (max-device-width: 480px) {
+
+	#col3, .template-right {
+		display: none;
+	}
+
+}
+
+/* Larger base size for ipad and tablets */
+
+@media (min-device-width: 768px) {
+
+
+
+}
+
+/* Smartphones landscape */
+
+@media (orientation: landscape) {
+
+
+
+}
+
+/* small screens landscape */
+
+@media (orientation: landscape) and (max-device-width: 480px) {
+
+
+	
+}
+
+/* tablets landscape */
+
+@media (orientation: landscape) and (min-device-width: 768px) {
+
+
+	
+}
+
+@media (orientation: landscape) {
+	
+
+
+}
