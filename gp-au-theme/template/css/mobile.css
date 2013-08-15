@@ -1,9 +1,21 @@
 @CHARSET "UTF-8";
 
-/* Smaller base size for small screens */
+/* Hide right hand column on small screens */
 
 @media (max-device-width: 480px) {
 
+	.pos, .widecolumn {
+	    width: 100%;
+	    margin: 0 auto;
+	    position: relative;
+	    clear: both;
+	    padding: 0 1em 0 1em;
+	}
+	
+	#col2, .template-left {
+		width: 100%;
+	}	
+	
 	#col3, .template-right {
 		display: none;
 	}
@@ -14,6 +26,18 @@
 
 @media (max-device-width: 640px) {
 
+	.pos, .widecolumn {
+	    width: 100%;
+	    margin: 0 auto;
+	    position: relative;
+	    clear: both;
+	    padding: 0 1em 0 1em;
+	}
+	
+	#col2, .template-left {
+		width: 100%;
+	}		
+	
 	#col3, .template-right {
 		display: none;
 	}
@@ -25,7 +49,19 @@
 	#col3, .template-right {
 		display: none;
 	}
+
+	.pos, .widecolumn {
+	    width: 100%;
+	    margin: 0 auto;
+	    position: relative;
+	    clear: both;
+	    padding: 0 1em 0 1em;
+	}
 	
+	#col2, .template-left {
+		width: 100%;
+	}
+		
 }
 
 /* tablets landscape */
