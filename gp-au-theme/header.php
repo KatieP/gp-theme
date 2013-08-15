@@ -115,6 +115,11 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 
 		<link rel="shortcut icon" href="<?php echo $template_url; ?>/template/gpicon.ico" />
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+		<link rel="stylesheet" href="<?php echo $template_url; ?>/template/css/mobile.css" 
+              media="screen and (max-device-width: 768px) 
+                            and (orientation:portrait),
+                     screen and (max-device-width: 1024px)
+                            and (orientation: landscape)" />
 		
 		<?php
         /* We add some JavaScript to pages with the comment form

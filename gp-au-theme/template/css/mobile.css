@@ -10,40 +10,38 @@
 
 }
 
-/* Larger base size for ipad and tablets */
+/* iphone 4 */
 
-@media (min-device-width: 768px) {
+@media (max-device-width: 640px) {
 
-
-
-}
-
-/* Smartphones landscape */
-
-@media (orientation: landscape) {
-
-
+	#col3, .template-right {
+		display: none;
+	}
 
 }
-
-/* small screens landscape */
 
 @media (orientation: landscape) and (max-device-width: 480px) {
 
-
+	#col3, .template-right {
+		display: none;
+	}
 	
 }
 
 /* tablets landscape */
 
-@media (orientation: landscape) and (min-device-width: 768px) {
+@media (orientation: portrait) and (min-device-width: 768px) {
 
-
+	#col3, .template-right {
+		display: none;
+	}
 	
 }
 
-@media (orientation: landscape) {
+@media (orientation: portrait) and (min-device-width: 800px) {
+
+	#col3, .template-right {
+		display: none;
+	}
 	
-
-
 }
