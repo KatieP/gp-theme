@@ -851,7 +851,8 @@ header a:hover {
 }
 
 .pos #header-tagline {
-    width: 87.2em;
+    width: 100%;
+    float: left;
     height: 2em;
     line-height: 2em;
     font-size: 1em;
@@ -2039,12 +2040,10 @@ footer {
 }	
 	
 #relevant-posts .relevant-item .title {
-    display: block;
-    float: right;
+    display: inline;
     width: 70%;
     font-size: 1.4em;
     line-height: 1.6em;
-    display: block;
     margin: 0;
     font-weight: 500;
 }

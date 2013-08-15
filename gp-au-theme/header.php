@@ -198,9 +198,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    ?>
 					    <ul id="auth-tools">
 						    <li id="auth-youraccount">
-                            	<a href="<?php echo wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ); ?>" class="lower">
-	    	                        Log In
-    	                        </a>
+                            	<a href="<?php echo wp_login_url("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']); ?>" class="lower">Log In</a>
             	                <span class="breaker"> | </span>
                 	            <a href="<?php echo $site_url ;?>/welcome" class="lower">Join</a>
 						    </li>
@@ -227,7 +225,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							    </a>
 							</li>
 					    	<li id="auth-yournotifications" class="no-js">
-							    <a href="#/" class="auth-yournotifications-start" title="My Notifications">
+							    <a href="#" class="auth-yournotifications-start" title="My Notifications">
 								    <span class="icon-notifications">My Notifications</span>
 							    </a>						    
 							    <ul id="auth-dash-notifications" class="auth-dash">
@@ -240,14 +238,18 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 						    	</a>
 						    	<ul id="auth-dash-account" class="auth-dash">
 								    <li class="auth-dash-title">Account Options</li>
-							    	<li class="auth-dash-avatar"><a href="<?php echo $post_author_url; ?>"><?php echo get_avatar( $current_user->ID, '50', '', $current_user->display_name ); ?></a></li>
+							    	<li class="auth-dash-avatar">
+							    	    <a href="<?php echo $post_author_url; ?>">
+							    	        <?php echo get_avatar($current_user->ID, '50', '', $current_user->display_name); ?>
+							    	    </a>
+							    	</li>
 								    <li class="auth-account-options">	
 									    <a href="<?php echo $post_author_url; ?>" title="My profile">View Profile</a>
 									    <a href="<?php echo $site_url; ?>/forms/edit-profile-details/" title="Edit Profile">Edit Profile</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-picture-editor/" title="Profile Picture">Profile Picture</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-email-editor/" title="Email">Email</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-notifications/" title="Notifications">Notifications</a>
-									    <a href="<?php echo wp_logout_url( $site_url ); ?>" title="Logout">Logout</a>
+									    <a href="<?php echo wp_logout_url($site_url); ?>" title="Logout">Logout</a>
 								    </li>
 							    </ul>
 						    </li>
@@ -283,7 +285,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                     		document.getElementById("header_user_location").className = "";
                 		}
             		</script>
-    				<div class="post-details" id="header-tagline">
+    				<div id="header-tagline">
 	            		Everything environmental happening around <span id="header_user_location" class=""><a href="javascript:void(0);" onclick="show_location_field(); return false;"><?php echo $location_filter; ?></a>.</span>
 	            		<span id="header_location_field" class="hidden">
 	            		   <!-- Location filter data is set here, processed by display_google_map_posts_and_places_autocomplete() -->
