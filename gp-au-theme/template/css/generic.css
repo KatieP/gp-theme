@@ -2459,7 +2459,7 @@ footer {
     line-height: 1.6em;
 }
 
-#content .post-details a, .post-details a {
+#content .post-details a, .post-details a, .pos #header-tagline a {
     color: #134;
     font-size: 1em;
 }
