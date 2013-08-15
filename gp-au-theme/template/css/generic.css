@@ -1463,6 +1463,7 @@ header a:hover {
 /** 2 COLUMN SETTING **/
 #col2.set2col, .template-left {
     width: 65%;
+    float: left;
     margin-right: 0;
 }
 
