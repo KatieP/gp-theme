@@ -4463,7 +4463,7 @@ function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) 
     return $correct_input;
 }
 
-function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only) {
+function get_correct_radio_buttons($input_name_id, $input_id, $type, $read_only) {
     /**
 	 *  Returns notification setting radio button for Gravity Forms with appropriate id  
 	 *  Called by add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
@@ -4477,6 +4477,7 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
     $daily =                 'daily_email';
     $weekly =                'weekly_email';
     $monthly =               'monthly_email';
+    $system =                'system_email';
     $daily_decription =      '<span class="slightly-larger-font">
                                   <strong>Daily: \'The Green Laser\'</strong> Get notified each day of news, events and projects happening near you
                               </span>';
@@ -4486,41 +4487,48 @@ function get_correct_radio_buttons ($input_name_id, $input_id, $type, $read_only
     $monthly_decription =    '<span class="slightly-larger-font">
                                   <strong>Monthly: \'The Green Phaser\'</strong> The best of the Green Pages Community of the month
                               </span>';
+    $system_decription =     '<span class="slightly-larger-font">
+                                  <strong>Rare: \'System Messages Only\'</strong>
+                              </span>';
     
     switch ($notification_setting) {
         case 'daily_email':
             $check_daily_email =    ' checked="checked"';
             $check_weekly_email =   '';
             $check_monthly_email =  '';
+            $check_system_email =   '';
             break;
         case 'weekly_email':
             $check_daily_email =    '';
             $check_weekly_email =   ' checked="checked"';
             $check_monthly_email =  '';
+            $check_system_email =   '';
             break;
         case 'monthly_email':
             $check_daily_email =    '';
             $check_weekly_email =   ''; 
             $check_monthly_email =  ' checked="checked"';
+            $check_system_email =   '';
+            break;
+        case 'monthly_email':
+            $check_daily_email =    '';
+            $check_weekly_email =   ''; 
+            $check_monthly_email =  '';
+            $check_system_email =   ' checked="checked"';
             break;
     }
        
     $correct_input = '<div class="ginput_container">
-                          <input name="input_'. $input_name_id .'" id="'. $daily .'" '. $type .' 
-                                 value="'. $daily .'" '. $check_daily_email .' tabindex="5"> 
-                          '. $daily_decription .'  
-                      </div>
-                      <div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $weekly .'" '. $type .' 
                                  value="'. $weekly .'" '. $check_weekly_email .' tabindex="5"> 
                           '. $weekly_decription .'  
                       </div>
                       <div class="ginput_container">
-                          <input name="input_'. $input_name_id .'" id="'. $monthly .'" '. $type .' 
-                                 value="'. $monthly .'" '. $check_monthly_email .' tabindex="5"> 
-                          '. $monthly_decription .'  
+                          <input name="input_'. $input_name_id .'" id="'. $system .'" '. $type .' 
+                                 value="'. $monthly .'" '. $check_system_email .' tabindex="5"> 
+                          '. $system_decription .'
                       </div>';
-    
+
     return $correct_input;
 }
 
