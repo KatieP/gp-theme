@@ -791,38 +791,34 @@ function my_show_extra_profile_fields( $user ) {
 			echo ('</table>');
 		}
 	}
-
-    if ( get_the_author_meta( 'daily_email', $user->ID ) == true ) {
-        $check_daily_email = ' checked="checked"';
-        $check_weekly_email = '';
-        $check_monthly_email = '';
-    } else {
-        $check_daily_email = '';
-    }
     
     if ( get_the_author_meta( 'weekly_email', $user->ID ) == true ) {
         $check_weekly_email = ' checked="checked"';
-        $check_daily_email = '';
-        $check_monthly_email = '';
+        $check_system_email = '';
     } else {
         $check_weekly_email = '';
     }
     
-    if ( get_the_author_meta( 'monthly_email', $user->ID ) == true ) {
-        $check_monthly_email = ' checked="checked"';
-        $check_daily_email = '';
+    if ( get_the_author_meta( 'system_email', $user->ID ) == true ) {
         $check_weekly_email = '';
+        $check_system_email = ' checked="checked"';
     } else {
-        $check_monthly_email = '';
+        $check_system_email = '';
     }
-
-	echo '<h3>Notification Settings</h3>
+    ?>
+	      <h3>Notification Settings</h3>
 		  <table class="form-table">
-		      <tr><th>daily_email</th><td><input type="radio" name="notification_setting" id="daily_email" value="daily_email"' . $check_daily_email . ' /></td></tr>
-		      <tr><th>weekly_email</th><td><input type="radio" name="notification_setting" id="weekly_email" value="weekly_email"' . $check_weekly_email . ' /></td></tr>
-		      <tr><th>monthly_email</th><td><input type="radio" name="notification_setting" id="monthly_email" value="monthly_email"' . $check_monthly_email . ' /></td></tr>
-		  </table>';
-
+		      <tr>
+		          <th>weekly_email</th>
+		          <td><input type="radio" name="notification_setting" id="weekly_email" value="weekly_email" <?php echo $check_weekly_email; ?> /></td>
+		      </tr>
+		      <tr>
+		          <th>system_email</th>
+		          <td><input type="radio" name="notification_setting" id="" value="system_email" <?php echo $check_system_email; ?> /></td>
+		      </tr>
+		  </table>
+    <?php
+	
     /* HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
      * OTHERWISE EVERYTIME A NON ADMIN UPDATES THEIR PROFILE PAGE THE META DATA IS LOST 
      */
@@ -4510,14 +4506,15 @@ function get_correct_radio_buttons($input_name_id, $input_id, $type, $read_only)
             $check_monthly_email =  ' checked="checked"';
             $check_system_email =   '';
             break;
-        case 'monthly_email':
+        case 'system_email':
             $check_daily_email =    '';
             $check_weekly_email =   ''; 
             $check_monthly_email =  '';
             $check_system_email =   ' checked="checked"';
             break;
     }
-       
+    
+    // Currently only offering weekly and rare system only options
     $correct_input = '<div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $weekly .'" '. $type .' 
                                  value="'. $weekly .'" '. $check_weekly_email .' tabindex="5"> 
@@ -4525,7 +4522,7 @@ function get_correct_radio_buttons($input_name_id, $input_id, $type, $read_only)
                       </div>
                       <div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $system .'" '. $type .' 
-                                 value="'. $monthly .'" '. $check_system_email .' tabindex="5"> 
+                                 value="'. $system .'" '. $check_system_email .' tabindex="5"> 
                           '. $system_decription .'
                       </div>';
 
