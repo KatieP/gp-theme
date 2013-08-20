@@ -3208,7 +3208,7 @@ function upgrade_plan($product_id, $budget_status) {
 		?><input type="submit" value="Confirm Reactivation">
     	</form>
     	<div class="clear"></div><?php 
-		return;	        
+		return;
     }
     
     switch ($product_id) {
@@ -3373,7 +3373,8 @@ function theme_profile_billing($profile_pid) {
         ?><a href="<?php echo $chargify_self_service_page_url; ?>" target="_blank"><h3>Update my credit card details</h3></a><?php    
     } else {
         ?>
-        <h3><p>You currently aren't signed up to a plan with us. <a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></p></h3>
+        <h3>You currently aren't signed up to a plan with us.</h3>
+        <h3><a href="<?php echo $site_url; ?>/advertisers/">Choose a plan.</a></h3>
         <p>Doesn't sound right?</p>
         <p>Send us an email at hello[at]greenpag.es and we'll get to the bottom of it.</p>
         <?php 
@@ -3399,11 +3400,12 @@ function theme_profile_billing($profile_pid) {
 			$i = 0; 
 			foreach ($history as $usage) {
 			    $date =             substr( $usage->usage->created_at, 0, 10 );
-			    $clicks =           $usage->usage->quantity; 
-			    $cpc =              (float) get_cost_per_click($product_id); 
-			    $billable =         ( (int) $clicks ) * $cpc;
+			    $clicks =           $usage->usage->quantity;
+			    $plan_cpc =         get_cost_per_click($product_id);
+			    $cpc =              ( $plan_cpc != NULL ) ? (float) $plan_cpc : (float) 0.0;
+			    $billable =         ( $plan_cpc != NULL ) ? ( (int) $clicks ) * $cpc : (float) 0.0;
 			    $pretty_cpc =       number_format($cpc, 2);
-			    $pretty_billable =  number_format($billable, 2);   
+			    $pretty_billable =  number_format($billable, 2);
 			    $total_billed +=    $billable; 
     				
 			    if ( $i == 2 ) { ?>
@@ -4963,12 +4965,13 @@ function get_post_type_map() {
 
 function get_product_name($product_id) {
     
-    //Map of productid to names of plans for $plan
+    // Map of product_id to names of plans
     $plan_type_map = array( "3313295"  => "$12 / week plan",
 							"27029"    => "$39 / week plan",
 							"27028"    => "$99 / week plan",
 							"3313296"  => "$249 / week plan",
 							"3313297"  => "$499 / week plan",
+                            "3325582"  => "Free CPC Plan",
 							"27023"    => "Directory page $39 / month plan" );
                         
     $product_name = $plan_type_map[$product_id];
@@ -4988,6 +4991,7 @@ function get_component_id($product_id) {
 							'27028'    => '3207',
 							'3313296'  => '20016',
 							'3313297'  => '20017',
+                            '3325582'  => '21135',
 							'27023'    => '' );
                         
     $component_id = $component_map[$product_id];
@@ -5016,7 +5020,11 @@ function get_cost_per_click($product_id) {
         case '3313297':
             // $499 per week plan
             $cpc = 1.7;
-            break;                                                
+            break;
+        case '3325582':
+            // Free CPC plan
+            $cpc = NULL;
+            break;                                   
     }
     return $cpc;   
 }
