@@ -3421,7 +3421,7 @@ function theme_profile_billing($profile_pid) {
 			        
     			if ($date == $prev_date) { 
     			    $sum_clicks +=          $clicks;
-    			    $sum_billable =         ( (int) $sum_clicks ) * $cpc;
+    			    $sum_billable =         ( $plan_cpc != NULL ) ? ( (int) $sum_clicks ) * $cpc : (float) 0.0;
     			    $sum_pretty_billable =  number_format($sum_billable, 2);
     			} else { 
                     if ( !empty($sum_clicks) ) { ?>
