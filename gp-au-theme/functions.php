@@ -471,17 +471,18 @@ add_action( 'edit_user_profile', 'my_show_extra_profile_fields' );
 
 function my_show_extra_profile_fields( $user ) {
 	
-	$profiletypes_user = get_the_author_meta( 'profiletypes', $user->ID );
-	$profiletypes_values = array('administrator', 'editor', 'contributor', 'subscriber');
+    global $current_user, $current_site, $gp, $wpdb;
+    
+	$profiletypes_user =    get_the_author_meta( 'profiletypes', $user->ID );
+	$profiletypes_values =  array('administrator', 'editor', 'contributor', 'subscriber');
 	
-	$rolesubscriber = 'subscriber';
-	$roleauthor = 'author';
-	$roleeditor = 'editor';
-	$rolecontributor = 'contributor';
-	
-	global $current_user, $current_site, $gp, $wpdb;
-	$user_roles = $current_user->roles;
-	$user_role = array_shift($user_roles);
+	$rolesubscriber =       'subscriber';
+	$roleauthor =           'author';
+	$roleeditor =           'editor';
+	$rolecontributor =      'contributor';
+
+	$user_roles =           $current_user->roles;
+	$user_role =            array_shift($user_roles);
 	
 	if ( !get_user_role( array( $profiletypes_user['profiletypes'] ) ) && in_array( $profiletypes_user['profiletypes'], $profiletypes_values ) && in_array( $user_role, $profiletypes_values ) ) {
 		${'role'. $profiletypes_user['profiletypes']} = $user_role;
@@ -555,29 +556,11 @@ function my_show_extra_profile_fields( $user ) {
 		');
 	}
 	
-/*
-	
-	$locale_postcode = get_the_author_meta( 'locale_postcode', $user->ID );
-	echo ('
-	<h3>Locale</h3>
-	
-	<table class="form-table">
-		<tr>
-			<th><label for="locale_postcode">Postcode</label></th>
-			<td><input type="text" name="locale_postcode" id="locale_postcode" class="regular-text" maxlenght="4" value="' . esc_attr($locale_postcode) . '" /><br />
-			<span class="description">Receive notifications green things happening close to you on your green toolbar</span></td>
-		</tr>
-	</table>
-	');
-
-*/	
-	
 	if ( get_user_role( array($rolesubscriber, 'administrator') ) ) {
 		$employment_jobtitle = get_the_author_meta( 'employment_jobtitle', $user->ID );
 		$employment_currentemployer = get_the_author_meta( 'employment_currentemployer', $user->ID );
 		echo ('
 		<h3>Employment Details</h3>
-		
 		<table class="form-table">
 			<tr>
 				<th><label for="employment_jobtitle">Job Title</label></th>
@@ -607,15 +590,14 @@ function my_show_extra_profile_fields( $user ) {
 	}
 	
 	if ( get_user_role( array($rolecontributor, 'administrator') ) ) {
-		$contributors_blurb = get_the_author_meta( 'contributors_blurb', $user->ID );
-		$contributors_posttagline = get_the_author_meta( 'contributors_posttagline', $user->ID );
-		$contributors_donate_url = get_the_author_meta( 'contributors_donate_url', $user->ID );
-		$contributors_join_url = get_the_author_meta( 'contributors_join_url', $user->ID );
-		$contributors_petition_url = get_the_author_meta( 'contributors_petition_url', $user->ID );
-		$contributors_volunteer_url = get_the_author_meta( 'contributors_volunteer_url', $user->ID );
+		$contributors_blurb =          get_the_author_meta( 'contributors_blurb', $user->ID );
+		$contributors_posttagline =    get_the_author_meta( 'contributors_posttagline', $user->ID );
+		$contributors_donate_url =     get_the_author_meta( 'contributors_donate_url', $user->ID );
+		$contributors_join_url =       get_the_author_meta( 'contributors_join_url', $user->ID );
+		$contributors_petition_url =   get_the_author_meta( 'contributors_petition_url', $user->ID );
+		$contributors_volunteer_url =  get_the_author_meta( 'contributors_volunteer_url', $user->ID );
 		echo ('
-		<h3>Contributor\'s Profile</h3>
-		
+		<h3>Contributor\'s Profile</h3>		
 		<table class="form-table">
 			<tr>
 				<th><label for="contributors_blurb">Contributors Blurb</label></th>
@@ -657,103 +639,10 @@ function my_show_extra_profile_fields( $user ) {
 				will be visible on each post you create and your profile page!</span></td>
 			</tr>		
 		</table>		');
-	}
-
-/*		
-	echo ('
-	<h3>Notification Settings</h3>
-
-	<table class="form-table">
-
-		<tr>
-			<th></th>
-			<th>Receive my notifitions in a weekly email update</th>
-			<th>Receive my notifications only on my dashboard</th>
-		</tr>
-	'); 
-		
-		$notification_items = array("notification-email" => "Delivery method");
-		$notification_user = get_the_author_meta( 'notification', $user->ID );
-
-		if ( is_array( $notification_items ) ) {
-			foreach ( $notification_items as $key => $value ) {
-				$checked = false;
-				if ( is_array( $notification_user ) ) {
-					if ( array_key_exists( $key, $notification_user ) ) {
-						if ( $notification_user[$key] == "true" ) {
-							$checked = true;
-						}
-					}
-				}
-		
-		echo ('		
-		<tr>
-			<th><label for="' . esc_attr($key) . '">' . $value . '</label></th>
-			<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="true" ');
-		if ( $checked == true ) {echo "checked=\"checked\"";} 
-		echo ('
-		 /></td>
-	   	<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="false" ');
-	   	if ( $checked == false ) {echo "checked=\"checked\"";}
-	   	echo ('
-	   	 /></td>
-		</tr>
-		');
-		
-			}
-		}
-*/
-	?>
+	} ?>
 	
 	<!-- </table> -->
-	
-	<?php
-	echo ('
-	<h3>Subscriptions</h3>
 
-	<table class="form-table">
-
-		<tr>
-			<th></th>
-			<th>Subscribed</th>
-			<th>Not subscribed</th>
-		</tr>
-	'); 
-		
-		$subscription_user = get_the_author_meta( $wpdb->prefix . 'subscription', $user->ID );
-
-		$cm_lists = $gp->campaignmonitor[$current_site->id]['lists'];
-		if ( is_array( $cm_lists ) ) {
-			foreach ( $cm_lists as $key => $value ) {
-				$checked = false;
-				if ( is_array( $subscription_user ) ) {
-					if ( array_key_exists( $key, $subscription_user ) ) {
-						if ( $subscription_user[$key] == "true" ) {
-							$checked = true;
-						}
-					}
-				}
-		
-				echo ('		
-				<tr>
-					<th><label for="' . esc_attr($key) . '">' . $value['profile_text'] . '</label></th>
-					<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="true" ');
-				if ( $checked == true ) {echo "checked=\"checked\"";} 
-				echo ('
-				 /></td>
-			   	<td><input type="radio" name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" value="false" ');
-			   	if ( $checked == false ) {echo "checked=\"checked\"";}
-			   	echo ('
-			   	 /></td>
-				</tr>
-				');
-		
-			}
-		}
-		?>
-		
-	</table>
-	
 	<?php
 	if ( get_user_role( array('administrator') ) ) {
 		$profiletypes_items = array('profiletypes');
@@ -787,25 +676,22 @@ function my_show_extra_profile_fields( $user ) {
 				}
 				echo ('</tr>');
 			}
-			
 			echo ('</table>');
 		}
 	}
-    
-    if ( get_the_author_meta( 'weekly_email', $user->ID ) == true ) {
-        $check_weekly_email = ' checked="checked"';
-        $check_system_email = '';
-    } else {
-        $check_weekly_email = '';
-    }
-    
-    if ( get_the_author_meta( 'system_email', $user->ID ) == true ) {
-        $check_weekly_email = '';
-        $check_system_email = ' checked="checked"';
-    } else {
-        $check_system_email = '';
-    }
-    ?>
+	
+	$notification_setting = get_user_meta($user->ID, 'notification_setting', true);
+	
+	switch ($notification_setting) {
+	    case 'weekly_email':
+            $check_weekly_email = ' checked="checked"';
+            $check_system_email = '';
+            break;
+	    case 'system_email':
+            $check_weekly_email = '';
+            $check_system_email = ' checked="checked"';
+            break;
+	} ?>
 	      <h3>Notification Settings</h3>
 		  <table class="form-table">
 		      <tr>
@@ -819,9 +705,10 @@ function my_show_extra_profile_fields( $user ) {
 		  </table>
     <?php
 	
-    /* HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
-     * OTHERWISE EVERYTIME A NON ADMIN UPDATES THEIR PROFILE PAGE THE META DATA IS LOST 
-     */
+    /**
+     *  HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
+     *  OTHERWISE EVERYTIME A NON ADMIN UPDATES THEIR PROFILE PAGE THE META DATA IS LOST 
+     **/
 	if ( !get_user_role( array('administrator') ) ) {
 		echo '<div class="hidden">';
 	}
@@ -834,14 +721,12 @@ function my_show_extra_profile_fields( $user ) {
 		</table>
 		');
 		/* SET AND DISPLAY DIRECTORY ID AND URL STRINGS AND YOUTUBE ID FOR VIDEO NEWS IFRAME*/
-		$old_crm_id = get_the_author_meta( 'old_crm_id', $user->ID );
-		$wp_id = $user->ID;
-		$directory_page_url = get_the_author_meta( 'directory_page_url', $user->ID );
-		$chargify_self_service_page_url = get_the_author_meta( 'chargify_self_service_page_url', $user->ID );
-		$video_news_id = get_the_author_meta( 'video_news_id', $user->ID );		
+		$old_crm_id =          get_the_author_meta( 'old_crm_id', $user->ID );
+		$wp_id =               $user->ID;
+		$directory_page_url =  get_the_author_meta( 'directory_page_url', $user->ID );
+		$video_news_id =       get_the_author_meta( 'video_news_id', $user->ID );		
 		echo ('
 		<h3>Miscellaneous</h3>
-		
 		<table class="form-table">
 			<tr>
 				<th><label for="old_crm_id">Old CRM ID</label></th>
@@ -857,11 +742,6 @@ function my_show_extra_profile_fields( $user ) {
 				<th><label for="directory_page_url">Directory Page URL</label></th>
 				<td><input type="text" 	name="directory_page_url" id="directory_page_url" class="regular-text" maxlength="255" value="' . esc_attr($directory_page_url) . '" /><br />
 				<span class="description">This is used to provide a link to the members Directory Page from their profile page</span></td>
-			</tr>
-			<tr>
-				<th><label for="chargify_self_service_page_url">Chargify Self-Service Page Url</label></th>
-				<td><input type="text" 	name="chargify_self_service_page_url" id="chargify_self_service_page_url" class="regular-text" maxlength="255" value="' . esc_attr($chargify_self_service_page_url) . '" /><br />
-				<span class="description">This is used to provide a link to the members Chargify self service from their profile page</span></td>
 			</tr>			
 			<tr>
 				<th><label for="video_news_id">Video News ID</label></th>
@@ -3456,16 +3336,14 @@ function theme_profile_billing($profile_pid) {
         	        <td><strong>Total billed:</strong></td>
         			<td><?php echo '$'.$total_billed; ?></td>
         		</tr>
-    		</table>
-    		<?php
+    		</table> <?php
 
-		} elseif ( $product_id == '27023') {
-		
-			?><h3>
+		} elseif ( $product_id == '27023') { ?>
+			<h3>
 			    <p>Why don't you change your subscription to a cost per click plan? 
 		    	You'll be able to create unlimited product posts only pay for the clicks you receive. 
 				Simply choose a plan from the 'upgrade' menu above.</p>
-		    <h3><?php    
+		    <h3> <?php
 		}	
 		downgrade_plan($product_id, $budget_status);
 	}
@@ -4440,7 +4318,7 @@ function add_location_and_tag_fields($input, $field, $value, $lead_id, $form_id)
 /* Gravity Form filter of all input fields to assign id's to all location related fields */
 add_filter("gform_field_input", "add_location_and_tag_fields", 10, 5);
 
-function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) {
+function get_correct_input_field($input_name_id, $input_id, $type, $read_only) {
     /**
 	 *  Returns location input field for Gravity Forms with appropriate id 
 	 *  value to work with Google places autocomplete, location data 
@@ -4453,7 +4331,7 @@ function get_correct_input_field ($input_name_id, $input_id, $type, $read_only) 
     
     global $current_user;
     
-        $current_data = (isset($current_user->$input_id)) ? $current_user->$input_id : '';
+    $current_data = (isset($current_user->$input_id)) ? $current_user->$input_id : '';
     
     $correct_input = '<div class="ginput_container">
                           <input name="input_'. $input_name_id .'" id="'. $input_id .'" '. $type .' 
