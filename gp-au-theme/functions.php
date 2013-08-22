@@ -695,12 +695,12 @@ function my_show_extra_profile_fields( $user ) {
 	      <h3>Notification Settings</h3>
 		  <table class="form-table">
 		      <tr>
-		          <th>weekly_email</th>
+		          <th>Weekly Email - Green Razor</th>
 		          <td><input type="radio" name="notification_setting" id="weekly_email" value="weekly_email" <?php echo $check_weekly_email; ?> /></td>
 		      </tr>
 		      <tr>
-		          <th>system_email</th>
-		          <td><input type="radio" name="notification_setting" id="" value="system_email" <?php echo $check_system_email; ?> /></td>
+		          <th>System Emails Only - Rare</th>
+		          <td><input type="radio" name="notification_setting" id="system_email" value="system_email" <?php echo $check_system_email; ?> /></td>
 		      </tr>
 		  </table>
     <?php
