@@ -695,15 +695,15 @@ function events_index() {
 	/* Show events that match location filter country outside of location filter city */
 	if ($num_posts < 20) {
 
-	    $pageposts = '';
-	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
-        $filterby_state =    '';
-        $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value != %s ", $querystring_city ) : '';
+	    $pageposts =             '';
+	    $filterby_country =      (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
+        $filterby_state =        '';
+        $filterby_city =         (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value != %s ", $querystring_city ) : '';
         
-        $pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);        
-        $num_additional_posts = count($pageposts);
-        $country_map = get_country_map();
-	    $country_pretty_name = $country_map[$querystring_country];
+        $pageposts =             get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);        
+        $num_additional_posts =  count($pageposts);
+        $country_map =           get_country_map();
+	    $country_pretty_name =   $country_map[$querystring_country];
         
 		if ($num_additional_posts > 0) {
 	        if ($pageposts) {
@@ -735,14 +735,14 @@ function events_index() {
                 $global_posts = array_slice($pageposts, 0, $i, true);
     		    
                 echo '<h3>Events from around the globe</h3>';
-    		    foreach ($global_posts as $post) {		    
+    		    foreach ($global_posts as $post) {
 		            theme_index_event_item();
 		        }
     	    }
 	    } 
 	}
 	
-	if (  $wp_query->max_num_pages > 1 ) {
+	if ( $wp_query->max_num_pages > 1 ) {
 
 	    $page_url =             "/events/";
         $location_filter_uri =  get_location_filter_uri();

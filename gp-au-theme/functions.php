@@ -702,8 +702,7 @@ function my_show_extra_profile_fields( $user ) {
 		          <th>System Emails Only - Rare</th>
 		          <td><input type="radio" name="notification_setting" id="system_email" value="system_email" <?php echo $check_system_email; ?> /></td>
 		      </tr>
-		  </table>
-    <?php
+		  </table> <?php
 	
     /**
      *  HIDE THE FOLLOWING CODE BLOCK WITH MISC META DATA FROM NON ADMINS, CODE STILL NEEDS TO RUN THOUGH 
@@ -754,10 +753,6 @@ function my_show_extra_profile_fields( $user ) {
 	if ( !get_user_role( array('administrator') ) ) {	
 		echo '</div>';
 	}
-	?>
-
-<?php
-
 } 
 
 add_action( 'personal_options_update', 'my_save_extra_profile_fields' );
@@ -1257,23 +1252,22 @@ function get_calendar_and_upcoming_events() {
 			
 			$event_title = get_the_title($post->ID);
 			
-			$displayday = date('j', $post->gp_events_startdate);
-			$displaymonth = date('M', $post->gp_events_startdate);
-			$str_month = date('m', $post->gp_events_startdate);
-			$displayyear = date('y', $post->gp_events_startdate);
+			$displayday =         date('j', $post->gp_events_startdate);
+			$displaymonth =       date('M', $post->gp_events_startdate);
+			$str_month =          date('m', $post->gp_events_startdate);
+			$displayyear =        date('y', $post->gp_events_startdate);
 			
-			$displayendday = date('j', $post->gp_events_enddate);
-			$displayendmonth = date('M', $post->gp_events_enddate);
-			$str_endmonth = date('m', $post->gp_events_enddate);
+			$displayendday =      date('j', $post->gp_events_enddate);
+			$displayendmonth =    date('M', $post->gp_events_enddate);
+			$str_endmonth =       date('m', $post->gp_events_enddate);
 			
-			$event_link_url = get_permalink($post->ID) . $location_filter_uri;
-			$post_id = $post->ID;
+			$event_link_url =     get_permalink($post->ID) . $location_filter_uri;
+			$post_id =            $post->ID;
 			
-			$displaytitle = '<a href=\"'. $event_link_url . '\" title=\"'. $event_title .'\">'. $event_title .'</a>';
+			$displaytitle =       '<a href=\"'. $event_link_url . '\" title=\"'. $event_title .'\">'. $event_title .'</a>';
+			$event_date_string =  'new Date('. $post->gp_events_startdate .'000)';
 			
-			$event_date_string = 'new Date('. $post->gp_events_startdate .'000)';
-			
-			$event_str .= '{ Title: "'. $displaytitle .'", Date: '. $event_date_string .' },';
+			$event_str .=         '{ Title: "'. $displaytitle .'", Date: '. $event_date_string .' },';
 			
 			/** DISPLAY NEXT 3 EVENTS BELOW CALENDAR  **/
 			if ($i < 3) {
