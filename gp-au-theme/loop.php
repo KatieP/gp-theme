@@ -625,10 +625,10 @@ function events_index() {
     $user_country =           $gp->location['country_iso2'];
     
     $location_filter =        get_location_filter();
-	$location_city =          ( !empty($_GET['locality_filter']) ) ? $_GET['locality_filter'] : $user_city;
-	$location_latitude =      ( !empty($_GET['latitude_filter']) ) ? $_GET['latitude_filter'] : $user_lat;
-    $location_longitude =     ( !empty($_GET['longitude_filter']) ) ? $_GET['longitude_filter'] : $user_long;
-    $location_country_slug =  ( !empty($_GET['location_slug_filter']) ) ? $_GET['location_slug_filter'] : $user_country;
+	$location_city =          ( !empty($_GET['locality_filter']) )       ? $_GET['locality_filter'] : $user_city;
+	$location_latitude =      ( !empty($_GET['latitude_filter']) )       ? $_GET['latitude_filter'] : $user_lat;
+    $location_longitude =     ( !empty($_GET['longitude_filter']) )      ? $_GET['longitude_filter'] : $user_long;
+    $location_country_slug =  ( !empty($_GET['location_slug_filter']) )  ? $_GET['location_slug_filter'] : $user_country;
     $location_state_slug =    ( !empty($_GET['location_state_filter']) ) ? $_GET['location_state_filter'] : '';
 	
 	$querystring_country =    strtoupper( $location_country_slug );
@@ -639,9 +639,9 @@ function events_index() {
 
 	$epochtime =              strtotime('now');
 
-    $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
-    $filterby_state =         (!empty($querystring_state)) ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
-    $filterby_city =          (!empty($querystring_city)) ? $wpdb->prepare( " AND m6.meta_value=%s ", $querystring_city ) : '';
+    $filterby_country =       ( !empty($querystring_country) ) ? $wpdb->prepare( " AND m3.meta_value=%s ", $querystring_country ) : '';
+    $filterby_state =         ( !empty($querystring_state) )   ? $wpdb->prepare( " AND m4.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =          ( !empty($querystring_city) )    ? $wpdb->prepare( " AND m6.meta_value=%s ", $querystring_city ) : '';
 	
     $querytotal = $wpdb->prepare(
                     "SELECT COUNT(*) AS count 
