@@ -1576,7 +1576,7 @@ function email_after_post_approved($post_ID) {
   $type = get_post_type($post_ID);
   $posttypeslug = getPostTypeSlug($type);
 
-  $bcc = "katiepatrickgp@gmail.com, jesse.browne@thegreenpages.com.au";
+  $bcc = "kp@greenpag.es, jb@greenpag.es";
 
   $post = get_post($post_ID);
   $user = get_userdata($post->post_author);
@@ -1591,22 +1591,22 @@ function email_after_post_approved($post_ID) {
   $body .= '<tr style="padding: 0 20px 5px 5px;">';
   $body .= '<td style="font-size: 18px; text-transform:non; color:rgb(100,100,100);padding:0 0 0 5px;">';
   $body .= 'Hi ' . $user->display_name . "!<br /><br />";
-  $body .= 'Your Green Pages post has been approved.  Thanks for posting!<br /><br />';
+  $body .= 'Your post on greenpag.es has been approved.  Thanks for posting!<br /><br />';
   $body .= 'You can see your new post at:<br />';
   $body .= '<a href="'. $post_url . '" >' . $post_url."</a><br /><br />";
   $body .= "Keep on making an amazing world.<br /><br />";
-  $body .= "The Green Pages Team<br />";
+  $body .= "The greenpag.es Team<br />";
 
   $body .= '<div style="color: rgb(0, 154, 194);font=size:13px; ">';
-  $body .= 'Green Pages Australia &nbsp;p 02 8003 5915&nbsp;<br />';
-  $body .= '<a href="mailto:info@thegreenpages.com.au">info@thegreenpages.com.au</a>&nbsp;';
+  $body .= 'greenpag.es &nbsp; <br />';
+  $body .= '<a href="mailto:hello@greenpag.es">hello@greenpag.es</a>&nbsp;';
   $body .= '<a href="'. get_site_url() .'">'. get_site_url() .'</a>';
   $body .= '<br />';
   $body .= '</div>';
 
   $body .= '</td></tr></table></td></tr></table><br /><br />';
 
-  wp_mail($user->user_email, 'Your Green Pages post has been approved!', $body, $headers);
+  wp_mail($user->user_email, 'Your post on greenpag.es has been approved!', $body, $headers);
 
 }
 add_action('pending_to_publish', 'email_after_post_approved');
