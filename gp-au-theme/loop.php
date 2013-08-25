@@ -688,9 +688,7 @@ function events_index() {
                 theme_index_event_item();
 		    }		
     	}
-	} else {
-	    echo '<h3>There are currently no events listed for '. $location_filter .'.</h3>';
-	}
+	} 
 	
 	/* Show events that match location filter country outside of location filter city */
 	if ($num_posts < 20) {
