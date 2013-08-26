@@ -233,7 +233,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							    </ul>
 					    	</li>
 					    	<li id="auth-youraccount" class="no-js">
-						    	<a href="#" class="auth-youraccount-start">
+						    	<a href="javascript:void(0);" class="auth-youraccount-start">
 							    	<span>My Account</span>
 						    	</a>
 						    	<ul id="auth-dash-account" class="auth-dash">
@@ -243,9 +243,10 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 							    	        <?php echo get_avatar($current_user->ID, '50', '', $current_user->display_name); ?>
 							    	    </a>
 							    	</li>
-								    <li class="auth-account-options">	
+								    <li class="auth-account-options">
+								        <?php $edit_profile_uri = ( get_user_role( array('contributor') ) ) ? '/forms/edit-profile-details-content-partner/' : '/forms/edit-profile-details/'; ?>
 									    <a href="<?php echo $post_author_url; ?>" title="My profile">View Profile</a>
-									    <a href="<?php echo $site_url; ?>/forms/edit-profile-details/" title="Edit Profile">Edit Profile</a>
+									    <a href="<?php echo $site_url . $edit_profile_uri; ?>" title="Edit Profile">Edit Profile</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-picture-editor/" title="Profile Picture">Profile Picture</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-email-editor/" title="Email">Email</a>
 									    <a href="<?php echo $site_url; ?>/forms/profile-notifications/" title="Notifications">Notifications</a>

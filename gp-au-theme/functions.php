@@ -638,7 +638,7 @@ function my_show_extra_profile_fields( $user ) {
 				<span class="description">Enter the url you use to sign up volunteers and a \'Volunteer\' button 
 				will be visible on each post you create and your profile page!</span></td>
 			</tr>		
-		</table>		');
+		</table> ');
 	} ?>
 	
 	<!-- </table> -->

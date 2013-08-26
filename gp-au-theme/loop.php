@@ -1547,13 +1547,13 @@ function theme_index_contributor_donate_join_bar() {
 function theme_single_contributor_donate_join_bar() {
 	if (get_post_type() != "page") { 
 		global $post;
-		$post_author = get_userdata($post->post_author);
-		$post_author_url = get_author_posts_url($post->post_author);
-		$post_author_id = $post_author->ID;
-		$donate_url = $post_author->contributors_donate_url;
-		$join_url = $post_author->contributors_join_url;
-		$petition_url = $post_author->contributors_petition_url;
-		$volunteer_url = $post_author->contributors_volunteer_url;
+		$post_author =      get_userdata($post->post_author);
+		$post_author_url =  get_author_posts_url($post->post_author);
+		$post_author_id =   $post_author->ID;
+		$donate_url =       $post_author->contributors_donate_url;
+		$join_url =         $post_author->contributors_join_url;
+		$petition_url =     $post_author->contributors_petition_url;
+		$volunteer_url =    $post_author->contributors_volunteer_url;
 		
 		?>
 		<h4>Would you like to help <a href="<?php echo $post_author_url ?>"><?php echo $post_author->display_name ?></a> change the world?</h4>
