@@ -694,9 +694,9 @@ function events_index() {
 	if ($num_posts < 20) {
 
 	    $pageposts =             '';
-	    $filterby_country =      (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value = %s ", $querystring_country ) : '';
-        $filterby_state =        '';
-        $filterby_city =         (!empty($querystring_city))    ? $wpdb->prepare( " AND m6.meta_value != %s ", $querystring_city ) : '';
+        $filterby_country =       ( !empty($querystring_country) ) ? $wpdb->prepare( " AND m3.meta_value =%s ", $querystring_country ) : '';
+        $filterby_state =         ( !empty($querystring_state) )   ? $wpdb->prepare( " AND m4.meta_value =%s ", $querystring_state ) : '';
+        $filterby_city =          ( !empty($querystring_city) )    ? $wpdb->prepare( " AND m6.meta_value !=%s ", $querystring_city ) : '';
         
         $pageposts =             get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);        
         $num_additional_posts =  count($pageposts);
@@ -718,9 +718,9 @@ function events_index() {
     	if ($num_posts_so_far < 20) {
 
     	    $pageposts = '';
-    	    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " AND m3.meta_value != %s ", $querystring_country ) : '';
-            $filterby_state =    '';
-            $filterby_city =     '';
+            $filterby_country =       ( !empty($querystring_country) ) ? $wpdb->prepare( " AND m3.meta_value !=%s ", $querystring_country ) : '';
+            $filterby_state =         ( !empty($querystring_state) )   ? $wpdb->prepare( " AND m4.meta_value !=%s ", $querystring_state ) : '';
+            $filterby_city =          ( !empty($querystring_city) )    ? $wpdb->prepare( " AND m6.meta_value !=%s ", $querystring_city ) : '';
             
             $pageposts =        get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);
             $num_global_posts = count($pageposts);
