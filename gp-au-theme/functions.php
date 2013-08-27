@@ -440,6 +440,13 @@ function get_user_role($roles_to_check = array('subscriber'), $user_id = 0) {
 	return $role;	
 }
 
+function restrict_admin_area() {
+	if ( !current_user_can('manage_options') ) {
+        wp_redirect(site_url());
+	}
+}
+add_action( 'admin_init', 'restrict_admin_area', 1 );
+
 /* GET PROFILE USER */
 function get_profile_user () {
 	
