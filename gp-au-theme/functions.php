@@ -2855,7 +2855,7 @@ function theme_profile_advertise($profile_pid) {
         		echo '<p>You still have some budget left this week</p>
 				<p>Want more clicks? There\'s no limit on how many posts you can make, so go for it! <br />
 				Create another post now.</p>
-				<a href="'. $site_url .'/forms/create-product-post/"><input type="button" value="Create Another Product Post"></a>
+				<a href="'. $site_url .'/forms/create-product-post-subscriber/"><input type="button" value="Create Another Product Post"></a>
 				<div class="clear"></div><br /><br />';
 				
 				echo '<h3>My Product Posts</h3>';
@@ -2891,7 +2891,7 @@ function theme_profile_advertise($profile_pid) {
 	} else { 
 		# if user IS NOT an adverters and never has been
 		# Set form urls for creating ad posts for regular monthly subscription advertisers and non regular advertisers
-		$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/forms/create-product-post/';
+		$post_my_product_form = ($profile_author->reg_advertiser == 1) ? '/forms/create-product-post-subscriber/' : '/advertisers/';
     	$template_url = get_bloginfo('template_url');
     
     
@@ -3480,7 +3480,7 @@ function theme_create_post() {
 	} 
 	
 	if ( is_home() ) {
-	    $link    = '/welcome';
+	    $link    = '/welcome/';
 	    $message = 'Create a post';
 	}
 	
@@ -3834,10 +3834,10 @@ function get_post_type_map() {
      * Useful for creating pretty post type names
      */
     
-    $post_type_map = array( "gp_news"     => "news", 
-    						"gp_events"   => "events", 
-                            "gp_products" => "products", 
-                            "gp_projects" => "projects" );
+    $post_type_map = array( "gp_news"        => "news", 
+    						"gp_events"      => "events", 
+                            "gp_advertorial" => "products", 
+                            "gp_projects"    => "projects" );
     
     return $post_type_map;
 }
