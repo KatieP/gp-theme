@@ -2233,7 +2233,7 @@ function theme_indexpagination() {
 	}
 }
 
-function theme_like() {
+function theme_like_comments() {
     /**
      * Shows upvote icon and count
      * Dependant on some js functions in gp-theme/js/gp.js
@@ -2253,26 +2253,24 @@ function theme_like() {
 		$showlikecount = ' style="display:none;"';
 	}
 	
-	if ( is_single() ) {
-		if (is_user_logged_in()) {
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-                      <a href="#/" title="Upvote this post and save to favourites">
-                          <span class="af-icon-chevron-up' . $likedclass . '"></span>
-                          <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-                          <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
-                          <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span> 
-                      </a>
-                  </div>';
-		} else {
-			echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-			          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
-			             title ="Login to upvote" >
-			              <span class="af-icon-chevron-up"></span>
-			              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-			              <span class="upvote-login" style="display:none;">Login...</span>
-			          </a>
-			      </div>';
-		}
+	if (is_user_logged_in()) {
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+                  <a href="#/" title="Upvote this post and save to favourites">
+                      <span class="af-icon-chevron-up' . $likedclass . '"></span>
+                      <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+                      <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
+                      <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span> 
+                  </a>
+              </div>';
+	} else {
+		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
+		          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+		             title ="Login to upvote" >
+		              <span class="af-icon-chevron-up"></span>
+		              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+		              <span class="upvote-login" style="display:none;">Login...</span>
+		          </a>
+		      </div>';
 	}
 
 	if ( comments_open($post->ID) ) {
@@ -2464,52 +2462,7 @@ function theme_index_feed_item() {
 
     echo '<div class="post-details"> '. $location[0] .' </div>';
 			
-	if ( get_user_meta($current_user->ID, 'likepost_' . $post->ID , true) ) {
-		$likedclass = ' favorited';
-	}
-			
-	echo '<a href="#/" class="topic-select">Topics<span class="topic-select-down"></span></a>';
-
-	$likecount = get_post_meta($post->ID, 'likecount', true);
-	if ($likecount > 0) {
-		$showlikecount = '';
-	} else {
-		$likecount = 0;
-		$showlikecount = ' style="display:none;"';
-	}
-      
-	$likecount = abbr_number($likecount);
-			
-	if (is_user_logged_in()) {
-		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-                  <a href="#/" title="Upvote this post and save to favourites">
-                      <span class="af-icon-chevron-up' . $likedclass . '"></span>
-                      <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-                      <span class="af-icon-chevron-up-number-plus-one" style="display:none;">+1</span>
-                      <span class="af-icon-chevron-up-number-minus-one" style="display:none;">-1</span>
-                  </a>
-              </div>';
-	} else {
-        echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-		          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
-		             title ="Login to upvote">
-		              <span class="af-icon-chevron-up"></span>
-		              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-		              <span class="upvote-login" style="display:none;">Login...</span>
-		          </a>
-		      </div>';
-	}
-
-	if ( comments_open($post->ID) ) {
-		echo '<div class="comment-profile">
-		          <a href="' . $link . '#comments">
-		              <span class="comment-mini"></span>
-		              <span class="comment-mini-number dsq-postid">
-		                  <fb:comments-count href="' . $link . '"></fb:comments-count>
-		              </span>
-		          </a>
-		      </div>';
-	}	
+    theme_like_comments();
 	
 	echo '</div>
 		  <div class="topic-container">

@@ -157,7 +157,7 @@ function theme_singledetails() {
 	          <a href="' . $post_author_url . '">' . get_avatar( $post_author->ID, '35', '', $post_author->display_name ) . '</a>
 	          Posted by <a href="' . $post_author_url . '">' . $post_author->display_name . '</a> ' . time_ago(get_the_time('U'), 0) . ' ago
 	      </div>';
-	theme_like();
+	theme_like_comments();
 	echo '<div class="clear"></div>';
 	$user_default_location = get_the_author_meta( 'user_default_location', $post_author->ID );
 	#var_dump($user_default_location);
