@@ -198,7 +198,7 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
 					    ?>
 					    <ul id="auth-tools">
 						    <li id="auth-youraccount">
-                            	<a href="<?php echo wp_login_url("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']); ?>" class="lower">Log In</a>
+                            	<a href="<?php echo $site_url . '/wp-login.php'; ?>" class="lower">Log In</a>
             	                <span class="breaker"> | </span>
                 	            <a href="<?php echo $site_url ;?>/welcome" class="lower">Join</a>
 						    </li>

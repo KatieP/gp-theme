@@ -447,24 +447,28 @@ function restrict_admin_area() {
 }
 add_action( 'admin_init', 'restrict_admin_area', 1 );
 
+function pu_login_failed($user) {
+  	// check what page the login attempt is coming from
+  	$referrer = $_SERVER['HTTP_REFERER'];
+
+  	// check that were not on the default login page
+	if ( !empty($referrer) && !strstr($referrer,'wp-login') && !strstr($referrer,'wp-admin') && $user != null ) {
+		// make sure we don't already have a failed login attempt
+		if ( !strstr($referrer, '?login=failed') ) {
+			// Redirect to the login page and append a querystring of login failed
+	    	wp_redirect( $referrer . '?login=failed');
+	    } else {
+	      	wp_redirect( $referrer );
+	    }
+	    exit;
+	}
+}
+add_action( 'wp_login_failed', 'pu_login_failed' ); // hook failed login
+
 /* GET PROFILE USER */
 function get_profile_user () {
 	
 }
-
-/*
-add_action( 'admin_init', 'user_avatar_setup' );
-
-function user_avatar_setup () { */
-	
-	/* Define user avatar settings. Dependant on the user-avatar plugin. */
-	/*define( 'USER_AVATAR_THUMB_WIDTH', 50 );
-	define( 'USER_AVATAR_THUMB_HEIGHT', 50 );
-	define( 'USER_AVATAR_FULL_WIDTH', 190 );
-	define( 'USER_AVATAR_FULL_HEIGHT', 190 );
-	
-	echo USER_AVATAR_FULL_WIDTH;
-}*/
 
 add_action( 'show_user_profile', 'my_show_extra_profile_fields' );
 add_action( 'edit_user_profile', 'my_show_extra_profile_fields' );
