@@ -275,17 +275,6 @@ $htmlattr = 'xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN" dir="l
                     $location_filter =             get_location_filter();
                     $location_filter_url_prefix =  $site_url . '/' . $posttype_slug;
 	                ?>
-            		<script type="text/javascript" async >
-                		function show_location_field() {
-                    		document.getElementById("header_location_field").className = "";
-                    		document.getElementById("header_user_location").className = "hidden";
-                		}
-
-                		function hide_location_field() {
-                    		document.getElementById("header_location_field").className = "hidden";
-                    		document.getElementById("header_user_location").className = "";
-                		}
-            		</script>
     				<div id="header-tagline">
 	            		Everything environmental happening around 
 	            		<span id="header_user_location">

@@ -2263,14 +2263,16 @@ function theme_like_comments() {
                   </a>
               </div>';
 	} else {
-		echo '<div id="post-' . $post->ID . '" class="favourite-profile">
-		          <a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
-		             title ="Login to upvote" >
-		              <span class="af-icon-chevron-up"></span>
-		              <span class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
-		              <span class="upvote-login" style="display:none;">Login...</span>
-		          </a>
-		      </div>';
+		echo '<a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+		         id="login-to-upvote" title ="Log in to upvote" 
+		         onmouseover="show_login_to_upvote(this); return false;"
+			     onmouseout="hide_login_to_upvote(this); return false;" >
+		          <div id="post-' . $post->ID . '" class="favourite-profile">
+		              <span id="upvote-icon"   class="af-icon-chevron-up"></span>
+		              <span id="upvote-number" class="af-icon-chevron-up-number"' . $showlikecount . '>' . $likecount . '</span>
+		              <span id="upvote-login"  class="upvote-login" style="display:none;">Log in to upvote...</span>
+		          </div>
+		      </a>';
 	}
 
 	if ( comments_open($post->ID) ) {
