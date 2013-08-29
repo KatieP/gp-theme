@@ -3389,7 +3389,7 @@ ul.categorieslistmain {
     font-size: 1.1em;
 }
 
-#relevant-posts #post-filter .left {
+#relevant-posts #post-filter .left, .left {
     float: left;
 }
 
@@ -4381,6 +4381,11 @@ form#setupform p.submit {display:block;height:44px;}
 #content .chargify-frame {
 	width: 710px;
 	height: 2300px;
+}
+
+/** Hide mobile only elements **/
+.mobile-only {
+	display: none;
 }
 
 /* ==========================================================================

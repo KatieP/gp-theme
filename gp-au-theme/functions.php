@@ -3408,6 +3408,25 @@ function theme_profilecreate_post(){
 	}
 }	
 
+function theme_mobile_log_in() {
+    /**
+     * Log in button for mobile users
+     * 
+     * Author: Jesse Browne
+     * 	       jb@greenpag.es
+     */
+    
+    $site_url = get_site_url(); ?>
+    
+
+        <span class="mobile-only">   
+            <a href="<?php echo $site_url . '/wp-login.php'; ?>" class="new-post-action">Log In</a>
+        </span>
+        <span class="mobile-only">
+            <a href="<?php echo $site_url; ?>/welcome/" class="new-post-action">Join</a>
+        </span> <?php 
+}
+
 function theme_create_post() {
     /**
      * Route to appropriate create post button
@@ -3454,6 +3473,7 @@ function theme_create_post() {
 	?>	
 	
 	<div class="new-action">
+	    <?php theme_mobile_log_in(); ?>
 	    <span class="right">           
 	        <a href="<?php echo get_site_url() . $link; ?>" class="new-post-action"><?php echo $message; ?></a>
 	    </span>
@@ -3474,8 +3494,8 @@ function gp_select_createpost() {
     $post_my_news_link = ( get_user_role( array('contributor') ) ) ? "<li><a href=\"". get_site_url() ."/forms/create-news-post/\">News</a></li>" : "";
     
     # Set links to forms for monthly advertisers and non monthly advertisers
-    $post_my_product_form = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/advertisers/';
-    $post_my_product_link = ( is_user_logged_in()  && $current_user->reg_advertiser == 1 ) ? "<a href=\"". get_site_url() . $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($1.90 / click)</a>"; 
+    $post_my_product_form = ( is_user_logged_in() && $current_user->reg_advertiser == 1 ) ? '/forms/create-product-post-subscriber/' : '/advertisers/';
+    $post_my_product_link = ( is_user_logged_in() && $current_user->reg_advertiser == 1 ) ? "<a href=\"". get_site_url() . $post_my_product_form ."\">Product Post</a>" : "<a href=\"". $post_my_product_form ."\">Product Post ($1.90 / click)</a>"; 
     
 	echo "
 	<div class=\"profile-action-container no-js\">
