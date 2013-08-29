@@ -82,7 +82,7 @@
 		
 }
 
-/* tablets landscape */
+/* tablets portrait */
 
 @media (orientation: portrait) and (min-device-width: 768px) {
 
@@ -99,6 +99,36 @@
 }
 
 @media (orientation: portrait) and (min-device-width: 800px) {
+
+	/** Show mobile only elements **/
+	#content .new-action .mobile-only, 
+	#content article .new-action .mobile-only {
+		display: inline;
+	}	
+	
+	#col3, .template-right {
+		display: none;
+	}
+	
+}
+
+/* tablets landscape */
+
+@media (orientation: landscape) and (min-device-width: 768px) {
+
+	/** Show mobile only elements **/
+	#content .new-action .mobile-only, 
+	#content article .new-action .mobile-only {
+		display: inline;
+	}		
+	
+	#col3, .template-right {
+		display: none;
+	}
+	
+}
+
+@media (orientation: landscape) and (min-device-width: 800px) {
 
 	/** Show mobile only elements **/
 	#content .new-action .mobile-only, 
