@@ -3418,16 +3418,15 @@ function theme_mobile_log_in() {
     
     $site_url = get_site_url(); ?>
     
-
-        <span class="mobile-only">   
-            <a href="<?php echo $site_url . '/wp-login.php'; ?>" class="new-post-action">Log In</a>
-        </span>
-        <span class="mobile-only">
-            <a href="<?php echo $site_url; ?>/welcome/" class="new-post-action">Join</a>
-        </span> <?php 
+    <span class="mobile-only">   
+        <a href="<?php echo $site_url . '/wp-login.php'; ?>" class="new-post-action">Log In</a>
+    </span>
+    <span class="mobile-only">
+        <a href="<?php echo $site_url; ?>/welcome/" class="new-post-action">Join</a>
+    </span> <?php 
 }
 
-function theme_create_post() {
+function theme_create_post_and_mobile_log_in() {
     /**
      * Route to appropriate create post button
      * depending on post type / page being viewed

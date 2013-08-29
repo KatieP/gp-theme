@@ -442,7 +442,7 @@ function default_single() {
 	    global $post; 
 		the_post();
 		echo '<article>';
-			theme_create_post();
+			theme_create_post_and_mobile_log_in();
 			theme_update_delete_post();
 			theme_singletitle();
 			theme_singlesocialbar();
@@ -548,7 +548,7 @@ function home_index() {
 	/** NEW LIST VIEW OF 20 POSTS WITH HIGHEST POPULARITY SCORE **/
 	if ( $pageposts ) {
 	    # Display create new post button
-		theme_create_post();
+		theme_create_post_and_mobile_log_in();
 		$sorted_posts = array();
 	    $previous_post_title = '';
 	    	
@@ -597,7 +597,7 @@ function search_index() {
 }
 
 function news_index() {
-	theme_create_post();
+	theme_create_post_and_mobile_log_in();
 	default_index();
 }
 
@@ -679,7 +679,7 @@ function events_index() {
 	$sorted_posts = array();
 	$num_posts = count($pageposts);
 	
-	theme_create_post(); 
+	theme_create_post_and_mobile_log_in(); 
 	
 	/* Show events that match location filter city */
 	if ($num_posts > 0) {
@@ -769,7 +769,7 @@ function competitions_index() {
 	global $wpdb;
 	global $post;
 	
-	theme_create_post();
+	theme_create_post_and_mobile_log_in();
 		
 	$epochtime = strtotime('now');
     
@@ -919,12 +919,12 @@ function people_index() {
 }
 
 function advertorial_index() {
-	theme_create_post();
+	theme_create_post_and_mobile_log_in();
 	default_index();
 }
 
 function projects_index() {
-	theme_create_post();
+	theme_create_post_and_mobile_log_in();
 	default_index();
 }
 
