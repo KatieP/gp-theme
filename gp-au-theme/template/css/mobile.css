@@ -1,14 +1,14 @@
 @CHARSET "UTF-8";
 
 /** Show mobile only elements **/
-.mobile-only {
+#content .new-action .mobile-only {
 	display: inline;
 }
 
 /* Hide right hand column on small screens */
 
 @media (max-device-width: 480px) {
-
+	
 	.pos, .widecolumn {
 	    width: 100%;
 	    margin: 0 auto;
