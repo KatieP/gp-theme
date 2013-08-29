@@ -2240,6 +2240,7 @@ function theme_like_comments() {
      **/
     
     global $post, $current_user, $current_site;
+    $site_url = get_site_url();
 	
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
@@ -2263,7 +2264,7 @@ function theme_like_comments() {
                   </a>
               </div>';
 	} else {
-		echo '<a href="' . wp_login_url( "http://" . $_SERVER['HTTP_HOST']  . $_SERVER['REQUEST_URI'] ) . '" 
+		echo '<a href="' . $site_url  . '/welcome/" 
 		         id="login-to-upvote" title ="Log in to upvote" 
 		         onmouseover="show_login_to_upvote(this); return false;"
 			     onmouseout="hide_login_to_upvote(this); return false;" >
