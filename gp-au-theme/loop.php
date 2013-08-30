@@ -549,9 +549,10 @@ function home_index() {
 	if ( $pageposts ) {
 	    # Display create new post button
 		theme_create_post_and_mobile_log_in();
-		$sorted_posts = array();
-	    $previous_post_title = '';
-	    	
+		$sorted_posts =          array();
+	    $previous_post_title =   '';
+	    $previous_post_author =  '';
+
 		# Assign popularity score for all posts in last two weeks with location data and store in array for sorting
 		foreach ( $pageposts as $post ) { 
 		    setup_postdata($post);
@@ -561,23 +562,25 @@ function home_index() {
                                      $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
                     $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
                                      $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
-		            if ( empty($lat_post) || empty($long_post) ) { continue; }
+		            // Skip post if no location data - can probably remove this check when all location bugs are solved
+                    if ( empty($lat_post) || empty($long_post) ) { continue; }
 		        }
-			    $c = distance_to_post($post, $location_latitude, $location_longitude);
-			    $popularity_score_thisuser = page_rank($c, $post);
-			    $popularity_score_thisuser = $post->popularity_score + $popularity_score_thisuser;
-                $sorted_posts[$popularity_score_thisuser] = $post;
-                $previous_post_title = $post->post_title;
+			    $c =                                         distance_to_post($post, $location_latitude, $location_longitude);
+			    $popularity_score_thisuser =                 page_rank($c, $post);
+			    $popularity_score_thisuser =                 $post->popularity_score + $popularity_score_thisuser;
+                $sorted_posts[$popularity_score_thisuser] =  $post;
+                $previous_post_title =                       $post->post_title;
 		    }                           
 		}
 
 		# Sort posts by popularity score and get top 20
 	    krsort($sorted_posts);
-        $display_posts = array_slice($sorted_posts, 0, $ppp, true);
-        
+	    
+        $display_posts = get_display_posts($sorted_posts);
+
         # Display home page feed 	
 	    foreach ( $display_posts as $post ) { 
-	        setup_postdata($post);		
+	        setup_postdata($post);		        
 		    theme_index_feed_item();
 	    }
 	}
@@ -2119,6 +2122,55 @@ function get_post_image($post) {
     } else {
         the_post_thumbnail('gp_custom');     
     }
+}
+
+function get_display_posts($sorted_posts) {
+    /** 
+     * Ensures posts shown on index pages aren't dominated by one author.
+     * 
+     * Achieved by skipping consecutive posts from same author 
+     * and only allowing a set maximum of posts from one author into 
+     * final results.
+     * 
+     * Returns array of 20 posts for rendering to screen
+     * 
+     * Author: Jesse Browne
+     *         jb@greenpag.es
+     */   
+    
+    global $post;
+    $display_posts =         array();
+    $post_authors =          array();
+    $max_posts_per_author =  4;
+    $i =                     0;
+        
+    foreach ( $sorted_posts as $post ) {
+
+        if ($i == 20) { break; }
+            
+        setup_postdata($post);
+
+        if ( $previous_post_author != $post->post_author ) {
+		         
+		    if ( array_key_exists($post->post_author, $post_authors) ) {
+		        if ( $post_authors[$post->post_author] < $max_posts_per_author ) {
+		            $display_posts[] = $post;
+		            $post_authors[$post->post_author]++;
+		            $i++;
+		        } else {
+		            continue;
+		        }
+		    } else {
+		        $display_posts[] = $post;
+		        $post_authors[$post->post_author] = 1;
+		        $i++;
+		    }   
+		} 
+		    
+		$previous_post_author =  $post->post_author;
+    }
+
+    return $display_posts;
 }
 
 ?>
