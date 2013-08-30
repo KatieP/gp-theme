@@ -368,27 +368,7 @@ function default_index() {
 
 	if ( $pageposts ) {
 	    
-	    $sorted_posts = array();
-	    $previous_post_title = '';
-	    
-	    # Assign popularity score for posts with location data and store in array for sorting
-		foreach ( $pageposts as $post ) {
-		    setup_postdata($post);
-		    if ($post->post_title != $previous_post_title) {
-		        if ($post->post_type == 'gp_news') {
-                    $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
-                                     $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
-                    $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
-                                     $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
-		            if ( empty($lat_post) || empty($long_post) ) { continue; }
-		        }
-			    $c = distance_to_post($post, $location_latitude, $location_longitude);
-			    $popularity_score_thisuser = page_rank($c, $post);
-			    $popularity_score_thisuser = $post->popularity_score + $popularity_score_thisuser;
-                $sorted_posts[$popularity_score_thisuser] = $post;
-                $previous_post_title = $post->post_title;
-		    } 
-	    }
+	    $sorted_posts = get_unsorted_posts($pageposts, $location_latitude, $location_longitude);
 
         # Sort posts by popularity score and get appropriate 20
 	    krsort($sorted_posts);
@@ -547,31 +527,9 @@ function home_index() {
 	
 	/** NEW LIST VIEW OF 20 POSTS WITH HIGHEST POPULARITY SCORE **/
 	if ( $pageposts ) {
-	    # Display create new post button
+	    # Display create new post button and mobile log in buttons
 		theme_create_post_and_mobile_log_in();
-		$sorted_posts =          array();
-	    $previous_post_title =   '';
-	    $previous_post_author =  '';
-
-		# Assign popularity score for all posts in last two weeks with location data and store in array for sorting
-		foreach ( $pageposts as $post ) { 
-		    setup_postdata($post);
-		    if ($post->post_title != $previous_post_title) {
-			    if ($post->post_type == 'gp_news') {
-                    $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
-                                     $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
-                    $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
-                                     $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
-		            // Skip post if no location data - can probably remove this check when all location bugs are solved
-                    if ( empty($lat_post) || empty($long_post) ) { continue; }
-		        }
-			    $c =                                         distance_to_post($post, $location_latitude, $location_longitude);
-			    $popularity_score_thisuser =                 page_rank($c, $post);
-			    $popularity_score_thisuser =                 $post->popularity_score + $popularity_score_thisuser;
-                $sorted_posts[$popularity_score_thisuser] =  $post;
-                $previous_post_title =                       $post->post_title;
-		    }                           
-		}
+		$sorted_posts = get_unsorted_posts($pageposts, $location_latitude, $location_longitude);
 
 		# Sort posts by popularity score and get top 20
 	    krsort($sorted_posts);
@@ -678,8 +636,6 @@ function events_index() {
 	$offset = ($on_page-1) * $ppp;
 
 	$pageposts = get_events($filterby_country, $filterby_state, $filterby_city, $ppp, $offset);
-
-	$sorted_posts = array();
 	$num_posts = count($pageposts);
 	
 	theme_create_post_and_mobile_log_in(); 
@@ -2171,6 +2127,37 @@ function get_display_posts($sorted_posts) {
     }
 
     return $display_posts;
+}
+
+function get_unsorted_posts($pageposts, $location_latitude, $location_longitude) {
+	
+    global $post;
+    $sorted_posts =         array();
+    $previous_post_title =  '';
+    $lat_post_key =         'gp_google_geo_latitude';
+    $long_post_key =        'gp_google_geo_longitude';
+    
+	# Assign popularity score for all posts in last two weeks with location data and store in array for sorting
+	foreach ( $pageposts as $post ) { 
+	    setup_postdata($post);
+	    $post_id = $post->ID;
+	    if ($post->post_title != $previous_post_title) {		        
+            $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
+                             $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
+            $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
+                             $post->post_longitude : get_post_meta($post_id, $long_post_key, true);
+	        // Skip post if no location data - can probably remove this check when all location bugs are solved
+            if ( empty($lat_post) || empty($long_post) ) { continue; }
+		        
+		    $c =                                         distance_to_post($post, $location_latitude, $location_longitude);
+		    $popularity_score_thisuser =                 page_rank($c, $post);
+		    $popularity_score_thisuser =                 $post->popularity_score + $popularity_score_thisuser;
+            $sorted_posts[$popularity_score_thisuser] =  $post;
+            $previous_post_title =                       $post->post_title;
+		}                           
+	}
+	
+	return $sorted_posts;
 }
 
 ?>
