@@ -24,6 +24,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 
 }
@@ -52,6 +53,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 
 }
@@ -66,6 +68,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 
 	.pos, .widecolumn {
@@ -106,6 +109,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 	
 }
@@ -132,6 +136,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 
 }
@@ -160,6 +165,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 	
 }
@@ -186,6 +192,7 @@
 	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 	
 }
@@ -212,6 +219,7 @@
 
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 	
 }
@@ -235,8 +243,10 @@
 	#col2, .template-left {
 		width: 100%;
 	}
+	
 	#col3, .template-right {
 		display: none;
+		width: 0%;
 	}
 	
 }
