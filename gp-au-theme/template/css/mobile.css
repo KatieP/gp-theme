@@ -1,224 +1,26 @@
 @CHARSET "UTF-8";
 
-/* Hide right hand column on small screens */
+/* Hide right hand column on smaller screens */
 
-@media (max-device-width: 480px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}	
+#col3, .template-right {
+	display: none;
+	width: 0%;
+}	
 		
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}	
+/** Show mobile only elements **/
+#content .new-action .mobile-only, 
+#content article .new-action .mobile-only {
+	display: inline;
+}	
 	
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-
+.pos, .widecolumn {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    clear: both;
+    padding: 0 1em 0 1em;
 }
-
-/* iphone 4 */
-
-@media (max-device-width: 640px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}	
-	
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}		
-	
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-}
-
-@media (orientation: landscape) and (max-device-width: 480px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}	
-	
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}		
-	
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}
-
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
 		
-}
-
-/* tablets portrait */
-
-@media (orientation: portrait) and (min-device-width: 768px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}	
-	
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}		
-	
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-	
-}
-
-@media (orientation: portrait) and (min-device-width: 800px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}
-		
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}	
-	
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-	
-}
-
-/* tablets landscape */
-
-@media (orientation: landscape) and (min-device-width: 1024px) {
-
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}		
-
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-	
-}
-
-@media (orientation: landscape) and (min-device-width: 966px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}
-		
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}	
-
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-	
-}
-
-@media (orientation: landscape) and (min-device-width: 1280px) {
-
-	#col3, .template-right {
-		display: none;
-		width: 0%;
-	}
-	
-	/** Show mobile only elements **/
-	#content .new-action .mobile-only, 
-	#content article .new-action .mobile-only {
-		display: inline;
-	}	
-
-	.pos, .widecolumn {
-	    width: 100%;
-	    margin: 0 auto;
-	    position: relative;
-	    clear: both;
-	    padding: 0 1em 0 1em;
-	}
-	
-	#col2, .template-left {
-		width: 100%;
-	}
-	
+#col2, .template-left {
+	width: 100%;
 }
