@@ -298,8 +298,6 @@ function theme_indextitle() {
 	theme_singletitle();
 }
 
-
-
 /*** TEMPLATE RENDERING ***/
 
 function default_index() {
@@ -321,13 +319,13 @@ function default_index() {
 	$querystring_city =       $location_city ;
 	$querystring_page =       get_query_var( 'paged' );
 	
-    $geo_currentlocation = $gp->location;
+    $geo_currentlocation =    $gp->location;
 
-    $epochtime =         strtotime('now');
+    $epochtime =              strtotime('now');
     
-    $filterby_country =  (!empty($querystring_country)) ? $wpdb->prepare( " m1.meta_value=%s ", $querystring_country ) : '';
-    $filterby_state =    (!empty($querystring_state)) ? $wpdb->prepare( " OR m2.meta_value=%s ", $querystring_state ) : '';
-    $filterby_city =     (!empty($querystring_city)) ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_city ) : '';
+    $filterby_country =       (!empty($querystring_country)) ? $wpdb->prepare( " m1.meta_value=%s ", $querystring_country )  : '';
+    $filterby_state =         (!empty($querystring_state))   ? $wpdb->prepare( " OR m2.meta_value=%s ", $querystring_state ) : '';
+    $filterby_city =          (!empty($querystring_city))    ? $wpdb->prepare( " OR m4.meta_value=%s ", $querystring_city )  : '';
     
     $querytotal = $wpdb->prepare(
         "SELECT COUNT(*) AS count 
@@ -368,13 +366,14 @@ function default_index() {
 
 	if ( $pageposts ) {
 	    
-	    $sorted_posts = get_unsorted_posts($pageposts, $location_latitude, $location_longitude);
+	    $sortable_posts = get_sortable_posts($pageposts, $location_latitude, $location_longitude);
 
         # Sort posts by popularity score and get appropriate 20
-	    krsort($sorted_posts);
+	    krsort($sortable_posts);
 	    $ppp = $ppp + $offset;
 	    
-        $display_posts = array_slice($sorted_posts, $offset, $ppp, true);
+	    $display_posts = get_display_posts($sortable_posts, $offset, $ppp);
+        // $display_posts = array_slice($sortable_posts, $offset, $ppp, true);
 	    
         # Display home page feed 	
 	    foreach ( $display_posts as $post ) { 
@@ -382,7 +381,7 @@ function default_index() {
 		    theme_index_feed_item();
 	    }
 	    
-	    if (  $wp_query->max_num_pages > 1 ) {
+	    if ( $wp_query->max_num_pages > 1 ) {
             $page_url = "/" . $posttype_slug . "/";
             
             if ( $on_page != $wp_query->max_num_pages ) { $previous = "<a href=\"" . $page_url . "page/" . ($on_page + 1) . "\"><div class=\"arrow-previous\"></div>More Posts</a>"; }
@@ -529,12 +528,12 @@ function home_index() {
 	if ( $pageposts ) {
 	    # Display create new post button and mobile log in buttons
 		theme_create_post_and_mobile_log_in();
-		$sorted_posts = get_unsorted_posts($pageposts, $location_latitude, $location_longitude);
+		$sortable_posts = get_sortable_posts($pageposts, $location_latitude, $location_longitude);
 
 		# Sort posts by popularity score and get top 20
-	    krsort($sorted_posts);
+	    krsort($sortable_posts);
 	    
-        $display_posts = get_display_posts($sorted_posts);
+        $display_posts = get_display_posts($sortable_posts);
 
         # Display home page feed 	
 	    foreach ( $display_posts as $post ) { 
@@ -2080,7 +2079,7 @@ function get_post_image($post) {
     }
 }
 
-function get_display_posts($sorted_posts) {
+function get_display_posts($sortable_posts, $offset = null, $ppp = null) {
     /** 
      * Ensures posts shown on index pages aren't dominated by one author.
      * 
@@ -2098,16 +2097,15 @@ function get_display_posts($sorted_posts) {
     $display_posts =         array();
     $post_authors =          array();
     $max_posts_per_author =  4;
+    $max_posts =             ( $offset != null && $ppp != null ) ? 300 : 20 ;
     $i =                     0;
-        
-    foreach ( $sorted_posts as $post ) {
 
-        if ($i == 20) { break; }
-            
+    foreach ( $sortable_posts as $post ) {
+
+        if ($i == $max_posts) { break; }
         setup_postdata($post);
 
-        if ( $previous_post_author != $post->post_author ) {
-		         
+        if ( $previous_post_author != $post->post_author ) {		         
 		    if ( array_key_exists($post->post_author, $post_authors) ) {
 		        if ( $post_authors[$post->post_author] < $max_posts_per_author ) {
 		            $display_posts[] = $post;
@@ -2125,14 +2123,22 @@ function get_display_posts($sorted_posts) {
 		    
 		$previous_post_author =  $post->post_author;
     }
+    
+    if ( $offset != null && $ppp != null ) { $display_posts = array_slice($sortable_posts, $offset, $ppp, true); }    
 
     return $display_posts;
 }
 
-function get_unsorted_posts($pageposts, $location_latitude, $location_longitude) {
-	
+function get_sortable_posts($pageposts, $location_latitude, $location_longitude) {
+    /**
+     * 
+     *
+     * Author: Jesse Browne
+     *         jb@greenpag.es 
+     */
+    	
     global $post;
-    $sorted_posts =         array();
+    $sortable_posts =         array();
     $previous_post_title =  '';
     $lat_post_key =         'gp_google_geo_latitude';
     $long_post_key =        'gp_google_geo_longitude';
@@ -2141,7 +2147,8 @@ function get_unsorted_posts($pageposts, $location_latitude, $location_longitude)
 	foreach ( $pageposts as $post ) { 
 	    setup_postdata($post);
 	    $post_id = $post->ID;
-	    if ($post->post_title != $previous_post_title) {		        
+	    if ($post->post_title != $previous_post_title) {
+	        
             $lat_post =  ( !empty( $post->post_latitude )  && ( $post->post_latitude  != '0.00000000' ) ) ?  
                              $post->post_latitude  : get_post_meta($post_id, $lat_post_key, true);
             $long_post = ( !empty( $post->post_longitude ) && ( $post->post_longitude != '0.00000000' ) ) ?
@@ -2152,12 +2159,12 @@ function get_unsorted_posts($pageposts, $location_latitude, $location_longitude)
 		    $c =                                         distance_to_post($post, $location_latitude, $location_longitude);
 		    $popularity_score_thisuser =                 page_rank($c, $post);
 		    $popularity_score_thisuser =                 $post->popularity_score + $popularity_score_thisuser;
-            $sorted_posts[$popularity_score_thisuser] =  $post;
+            $sortable_posts[$popularity_score_thisuser] =  $post;
             $previous_post_title =                       $post->post_title;
 		}                           
 	}
 	
-	return $sorted_posts;
+	return $sortable_posts;
 }
 
 ?>
