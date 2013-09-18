@@ -2241,6 +2241,7 @@ function theme_like_comments() {
     
     global $post, $current_user, $current_site;
     $site_url = get_site_url();
+    $link = get_permalink($post->ID);
 	
 	if ( get_user_meta($current_user->ID, 'likepost_' . $current_site->id . '_' . $post->ID , true) ) {
 		$likedclass = ' favorited';
@@ -2278,10 +2279,10 @@ function theme_like_comments() {
 
 	if ( comments_open($post->ID) ) {
 		echo '<div class="comment-profile">
-                  <a href="#comments">
+                  <a href="'. $link .'#comments">
                       <span class="comment-mini"></span>
                       <span class="comment-mini-number dsq-postid">
-                          <fb:comments-count href="' . get_permalink($post->ID) . '"></fb:comments-count>
+                          <fb:comments-count href="' . $link . '"></fb:comments-count>
                       </span>
                   </a>
               </div>';
