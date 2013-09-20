@@ -1,12 +1,7 @@
 <?php
 /**
  * Green Pages Theme functions and definitions
- * 
- * Green Pages theme or themes are dependant on the Green Pages plugin to run. A theme 
- * contains all necessary functions and definitions that are unique to a single 
- * Green Pages site e.g., greenpages.com.au. In other words, there is one theme per
- * site. Any functions and definitions that are not unique to the theme and are reusable 
- * belong in the Green Pages plugin, not here.
+ * Green Pages theme is dependant on the Green Pages plugin to run.
  * 
  * @package WordPress
  * @subpackage gp-au-theme
@@ -14,6 +9,13 @@
  * 
  * @global array $wp_roles
  * @var array $sitemaptypes
+ *
+ * TIPS:
+ * http://wordpress.stackexchange.com/questions/1567/best-collection-of-code-for-your-functions-php-file
+ *
+ * @TODO Continue moving functions related groups of functions
+ *       into their own files in gp-wp-core plugin repo
+ *       
  */
 
 // Hide wordpress toolbar from front end
@@ -29,29 +31,6 @@ $sitemaptypes = array(
 	array('id' => 'sitemap', 'name' => 'Sitemap'),
 	array('id' => 'googlenews', 'name' => 'Google News')
 );
-
-/*
- * TIPS:
- * http://wordpress.stackexchange.com/questions/1567/best-collection-of-code-for-your-functions-php-file
- * 
- * REMINDER:
- * __('string') = returns a language translation of 'string'.
- * _e('string') = echos a language translation of 'string'.
- * 
- */
-
-/*
- * This is doesn't work. Puts header in header tag!
-add_action( 'admin_head', 'gp_add_admin_header' );
-function gp_add_admin_header() {
-	include("header.php");
-}
-*/
-
-/*
-Remove action from plugin - wp-email-login.
-Javascript generates errors if element isn't found. Element is also different for plugin - simple modal-login.
-*/
 
 function redirect_to_users_own_profile_page() {
 	/**
@@ -332,16 +311,6 @@ function gp_after_scripts() {
 	}
 }
 
-#add_filter( 'author_template', 'edit_author_template' );
-#function edit_author_template( $author_template )
-#{
-    #if ( get_query_var( 'author_edit' ) ) {
-        #locate_template( array( 'edit-author.php', $author_template ), true );
-    #}
-    #return $author_template;
-#}
-
-
 /* REGISTER CUSTOM QUERY VARS */
 # I'm assuming that query vars are registered in order to ensure rewrite rules work properly - in other words, don't change the order of the query vars.
 add_filter( 'query_vars', 'register_query_vars' );
@@ -359,9 +328,12 @@ function register_query_vars( $query_vars )
 
 /* ADD REWRITE RULES */
 function change_author_permalinks() {
+	/**
+	 * See this for changing slug by role:
+	 * http://wordpress.stackexchange.com/questions/17106/change-author-base-slug-for-different-roles
+	 */
     global $wp_rewrite;
-   	$wp_rewrite->author_base = 'profile'; # see this for changing slug by role - http://wordpress.stackexchange.com/questions/17106/change-author-base-slug-for-different-roles
-    #$wp_rewrite->flush_rules();
+   	$wp_rewrite->author_base = 'profile';
 }
 add_action('init','change_author_permalinks');
 
@@ -379,12 +351,13 @@ function edit_author_slug( $author_rules ) {
     return $author_rules;
 }
 
-/* ADD CUSTOM REWRITE RULES */
-# see: http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
-
 function gp_rewrite_rules( $wp_rewrite ) {
+	/**
+	 * ADD CUSTOM REWRITE RULES
+	 * see: http://wordpress.stackexchange.com/questions/4127/custom-taxonomy-and-pages-rewrite-slug-conflict-gives-404
+	 */
+	
     $newrules = array();
-
     $site_posttypes = Site::getPostTypes();
     foreach ( $site_posttypes as $site_posttype ) {
         $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/([a-z\-]+)/page/([0-9]{1,})/?$'] = 'index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]&city=$matches[3]&page=$matches[4]';
@@ -393,7 +366,6 @@ function gp_rewrite_rules( $wp_rewrite ) {
         $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/([a-z\-]+)/?$'] = '/index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&state=$matches[2]';
         $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/page/([0-9]{1,})/?$'] = '/index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]&page=$matches[2]';
         $newrules[$site_posttype['slug'] . '/([a-z0-9]{1,2})/?$'] = '/index.php?post_type=' . $site_posttype['id'] . '&country=$matches[1]';
-        //$newrules[$site_posttype['slug'] . '/?$'] = '/index.php?post_type=' . $site_posttype['id'];
     }
     
     $wp_rewrite->rules = $newrules + $wp_rewrite->rules;
@@ -465,15 +437,15 @@ function pu_login_failed($user) {
 }
 add_action( 'wp_login_failed', 'pu_login_failed' ); // hook failed login
 
-/* GET PROFILE USER */
-function get_profile_user () {
-	
-}
-
 add_action( 'show_user_profile', 'my_show_extra_profile_fields' );
 add_action( 'edit_user_profile', 'my_show_extra_profile_fields' );
 
 function my_show_extra_profile_fields( $user ) {
+	/**
+	 * Exposes custom user meta in edit profile
+	 * page in backend i.e. /wp-admin
+	 * Only admins can access this page 
+	 */
 	
     global $current_user, $current_site, $gp, $wpdb;
     
