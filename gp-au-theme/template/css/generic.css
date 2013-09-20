@@ -3327,7 +3327,7 @@ ul.categorieslistmain {
 #my-advertise input[type="button"] {
     height: 2.6em;
     line-height: 2.6em;
-    width: 18em;
+    min-width: 18em;
     border-radius: 0.4em;
     margin-bottom: 1em;
 }
