@@ -240,11 +240,6 @@ function theme_single_event_details() {
     }
 }
 
-function theme_singlepagination() {
-	/* NOT USED YET! */
-	/* wp_link_pages( array( 'before' => '<div class="page-link">' . __( 'Pages:', 'twentyten' ), 'after' => '</div>' ) ); */
-}
-
 function theme_singlesocialbar() {
 	if (get_post_type() != "page") { 
 		global $post;
@@ -410,7 +405,6 @@ function default_page() {
 		echo '<article>';
 			theme_singletitle();
 			the_content();
-			theme_singlepagination();
 		echo '</article>';
 	}
 	echo '<div id="push"></div>';
@@ -444,12 +438,10 @@ function default_single() {
           <img src="http://theconversation.com/assets/logos/theconversation_vertical_100px-ab58f56b4507a90ced4077004eb0692e.png" alt="The Conversation"><br />
         </a>
       </div>', '', $content);
-            
-			echo $content;		
-            theme_singlepagination();
+			echo $content;
+			theme_single_product_button();
 			theme_single_tags();
 			theme_single_contributor_donate_join_bar();
-			theme_single_product_button();
 			theme_singlecomments();
 		echo '</article>';
 	}
