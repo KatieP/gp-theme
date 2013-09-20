@@ -735,6 +735,9 @@ add_action( 'personal_options_update', 'my_save_extra_profile_fields' );
 add_action( 'edit_user_profile_update', 'my_save_extra_profile_fields' );
 
 function my_save_extra_profile_fields( $user_id ) {
+	/**
+	 * Stores custom user meta data in wp_usermeta table
+	 */
 	global $current_site, $gp, $wpdb;
 	
 	if ( !current_user_can( 'edit_user', $user_id ) ) {
@@ -817,15 +820,6 @@ function my_save_extra_profile_fields( $user_id ) {
 	}
 
 	update_usermeta($user_id, 'profiletypes', $profiletypes_post );
-}
-
-/* SET NEWS POST TYPE FOR DISPLAY ON THE HOME PAGE */
-add_filter( 'pre_get_posts', 'my_get_posts' );
-function my_get_posts( $query ) {
-	if ( is_home() ) {
-		$query->set( 'post_type', array( 'gp_news' ) );
-	}
-	return $query;
 }
 
 /* ADD THUMBNAILS SUPPORT */
