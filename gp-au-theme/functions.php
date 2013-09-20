@@ -842,7 +842,6 @@ for($index = 0; $index < count($edition_posttypes); $index++) {
 	if ($edition_posttypes[$index]['enabled'] == true) {
 		add_filter( 'manage_edit-' . $edition_posttypes[$index]['id'] . '_columns', 'editColumns' );
 	}
-	# add_action( 'manage_posts_custom_column', $posttypes[$index]['id'] . '_custom_columns' );
 }
 add_action( 'manage_posts_custom_column', 'new_custom_columns' );
 add_filter( 'post_updated_messages', 'updated_messages' );
@@ -857,8 +856,7 @@ function createPostOptions () {
 			register_post_type( $edition_posttypes[$index]['id'] , $edition_posttypes[$index]['args'] );
 			register_taxonomy( $edition_posttypes[$index]['id'] . '_category', $edition_posttypes[$index]['id'], $edition_posttypes[$index]['taxonomy'] );
 		}
-	}	
-	//flush_rewrite_rules();
+	}
 }
 
 function editColumns($columns) {
@@ -1080,7 +1078,7 @@ function relevant_posts() {
 	$post_id = $post->ID;
 	$post_type = $post->post_type;
 	$post_title = $post->post_title;
-	$allowed_posttypes = array('gp_news', 'gp_projects', 'gp_advertorial', 'gp_people');
+	$allowed_posttypes = array('gp_news', 'gp_projects', 'gp_advertorial');
 	
 	if ( !in_array($post_type, $allowed_posttypes) ) {
 		return false;
@@ -1098,10 +1096,6 @@ function relevant_posts() {
 		case 'gp_advertorial':
 	       	$posttype_title = 'stuff';
 	       	$posttype_url = '/eco-friendly-products';
-	        break;
-	    case 'gp_people':
-	    	$posttype_title = 'people';
-	    	$posttype_url = '/people';
 	        break;
 	}
 	
@@ -1128,7 +1122,6 @@ function relevant_posts() {
 			<?php
 			}
 			echo '<div class="clear"></div></div>';
-			unset($link, $rpost);
 		}
 		echo '</div>';
 	}
@@ -1361,7 +1354,10 @@ function redirect_to_chargify() {
 	global $current_user;
 	
 	$chargify_domain = "https://green-pages.chargify.com/";
-	$chargify_prepop = "?first_name=" . $current_user->first_name . "&last_name=" . $current_user->last_name . "&email=" . $current_user->user_email . "&reference=" . $current_user->display_name;
+	$chargify_prepop = "?first_name=" . $current_user->first_name .
+	                   "&last_name=" . $current_user->last_name .
+					   "&email=" . $current_user->user_email .
+					   "&reference=" . $current_user->display_name;
 	$chargify_advertorialurl = $chargify_domain . "h/33953/subscriptions/new" . $chargify_prepop;
 	$chargify_competitionsurl = $chargify_domain . "h/33970/subscriptions/new" . $chargify_prepop;
 
@@ -1410,17 +1406,17 @@ function redirect_to_chargify() {
 	}
 }
 
-
-
 /* EXTRA SPECIAL STUFF */
 
-/* Calculate years, months, days between dates.
+/**
+ * Calculate years, months, days between dates.
  *  
  * See: http://stackoverflow.com/questions/676824/how-to-calculate-the-difference-between-two-dates-using-php
-*/
+ *
+ */
 
-function _date_range_limit($start, $end, $adj, $a, $b, $result)
-{
+function _date_range_limit($start, $end, $adj, $a, $b, $result) {
+
     if ($result[$a] < $start) {
         $result[$b] -= intval(($start - $result[$a] - 1) / $adj) + 1;
         $result[$a] += $adj * intval(($start - $result[$a] - 1) / $adj + 1);
@@ -1434,8 +1430,7 @@ function _date_range_limit($start, $end, $adj, $a, $b, $result)
     return $result;
 }
 
-function _date_range_limit_days($base, $result)
-{
+function _date_range_limit_days($base, $result) {
     $days_in_month_leap = array(31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
     $days_in_month = array(31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
@@ -1477,15 +1472,13 @@ function _date_range_limit_days($base, $result)
     return $result;
 }
 
-function _date_normalize($base, $result)
-{
-    $result = _date_range_limit(0, 60, 60, "s", "i", $result);
+function _date_normalize($base, $result) {
+	
+	$result = _date_range_limit(0, 60, 60, "s", "i", $result);
     $result = _date_range_limit(0, 60, 60, "i", "h", $result);
     $result = _date_range_limit(0, 24, 24, "h", "d", $result);
     $result = _date_range_limit(0, 12, 12, "m", "y", $result);
-
     $result = _date_range_limit_days(&$base, &$result);
-
     $result = _date_range_limit(0, 12, 12, "m", "y", $result);
 
     return $result;
@@ -1494,8 +1487,7 @@ function _date_normalize($base, $result)
 /**
  * Accepts two unix timestamps.
  */
-function _date_diff($one, $two)
-{
+function _date_diff($one, $two) {
     $invert = false;
     if ($one > $two) {
         list($one, $two) = array($two, $one);
@@ -2336,97 +2328,6 @@ function theme_index_feed_item() {
 	echo '<div class="clear"></div>';
 }
 
-/* SHOW MEMBERS POSTS */
-function theme_profile_posts($profile_pid, $post_page, $post_tab, $post_type) {
-	// note: Favourites are viewable by everyone!
-	
-	$profile_author = get_user_by('slug', $profile_pid);
-	
-	global $wpdb, $post, $current_user, $gp;
-	$geo_currentlocation = $gp->location;
-	$ns_loc = $gp->location['country_iso2'] . '\\Edition';
-	$edition_posttypes = $ns_loc::getPostTypes();
-	
-	if ( strtolower($post_type) == "directory" ) {
-		theme_profile_directory($profile_pid);
-		return;	
-	}
-	
-	$post_type_filter = "";
-	$post_type_key = getPostTypeID_by_Slug($post_type);
-	if ( $post_type_key ) {
-		$post_type_filter = "" . $wpdb->prefix . "posts.post_type = '{$post_type_key}'";
-	} else {
-		foreach ($edition_posttypes as $value) {
-		    if ( $value['enabled'] === true ) {
-			    $post_type_filter .= $wpdb->prefix . "posts.post_type = '{$value['id']}' or ";
-		    }
-		}
-		$post_type_filter = substr($post_type_filter, 0, -4);
-	}
-		
-		$total = "SELECT DISTINCT COUNT(*) as count 
-				FROM $wpdb->posts 
-				WHERE 
-		            post_status = 'publish' and 
-					(" . $post_type_filter . ")	and " . 
-					$wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "'";			
-					
-		$totalposts = $wpdb->get_results($total, OBJECT);
-		$ppp = 10;
-		$wp_query->found_posts = $totalposts[0]->count;
-		$wp_query->max_num_pages = ceil($wp_query->found_posts / $ppp);	
-		$on_page = $post_page;
-
-		if($on_page == 0){ $on_page = 1; }		
-		$offset = ($on_page-1) * $ppp;
-		
-		$querystr = "SELECT DISTINCT " . $wpdb->prefix . "posts.* 
-					FROM $wpdb->posts
-				    WHERE 
-		            	post_status = 'publish' and 
-						(" . $post_type_filter . ")	and " . 
-					    $wpdb->prefix . "posts.post_author = '" . $profile_author->ID . "' 
-					ORDER BY " . $wpdb->prefix . "posts.post_date DESC 
-					LIMIT " . $ppp . " 
-					OFFSET " . $offset .";";				
-
-		$pageposts = $wpdb->get_results($querystr, OBJECT);
-		
-		if ( $post_type_key ) {
-			foreach ($edition_posttypes as $newposttype) {
-			    if ( $newposttype['enabled'] === true ) {
-				    if ($newposttype['id'] == $post_type_key) {$post_type_name = " " . $newposttype['name'];}
-			    }
-			}
-		}
-		
-		if ( ( is_user_logged_in() ) && ( $current_user->ID == $profile_author->ID ) || get_user_role( array('administrator') ) ) {
-			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span>{$post_type_name} Posts";
-			gp_select_createpost();
-			echo "</div>";
-		} else {
-			echo "<div class=\"total-posts\"><span>{$wp_query->found_posts}</span>{$post_type_name} Posts</div>";
-		}
-		
-		if ($pageposts) {
-			$post_author_url = get_author_posts_url($profile_author->ID);
-			
-			foreach ($pageposts as $post) {
-			
-				setup_postdata($post);
-				theme_index_feed_item();
-				
-			}
-			
-			if ( $wp_query->max_num_pages > 1 ) {
-				theme_tagnumpagination( $on_page, $wp_query->max_num_pages, $post_tab, $post_type );
-			}
-
-		}
-	#}	
-}
-
 function theme_tagnumpagination ($on_page, $post_pages, $post_tab, $post_type) {
 	echo "<div class=\"post-number-paging\"><div>";
 	for ($i = 1; $i <= $post_pages; $i++) {
@@ -2452,28 +2353,6 @@ function theme_tagnumpagination ($on_page, $post_pages, $post_tab, $post_type) {
 		}
 	}
 	echo "</div></div>";
-}
-
-/* SHOW MEMBERS FOLLOWING MEMBERSHIP */
-function theme_profile_following($profile_pid) {
-	// note: Favourites are viewable by everyone!
-	
-	echo "
-	<div class=\"total-posts\">
-		<span>0</span> Following
-	</div>
-	";
-}
-
-/* SHOW MEMBERS TOPIC MEMBERSHIP */
-function theme_profile_topics($profile_pid) {
-	// note: Favourites are viewable by everyone!
-	
-	echo "
-	<div class=\"total-posts\">
-		<span>0</span> Topics
-	</div>
-	";	
 }
 
 /* BUTTONS TO LINK FRONT END TO CREATE NEW POST ADMIN PAGES */
@@ -2712,8 +2591,6 @@ function add_suggest_script() {
     wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
 }
 add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
-
-
 
 /** POPULARITY SCORE RELATED CALCULATIONS **/
 
